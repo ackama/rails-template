@@ -2,44 +2,7 @@
 
 This document covers the steps need to deploy the application to an existing environment. To create a new environment, refer to `PROVISIONING.md`.
 
-* **Developers:** this project is built and deployed using Capistrano, which is the `cap` command. Refer to the *Capistrano* section.
 * **System administrators:** once deployed, the various processes and configuration can be maintained with familiar Linux commands. Refer to the *Server maintenance* section.
-
-
-## Capistrano
-
-### Environments
-
-* **staging** is deployed from the `development` branch.
-* **production** is deployed from the `master` branch.
-
-### Prerequisites
-
-Capistrano runs on your local machine and uses SSH to perform the deployment on the remote server. Therefore:
-
-* The Capistrano gem must be installed (see `README.md` for project setup instructions).
-* You must have SSH access to the production/staging server.
-* Your SSH key must be installed on the server in `~deployer/.ssh/authorized_keys`.
-* You must have SSH access to Git repository (using your SSH key).
-
-### Performing a graceful deployment (no migrations)
-
-This will deploy the latest code from `development`. Make sure to `git push` your changes first, or they will not apply.
-
-```
-bundle exec cap production deploy
-```
-
-### Performing a full deployment
-
-If there are data migrations or other changes that require downtime, perform the deployment using the following task:
-
-```
-bundle exec cap production deploy:migrate_and_restart
-```
-
-This will stop the app and display a maintenance page during the deployment.
-
 
 ## Server maintenance
 
@@ -61,24 +24,20 @@ All processes are set up to start automatically when the server boots, and can b
 ```
 sudo service postgresql <start|stop|restart>
 sudo service nginx <start|stop|restart>
-sudo service unicorn_<%= capistrano_app_name %> <start|stop|restart>
-sudo service sidekiq_<%= capistrano_app_name %> <start|stop>
+sudo service unicorn_<%= app_name %> <start|stop|restart>
+sudo service sidekiq_<%= app_name %> <start|stop>
 ```
 
 Note that Unicorn and Sidekiq require access to PostgreSQL and Redis, so those supporting services should be started first.
 
 ### Configuration
 
-All configuration values required by the application can be changed here:
+All configuration values required by the application can be changed.
+
+After making changes to configuration files, be sure to restart the application:
 
 ```
-/home/deployer/apps/<%= capistrano_app_name %>/shared/.env.production
-```
-
-After making changes to this file, be sure to restart the application:
-
-```
-sudo service unicorn_<%= capistrano_app_name %> restart
-sudo service sidekiq_<%= capistrano_app_name %> stop
-sudo service sidekiq_<%= capistrano_app_name %> start
+sudo service unicorn_<%= app_name %> restart
+sudo service sidekiq_<%= app_name %> stop
+sudo service sidekiq_<%= app_name %> start
 ```

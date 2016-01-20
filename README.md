@@ -26,7 +26,7 @@ To make this the default Rails application template on your system, create a `~/
 
 ## Usage
 
-This template assumes you will store your project in a remote git repository (e.g. Bitbucket or GitHub) and that you will deploy using Capistrano to staging and production environments. It will prompt you for this information in order to pre-configure your app, so be ready to provide:
+This template assumes you will store your project in a remote git repository (e.g. Bitbucket or GitHub). It will prompt you for this information in order to pre-configure your app, so be ready to provide:
 
 1. The git URL of your (freshly created and empty) Bitbucket/GitHub repository
 2. The hostname of your staging server
@@ -78,8 +78,6 @@ The template will perform the following steps:
     * [rubocop][] – enforces Ruby code style
     * [xray-rails][] – inspect view partials in the browser
 * Deployment
-    * [airbrussh][] – prettier log output for capistrano
-    * [capistrano-mb][] – capistrano recipes
     * [unicorn][] – the industry-standard Rails server
     * [unicorn-worker-killer][] – to manage memory use
 * Security
@@ -138,7 +136,6 @@ Rails generators are very lightly documented; what you’ll find is that most of
 [rubocop]:https://github.com/bbatsov/rubocop
 [xray-rails]:https://github.com/brentd/xray-rails
 [airbrussh]:https://github.com/mattbrictson/airbrussh
-[capistrano-mb]:https://github.com/mattbrictson/capistrano-mb
 [unicorn]:http://unicorn.bogomips.org
 [unicorn-worker-killer]:https://github.com/kzk/unicorn-worker-killer
 [Mandrill]:http://mandrill.com
