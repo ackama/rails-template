@@ -9,12 +9,10 @@ This document covers the steps need to deploy the application to an existing env
 This application consists of two executables that run as the `deployer` user:
 
 * Unicorn is the application server that services Rails HTTP requests
-* Sidekiq is the background worker that services the job queue stored in Redis
 
 These in turn rely on the following services:
 
 * PostgreSQL
-* Redis
 * Nginx
 
 ### Controlling processes
@@ -25,10 +23,9 @@ All processes are set up to start automatically when the server boots, and can b
 sudo service postgresql <start|stop|restart>
 sudo service nginx <start|stop|restart>
 sudo service unicorn_<%= app_name %> <start|stop|restart>
-sudo service sidekiq_<%= app_name %> <start|stop>
 ```
 
-Note that Unicorn and Sidekiq require access to PostgreSQL and Redis, so those supporting services should be started first.
+Note that Unicorn requires access to PostgreSQL, so this supporting service should be started first.
 
 ### Configuration
 
@@ -38,6 +35,4 @@ After making changes to configuration files, be sure to restart the application:
 
 ```
 sudo service unicorn_<%= app_name %> restart
-sudo service sidekiq_<%= app_name %> stop
-sudo service sidekiq_<%= app_name %> start
 ```
