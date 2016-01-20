@@ -73,8 +73,6 @@ The template will perform the following steps:
     * [autoprefixer-rails][] – automates cross-browser CSS compatibility
     * [awesome_print][] – try `ap` instead of `puts`
     * [better_errors][] – useful error pages with interactive stack traces
-    * [guard][] – runs tests as you develop; mandatory for effective TDD
-    * [livereload][] – magically refreshes browsers whenever you save a file
     * [rubocop][] – enforces Ruby code style
     * [xray-rails][] – inspect view partials in the browser
 * Deployment
@@ -131,8 +129,6 @@ Rails generators are very lightly documented; what you’ll find is that most of
 [autoprefixer-rails]:https://github.com/ai/autoprefixer-rails
 [awesome_print]:https://github.com/michaeldv/awesome_print
 [better_errors]:https://github.com/charliesome/better_errors
-[guard]:https://github.com/guard/guard
-[livereload]:https://github.com/guard/guard-livereload
 [rubocop]:https://github.com/bbatsov/rubocop
 [xray-rails]:https://github.com/brentd/xray-rails
 [airbrussh]:https://github.com/mattbrictson/airbrussh

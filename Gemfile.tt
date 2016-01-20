@@ -29,9 +29,7 @@ group :development do
   gem "better_errors"
   gem "binding_of_caller"
   gem "letter_opener"
-  gem "listen"
   gem "quiet_assets"
-  gem "rack-livereload"
   gem "spring"
   gem "xray-rails", ">= 0.1.18"
 end
@@ -39,14 +37,8 @@ end
 group :development do
   gem "brakeman", :require => false
   gem "bundler-audit", :require => false
-  gem "guard", ">= 2.2.2", :require => false
-  gem "guard-livereload", :require => false
-  gem "guard-minitest", :require => false
   gem "rb-fsevent", :require => false
   gem "simplecov", :require => false
-  gem "sshkit", "~> 1.8", :require => false
-  gem "terminal-notifier", :require => false
-  gem "terminal-notifier-guard", :require => false
   gem "thin", :require => false
 end
 
