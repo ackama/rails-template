@@ -6,10 +6,6 @@ remove_file "config/database.yml"
 remove_file "config/secrets.yml"
 copy_file "config/sidekiq.yml"
 
-template "config/deploy.rb.tt"
-template "config/deploy/production.rb.tt"
-template "config/deploy/staging.rb.tt"
-
 gsub_file "config/routes.rb", /  # root 'welcome#index'/ do
   '  root "home#index"'
 end
