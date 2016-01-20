@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Script used to test this project in Jenkins and continuously deploy the
-# development branch to the default capistrano target. Assumes the Jenkins
+# development branch. Assumes the Jenkins
 # user is using bash and rbenv. YMMV.
 #
 set -e
@@ -43,11 +43,4 @@ fi
 if bundle show bundler-audit &> /dev/null; then
   bundle exec bundle-audit update
   bundle exec bundle-audit -v
-fi
-
-# Run a capistrano deploy if we just built the "development" branch.
-if bundle show capistrano &> /dev/null; then
-  if [[ $GIT_BRANCH == origin/development ]]; then
-    SSHKIT_COLOR=1 bundle exec cap staging deploy:migrate_and_restart
-  fi
 fi
