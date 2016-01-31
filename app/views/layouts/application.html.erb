@@ -1,9 +1,33 @@
-<%# The "application" layout is the default layout. It extends "base"  %>
-<%# to include things like header, footer, and alerts that are common  %>
+<%# The "application" layout is the default layout. It includes  %>
+<%# things like header, footer, and alerts that are common  %>
 <%# to most (but not all) views.                                       %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <%%# CSS should go closest to the top of the document as possible. %>
+    <%= stylesheet_link_tag("application",
+                            :media => "all" %>
 
-<%= render("shared/flash") %>
+    <%= javascript_include_tag("application") %>
 
-<%= yield %>
+    <%= yield(:head) %>
 
-<% parent_layout "base" %>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%# Specifies the default name of home screen bookmark in iOS 6+ %>
+    <meta name="apple-mobile-web-app-title" content="<%= app_const_base.titleize %>">
+
+    <%%= csrf_meta_tags %>
+
+    <title>
+      <%%= strip_tags(yield(:title)) + " – " if content_for?(:title) %>
+      <%= app_const_base.titleize %>
+    </title>
+  </head>
+  <body>
+
+    <%= render("shared/flash") %>
+    <%%= yield %>
+
+  </body>
+</html>
