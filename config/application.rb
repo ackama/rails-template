@@ -1,6 +1,6 @@
 gsub_file "config/application.rb",
           "# config.time_zone = 'Central Time (US & Canada)'",
-          'config.time_zone = "Pacific Time (US & Canada)"'
+          "config.time_zone = 'Wellington'"
 
 insert_into_file "config/application.rb", :before => /^  end/ do
   <<-'RUBY'
