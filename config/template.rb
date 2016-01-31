@@ -1,5 +1,4 @@
 apply "config/application.rb"
-copy_file "config/brakeman.yml"
 copy_file "config/pre_commit.yml"
 template "config/database.example.yml.tt"
 remove_file "config/database.yml"
@@ -10,7 +9,6 @@ gsub_file "config/routes.rb", /  # root 'welcome#index'/ do
 end
 
 copy_file "config/initializers/generators.rb"
-copy_file "config/initializers/rotate_log.rb"
 copy_file "config/initializers/secret_token.rb"
 copy_file "config/initializers/secure_headers.rb"
 copy_file "config/initializers/version.rb"
