@@ -5,12 +5,12 @@
 <html>
   <head>
     <%%# CSS should go closest to the top of the document as possible. %>
-    <%= stylesheet_link_tag("application",
-                            :media => "all" %>
+    <%%= stylesheet_link_tag("application",
+                            :media => "all") %>
 
-    <%= javascript_include_tag("application") %>
+    <%%= javascript_include_tag("application") %>
 
-    <%= yield(:head) %>
+    <%%= yield(:head) %>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,7 +26,7 @@
   </head>
   <body>
 
-    <%= render("shared/flash") %>
+    <%%= render("shared/flash") %>
     <%%= yield %>
 
   </body>
