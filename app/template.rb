@@ -8,7 +8,6 @@ insert_into_file "app/controllers/application_controller.rb",
 end
 
 copy_file "app/controllers/home_controller.rb"
-copy_file "app/helpers/retina_image_helper.rb"
 template "app/views/layouts/application.html.erb", :force => true
 copy_file "app/views/shared/_flash.html.erb"
 copy_file "app/views/home/index.html.erb"
