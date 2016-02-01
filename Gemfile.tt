@@ -19,6 +19,7 @@ group :development do
   gem "binding_of_caller"
   gem "letter_opener"
   gem "quiet_assets"
+  gem "web-console", "~> 2.0"
   gem "spring"
 end
 
@@ -28,9 +29,16 @@ group :development do
   gem "thin", :require => false
 end
 
+group :development, :test do
+  gem "rspec-rails"
+end
+
 group :test do
   gem "capybara"
   gem "connection_pool"
   gem "launchy"
+  gem "pry-rails"
+  gem "database_cleaner"
+  gem "factory_girl_rails"
   gem "poltergeist"
 end

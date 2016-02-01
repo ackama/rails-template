@@ -26,7 +26,7 @@ def apply_template!
   apply "doc/template.rb"
   apply "lib/template.rb"
   apply "public/template.rb"
-  apply "test/template.rb"
+  apply "spec/template.rb"
 
   apply "variants/bootstrap/template.rb" if apply_bootstrap?
 
@@ -90,7 +90,7 @@ def assert_valid_options
     :skip_gemfile => false,
     :skip_bundle => false,
     :skip_git => false,
-    :skip_test_unit => false,
+    :skip_test_unit => true,
     :edge => false
   }
   valid_options.each do |key, expected|
