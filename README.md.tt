@@ -35,7 +35,7 @@ Run the `bin/setup` script. This script will:
 
 ### Run it!
 
-1. Run `rake test` to make sure everything works.
+1. Run `rake spec` to make sure everything works.
 2. Run `rails s` to start the Rails app.
 
 [rbenv]:https://github.com/sstephenson/rbenv
