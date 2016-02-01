@@ -66,7 +66,7 @@ The template will perform the following steps:
 * Core
     * [active_type][] – for building simple and effective form/service objects
 * Configuration
-    * [dotenv][] – in place of the Rails `secrets.yml`
+    * [direnv][] – in place of the Rails `secrets.yml`
 * Utilities
     * [annotate][] – auto-generates schema documentation
     * [autoprefixer-rails][] – automates cross-browser CSS compatibility

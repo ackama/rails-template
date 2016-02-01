@@ -1,0 +1,7 @@
+# Copy this file into a new file called ".envrc" in the root of the project.
+# Access values like this: ENV["RAILS_SECRET_KEY_BASE"]
+#
+# The purpose of this file is to keep secrets out of source control.
+# For more information, see: direnv.net
+
+export RAILS_SECRET_KEY_BASE=<%= SecureRandom.hex(64) %>

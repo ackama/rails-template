@@ -13,7 +13,6 @@
 /tmp
 
 # Ignore test reports
-/brakeman-output.*
 /coverage
 
 # Ignore results of `rake assets:precompile`.
@@ -21,4 +20,4 @@
 
 # Never check passwords into source control!
 /config/database.yml
-/.env
+/.envrc
