@@ -68,7 +68,9 @@ def add_template_repository_to_source_path
       "https://github.com/joshmcarthur/rails-template.git",
       tempdir
     ].map(&:shellescape).join(" ")
-    git checkout: ["rabid"]
+    Dir.chdir(tempdir) do
+      git checkout: ["rabid"]
+    end
   else
     source_paths.unshift(File.dirname(__FILE__))
   end
