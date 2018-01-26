@@ -1,6 +1,7 @@
 apply "config/application.rb"
 copy_file "config/pre_commit.yml"
 template "config/database.example.yml.tt"
+template "config/secrets.example.yml"
 remove_file "config/database.yml"
 remove_file "config/secrets.yml"
 
