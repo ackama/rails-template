@@ -39,12 +39,6 @@ def apply_template!
   empty_directory ".git/safe"
 
   run_with_clean_bundler_env "bin/setup"
-  generate_spring_binstubs
-
-  binstubs = %w(
-    bundler-audit
-  )
-  run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')}"
 
   unless preexisting_git_repo?
     git :add => "-A ."
