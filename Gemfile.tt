@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 gem "rails", "<%= Rails.version %>"
 gem "pg"<%= gemfile_requirement("pg") || ', "~> 0.18"' %>
+gem 'dotenv-rails', require: "dotenv/rails-now"
 gem "sass-rails"<%= gemfile_requirement("sass-rails") %>
 gem "secure_headers", "~> 2.5"
 
