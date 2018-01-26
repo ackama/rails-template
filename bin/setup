@@ -88,9 +88,9 @@ def test_local_env_contains_required_keys
   keys = ->(f) { IO.readlines(f).map { |l| l[/^([^#\s][^=\s]*)/, 1] }.compact }
 
   log(:yellow, "test .env contents") do
-    missing = keys["example.envrc"] - keys[".envrc"]
+    missing = keys["example.env"] - keys[".env"]
     if missing.any?
-      die("Your .envrc file is missing #{missing.join(', ')}")
+      die("Your .env file is missing #{missing.join(', ')}")
     end
   end
 end
