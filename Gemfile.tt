@@ -1,44 +1,29 @@
 source "https://rubygems.org"
 
-gem "bcrypt"<%= gemfile_requirement("bcrypt") %>
-gem "jquery-rails"<%= gemfile_requirement("jquery-rails") %>
-gem "mail", ">= 2.6.3"
-gem "pg"<%= gemfile_requirement("pg") || ', "~> 0.18"' %>
 gem "rails", "<%= Rails.version %>"
+gem "pg"<%= gemfile_requirement("pg") || ', "~> 0.18"' %>
 gem "sass-rails"<%= gemfile_requirement("sass-rails") %>
 gem "secure_headers", "~> 2.5"
 
-group :production, :staging do
-  gem "unicorn"
-  gem "unicorn-worker-killer"
-end
-
 group :development do
-  gem "awesome_print"
-  gem "better_errors"
-  gem "binding_of_caller"
+  gem "bundler-audit", require: false
+  gem "simplecov", require: false
   gem "letter_opener"
-  gem "quiet_assets"
-  gem "web-console", "~> 2.0"
-  gem "spring"
-end
-
-group :development do
-  gem "bundler-audit", :require => false
-  gem "simplecov", :require => false
-  gem "thin", :require => false
 end
 
 group :development, :test do
   gem "rspec-rails"
+  gem "factory_bot_rails"
 end
 
 group :test do
   gem "capybara"
-  gem "connection_pool"
   gem "launchy"
   gem "pry-rails"
   gem "database_cleaner"
-  gem "factory_girl_rails"
   gem "poltergeist"
+end
+
+group :production, :staging do
+  gem "unicorn"
 end
