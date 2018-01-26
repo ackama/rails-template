@@ -10,6 +10,9 @@ group :development do
   gem "bundler-audit", require: false
   gem "simplecov", require: false
   gem "letter_opener"
+
+  # Required in Rails 5 by ActiveSupport::EventedFileUpdateChecker
+  gem "listen" 
 end
 
 group :development, :test do
