@@ -43,7 +43,6 @@ def apply_template!
   unless preexisting_git_repo?
     git :add => "-A ."
     git :commit => "-n -m 'Set up project'"
-    git :checkout => "-b development"
     if git_repo_specified?
       git :remote => "add origin #{git_repo_url.shellescape}"
       git :push => "-u origin --all"
