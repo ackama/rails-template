@@ -14,6 +14,10 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <%# Prevents the full URL, including potentially sensitive query strings being sent to external origins %>
+    <meta name="referrer" content="origin-when-crossorigin">
+
     <%# Specifies the default name of home screen bookmark in iOS 6+ %>
     <meta name="apple-mobile-web-app-title" content="<%= app_const_base.titleize %>">
 
