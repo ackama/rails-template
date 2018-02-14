@@ -1,17 +1,19 @@
-# mattbrictson/rails-template
+# Rails Template
+
+## Origins
+
+This repo is forked from mattbrictson/rails-template, and has been customized to set up Rails projects the way I like them.
 
 ## Description
 
-This is the application template that I use for my Rails 4.2 projects. As a freelance Rails developer, I need to be able to start new projects quickly and with a good set of defaults. I've assembled this template over the years to include best-practices, tweaks, documentation, and personal preferences, while still generally adhering to the "Rails way".
+This is the application template that I use for my Rails 5.0 projects. As a  Rails developer, I need to be able to start new projects quickly and with a good set of defaults. I've tweaked this template over the years to include best-practices, documentation, and personal preferences, while still generally adhering to the "Rails way".
 
 ## Requirements
 
 This template currently works with:
 
-* Rails 4.2.x
+* Rails 4.0.x
 * PostgreSQL
-
-If you need help setting up a Ruby development environment, check out my [Rails OS X Setup Guide](https://mattbrictson.com/rails-osx-setup-guide).
 
 ## Installation
 
@@ -21,7 +23,7 @@ To make this the default Rails application template on your system, create a `~/
 
 ```
 -d postgresql
--m https://raw.githubusercontent.com/mattbrictson/rails-template/master/template.rb
+-m https://raw.githubusercontent.com/joshmcarthur/rails-template/master/template.rb
 ```
 
 ## Usage
@@ -37,7 +39,7 @@ To generate a Rails application using this template, pass the `-m` option to `ra
 ```
 rails new blog \
   -d postgresql \
-  -m https://raw.githubusercontent.com/mattbrictson/rails-template/master/template.rb
+  -m https://raw.githubusercontent.com/joshmcarthur/rails-template/master/template.rb
 ```
 
 *Remember that options must go after the name of the application.* The only database supported by this template is `postgresql`.
@@ -47,6 +49,8 @@ If you’ve installed this template as your default (using `~/.railsrc` as descr
 ```
 rails new blog
 ```
+
+If you just want to see what the template does, try running `docker build .` and then `docker --rm -it run` the resulting image. You'll be dropped into Bash and can explore the generated app in `/apps/template-test`. The image doesn't include PostgreSQL right now, so database operations don't work.
 
 ## What does it do?
 
@@ -63,21 +67,13 @@ The template will perform the following steps:
 
 #### These gems are added to the standard Rails stack
 
-* Configuration
-    * [direnv][] – in place of the Rails `secrets.yml`
-* Utilities
-    * [awesome_print][] – try `ap` instead of `puts`
-    * [better_errors][] – useful error pages with interactive stack traces
-    * [rubocop][] – enforces Ruby code style
-* Deployment
-    * [unicorn][] – the industry-standard Rails server
-    * [unicorn-worker-killer][] – to manage memory use
-* Security
-    * [bundler-audit][] – detect security vulnerabilities
-    * [secure_headers][] – hardens your app against XSS attacks
-* Testing
-    * [capybara][] and [poltergeist][] – integration testing
-    * [simplecov][] – code coverage reports
+* `dotenv-rails` - loads environment variables from `.env` and `.env.#{RAILS_ENV}`. 
+* `secure_headers` - sets CSP headers and a bunch of other headers to harden your app against XSS attacks
+* `simplecov` - code coverage reports
+* `letter_opener` - open emails in your web browser in development and test
+* RSpec, FactoryBot, Capybara, and Poltergeist - my current testing stack, though this might branch off into a test::unit option.
+* `unicorn` – the industry-standard Rails server
+
 
 #### Mandrill SMTP
 
@@ -105,27 +101,9 @@ Action Mailer is configured to use [Mandrill][] for SMTP. You can change this by
 
 This project works by hooking into the standard Rails [application templates][] system, with some caveats. The entry point is the [template.rb][] file in the root of this repository.
 
-Normally, Rails only allows a single file to be specified as an application template (i.e. using the `-m <URL>` option). To work around this limitation, the first step this template performs is a `git clone` of the `mattbrictson/rails-template` repository to a local temporary directory.
+Normally, Rails only allows a single file to be specified as an application template (i.e. using the `-m <URL>` option). To work around this limitation, the first step this template performs is a `git clone` of the `joshmcarthur/rails-template` repository to a local temporary directory.
 
 This temporary directory is then added to the `source_paths` of the Rails generator system, allowing all of its ERb templates and files to be referenced when the application template script is evaluated.
 
 Rails generators are very lightly documented; what you’ll find is that most of the heavy lifting is done by [Thor][]. The most common methods used by this template are Thor’s `copy_file`, `template`, and `gsub_file`. You can dig into the well-organized and well-documented [Thor source code][thor] to learn more.
 
-[awesome_print]:https://github.com/michaeldv/awesome_print
-[better_errors]:https://github.com/charliesome/better_errors
-[rubocop]:https://github.com/bbatsov/rubocop
-[airbrussh]:https://github.com/mattbrictson/airbrussh
-[unicorn]:http://unicorn.bogomips.org
-[unicorn-worker-killer]:https://github.com/kzk/unicorn-worker-killer
-[Mandrill]:http://mandrill.com
-[bundler-audit]:https://github.com/rubysec/bundler-audit
-[secure_headers]:https://github.com/twitter/secureheaders
-[capybara]:https://github.com/jnicklas/capybara
-[poltergeist]:https://github.com/teampoltergeist/poltergeist
-[mocha]:https://github.com/freerange/mocha
-[shoulda]:https://github.com/thoughtbot/shoulda
-[simplecov]:https://github.com/colszowka/simplecov
-[Bootstrap]:http://getbootstrap.com
-[application templates]:http://guides.rubyonrails.org/generators.html#application-templates
-[template.rb]: template.rb
-[thor]: https://github.com/erikhuda/thor
