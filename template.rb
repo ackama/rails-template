@@ -63,10 +63,10 @@ def add_template_repository_to_source_path
     at_exit { FileUtils.remove_entry(tempdir) }
     git :clone => [
       "--quiet",
-      "https://github.com/joshmcarthur/rails-template.git",
+      "https://github.com/rabid/rails-template.git",
       tempdir
     ].map(&:shellescape).join(" ")
-    `cd #{tempdir} && git checkout rabid`
+    `cd #{tempdir} && git checkout master`
   else
     source_paths.unshift(File.dirname(__FILE__))
   end
