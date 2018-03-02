@@ -12,7 +12,7 @@ This is the application template that I use for my Rails 5.0 projects. As a  Rai
 
 This template currently works with:
 
-* Rails 4.0.x
+* Rails 5.0.x
 * PostgreSQL
 
 ## Installation
