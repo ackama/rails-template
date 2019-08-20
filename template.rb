@@ -1,4 +1,4 @@
-RAILS_REQUIREMENT = "~> 5.0.0"
+RAILS_REQUIREMENT = "~> 6.0.0".freeze
 
 def apply_template!
   assert_minimum_rails_version
@@ -6,19 +6,21 @@ def apply_template!
   assert_postgresql
   add_template_repository_to_source_path
 
-  template "Gemfile.tt", :force => true
+  template "Gemfile.tt", force: true
 
-  template "DEPLOYMENT.md.tt"
-  template "PROVISIONING.md.tt"
-  template "README.md.tt", :force => true
+  template "README.md.tt", force: true
   remove_file "README.rdoc"
 
   template "example.env.tt"
-  copy_file "gitignore", ".gitignore", :force => true
-  copy_file "rubocop.yml", ".rubocop.yml"
-  template "ruby-version.tt", ".ruby-version"
+  copy_file "editorconfig", ".editorconfig"
+  copy_file "gitignore", ".gitignore", force: true
+  copy_file "overcommit.yml", ".overcommit.yml"
+  template "ruby-version.tt", ".ruby-version", force: true
   copy_file "simplecov", ".simplecov"
 
+  copy_file "Procfile"
+
+  apply "Rakefile.rb"
   apply "config.ru.rb"
   apply "app/template.rb"
   apply "bin/template.rb"
@@ -39,13 +41,23 @@ def apply_template!
   empty_directory ".git/safe"
 
   run_with_clean_bundler_env "bin/setup"
+  run_with_clean_bundler_env "bin/rails webpacker:install"
+  create_initial_migration
 
-  unless preexisting_git_repo?
-    git :add => "-A ."
-    git :commit => "-n -m 'Set up project'"
+  binstubs = %w[
+    brakeman bundler bundler-audit rubocop sidekiq
+  ]
+  run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')} --force"
+
+  template "rubocop.yml.tt", ".rubocop.yml"
+  run_rubocop_autocorrections
+
+  unless any_local_git_commits?
+    git add: "-A ."
+    git commit: "-n -m 'Set up project'"
     if git_repo_specified?
-      git :remote => "add origin #{git_repo_url.shellescape}"
-      git :push => "-u origin --all"
+      git remote: "add origin #{git_repo_url.shellescape}"
+      git push: "-u origin --all"
     end
   end
 end
@@ -59,14 +71,18 @@ require "shellwords"
 # In that case, use `git clone` to download them to a local temporary dir.
 def add_template_repository_to_source_path
   if __FILE__ =~ %r{\Ahttps?://}
+    require "tmpdir"
     source_paths.unshift(tempdir = Dir.mktmpdir("rails-template-"))
     at_exit { FileUtils.remove_entry(tempdir) }
-    git :clone => [
+    git clone: [
       "--quiet",
       "https://github.com/rabid/rails-template.git",
       tempdir
     ].map(&:shellescape).join(" ")
-    `cd #{tempdir} && git checkout master`
+
+    if (branch = __FILE__[%r{rails-template/(.+)/template.rb}, 1])
+      Dir.chdir(tempdir) { git checkout: branch }
+    end
   else
     source_paths.unshift(File.dirname(__FILE__))
   end
@@ -85,11 +101,11 @@ end
 # Bail out if user has passed in contradictory generator options.
 def assert_valid_options
   valid_options = {
-    :skip_gemfile => false,
-    :skip_bundle => false,
-    :skip_git => false,
-    :skip_test_unit => true,
-    :edge => false
+    skip_gemfile: false,
+    skip_bundle: false,
+    skip_git: false,
+    skip_test_unit: true,
+    edge: false
   }
   valid_options.each do |key, expected|
     next unless options.key?(key)
@@ -122,9 +138,14 @@ def staging_hostname
     ask_with_default("Staging hostname?", :blue, "staging.example.com")
 end
 
+def any_local_git_commits?
+  system("git log &> /dev/null")
+end
+
+
 def gemfile_requirement(name)
   @original_gemfile ||= IO.read("Gemfile")
-  req = @original_gemfile[/gem\s+['"]#{name}['"]\s*(,[><~= \t\d\.\w'"]*).*$/, 1]
+  req = @original_gemfile[/gem\s+['"]#{name}['"]\s*(,[><~= \t\d\.\w'"]*)?.*$/, 1]
   req && req.gsub("'", %(")).strip.sub(/^,\s*"/, ', "')
 end
 
@@ -145,8 +166,25 @@ def preexisting_git_repo?
 end
 
 def run_with_clean_bundler_env(cmd)
-  return run(cmd) unless defined?(Bundler)
-  Bundler.with_clean_env { run(cmd) }
+  success = if defined?(Bundler)
+              Bundler.with_clean_env { run(cmd) }
+            else
+              run(cmd)
+            end
+  unless success
+    puts "Command failed, exiting: #{cmd}"
+    exit(1)
+  end
+end
+
+def run_rubocop_autocorrections
+  run_with_clean_bundler_env "bin/rubocop -a --fail-level A > /dev/null || true"
+end
+
+def create_initial_migration
+  return if Dir["db/migrate/**/*.rb"].any?
+  run_with_clean_bundler_env "bin/rails generate migration initial_migration"
+  run_with_clean_bundler_env "bin/rake db:migrate"
 end
 
 apply_template!

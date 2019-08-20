@@ -4,11 +4,23 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>
+      <%%= strip_tags(yield(:title)) + " – " if content_for?(:title) %>
+      <%= app_const_base.titleize %>
+    </title>
+
+    <%%= csrf_meta_tags %>
+    <%%= csp_meta_tag %>
+
+    <!-- <%= app_const_base.titleize %> <%%= Rails.application.config.version %> (<%%= l(Rails.application.config.version_time) %>) -->
+
     <%%# CSS should go closest to the top of the document as possible. %>
     <%%= stylesheet_link_tag("application",
-                            :media => "all") %>
+                            media: "all",
+                            "data-turbolinks-track" => "reload") %>
 
-    <%%= javascript_include_tag("application") %>
+    <%%# JavaScript must be in head for Turbolinks to work. %>
+    <%%= javascript_pack_tag "application", "data-turbolinks-track": "reload" %>
 
     <%%= yield(:head) %>
 
@@ -19,14 +31,8 @@
     <meta name="referrer" content="origin-when-crossorigin">
 
     <%# Specifies the default name of home screen bookmark in iOS 6+ %>
+    <%%# Specifies the default name of home screen bookmark in iOS %>
     <meta name="apple-mobile-web-app-title" content="<%= app_const_base.titleize %>">
-
-    <%%= csrf_meta_tags %>
-
-    <title>
-      <%%= strip_tags(yield(:title)) + " – " if content_for?(:title) %>
-      <%= app_const_base.titleize %>
-    </title>
   </head>
   <body>
 

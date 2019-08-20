@@ -6,14 +6,22 @@ This repo is forked from mattbrictson/rails-template, and has been customized to
 
 ## Description
 
-This is the application template that I use for my Rails 5.0 projects. As a  Rails developer, I need to be able to start new projects quickly and with a good set of defaults. I've tweaked this template over the years to include best-practices, documentation, and personal preferences, while still generally adhering to the "Rails way".
+This is the application template that I use for my Rails 6 projects. As a freelance Rails developer, I need to be able to start new projects quickly and with a good set of defaults. I've assembled this template over the years to include best-practices, tweaks, documentation, and personal preferences, while still generally adhering to the "Rails way".
+
+For older versions of Rails, use these branches:
+
+* [Rails 4.2.x](https://github.com/mattbrictson/rails-template/tree/rails-42)
+* [Rails 5.0.x](https://github.com/mattbrictson/rails-template/tree/rails-50)
+* [Rails 5.1.x](https://github.com/mattbrictson/rails-template/tree/rails-51)
+* [Rails 5.2.x](https://github.com/mattbrictson/rails-template/tree/rails-52)
 
 ## Requirements
 
 This template currently works with:
 
-* Rails 5.0.x
+* Rails 6.0.x
 * PostgreSQL
+* chromedriver
 
 ## Installation
 
@@ -28,11 +36,10 @@ To make this the default Rails application template on your system, create a `~/
 
 ## Usage
 
-This template assumes you will store your project in a remote git repository (e.g. Bitbucket or GitHub). It will prompt you for this information in order to pre-configure your app, so be ready to provide:
+This template assumes you will store your project in a remote git repository (e.g. Bitbucket or GitHub) and that you will deploy to a production environment. It will prompt you for this information in order to pre-configure your app, so be ready to provide:
 
 1. The git URL of your (freshly created and empty) Bitbucket/GitHub repository
-2. The hostname of your staging server
-3. The hostname of your production server
+2. The hostname of your production server
 
 To generate a Rails application using this template, pass the `-m` option to `rails new`, like this:
 
@@ -60,42 +67,28 @@ The template will perform the following steps:
 2. Ensure bundler is installed
 3. Create the development and test databases
 4. Commit everything to git
-5. Check out a `development` branch
-6. Push the project to the remote git repository you specified
+5. Push the project to the remote git repository you specified
 
 ## What is included?
 
 #### These gems are added to the standard Rails stack
 
-* `dotenv-rails` - loads environment variables from `.env` and `.env.#{RAILS_ENV}`. 
-* `secure_headers` - sets CSP headers and a bunch of other headers to harden your app against XSS attacks
-* `simplecov` - code coverage reports
-* `letter_opener` - open emails in your web browser in development and test
-* RSpec, FactoryBot, Capybara, and Poltergeist - my current testing stack, though this might branch off into a test::unit option.
-* `unicorn` – the industry-standard Rails server
-
-
-#### Mandrill SMTP
-
-Action Mailer is configured to use [Mandrill][] for SMTP. You can change this by editing `environments/production.rb`.
-
-#### Bootstrap integration (optional)
-
-[Bootstrap][]-related features are opt-in. To apply these to your project, answer "yes" when prompted.
-
-* Bootstrap-themed scaffold templates
-* Application layout that includes Bootstrap-style navbar and boilerplate
-* View helpers for generating common Bootstrap markup
+* Core
+    * `puma` - application web server used for all environments
+    * [sidekiq][] – Redis-based job queue implementation for Active Job
+* Configuration
+    * [dotenv][] – in place of the Rails `secrets.yml`
+* Utilities
+    * [rubocop][] – enforces Ruby code style
+* Security
+    * [brakeman][] and [bundler-audit][] – detect security vulnerabilities
+* Testing
+    * [simplecov][] – code coverage reports
+    * `webdrivers` - auto-installs headless Chrome
 
 #### Other tweaks that patch over some Rails shortcomings
 
 * A much-improved `bin/setup` script
-
-#### Plus lots of documentation for your project
-
-* `README.md`
-* `PROVISIONING.md`
-* `DEPLOYMENT.md`
 
 ## How does it work?
 

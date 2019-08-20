@@ -8,16 +8,35 @@
 /.bundle
 
 # Ignore all logfiles and tempfiles.
-/log/*.log
-/log/*.log.*
-/tmp
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
 
 # Ignore test reports
-/coverage
+# Ignore uploaded files in development.
+/storage/*
+!/storage/.keep
 
-# Ignore results of `rake assets:precompile`.
-/public/assets/
+/public/assets
+.byebug_history
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+.byebug_history
+
+# Ignore test reports.
+/brakeman-output.*
+/coverage
+/test/reports/
+/capybara-*.html
 
 # Never check passwords into source control!
 /config/database.yml
 /.envrc
+/config/master.key
+/.env
