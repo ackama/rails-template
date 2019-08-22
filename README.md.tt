@@ -1,21 +1,19 @@
 # <%= app_name %>
 
-This is a Rails <%= Rails.version %> app.
+This is a Rails <%= Rails::VERSION::MAJOR %> app.
 
 ## Documentation
 
 This README describes the purpose of this repository and how to set up a development environment. Other sources of documentation are as follows:
 
 * UI and API designs are in `doc/`
-* Server setup instructions are in `PROVISIONING.md`
-* Staging and production deployment instructions are in `DEPLOYMENT.md`
 
 ## Prerequisites
 
 This project requires:
 
 * Ruby <%= RUBY_VERSION %>, preferably managed using [rbenv][]
-* PhantomJS (in order to use the [poltergeist][] gem)
+* Chromedriver for Capybara testing
 * PostgreSQL must be installed and accepting connections
 
 On a Mac, you can obtain all of the above packages using [Homebrew][].
@@ -35,9 +33,30 @@ Run the `bin/setup` script. This script will:
 
 ### Run it!
 
-1. Run `rake spec` to make sure everything works.
-2. Run `rails s` to start the Rails app.
+1. Run `bin/rake spec` to make sure everything works.
+2. Run `bin/rake spec:system` to run system (capybara) tests.
+3. Run `bin/rails s` and `bin/sidekiq` to start the app and Sidekiq; alternatively, start both at once with `heroku local`.
+
+## Deployment
+
+Ensure the following environment variables are set in the deployment environment:
+
+* `RACK_ENV`
+* `RAILS_ENV`
+* `REDIS_URL`
+* `SECRET_KEY_BASE`
+* `SIDEKIQ_WEB_PASSWORD`
+* `SIDEKIQ_WEB_USERNAME`
+
+Optionally:
+
+* `HOSTNAME`
+* `RAILS_FORCE_SSL`
+* `RAILS_LOG_TO_STDOUT`
+* `RAILS_MAX_THREADS`
+* `RAILS_SERVE_STATIC_FILES`
+* `WEB_CONCURRENCY`
 
 [rbenv]:https://github.com/sstephenson/rbenv
-[poltergeist]:https://github.com/teampoltergeist/poltergeist
+[redis]:http://redis.io
 [Homebrew]:http://brew.sh

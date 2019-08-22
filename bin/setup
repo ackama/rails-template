@@ -4,17 +4,17 @@ def setup!
   within_project_root do
     test "ruby -v" => ruby_version
     run  "gem install bundler --no-document --conservative"
-    run  "rbenv rehash" if rbenv_installed?
     run  "bundle install"
-    run  "rbenv rehash" if rbenv_installed?
+    run  "bin/yarn install" if File.exist?("yarn.lock")
+    run  "bundle exec overcommit --install"
     copy "example.env"
     copy "config/database.example.yml"
     copy "config/secrets.example.yml"
     test_local_env_contains_required_keys
+    run  "bin/rake tmp:create"
     run  "bin/rake db:create:all"
     run  "bin/rake db:migrate"
     run  "bin/rake db:seed"
-    run  "pre-commit install" if pre_commit_available?
   end
 end
 
@@ -50,7 +50,7 @@ def run(command)
   log(:blue, "run  #{command}") do
     shell = "#{command} > /dev/null"
     with_clean_bundler_env do
-      system(shell) or die("#{command} exited with non-zero status}")
+      system(shell) or die("#{command} exited with non-zero status")
     end
   end
 end
@@ -58,21 +58,6 @@ end
 def with_clean_bundler_env(&block)
   return block.call unless defined?(Bundler)
   Bundler.with_clean_env(&block)
-end
-
-def rbenv_installed?
-  @rbenv_installed ||= (`which rbenv`.length > 0 || :not_installed)
-  @rbenv_installed != :not_installed
-end
-
-def direnv_installed?
-  @direnv_installed ||= (`which direnv`.length > 0 || :not_installed)
-  @direnv_installed != :not_installed
-end
-
-def pre_commit_available?
-  @pre_commit_available ||= (`which pre-commit`.length > 0 || :not_installed)
-  @pre_commit_available != :not_installed
 end
 
 def copy(example_path)
