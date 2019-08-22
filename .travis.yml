@@ -1,0 +1,5 @@
+language: ruby
+services:
+  - postgresql
+script:
+  - ./template-test/ci-run.sh
