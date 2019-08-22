@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 RAILS_REQUIREMENT = "~> 6.0.0".freeze
 
 def apply_template!
