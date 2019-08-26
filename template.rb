@@ -21,6 +21,7 @@ def apply_template!
   copy_file "simplecov", ".simplecov"
 
   copy_file "Procfile"
+  copy_file ".nvmrc"
 
   apply "Rakefile.rb"
   apply "config.ru.rb"
