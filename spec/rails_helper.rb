@@ -39,6 +39,8 @@ Capybara.register_driver :chrome do |app|
 
   options.add_argument("--window-size=1920,1080")
   options.add_argument("--remote-debugging-port=9222")
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-gpu")
 
   Capybara::Selenium::Driver.new app, browser: :chrome, options: options
 end
