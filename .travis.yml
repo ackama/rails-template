@@ -1,5 +1,7 @@
 language: ruby
 services:
   - postgresql
+before_script:
+  - nvm install
 script:
   - ./template-test/ci-run.sh
