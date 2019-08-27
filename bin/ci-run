@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+NODE_ENV=test bundle exec rails webpacker:compile
+
+SCRIPT_DIR=`dirname "$0"`
+APP_DIR="${SCRIPT_DIR}/.."
+
+cd $APP_DIR
+
+source ./bin/ci-test-pipeline-1
+source ./bin/ci-test-pipeline-2

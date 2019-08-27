@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -e
+NODE_ENV=test bundle exec rails webpacker:compile
+
+SCRIPT_DIR=`dirname "$0"`
+APP_DIR="${SCRIPT_DIR}/.."
+
+cd $APP_DIR
+
+echo "* ******************************************************"
+echo "* Running rubocop"
+echo "* ******************************************************"
+bundle exec rubocop -D --parallel
+
+echo "* ******************************************************"
+echo "* Running bundle-audit"
+echo "* ******************************************************"
+bundle exec bundle-audit update
+
+echo "Running bundle-audit..."
+bundle exec bundle-audit check --update --ignore $ignore
+
+echo "* ******************************************************"
+echo "* Running brakeman"
+echo "* ******************************************************"
+bundle exec brakeman --exit-on-warn --quiet
+
+echo "* ******************************************************"
+echo "* Running rspec unit specs"
+echo "* ******************************************************"
+bundle exec rspec --format=progress --exclude-pattern "spec/system/**/*_spec.rb"

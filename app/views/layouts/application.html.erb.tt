@@ -2,7 +2,7 @@
 <%# things like header, footer, and alerts that are common  %>
 <%# to most (but not all) views.                                       %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>
       <%%= strip_tags(yield(:title)) + " – " if content_for?(:title) %>

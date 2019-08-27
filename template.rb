@@ -21,6 +21,7 @@ def apply_template!
   copy_file "simplecov", ".simplecov"
 
   copy_file "Procfile"
+  copy_file ".nvmrc"
 
   apply "Rakefile.rb"
   apply "config.ru.rb"
@@ -31,6 +32,8 @@ def apply_template!
   apply "lib/template.rb"
   apply "public/template.rb"
   apply "spec/template.rb"
+
+  apply "variants/accessibility/template.rb"
 
   #apply "variants/bootstrap/template.rb" if apply_bootstrap?
 

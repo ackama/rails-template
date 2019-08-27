@@ -38,7 +38,13 @@ Capybara.register_driver :chrome do |app|
   options = Selenium::WebDriver::Chrome::Options.new
 
   options.add_argument("--window-size=1920,1080")
-  options.add_argument("--remote-debugging-port=9222")
+  
+
+  # Add other Chrome arguments here
+  
+  # Docker compatibility
+  options.add_argument("--headless")
+  options.add_argument("--no-sandbox")
 
   Capybara::Selenium::Driver.new app, browser: :chrome, options: options
 end
