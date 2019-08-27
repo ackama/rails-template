@@ -28,4 +28,4 @@ bundle exec brakeman --exit-on-warn --quiet
 echo "* ******************************************************"
 echo "* Running rspec unit specs"
 echo "* ******************************************************"
-bundle exec rspec --format=progress --exclude-pattern "spec/features/**/*_spec.rb"
+bundle exec rspec --format=progress --exclude-pattern "spec/system/**/*_spec.rb"
