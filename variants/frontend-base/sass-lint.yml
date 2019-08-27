@@ -1,0 +1,33 @@
+files:
+  include: "**/*.s+(a|c)ss"
+  ignore:
+    - "app/assets/stylesheets/foundation_and_overrides.scss"
+    - "app/assets/stylesheets/_settings.scss"
+    - "node_modules/**/*"
+options:
+  formatter: stylish
+  # Default rules are visible at
+  #
+  #   https://github.com/sasstools/sass-lint/blob/develop/lib/config/sass-lint.yml
+  #
+  # We choose to accept them and tweak them in the 'rules' section below
+  merge-default-rules: true
+
+rules:
+  leading-zero:
+    - 1
+    - include: true
+  quotes:
+    - 1
+    - style: double
+  class-name-format:
+    - 1
+    - convention: hyphenatedbem
+  final-newline:
+    - 0
+  nesting-depth:
+    - 1
+    - max-depth: 3
+  no-vendor-prefixes: 0
+  no-color-literals: 0
+  placeholder-in-extend: 0
