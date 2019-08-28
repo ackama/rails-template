@@ -1,0 +1,7 @@
+.form {
+  &__help-text {
+    margin-bottom: $global-margin;
+    position: relative;
+    top: -1 * $global-margin;
+  }
+}
