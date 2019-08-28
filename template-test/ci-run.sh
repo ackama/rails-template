@@ -23,6 +23,8 @@ OPTIONS
 
 cd $ROOT && bash template-test/test.sh template-test/dummy/$TEST_NAME
 
+cd template-test/dummy
+
 # Foundation variant
 # Prompts:
 #   * production hostname
