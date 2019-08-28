@@ -12,7 +12,11 @@ rm -rf template-test/dummy/$TEST_NAME
 cd template-test/dummy
 
 # Pipe newlines to `rails new` to accept defaults
-yes '<enter>' | rails new $TEST_NAME -m $TEMPLATE -d postgresql 
+rails new $TEST_NAME -d postgresql -m $TEMPLATE <<OPTIONS
+example.com
+staging.example.com
+n
+OPTIONS
 
 cd $ROOT
 
