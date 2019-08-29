@@ -33,7 +33,6 @@ def apply_template!
   apply "public/template.rb"
   apply "spec/template.rb"
 
-  apply "variants/accessibility/template.rb"
 
   #apply "variants/bootstrap/template.rb" if apply_bootstrap?
 
@@ -48,6 +47,10 @@ def apply_template!
   run_with_clean_bundler_env "bin/setup"
   run_with_clean_bundler_env "bin/rails webpacker:install"
   create_initial_migration
+
+  # Apply variants after setup and initial install, but before commit
+  apply "variants/accessibility/template.rb"
+  apply "variants/frontend-base/template.rb"
 
   binstubs = %w[
     brakeman bundler bundler-audit rubocop sidekiq
