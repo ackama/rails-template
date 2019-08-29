@@ -157,7 +157,6 @@ def apply_variant?(name)
 end
 
 def ask_with_default(question, color, default)
-  return default unless $stdin.tty?
   question = (question.split("?") << " [#{default}]?").join
   answer = ask(question, color)
   answer.to_s.strip.empty? ? default : answer
