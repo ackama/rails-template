@@ -33,14 +33,6 @@ def apply_template!
   apply "public/template.rb"
   apply "spec/template.rb"
 
-
-  #apply "variants/bootstrap/template.rb" if apply_bootstrap?
-
-  # Variant ideas
-  # foundation
-  # devise
-  # permissions
-
   git :init unless preexisting_git_repo?
   empty_directory ".git/safe"
 
@@ -51,6 +43,7 @@ def apply_template!
   # Apply variants after setup and initial install, but before commit
   apply "variants/accessibility/template.rb"
   apply "variants/frontend-base/template.rb"
+  apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
 
   binstubs = %w[
     brakeman bundler bundler-audit rubocop sidekiq
@@ -157,8 +150,13 @@ def gemfile_requirement(name)
   req && req.gsub("'", %(")).strip.sub(/^,\s*"/, ', "')
 end
 
+def apply_variant?(name)
+  return true if ENV.fetch("VARIANTS", "").split(",").include?(name.to_s)
+
+  ask_with_default("Add #{name} to this application?", :blue, 'N').downcase.start_with?("y")
+end
+
 def ask_with_default(question, color, default)
-  return default unless $stdin.tty?
   question = (question.split("?") << " [#{default}]?").join
   answer = ask(question, color)
   answer.to_s.strip.empty? ? default : answer

@@ -3,5 +3,18 @@ services:
   - postgresql
 before_script:
   - nvm install
+env:
+  # Generate the basic variant with options:
+  #   - example.com (production hostname)
+  #   - staging.example.com (staging hostname)
+  #   - n (no, do not add foundation)
+  #   - n (no, do not overwrite webpacker with rails version)
+  - VARIANT=basic GENERATOR_INPUT="example.com\nstaging.example.com\nn\nn"
+  # Generate the foundation variant with options:
+  #   - example.com (production hostname)
+  #   - staging.example.com (staging hostname)
+  #   - Y (yes, add foundation)
+  #   - n (no, do not overwrite webpacker with rails version)
+  - VARIANT=foundation GENERATOR_INPUT="example.com\nstaging.example.com\nY\nn"
 script:
   - ./template-test/ci-run.sh

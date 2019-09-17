@@ -1,8 +1,10 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-run "mv app/assets/* app/frontend"
-run "mv app/javascript app/frontend"
+run "mv app/assets app/frontend"
+run "mv app/javascript/* app/frontend"
+run "rm -rf app/javascript"
 apply "config/template.rb"
+apply "app/template.rb"
 
 # SASS Linting
 run "yarn add --dev sass-lint"
