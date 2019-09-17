@@ -4,6 +4,7 @@ run "mv app/assets app/frontend"
 run "mv app/javascript app/frontend"
 run "mv app/frontend/javascript/packs app/frontend"
 apply "config/template.rb"
+apply "app/template.rb"
 
 # SASS Linting
 run "yarn add --dev sass-lint"
