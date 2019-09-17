@@ -11,9 +11,7 @@ VARIANT="${VARIANT:-basic}"
 rm -rf template-test/dummy/$VARIANT
 cd template-test/dummy
 
-rails new $VARIANT -d postgresql -m $TEMPLATE <<OPTIONS
-$GENERATOR_INPUT
-OPTIONS
+echo -e $GENERATOR_INPUT | rails new $VARIANT -d postgresql -m $TEMPLATE
 
 cd $ROOT && bash template-test/test.sh template-test/dummy/$VARIANT
 
