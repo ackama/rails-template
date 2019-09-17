@@ -19,6 +19,7 @@ rails new $TEST_NAME -d postgresql -m $TEMPLATE <<OPTIONS
 example.com
 staging.example.com
 n
+n
 OPTIONS
 
 cd $ROOT && bash template-test/test.sh template-test/dummy/$TEST_NAME
