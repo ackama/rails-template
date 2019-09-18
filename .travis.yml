@@ -23,6 +23,6 @@ env:
   #   - Y (yes, add foundation)
   #   - Y (yes, add foundation layout)
   #   - n (no, do not overwrite webpacker with rails version)
-  - VARIANT=foundation-layout GENERATOR_INPUT="example.com\nstaging.example.com\nY\nY\nn"
+ - VARIANT=foundation-layout GENERATOR_INPUT="example.com\nstaging.example.com\nY\nY\ny\nn"
 script:
   - ./template-test/ci-run.sh
