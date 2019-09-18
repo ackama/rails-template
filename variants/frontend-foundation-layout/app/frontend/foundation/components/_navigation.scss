@@ -1,0 +1,132 @@
+.navigation {
+
+  @include breakpoint(large) {
+    @include flex;
+    border-bottom: $light-gray solid 1px;
+    justify-content: space-between;
+    margin-bottom: 0;
+  }
+
+  &__wrapper {
+    background-color: $light-gray;
+    margin-bottom: 2 * $global-margin;
+
+    @include breakpoint(medium down) {
+      height: 100%;
+      left: -100%;
+      position: absolute;
+      top: 0;
+      transition: 0.5s ease;
+      width: 320px;
+      z-index: 10;
+
+      &--open {
+        left: 0;
+      }
+    }
+
+    @include breakpoint(large) {
+      background-color: $white;
+    }
+  }
+
+  &__list {
+    @extend .accordion-menu;
+    @include menu-base;
+    @include menu-direction(vertical);
+
+    @include breakpoint(large) {
+      @include menu-direction(horizontal);
+      justify-content: flex-end;
+      margin-bottom: 0;
+      width: auto;
+    }
+
+    &.is-active {
+      background: $extra-light-gray;
+      padding-left: $global-padding;
+
+      @include breakpoint(large) {
+        background: $white;
+        border: $light-gray solid 1px;
+        left: 0;
+        margin-left: $global-margin;
+        position: absolute;
+        top: 100%;
+        width: auto;
+        z-index: 100;
+      }
+    }
+
+    &--right {
+      justify-self: right;
+      margin-left: auto;
+
+      .navigation__item {
+        &:last-child {
+          .navigation__list {
+            left: auto;
+            right: 0;
+          }
+        }
+      }
+    }
+  }
+
+  &__item {
+    @include breakpoint(large) {  // sass-lint:disable-block no-important
+      @include flex;
+      @include flex-align(left, middle);
+      border-left: $light-gray solid 1px;
+      min-width: 8rem;
+      width: auto !important;
+    }
+
+    a {
+      color: $primary-color;
+      font-weight: bold;
+      line-height: 1.25;
+      width: 100%;
+
+      @include breakpoint(large) {
+        padding: 1rem 2.5rem 1rem 2rem;
+      }
+    }
+
+    &--borderless {
+      border-left: 0;
+    }
+
+    &--search {
+      @include breakpoint(medium down) {
+        order: -1;
+      }
+    }
+  }
+
+  &__button {
+    &--close {
+      @extend .close-button;
+
+      @include breakpoint(large) {
+        display: none;
+      }
+    }
+
+    &--toggle {
+      @extend .menu-icon;
+    }
+  }
+}
+
+.submenu-toggle {
+  outline: none;
+}
+
+.no-js {
+  .navigation__list {
+    .navigation__list {
+      display: none;
+    }
+  }
+}

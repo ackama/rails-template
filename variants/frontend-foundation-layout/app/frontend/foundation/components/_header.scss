@@ -1,0 +1,23 @@
+.header {
+  margin-bottom: $global-margin;
+
+  &__bar {
+    @extend .title-bar;
+
+    @include breakpoint(large) {
+      display: none;
+    }
+
+    &--left {
+      flex: 1 0 auto;
+    }
+
+    &--right {
+      flex: 0 1 auto;
+    }
+  }
+
+  &__bar-title {
+    @extend .title-bar-title;
+  }
+}

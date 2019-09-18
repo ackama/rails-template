@@ -1,6 +1,6 @@
 /* global $ */
 import "jquery";
-import "./application.scss";
+import "./foundation_and_overrides.scss";
 import "foundation-sites";
 
 $(document).ready(function () {
