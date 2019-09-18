@@ -1,0 +1,44 @@
+<form>
+  <fieldset>
+    <label id="textInputLabel" for="textInput">Text input</label>
+    <input type="text" name="textInput" id="textInput" aria-labelledby="textInputLabel" aria-describedby="textInputDescription">
+    <small id="textInputDescription" class="form__help-text">A small amount of text can be entered here.</small>
+
+    <label id="numericInputLabel" for="numericInput">Numeric input</label>
+    <input type="number" name="numericInput" id="numericInput" aria-labelledby="numericInputLabel" aria-describedby="numericInputDescription" required>
+    <small id="numericInputDescription" class="form__help-text">Any number between 0 and 100 can be entered.</small>
+
+    <label id="textAreaLabel" for="textArea">Text area</label>
+    <textarea name="textArea" id="textArea" aria-labelledby="textAreaLabel" aria-describedby="textAreaDescription"></textarea>
+    <small id="textAreaDescription" class="form__help-text">A large amount of text can be entered here.</small>
+  </fieldset>
+  <label id="selectInputLabel" for="selectInput">Select input
+    <select id="selectInput" aria-labelledby="selectInputLabel">
+      <option value="starbuck">Starbuck</option>
+      <option value="husker">Husker</option>
+      <option value="hotdog">Hot Dog</option>
+      <option value="apollo">Apollo</option>
+    </select>
+  </label>
+  <fieldset>
+    <legend>Radio input</legend>
+    <input type="radio" name="battleStarGalactica" value="Starbuck" id="battleStarGalacticaStarbuck" aria-labelledby="battleStarGalacticaStarbuckLabel">
+    <label id="battleStarGalacticaStarbuckLabel" for="battleStarGalacticaStarbuck">Starbuck</label>
+    <input type="radio" name="battleStarGalactica" value="Husker" id="battleStarGalacticaHusker" aria-labelledby="battleStarGalacticaHuskerLabel">
+    <label id="battleStarGalacticaHuskerLabel" for="battleStarGalacticaHusker">Husker</label>
+    <input type="radio" name="battleStarGalactica" value="Hot Dog" id="battleStarGalacticaHotDog" aria-labelledby="battleStarGalacticaHotDogLabel">
+    <label id="battleStarGalacticaHotDogLabel" for="battleStarGalacticaHotDog">HotDog</label>
+    <input type="radio" name="battleStarGalactica" value="Apollo" id="battleStarGalacticaApollo" aria-labelledby="battleStarGalacticaApolloLabel">
+    <label id="battleStarGalacticaApolloLabel" for="battleStarGalacticaApollo">Apollo</label>
+  </fieldset>
+  <fieldset>
+    <legend>Checkbox input</legend>
+    <input id="checkbox1" type="checkbox" name="checkboxes" value="checkbox1" aria-labelledby="checkbox1Label"><label id="checkbox1Label" for="checkbox1">Checkbox 1</label>
+    <input id="checkbox2" type="checkbox" name="checkboxes" value="checkbox2" aria-labelledby="checkbox2Label"><label id="checkbox2Label" for="checkbox2">Checkbox 2</label>
+    <input id="checkbox3" type="checkbox" name="checkboxes" value="checkbox3" aria-labelledby="checkbox3Label"><label id="checkbox3Label" for="checkbox3">Checkbox 3</label>
+  </fieldset>
+  <div class="button-group button-group--spaced button-group--reversed">
+    <input type="submit" class="button" value="Submit"/>
+    <a class="button secondary" href="/">Cancel</a>
+  </div>
+</form>
