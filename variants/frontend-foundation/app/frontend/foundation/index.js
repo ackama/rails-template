@@ -1,5 +1,5 @@
 /* global $ */
-import "jquery";
+import $ from "jquery";
 import "./foundation_and_overrides.scss";
 import "foundation-sites";
 
