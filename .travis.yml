@@ -14,7 +14,15 @@ env:
   #   - example.com (production hostname)
   #   - staging.example.com (staging hostname)
   #   - Y (yes, add foundation)
+  #   - n (no, don't add foundation layout)
   #   - n (no, do not overwrite webpacker with rails version)
-  - VARIANT=foundation GENERATOR_INPUT="example.com\nstaging.example.com\nY\nn"
+  - VARIANT=foundation GENERATOR_INPUT="example.com\nstaging.example.com\nY\nn\nn"
+  # Generate the foundation-layout variant with options:
+  #   - example.com (production hostname)
+  #   - staging.example.com (staging hostname)
+  #   - Y (yes, add foundation)
+  #   - Y (yes, add foundation layout)
+  #   - n (no, do not overwrite webpacker with rails version)
+  - VARIANT=foundation-layout GENERATOR_INPUT="example.com\nstaging.example.com\nY\nY\nn"
 script:
   - ./template-test/ci-run.sh
