@@ -1,0 +1,37 @@
+version: "2"
+services:
+  app: &rails
+    build: .
+    environment:
+      PGHOST: "db"
+      PGUSER: "postgres"
+    links:
+      - db
+    env_file: 
+      - .env
+    volumes:
+      - ".:/usr/src/app"
+      - node_modules:/usr/src/app/node_modules
+      - bundle:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    tty: true
+    stdin_open: true
+  db:
+    image: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql
+  # worker:
+  #   <<: *rails
+  #   command: bundle exec sidekiq
+  #   links:
+  #     - redis
+  # webpack:
+  #   <<: *rails
+  #   command: bundle exec bin/webpack-dev-server
+  # redis:
+  #   image: redis
+volumes:
+  pgdata: 
+  bundle:
+  node_modules:
