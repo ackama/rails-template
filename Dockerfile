@@ -59,7 +59,7 @@ USER deploy
 ADD Gemfile* package.json yarn.lock /usr/src/app/
 WORKDIR /usr/src/app
 RUN bundle check || bundle install &&\
-    yarn check || yarn install
+    yarn check || yarn install --frozen-lockfile
 
 # Add all application code to /usr/src/app and set this as the working directory
 # of the container
