@@ -7,6 +7,7 @@ FROM ruby
 # This tells the underlying OS to expect UTF-8 encoding (e.g. UTF-8 encoding in the US language)
 ENV LANG=C \
     LC_ALL=C.UTF-8 \
+    PORT=3000
 
 
 # Curl is installed to make it possible to set up PPAs below - it is
@@ -63,6 +64,8 @@ RUN bundle check || bundle install &&\
 # Add all application code to /usr/src/app and set this as the working directory
 # of the container
 ADD . /usr/src/app
+
+EXPOSE $PORT
 
 # Default command is to start a Puma server
 CMD bundle exec rails server --binding=0.0.0.0
