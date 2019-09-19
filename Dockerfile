@@ -4,9 +4,9 @@
 FROM ruby
 
 # Avoid issues with file encoding in Ruby by setting these two environment variables
-# This tells the underlying OS to expect en_US-UTF-8 encoding (e.g. UTF-8 encoding in the US language)
+# This tells the underlying OS to expect UTF-8 encoding (e.g. UTF-8 encoding in the US language)
 ENV LANG "C"
-ENV LC_ALL en_US.UTF-8
+ENV LC_ALL C.UTF-8
 
 
 # Curl is installed to make it possible to set up PPAs below - it is
@@ -16,40 +16,53 @@ RUN apt-get update -qq &&\
 
 # Install Node.js PPA for asset management
 # As of writing, Node 10 is the most recent LTS.
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash &&\
-    apt-get update -qq && apt-get install -y nodejs
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
 
-# Install Google Chrome. Chrome is required for headless system tests.
+# Install Google Chrome PPA. Chrome is required for headless system tests.
 RUN curl -q https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-RUN apt-get update && apt-get install -y google-chrome-stable --no-install-recommends
 
 # Install system dependencies, and remove curl now that we have PPAs set up
+# We also clean out system files we don't need to reduce image size:
+#   * /usr/share/man - manual pages
+#   * /usr/share/locales - we don't need to support multiple languages at the OS level
+#   * /var/cache/apt/arhives - we don't need to hold onto deb packages once they're installed
 RUN apt-get update -qq &&\
-    apt-get install google-chrome libpq-dev nodejs --no-install-recommends &&\
-    apt-get purge -y curl &&
-    rm -rf /var/lib/apt/lists/*
+    apt-get upgrade -y &&\
+    apt-get install -y google-chrome-stable libpq-dev nodejs --no-install-recommends &&\
+    apt-get purge -y curl &&\
+    apt-get autoremove -y &&\
+    apt-get clean -y &&\
+    rm -rf /var/lib/apt/lists/* \
+           /usr/share/man \
+           /usr/share/locales \
+           /var/cache/apt/archives
 
-# Create a directory to hold application code
-# We do this at this point so we can set this as the home directory of
-# the 'deploy' user.
-RUN mkdir /usr/src/app
-
-# Create a non-privileged deploy user, and add all application code as this user.
-RUN adduser --disabled-password --gecos "" deploy && chown -R deploy:deploy /usr/src/app
-USER deploy
-
-# Add all application code to /usr/src/app and set this as the working directory
-# of the container
-ADD . /usr/src/app
-WORKDIR /usr/src/app
+# Use NPM to install Yarn.
+RUN npm install -g yarn
 
 # Install gem and NPM dependencies. These are baked into the image so the image can run
 # standalone provided valid configuration. When running in docker-compose, these 
 # dependencies are stored in a volume so the image does not need rebuilding when the
 # dependencies are changed.
-RUN bundle install
-RUN npm ci
+RUN mkdir -p /usr/src/app/node_modules
+
+# Create a non-privileged deploy user, and add all application code as this user.
+RUN adduser --disabled-password --gecos "" deploy && chown -R deploy:deploy /usr/src/app
+VOLUME /usr/src/app/node_modules
+VOLUME /usr/local/bundle
+USER deploy
+
+# Add just the dependency manifests before installing.
+# This reduces the chance that bundler or NPM will get a cold cache because some kind of application file changed.
+ADD Gemfile* package.json yarn.lock /usr/src/app/
+WORKDIR /usr/src/app
+RUN bundle check || bundle install &&\
+    yarn check || yarn install
+
+# Add all application code to /usr/src/app and set this as the working directory
+# of the container
+ADD . /usr/src/app
 
 # Default command is to start a Puma server
 CMD bundle exec rails server --binding=0.0.0.0
