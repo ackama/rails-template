@@ -22,6 +22,9 @@ def apply_template!
 
   copy_file "Procfile"
   copy_file ".nvmrc"
+  copy_file "Dockerfile"
+  copy_file "docker-compose.yml"
+  copy_file ".dockerignore"
 
   apply "Rakefile.rb"
   apply "config.ru.rb"
