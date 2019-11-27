@@ -31,7 +31,7 @@ To make this the default Rails application template on your system, create a `~/
 
 ```
 -d postgresql
--m https://raw.githubusercontent.com/joshmcarthur/rails-template/master/template.rb
+-m https://raw.githubusercontent.com/ackama/rails-template/master/template.rb
 ```
 
 ## Usage
@@ -46,7 +46,7 @@ To generate a Rails application using this template, pass the `-m` option to `ra
 ```
 rails new blog \
   -d postgresql \
-  -m https://raw.githubusercontent.com/joshmcarthur/rails-template/master/template.rb
+  -m https://raw.githubusercontent.com/ackama/rails-template/master/template.rb
 ```
 
 *Remember that options must go after the name of the application.* The only database supported by this template is `postgresql`.
@@ -94,7 +94,7 @@ The template will perform the following steps:
 
 This project works by hooking into the standard Rails [application templates][] system, with some caveats. The entry point is the [template.rb][] file in the root of this repository.
 
-Normally, Rails only allows a single file to be specified as an application template (i.e. using the `-m <URL>` option). To work around this limitation, the first step this template performs is a `git clone` of the `joshmcarthur/rails-template` repository to a local temporary directory.
+Normally, Rails only allows a single file to be specified as an application template (i.e. using the `-m <URL>` option). To work around this limitation, the first step this template performs is a `git clone` of the `ackama/rails-template` repository to a local temporary directory.
 
 This temporary directory is then added to the `source_paths` of the Rails generator system, allowing all of its ERb templates and files to be referenced when the application template script is evaluated.
 
