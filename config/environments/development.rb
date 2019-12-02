@@ -12,7 +12,6 @@ insert_into_file "config/environments/development.rb", after: mailer_regex do
   RUBY
 end
 
-
 gsub_file "config/environments/development.rb",
-          "join('tmp/caching-dev.txt')",
-          'join("tmp", "caching-dev.txt")'
+          "join('tmp', 'caching-dev.txt')",
+          "join('tmp/caching-dev.txt')"
