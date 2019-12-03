@@ -15,9 +15,6 @@ bundle exec rubocop -D --parallel
 echo "* ******************************************************"
 echo "* Running bundle-audit"
 echo "* ******************************************************"
-bundle exec bundle-audit update
-
-echo "Running bundle-audit..."
 bundle exec bundle-audit check --update --ignore $ignore
 
 echo "* ******************************************************"
