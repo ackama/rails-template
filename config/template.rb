@@ -36,7 +36,7 @@ route <<-EO_ROUTES
   # accessibility and performance tests. You are encouraged to remove this hack
   # as soon as it is no longer needed.
   #
-  if Rails.env.test?
+  if defined?(Webpacker) && Rails.env.test?
     # manifest paths depend on your webpacker config so we inspect it
     manifest_path = Webpacker::Configuration
       .new(root_path: Rails.root, config_path: Rails.root.join("config/webpacker.yml"), env: Rails.env)
