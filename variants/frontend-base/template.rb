@@ -9,14 +9,21 @@ run "rm -rf app/javascript"
 apply "config/template.rb"
 apply "app/template.rb"
 
+# Javascript code linting and formatting
+run "yarn add --dev eslint eslint-plugin-prettier eslint-config-prettier eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y prettier"
+copy_file ".eslintrc.js"
+copy_file ".prettierrc"
+run "./node_modules/.bin/eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix"
+
 # SASS Linting
 run "yarn add --dev sass-lint"
+
 copy_file "bin/sass-lint"
 chmod "bin/sass-lint", "+x"
 copy_file "sass-lint.yml", ".sass-lint.yml"
 append_to_file "bin/ci-test-pipeline-1" do
   <<~SASSLINT
-  
+
   echo "* ******************************************************"
   echo "* Running SCSS linting"
   echo "* ******************************************************"
