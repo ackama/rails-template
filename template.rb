@@ -1,5 +1,8 @@
 # encoding: utf-8
 
+require "fileutils"
+require "shellwords"
+
 RAILS_REQUIREMENT = "~> 6.0.0".freeze
 
 def apply_template!
@@ -36,38 +39,38 @@ def apply_template!
   apply "public/template.rb"
   apply "spec/template.rb"
 
-  git :init unless preexisting_git_repo?
-  empty_directory ".git/safe"
+  # The block passed to "after_bundle" seems to run after `bundle install`
+  # but also after `webpacker:install` and after Rails has initialized the git
+  # repo
+  after_bundle do
+    run_with_clean_bundler_env "bin/setup"
 
-  run_with_clean_bundler_env "bin/setup"
-  run_with_clean_bundler_env "bin/rails webpacker:install"
-  create_initial_migration
+    apply "variants/frontend-base/template.rb"
 
-  # Apply variants after setup and initial install, but before commit
-  apply "variants/accessibility/template.rb"
-  apply "variants/frontend-base/template.rb"
-  apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
+    create_initial_migration
 
-  binstubs = %w[
-    brakeman bundler bundler-audit rubocop sidekiq
-  ]
-  run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')} --force"
+    # Apply variants after setup and initial install, but before commit
+    apply "variants/accessibility/template.rb"
+    apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
 
-  template "rubocop.yml.tt", ".rubocop.yml"
-  run_rubocop_autocorrections
+    binstubs = %w[
+      brakeman bundler bundler-audit rubocop sidekiq
+    ]
+    run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')} --force"
 
-  unless any_local_git_commits?
-    git add: "-A ."
-    git commit: "-n -m 'Set up project'"
-    if git_repo_specified?
-      git remote: "add origin #{git_repo_url.shellescape}"
-      git push: "-u origin --all"
+    template "rubocop.yml.tt", ".rubocop.yml"
+    run_rubocop_autocorrections
+
+    unless any_local_git_commits?
+      git add: "-A ."
+      git commit: "-n -m 'Set up project'"
+      if git_repo_specified?
+        git remote: "add origin #{git_repo_url.shellescape}"
+        git push: "-u origin --all"
+      end
     end
   end
 end
-
-require "fileutils"
-require "shellwords"
 
 # Add this template directory to source_paths so that Thor actions like
 # copy_file and template resolve against our source files. If this file was
