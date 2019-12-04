@@ -1,3 +1,5 @@
+require "json"
+
 source_paths.unshift(File.dirname(__FILE__))
 
 run "mv app/assets app/frontend"
@@ -14,6 +16,13 @@ run "yarn add --dev eslint eslint-plugin-prettier eslint-config-prettier eslint-
 copy_file ".eslintrc.js"
 copy_file ".prettierrc"
 run "./node_modules/.bin/eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix"
+
+package_json = JSON.parse(File.read("./package.json"))
+package_json["scripts"] = {
+  "lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
+  "lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix"
+}
+File.write("./package.json", JSON.generate(package_json))
 
 # SASS Linting
 run "yarn add --dev sass-lint"
