@@ -1,6 +1,9 @@
 source_paths.unshift(File.dirname(__FILE__))
 
 run "mv app/assets app/frontend"
+run "mkdir app/assets"
+run "mv app/frontend/config app/assets/config"
+
 run "mv app/javascript/* app/frontend"
 run "rm -rf app/javascript"
 apply "config/template.rb"
