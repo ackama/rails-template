@@ -15,6 +15,7 @@ apply "app/template.rb"
 run "yarn add --dev eslint eslint-plugin-prettier eslint-config-prettier eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y prettier"
 copy_file ".eslintrc.js"
 copy_file ".prettierrc"
+copy_file ".eslintignore"
 run "./node_modules/.bin/eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix"
 
 package_json = JSON.parse(File.read("./package.json"))
