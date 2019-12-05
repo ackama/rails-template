@@ -16,6 +16,7 @@ run "yarn add --dev eslint eslint-plugin-prettier eslint-config-prettier eslint-
 copy_file ".eslintrc.js"
 copy_file ".prettierrc"
 copy_file ".eslintignore"
+copy_file ".prettierignore"
 run "./node_modules/.bin/eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix"
 
 package_json = JSON.parse(File.read("./package.json"))

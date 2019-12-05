@@ -1,0 +1,5 @@
+# this file uses .gitignore syntax
+node_modules/
+coverage/
+public/
+vendor/
