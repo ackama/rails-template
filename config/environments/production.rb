@@ -30,3 +30,7 @@ insert_into_file "config/environments/production.rb",
   config.action_mailer.asset_host = "https://#{production_hostname}"
   RUBY
 end
+
+gsub_file "config/environments/production.rb",
+          "config.log_level = :debug",
+          "config.log_level = :info"
