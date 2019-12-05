@@ -1,8 +1,8 @@
 @charset "utf-8";
 
-@import 'settings';
-@import '~foundation-sites/scss/foundation';
-@import '~font-awesome/scss/font-awesome';
+@import "settings";
+@import "~foundation-sites/scss/foundation";
+@import "~font-awesome/scss/font-awesome";
 
 // Global styles
 @include foundation-global-styles;
@@ -59,7 +59,7 @@
 @include foundation-visibility-classes;
 // @include foundation-prototype-classes;
 
-@import 'base/base';
-@import 'base/buttons';
-@import 'base/containers';
-@import 'base/forms';
+@import "base/base";
+@import "base/buttons";
+@import "base/containers";
+@import "base/forms";
