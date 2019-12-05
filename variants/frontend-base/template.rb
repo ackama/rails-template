@@ -21,8 +21,10 @@ run "./node_modules/.bin/eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,t
 
 package_json = JSON.parse(File.read("./package.json"))
 package_json["scripts"] = {
-  "lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
-  "lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix"
+  "js-lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
+  "js-lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
+  "format-check" => "prettier --check './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
+  "format-fix" => "prettier --write './**/*.{css,scss,json,md,js,ts,tsx,jsx}'"
 }
 File.write("./package.json", JSON.generate(package_json))
 
