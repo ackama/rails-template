@@ -12,14 +12,13 @@ apply "config/template.rb"
 apply "app/template.rb"
 
 # Javascript code linting and formatting
-run "yarn add --dev eslint eslint-plugin-prettier eslint-config-prettier eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y prettier"
+run "yarn add --dev eslint eslint-plugin-prettier eslint-config-prettier eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y prettier prettier-config-ackama"
 copy_file ".eslintrc.js"
-copy_file ".prettierrc"
 copy_file ".eslintignore"
 copy_file ".prettierignore"
-run "./node_modules/.bin/eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix"
 
 package_json = JSON.parse(File.read("./package.json"))
+package_json["prettier"] = "prettier-config-ackama"
 package_json["scripts"] = {
   "js-lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
   "js-lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
@@ -27,6 +26,11 @@ package_json["scripts"] = {
   "format-fix" => "prettier --write './**/*.{css,scss,json,md,js,ts,tsx,jsx}'"
 }
 File.write("./package.json", JSON.generate(package_json))
+
+# must be run after prettier is installed and has been configured by setting
+# the 'prettier' key in package.json
+run "yarn run js-lint-fix"
+run "yarn run format-fix"
 
 append_to_file "bin/ci-test-pipeline-1" do
   <<~ESLINT
