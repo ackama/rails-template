@@ -34,8 +34,18 @@ append_to_file "bin/ci-test-pipeline-1" do
   echo "* ******************************************************"
   echo "* Running JS linting"
   echo "* ******************************************************"
-  yarn run lint
+  yarn run js-lint
   ESLINT
+end
+
+append_to_file "bin/ci-test-pipeline-1" do
+  <<~PRETTIER
+
+  echo "* ******************************************************"
+  echo "* Running JS linting"
+  echo "* ******************************************************"
+  yarn run format-check
+  PRETTIER
 end
 
 # SASS Linting
