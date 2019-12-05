@@ -1,0 +1,24 @@
+{
+  "name": "rails-template",
+  "version": "1.0.0",
+  "repository": "git@github.com:ackama/rails-template.git",
+  "private": true,
+  "prettier": "prettier-config-ackama",
+  "devDependencies": {
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-eslint-comments": "^3.1.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "prettier": "^1.19.1",
+    "prettier-config-ackama": "^0.1.0"
+  },
+  "scripts": {
+    "js-lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
+    "js-lint-fix": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
+    "format-check": "prettier --check './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
+    "format-fix": "prettier --write './**/*.{css,scss,json,md,js,ts,tsx,jsx}'"
+  }
+}

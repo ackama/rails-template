@@ -1,6 +1,4 @@
-# this file uses .gitignore syntax
+# This is the .prettierignore for this repo. .prettierignore.tt is the one that
+# is copied into the Rails app we build.
 node_modules/
-coverage/
-public/
-vendor/
-tmp/
+template-test/dummy/
