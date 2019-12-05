@@ -10,22 +10,22 @@ This is the application template that I use for my Rails 6 projects. As a freela
 
 For older versions of Rails, use these branches:
 
-* [Rails 4.2.x](https://github.com/mattbrictson/rails-template/tree/rails-42)
-* [Rails 5.0.x](https://github.com/mattbrictson/rails-template/tree/rails-50)
-* [Rails 5.1.x](https://github.com/mattbrictson/rails-template/tree/rails-51)
-* [Rails 5.2.x](https://github.com/mattbrictson/rails-template/tree/rails-52)
+- [Rails 4.2.x](https://github.com/mattbrictson/rails-template/tree/rails-42)
+- [Rails 5.0.x](https://github.com/mattbrictson/rails-template/tree/rails-50)
+- [Rails 5.1.x](https://github.com/mattbrictson/rails-template/tree/rails-51)
+- [Rails 5.2.x](https://github.com/mattbrictson/rails-template/tree/rails-52)
 
 ## Requirements
 
 This template currently works with:
 
-* Rails 6.0.x
-* PostgreSQL
-* chromedriver
+- Rails 6.0.x
+- PostgreSQL
+- chromedriver
 
 ## Installation
 
-*Optional.*
+_Optional._
 
 To make this the default Rails application template on your system, create a `~/.railsrc` file with these contents:
 
@@ -49,7 +49,7 @@ rails new blog \
   -m https://raw.githubusercontent.com/ackama/rails-template/master/template.rb
 ```
 
-*Remember that options must go after the name of the application.* The only database supported by this template is `postgresql`.
+_Remember that options must go after the name of the application._ The only database supported by this template is `postgresql`.
 
 If you’ve installed this template as your default (using `~/.railsrc` as described above), then all you have to do is run:
 
@@ -73,22 +73,22 @@ The template will perform the following steps:
 
 #### These gems are added to the standard Rails stack
 
-* Core
-    * `puma` - application web server used for all environments
-    * [sidekiq][] – Redis-based job queue implementation for Active Job
-* Configuration
-    * [dotenv][] – in place of the Rails `secrets.yml`
-* Utilities
-    * [rubocop][] – enforces Ruby code style
-* Security
-    * [brakeman][] and [bundler-audit][] – detect security vulnerabilities
-* Testing
-    * [simplecov][] – code coverage reports
-    * `webdrivers` - auto-installs headless Chrome
+- Core
+  - `puma` - application web server used for all environments
+  - [sidekiq][] – Redis-based job queue implementation for Active Job
+- Configuration
+  - [dotenv][] – in place of the Rails `secrets.yml`
+- Utilities
+  - [rubocop][] – enforces Ruby code style
+- Security
+  - [brakeman][] and [bundler-audit][] – detect security vulnerabilities
+- Testing
+  - [simplecov][] – code coverage reports
+  - `webdrivers` - auto-installs headless Chrome
 
 #### Other tweaks that patch over some Rails shortcomings
 
-* A much-improved `bin/setup` script
+- A much-improved `bin/setup` script
 
 ## How does it work?
 
@@ -99,4 +99,3 @@ Normally, Rails only allows a single file to be specified as an application temp
 This temporary directory is then added to the `source_paths` of the Rails generator system, allowing all of its ERb templates and files to be referenced when the application template script is evaluated.
 
 Rails generators are very lightly documented; what you’ll find is that most of the heavy lifting is done by [Thor][]. The most common methods used by this template are Thor’s `copy_file`, `template`, and `gsub_file`. You can dig into the well-organized and well-documented [Thor source code][thor] to learn more.
-
