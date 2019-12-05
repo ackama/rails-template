@@ -1,7 +1,7 @@
 directory "app/frontend/foundation/components"
 
 append_to_file "app/frontend/foundation/index.js" do
-  "\nimport './components/header';"
+  "\nimport './components/header';\n"
 end
 
 append_to_file "app/frontend/foundation/foundation_and_overrides.scss" do
