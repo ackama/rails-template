@@ -1,12 +1,12 @@
-/* global $ */
-import $ from "jquery";
-import "./foundation_and_overrides.scss";
-import "foundation-sites";
+/* global Foundation */
+import $ from 'jquery';
+import './foundation_and_overrides.scss';
+import 'foundation-sites';
 
-$(document).ready(function () {
+$(document).ready(() => {
   Foundation.MediaQuery._init();
 });
 
-$(window).on("load", function () {
+$(window).on('load', () => {
   $(document).foundation();
 });

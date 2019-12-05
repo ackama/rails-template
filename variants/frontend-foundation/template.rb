@@ -14,8 +14,8 @@ end
 append_to_file "app/frontend/packs/application.js" do
   <<~JS
     require.context('../images', true);
-    import "foundation";
-    import "../application.scss";
+    import 'foundation';
+    import '../application.scss';
   JS
 end
 

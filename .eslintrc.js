@@ -7,7 +7,7 @@ module.exports = {
       jsx: true
     }
   },
-  env: { commonjs: true, node: true, es6: true },
+  env: { browser: true, commonjs: true, node: true, es6: true },
   plugins: ['react', 'react-hooks', 'jsx-a11y', 'prettier', 'eslint-comments'],
   extends: [
     'eslint:recommended',
@@ -83,4 +83,3 @@ module.exports = {
     'camelcase': 'error'
   }
 };
-
