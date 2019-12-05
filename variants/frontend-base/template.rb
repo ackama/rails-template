@@ -14,8 +14,8 @@ apply "app/template.rb"
 # Javascript code linting and formatting
 run "yarn add --dev eslint eslint-plugin-prettier eslint-config-prettier eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y prettier prettier-config-ackama"
 copy_file ".eslintrc.js"
-copy_file ".eslintignore"
-copy_file ".prettierignore"
+template ".eslintignore.tt"
+template ".prettierignore.tt"
 
 package_json = JSON.parse(File.read("./package.json"))
 package_json["prettier"] = "prettier-config-ackama"
