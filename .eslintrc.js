@@ -72,7 +72,6 @@ module.exports = {
     'consistent-this': ['error', 'self'],
     'yoda': 'error',
     'new-cap': ['error', { capIsNewExceptions: ['Callsite'] }],
-    'semi': ['off', 'always'],
     'spaced-comment': [
       'warn',
       'always',
