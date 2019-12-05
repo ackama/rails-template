@@ -5,7 +5,7 @@ x-services:
     environment:
       PGHOST: "db"
       PGUSER: "postgres"
-    env_file: 
+    env_file:
       - .env
     volumes:
       - bundle:/usr/local/bundle
@@ -18,9 +18,9 @@ services:
     image: postgres
     volumes:
       - pgdata:/var/lib/postgresql
-  app: 
+  app:
     <<: *rails
-    links: 
+    links:
       - db
       - webpacker
     environment:
@@ -39,6 +39,6 @@ services:
   # redis:
   #   image: redis
 volumes:
-  pgdata: 
+  pgdata:
   bundle:
   node_modules:

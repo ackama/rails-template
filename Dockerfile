@@ -13,7 +13,7 @@ ENV LANG=C \
 # Curl is installed to make it possible to set up PPAs below - it is
 # removed further down.
 RUN apt-get update -qq &&\
-    apt-get install -y curl 
+    apt-get install -y curl
 
 # Install Node.js PPA for asset management
 # As of writing, Node 10 is the most recent LTS.
@@ -43,7 +43,7 @@ RUN apt-get update -qq &&\
 RUN npm install -g yarn
 
 # Install gem and NPM dependencies. These are baked into the image so the image can run
-# standalone provided valid configuration. When running in docker-compose, these 
+# standalone provided valid configuration. When running in docker-compose, these
 # dependencies are stored in a volume so the image does not need rebuilding when the
 # dependencies are changed.
 RUN mkdir -p /usr/src/app/node_modules
