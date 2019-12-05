@@ -25,6 +25,16 @@ package_json["scripts"] = {
 }
 File.write("./package.json", JSON.generate(package_json))
 
+append_to_file "bin/ci-test-pipeline-1" do
+  <<~ESLINT
+
+  echo "* ******************************************************"
+  echo "* Running JS linting"
+  echo "* ******************************************************"
+  yarn run lint
+  ESLINT
+end
+
 # SASS Linting
 run "yarn add --dev sass-lint"
 
