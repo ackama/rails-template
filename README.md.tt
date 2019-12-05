@@ -1,62 +1,148 @@
 # <%= app_name %>
 
-This is a Rails <%= Rails::VERSION::MAJOR %> app.
+    TODO: Copy this file into your project and fill out all of the sections with your relevant project details.
 
-## Documentation
+## Purpose
 
-This README describes the purpose of this repository and how to set up a development environment. Other sources of documentation are as follows:
+    TODO: Aim to answer these questions here:
+        * Why does this application exist?
+        * Is it an API or serve HTML or something different?
+        * How much traffic is it expected to get?
 
-* UI and API designs are in `doc/`
+## Operations:
 
-## Prerequisites
+This project follows [Ackama standard branch and environment naming](https://github.com/ackama/wiki/wiki/Branch-naming-conventions-and-deployment-process)
 
-This project requires:
+    TODO: If this project cannot follow our standard naming conventions you must document why here.
 
-* Ruby <%= RUBY_VERSION %>, preferably managed using [rbenv][]
-* Chromedriver for Capybara testing
-* PostgreSQL must be installed and accepting connections
+| **Environment** | **URL** | **Hosting Platform**                 | **Git Branch** | **Exception monitoring URL** | **Logs available at**                                            |
+| --------------- | ------- | ------------------------------------ | -------------- | ---------------------------- | ---------------------------------------------------------------- |
+| Staging         | TODO    | TODO (one of Heroku/RimuHosting/AWS) | master         | TODO (E.G. RAYGUN URL)       | TODO (Examples: On-disk/Heroku/AWS Cloudwatch/Papertrail/Loggly) |
+| Production      | TODO    | TODO (one of Heroku/RimuHosting/AWS) | production     | TODO (E.G. RAYGUN URL)       | TODO (Examples: On-disk/Heroku/AWS Cloudwatch/Papertrail/Loggly) |
 
-On a Mac, you can obtain all of the above packages using [Homebrew][].
+    TODO: Add columns to the table above if there are resources that are required for that environment e.g. a Redis, ElasticSearch etc.
+    TODO: If we need to assume role into their AWS account you should mention that here (don't list the role name - leave that in 1Password)
+    TODO: If there are any unusaual aspects to the deployment of this app you should mention them e.g.
+             * Uses Chef but is controlled by AWS Opsworks
+             * Gets
+    TODO: The typical log level for production environments are 'info' - if you are not using 'info' then please document why.
 
-If you need help setting up a Ruby development environment, check out this [Rails OS X Setup Guide](https://mattbrictson.com/rails-osx-setup-guide).
+### SSH access
 
-## Getting started
+| **Environment** | **SSH access available** |
+| --------------- | ------------------------ |
+| Staging         | YES/NO                   |
+| Production      | YES/NO                   |
 
-### bin/setup
+    TODO: Include FULL details as to how a dev can SSH into deployed
+          environments. Step by step instructions are helpful. This section will be
+          really important to somebody responding to an ops incident so do that
+          person (who may be you!) a favour and make the instructions very clear :-)
 
-Run the `bin/setup` script. This script will:
+### Browser Support
 
-* Check you have the required Ruby version
-* Install gems using Bundler
-* Create local copies of `.env` and `database.yml`
-* Create, migrate, and seed the database
+| **Browser**            | **Supported Versions** |
+| ---------------------- | ---------------------- |
+| Internet Explorer      | 11+                    |
+| Edge                   | 17+                    |
+| Safari                 | Latest -2              |
+| Chrome                 | Latest -2              |
+| Firefox                | Latest -2              |
+| iOS Safari             | Latest -2              |
+| Chrome for Android     | Latest -2              |
+| UC Browser for Android | Latest -2              |
+| Samsung Internet       | Latest -2              |
 
-### Run it!
+    TODO: Confirm browser requirements with client/product owner. The above are all based on current NZ wide (and largely world wide) browser usage statistics and are set as our defaults.
 
-1. Run `bin/rake spec` to make sure everything works.
-2. Run `bin/rake spec:system` to run system (capybara) tests.
-3. Run `bin/rails s` and `bin/sidekiq` to start the app and Sidekiq; alternatively, start both at once with `heroku local`.
+## Secrets
 
-## Deployment
+All credentials and the `.env` file for this project are stored in Ackama 1Password vault named `TODO`
 
-Ensure the following environment variables are set in the deployment environment:
+    TODO: Ensure that all secrets in this app are stored **only** in Ackama 1Password
 
-* `RACK_ENV`
-* `RAILS_ENV`
-* `REDIS_URL`
-* `SECRET_KEY_BASE`
-* `SIDEKIQ_WEB_PASSWORD`
-* `SIDEKIQ_WEB_USERNAME`
+## Project Resources:
 
-Optionally:
+| **Resource**    | **URL**                           |
+| --------------- | --------------------------------- |
+| Backlog URL     | TODO                              |
+| CI URL          | TODO                              |
+| Other resources | TODO (DELETE IF THERE AREN'T ANY) |
 
-* `HOSTNAME`
-* `RAILS_FORCE_SSL`
-* `RAILS_LOG_TO_STDOUT`
-* `RAILS_MAX_THREADS`
-* `RAILS_SERVE_STATIC_FILES`
-* `WEB_CONCURRENCY`
+## People Involved
 
-[rbenv]:https://github.com/sstephenson/rbenv
-[redis]:http://redis.io
-[Homebrew]:http://brew.sh
+| **Role(s)**     | **Name(s)** |
+| --------------- | ----------- |
+| Team            | TODO        |
+| Developers      | TODO        |
+| Designer        | TODO        |
+| Tester          | TODO        |
+| Project Manager | TODO        |
+| Product Owner   | TODO        |
+
+## Comms:
+
+    TODO: Describe the team's chosen methods for communication (Slack, hangout, email, etc) and include any relevant details (Slack channel name).
+
+## Developers
+
+### Dependencies
+
+Before running this app and its tests locally you will need:
+
+1. PostgreSQL
+1. Redis
+1. Imagemagick
+1. Docker
+1. ElasticSearch
+
+   TODO: Add any dependencies that must be installed by a dev bfore they can run this app and tests
+
+### Running the app
+
+    TODO: Include the step by step instructions for setting up a local environment.
+    TODO: An Ackama project should not take more than 5 mins for a new developer to setup
+
+1. Clone the project: `git clone git@bitbucket.org:rabidtech/THIS_REPO.git`
+2. Run the setup script: `./bin/setup`
+3. Create `.env` file by copying data from 1Password.
+
+   TODO: Document if they need to run any seeds before running the app (unless it is part of ./bin/setup)
+
+Then run the following commands:
+
+```
+# Terminal #1:
+bundle exec rails s
+
+# Terminal #2:
+bundle exec sidekiq
+```
+
+### Running the tests
+
+    TODO: Describe how to run the project's test suite. Are there any other
+          tests that a new dev should know about? Cucumber? Performance tests?
+          Include all testing info in this section.
+
+```
+bundle exec rspec spec
+bundle exec cucumber
+npm run lighthouse-spec
+```
+
+### Rake tasks
+
+```
+bundle exec rake developer:do_stuff
+```
+
+    TODO: Are there rake tasks new developers should know about? Document them here
+    TODO: Is there anything else? If anything else is needed to get it properly running, include that here.
+
+If there is anything that might prevent a new dev from following the
+above steps and then running the tests successfully, make sure that it is documented.
+
+## Documentation:
+
+    TODO: If there is additional documentation (wiki, api-docs, etc) include the link to it here.
