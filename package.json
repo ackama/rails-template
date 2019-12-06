@@ -4,6 +4,11 @@
   "repository": "git@github.com:ackama/rails-template.git",
   "private": true,
   "prettier": "prettier-config-ackama",
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "not IE_Mob 11"
+  ],
   "devDependencies": {
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.7.0",
