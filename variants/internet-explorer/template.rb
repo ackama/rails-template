@@ -10,4 +10,3 @@ package_json["browserslist"] = [
 ],
 
 File.write("./package.json", JSON.generate(package_json))
-print File.read("./package.json")

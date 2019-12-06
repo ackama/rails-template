@@ -158,7 +158,6 @@ def gemfile_requirement(name)
 end
 
 def apply_variant?(name)
-  print ENV.fetch("VARIANTS", "").split(",") 
   return true if ENV.fetch("VARIANTS", "").split(",").include?(name.to_s)
 
   ask_with_default("Add #{name} to this application?", :blue, 'N').downcase.start_with?("y")
