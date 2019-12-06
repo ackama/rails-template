@@ -50,6 +50,7 @@ def apply_template!
     create_initial_migration
 
     # Apply variants after setup and initial install, but before commit
+    apply "variants/internet-explorer/template.rb" if apply_variant?(:"Internet Explorer")
     apply "variants/accessibility/template.rb"
     apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
 
@@ -157,6 +158,7 @@ def gemfile_requirement(name)
 end
 
 def apply_variant?(name)
+  print ENV.fetch("VARIANTS", "").split(",") 
   return true if ENV.fetch("VARIANTS", "").split(",").include?(name.to_s)
 
   ask_with_default("Add #{name} to this application?", :blue, 'N').downcase.start_with?("y")
