@@ -1,5 +1,4 @@
 .navigation {
-
   @include breakpoint(large) {
     @include flex;
     border-bottom: $light-gray solid 1px;
@@ -74,7 +73,8 @@
   }
 
   &__item {
-    @include breakpoint(large) {  // sass-lint:disable-block no-important
+    @include breakpoint(large) {
+      // sass-lint:disable-block no-important
       @include flex;
       @include flex-align(left, middle);
       border-left: $light-gray solid 1px;

@@ -20,7 +20,7 @@ bundle exec bundle-audit check --update --ignore $ignore
 echo "* ******************************************************"
 echo "* Running brakeman"
 echo "* ******************************************************"
-bundle exec brakeman --exit-on-warn --quiet
+bundle exec brakeman --exit-on-warn --quiet --no-pager
 
 echo "* ******************************************************"
 echo "* Running rspec unit specs"

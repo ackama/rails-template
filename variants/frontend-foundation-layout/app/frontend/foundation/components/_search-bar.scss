@@ -2,7 +2,8 @@
   @include flex;
   height: 100%;
 
-  &__input {  // sass-lint:disable-block no-important
+  &__input {
+    // sass-lint:disable-block no-important
     border: 0;
     box-shadow: none;
     margin: $global-margin !important;
