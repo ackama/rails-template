@@ -23,13 +23,14 @@ package_json["browserslist"] = [
   "defaults",
   "not IE 11",
   "not IE_Mob 11"
-],
+]
 package_json["scripts"] = {
   "js-lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
   "js-lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
   "format-check" => "prettier --check './**/*.{json,md,js,ts,tsx,jsx}'",
   "format-fix" => "prettier --write './**/*.{json,md,js,ts,tsx,jsx}'"
 }
+
 File.write("./package.json", JSON.generate(package_json))
 
 # must be run after prettier is installed and has been configured by setting
