@@ -8,6 +8,7 @@ run "mv app/frontend/config app/assets/config"
 
 run "mv app/javascript/* app/frontend"
 run "rm -rf app/javascript"
+run "rm .browserslistrc"
 apply "config/template.rb"
 apply "app/template.rb"
 
