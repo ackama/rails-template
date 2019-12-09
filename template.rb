@@ -50,7 +50,6 @@ def apply_template!
     create_initial_migration
 
     # Apply variants after setup and initial install, but before commit
-    apply "variants/internet-explorer/template.rb" if apply_variant?(:"Internet Explorer")
     apply "variants/accessibility/template.rb"
     apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
 

@@ -19,6 +19,11 @@ template ".prettierignore.tt"
 
 package_json = JSON.parse(File.read("./package.json"))
 package_json["prettier"] = "prettier-config-ackama"
+package_json["browserslist"] = [
+  "defaults",
+  "not IE 11",
+  "not IE_Mob 11"
+],
 package_json["scripts"] = {
   "js-lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
   "js-lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
