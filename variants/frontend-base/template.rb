@@ -22,8 +22,10 @@ package_json["prettier"] = "prettier-config-ackama"
 package_json["scripts"] = {
   "js-lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
   "js-lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
-  "format-check" => "prettier --check './**/*.{json,md,js,ts,tsx,jsx}'",
-  "format-fix" => "prettier --write './**/*.{json,md,js,ts,tsx,jsx}'"
+  "format-check" => "prettier --check './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
+  "format-fix" => "prettier --write './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
+  "scss-lint" => "stylelint '**/*.{css,scss}'",
+  "scss-lint-fix" => "stylelint '**/*.{css,scss}' --fix"
 }
 File.write("./package.json", JSON.generate(package_json))
 
@@ -52,18 +54,17 @@ append_to_file "bin/ci-test-pipeline-1" do
   PRETTIER
 end
 
-# SASS Linting
-run "yarn add --dev sass-lint"
+# SCSS Linting
+run "yarn add --dev stylelint stylelint-scss stylelint-config-recommended-scss"
+copy_file ".stylelintrc.js"
+template ".stylelintignore.tt"
 
-copy_file "bin/sass-lint"
-chmod "bin/sass-lint", "+x"
-copy_file "sass-lint.yml", ".sass-lint.yml"
 append_to_file "bin/ci-test-pipeline-1" do
   <<~SASSLINT
 
   echo "* ******************************************************"
   echo "* Running SCSS linting"
   echo "* ******************************************************"
-  ./bin/sass-lint
+  yarn run scss-lint
   SASSLINT
 end
