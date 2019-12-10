@@ -21,6 +21,8 @@ For older versions of Rails, use these branches:
 - [Rails 5.2.x](https://github.com/mattbrictson/rails-template/tree/rails-52)
 
 ## Requirements
+ 
+- Yarn: Some old versions of Yarn have encountered issues, if you have problems try v1.21.0 or later
 
 This template currently works with:
 
