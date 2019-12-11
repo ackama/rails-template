@@ -2,6 +2,7 @@
 
 require "fileutils"
 require "shellwords"
+require "pp"
 
 RAILS_REQUIREMENT = "~> 6.0.0".freeze
 
@@ -63,10 +64,9 @@ def apply_template!
 
     unless any_local_git_commits?
       git add: "-A ."
-      git commit: "-n -m 'Set up project'"
+      git commit: "-n -m 'Initial commit' -m 'Project generated with options:\n\n#{options.pretty_inspect}'"
       if git_repo_specified?
         git remote: "add origin #{git_repo_url.shellescape}"
-        git push: "-u origin --all"
       end
     end
   end
@@ -146,7 +146,7 @@ def staging_hostname
 end
 
 def any_local_git_commits?
-  system("git log &> /dev/null")
+  system("git log > /dev/null 2>&1")
 end
 
 
