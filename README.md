@@ -30,17 +30,6 @@ This template currently works with:
 - PostgreSQL
 - chromedriver
 
-## Installation
-
-_Optional._
-
-To make this the default Rails application template on your system, create a
-`~/.railsrc` file with these contents:
-
-```
--d postgresql
--m https://raw.githubusercontent.com/ackama/rails-template/master/template.rb
-```
 
 ## Usage
 
@@ -52,7 +41,7 @@ be ready to provide:
 1. The git URL of your (freshly created and empty) Bitbucket/GitHub repository
 2. The hostname of your production server
 
-To generate a Rails application using this template, pass the `-m` option to
+To generate a Rails application using this template, pass the `--template` option to
 `rails new`, like this:
 
 ```
@@ -80,17 +69,31 @@ but you may find that many Ackama projects are started with some or all of these
   to be using React, but adding this during app generation will mean that your codebase supports webpack and React 
   components right from the first commit.
 
-If you’ve installed this template as your default (using `~/.railsrc` as
-described above), then all you have to do is run:
-
-```
-rails new blog
-```
-
 If you just want to see what the template does, try running `docker build .` and
 then `docker --rm -it run` the resulting image. You'll be dropped into Bash and
 can explore the generated app in `/apps/template-test`. The image doesn't
 include PostgreSQL right now, so database operations don't work.
+
+## Installation (Optional)
+
+If you find yourself generating a lot of Rails applications, you
+can load default options into a file in your home directory named `.railsrc`, and 
+these options will be applied as arguments each time you run `rails new` 
+(unless you pass the `--no-rc` option).
+
+To make this the default Rails application template on your system, create a
+`~/.railsrc` file with these contents:
+
+```
+-d postgresql
+-m https://raw.githubusercontent.com/ackama/rails-template/master/template.rb
+```
+
+Once you’ve installed this template as your default, then all you have to do is run:
+
+```
+rails new blog
+```
 
 ## What does it do?
 
