@@ -146,7 +146,7 @@ def staging_hostname
 end
 
 def any_local_git_commits?
-  system("git log &> /dev/null")
+  system("git log > /dev/null 2>&1")
 end
 
 
