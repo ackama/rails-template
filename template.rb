@@ -66,7 +66,6 @@ def apply_template!
       git commit: "-n -m 'Set up project'"
       if git_repo_specified?
         git remote: "add origin #{git_repo_url.shellescape}"
-        git push: "-u origin --all"
       end
     end
   end
