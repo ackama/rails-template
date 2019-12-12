@@ -44,6 +44,10 @@ def apply_template!
   # but also after `webpacker:install` and after Rails has initialized the git
   # repo
   after_bundle do
+    # Remove the `test/` directory because we always use RSpec which creates
+    # its own `spec/` directory
+    remove_dir "test"
+
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
