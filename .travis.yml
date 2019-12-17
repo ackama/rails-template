@@ -9,20 +9,29 @@ env:
   #   - staging.example.com (staging hostname)
   #   - n (no, do not add foundation)
   #   - n (no, do not overwrite webpacker with rails version)
-  - VARIANT=basic GENERATOR_INPUT="example.com\nstaging.example.com\nn\nn"
+  #   - n (no, do not add sidekiq)
+  - VARIANT=basic GENERATOR_INPUT="example.com\nstaging.example.com\nn\nn\nn"
   # Generate the foundation variant with options:
   #   - example.com (production hostname)
   #   - staging.example.com (staging hostname)
   #   - Y (yes, add foundation)
   #   - n (no, don't add foundation layout)
   #   - n (no, do not overwrite webpacker with rails version)
-  - VARIANT=foundation GENERATOR_INPUT="example.com\nstaging.example.com\nY\nn\nn"
+  #   - n (no, do not add sidekiq)
+  - VARIANT=foundation GENERATOR_INPUT="example.com\nstaging.example.com\nY\nn\nn\n"
   # Generate the foundation-layout variant with options:
   #   - example.com (production hostname)
   #   - staging.example.com (staging hostname)
   #   - Y (yes, add foundation)
   #   - Y (yes, add foundation layout)
   #   - n (no, do not overwrite webpacker with rails version)
-  - VARIANT=foundation-layout GENERATOR_INPUT="example.com\nstaging.example.com\nY\nY\nY\nn"
+  #   - n (no, do not add sidekiq)
+  - VARIANT=foundation-layout GENERATOR_INPUT="example.com\nstaging.example.com\nY\nY\nY\nn\nn"
+  # Generate the sidekiq variant with options:
+  #   - example.com (production hostname)
+  #   - staging.example.com (staging hostname)
+  #   - n (no, do not add foundation)
+  #   - Y (yes, add Sidekiq)
+  - VARIANT=sidekiq GENERATOR_INPUT="example.com\nstaging.example.com\nn\nn\nY"
 script:
   - ./template-test/ci-run.sh
