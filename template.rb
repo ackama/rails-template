@@ -53,9 +53,10 @@ def apply_template!
     # Apply variants after setup and initial install, but before commit
     apply "variants/accessibility/template.rb"
     apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
+    apply "variants/sidekiq/template.rb" if apply_variant?(:sidekiq)
 
     binstubs = %w[
-      brakeman bundler bundler-audit rubocop sidekiq
+      brakeman bundler bundler-audit rubocop 
     ]
     run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')} --force"
 
