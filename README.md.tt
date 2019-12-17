@@ -96,7 +96,7 @@ Before running this app and its tests locally you will need:
 1. Docker
 1. ElasticSearch
 
-   TODO: Add any dependencies that must be installed by a dev bfore they can run this app and tests
+   TODO: Add any dependencies that must be installed by a dev before they can run this app and tests
 
 ### Running the app
 
