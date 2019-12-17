@@ -32,13 +32,13 @@ insert_into_file "config/application.rb", before: /^  end/ do
 end
 
 insert_into_file "docker-compose.yml", "
-    worker:
-      <<: *rails
-      command: bundle exec sidekiq
-      links:
-        - redis
-    redis:
-      image: redis
+  worker:
+    <<: *rails
+    command: bundle exec sidekiq
+    links:
+      - redis
+  redis:
+    image: redis
 ", after: "services:\n"
 
 insert_into_file "config/routes.rb", before: "root to: \"home#index\"" do
