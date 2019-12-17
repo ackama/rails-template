@@ -32,6 +32,6 @@ env:
   #   - staging.example.com (staging hostname)
   #   - n (no, do not add foundation)
   #   - Y (yes, add Sidekiq)
-  - VARIANT=sidekiq GENERATOR_INPUT="example.com\nstaging.example.com\nn\nn\nY"
+  - VARIANT=sidekiq GENERATOR_INPUT="example.com\nstaging.example.com\nn\nY\n"
 script:
   - ./template-test/ci-run.sh
