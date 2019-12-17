@@ -39,7 +39,7 @@ insert_into_file "docker-compose.yml", "
       - redis
   redis:
     image: redis
-", after: "services:\n"
+", after: /^services:$"/
 
 insert_into_file "config/routes.rb", before: "root to: \"home#index\"" do
   <<~ROUTE
