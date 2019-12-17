@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+
+rubocop -a -c rubocop.yml
+npm run format-fix
+npm run scss-lint-fix
