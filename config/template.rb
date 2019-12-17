@@ -5,7 +5,6 @@ remove_file "config/database.yml"
 remove_file "config/spring.rb"
 copy_file "config/puma.rb", force: true
 remove_file "config/secrets.yml"
-copy_file "config/sidekiq.yml"
 
 
 copy_file "config/initializers/generators.rb"
@@ -44,15 +43,6 @@ route <<-EO_ROUTES
       .relative_path_from(Rails.root.join("public"))
       .to_s
     get "/asset-manifest.json", to: redirect(manifest_path)
-  end
-
-  ##
-  # If you want the Sidekiq web console in production environments you need to
-  # put it behind some authentication first.
-  #
-  if defined?(Sidekiq::Web) && Rails.env.development?
-    mount Sidekiq::Web => "/sidekiq" # Sidekiq monitoring console
-    require "sidekiq/web"
   end
 
   root "home#index"
