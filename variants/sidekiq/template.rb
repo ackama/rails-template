@@ -4,6 +4,7 @@ source_paths.unshift(File.dirname(__FILE__))
 gem "sidekiq"
 gem "redis"
 
+run "bundle install"
 run "bundle binstubs sidekiq --force"
 
 
