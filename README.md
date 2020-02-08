@@ -3,17 +3,15 @@
 ## Origins
 
 This repo is forked from mattbrictson/rails-template, and has been customized to
-set up Rails projects the way I like them.
+set up Rails projects the way Ackama likes them.
 
 ## Description
 
-This is the application template that I use for my Rails 6 projects. As a
-freelance Rails developer, I need to be able to start new projects quickly and
-with a good set of defaults. I've assembled this template over the years to
-include best-practices, tweaks, documentation, and personal preferences, while
-still generally adhering to the "Rails way".
+This is the application template that we use for Rails 6 projects. As a
+fabulous consultancy, we need to be able to start new projects quickly and
+with a good set of defaults. 
 
-For older versions of Rails, use these branches:
+For older versions of Rails, use these branches of @mattbrictson's original repository:
 
 - [Rails 4.2.x](https://github.com/mattbrictson/rails-template/tree/rails-42)
 - [Rails 5.0.x](https://github.com/mattbrictson/rails-template/tree/rails-50)
@@ -29,7 +27,6 @@ This template currently works with:
 - Rails 6.0.x
 - PostgreSQL
 - chromedriver
-
 
 ## Usage
 
