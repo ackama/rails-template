@@ -3,4 +3,3 @@ Rails.application.configure do
     # controllers etc. Full instructions at https://github.com/roidrage/lograge
     config.lograge.enabled = true unless Rails.env.development? || Rails.env.test?
   end
-end
