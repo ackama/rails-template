@@ -23,7 +23,6 @@ RSpec.describe "HTTP Basic Auth Middleware", type: :request do
         get root_path, headers: http_basic_auth_header
 
         expect(response.status).to eq(200)
-        expect(response.body).to include("Find me in app")
       end
     end
 
