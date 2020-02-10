@@ -41,7 +41,7 @@ File.write("./package.json", JSON.generate(package_json))
 run "yarn run js-lint-fix"
 run "yarn run format-fix"
 
-append_to_file "bin/ci-test-pipeline-1" do
+append_to_file "bin/ci-run" do
   <<~ESLINT
 
   echo "* ******************************************************"
@@ -51,7 +51,7 @@ append_to_file "bin/ci-test-pipeline-1" do
   ESLINT
 end
 
-append_to_file "bin/ci-test-pipeline-1" do
+append_to_file "bin/ci-run" do
   <<~PRETTIER
 
   echo "* ******************************************************"
@@ -66,7 +66,7 @@ run "yarn add --dev stylelint stylelint-scss stylelint-config-recommended-scss"
 copy_file ".stylelintrc.js"
 template ".stylelintignore.tt"
 
-append_to_file "bin/ci-test-pipeline-1" do
+append_to_file "bin/ci-run" do
   <<~SASSLINT
 
   echo "* ******************************************************"
