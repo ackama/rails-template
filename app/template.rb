@@ -11,3 +11,4 @@ copy_file "app/helpers/retina_image_helper.rb"
 
 remove_dir "app/jobs"
 empty_directory_with_keep_file "app/workers"
+empty_directory_with_keep_file "app/services"
