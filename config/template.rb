@@ -11,6 +11,7 @@ copy_file "config/sidekiq.yml"
 copy_file "config/initializers/generators.rb"
 copy_file "config/initializers/rotate_log.rb"
 copy_file "config/initializers/version.rb"
+copy_file "config/initializers/lograge.rb"
 
 gsub_file "config/initializers/filter_parameter_logging.rb", /\[:password\]/ do
   "%w[password secret session cookie csrf]"

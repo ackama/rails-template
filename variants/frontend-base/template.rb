@@ -8,6 +8,7 @@ run "mv app/frontend/config app/assets/config"
 
 run "mv app/javascript/* app/frontend"
 run "rm -rf app/javascript"
+run "rm .browserslistrc"
 apply "config/template.rb"
 apply "app/template.rb"
 
@@ -19,6 +20,11 @@ template ".prettierignore.tt"
 
 package_json = JSON.parse(File.read("./package.json"))
 package_json["prettier"] = "prettier-config-ackama"
+package_json["browserslist"] = [
+  "defaults",
+  "not IE 11",
+  "not IE_Mob 11"
+]
 package_json["scripts"] = {
   "js-lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
   "js-lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
@@ -27,6 +33,7 @@ package_json["scripts"] = {
   "scss-lint" => "stylelint '**/*.{css,scss}'",
   "scss-lint-fix" => "stylelint '**/*.{css,scss}' --fix"
 }
+
 File.write("./package.json", JSON.generate(package_json))
 
 # must be run after prettier is installed and has been configured by setting
@@ -34,7 +41,7 @@ File.write("./package.json", JSON.generate(package_json))
 run "yarn run js-lint-fix"
 run "yarn run format-fix"
 
-append_to_file "bin/ci-test-pipeline-1" do
+append_to_file "bin/ci-run" do
   <<~ESLINT
 
   echo "* ******************************************************"
@@ -44,7 +51,7 @@ append_to_file "bin/ci-test-pipeline-1" do
   ESLINT
 end
 
-append_to_file "bin/ci-test-pipeline-1" do
+append_to_file "bin/ci-run" do
   <<~PRETTIER
 
   echo "* ******************************************************"
@@ -59,7 +66,7 @@ run "yarn add --dev stylelint stylelint-scss stylelint-config-recommended-scss"
 copy_file ".stylelintrc.js"
 template ".stylelintignore.tt"
 
-append_to_file "bin/ci-test-pipeline-1" do
+append_to_file "bin/ci-run" do
   <<~SASSLINT
 
   echo "* ******************************************************"

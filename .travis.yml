@@ -1,3 +1,13 @@
+# This file contains the Travis build configuration for the README.
+# Travis is configured to run builds against all branches and pull requests
+# (the result of merging the branch into a local copy of 'master').
+#
+# Travis also supports scheduled builds. These cannot be configured in .travis.yml,
+# but for the purposes of being clear, we **do** have a scheduled build set up to run
+# once per month against 'master' only. This means that we can catch any problems
+# with the template arising from library & framework updates before they affect a new project.
+# 
+# To view the scheduled build configuration, check out: https://travis-ci.org/ackama/rails-template/settings
 language: ruby
 services:
   - postgresql

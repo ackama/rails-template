@@ -96,7 +96,7 @@ Before running this app and its tests locally you will need:
 1. Docker
 1. ElasticSearch
 
-   TODO: Add any dependencies that must be installed by a dev bfore they can run this app and tests
+   TODO: Add any dependencies that must be installed by a dev before they can run this app and tests
 
 ### Running the app
 
@@ -146,3 +146,10 @@ above steps and then running the tests successfully, make sure that it is docume
 ## Documentation:
 
     TODO: If there is additional documentation (wiki, api-docs, etc) include the link to it here.
+
+## Running in production
+
+### Logging
+
+This application uses the `lograge` gem to make Rails create a single log
+line for successful requests in deployed environments.
