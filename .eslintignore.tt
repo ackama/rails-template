@@ -1,5 +1,6 @@
 node_modules/
 coverage/
 public/
+bundle/
 vendor/
 tmp/
