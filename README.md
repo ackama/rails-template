@@ -108,7 +108,6 @@ The template will perform the following steps:
 
 - Core
   - `puma` - application web server used for all environments
-  - [sidekiq][] – Redis-based job queue implementation for Active Job
 - Configuration
   - [dotenv][] – in place of the Rails `secrets.yml`
 - Utilities

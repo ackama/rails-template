@@ -41,7 +41,7 @@ Metrics/ClassLength:
   Exclude:
     - "spec/**/*"
 
-Metrics/LineLength:
+Layout/LineLength:
   Exclude:
     - "config/**/*"
     - "db/**/*"

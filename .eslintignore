@@ -1,4 +1,6 @@
 # This is the eslintignore for this repo.
 # eslintignore.tt is the one that is copied into the Rails app we build
 node_modules/
+vendor/
+bundle/
 template-test/dummy/
