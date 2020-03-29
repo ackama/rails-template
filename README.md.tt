@@ -149,6 +149,10 @@ above steps and then running the tests successfully, make sure that it is docume
 
 ## Running in production
 
+### security.txt
+
+* `/.well-known/security.txt` exists with instructions which security researchers can use to contact us if they find an issue in this application.
+
 ### Logging
 
 This application uses the `lograge` gem to make Rails create a single log
