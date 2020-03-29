@@ -33,4 +33,4 @@ end
 
 gsub_file "config/environments/production.rb",
           "config.log_level = :debug",
-          "config.log_level = :info"
+          'config.log_level = ENV.fetch("LOG_LEVEL", "info").to_sym'
