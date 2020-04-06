@@ -45,3 +45,17 @@ test:
   database: <%= app_name %>_test
   min_messages: WARNING
   pool: 5
+
+staging:
+  adapter: postgresql
+  encoding: unicode
+  database: <%= app_name %>_staging
+  min_messages: WARNING
+  pool: 5
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: <%= app_name %>_production
+  min_messages: WARNING
+  pool: 5
