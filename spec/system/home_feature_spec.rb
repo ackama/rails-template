@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Homepage", type: :system do
-  before { visit "/" }
+  before { visit root_path }
 
   it "rendered page contains both base and application layouts" do
     assert_selector("html>head+body")
