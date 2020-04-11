@@ -77,7 +77,10 @@ def apply_template!
 
     # we deliberately place this after the initial git commit because it
     # contains a lot of changes and adds its own git commit
-    apply "variants/devise/template.rb" if apply_variant?(:devise)
+    if apply_variant?(:devise)
+      apply "variants/devise/template.rb"
+      apply "variants/devise-2fa/template.rb" if apply_variant?(:devise_2fa)
+    end
   end
 end
 
