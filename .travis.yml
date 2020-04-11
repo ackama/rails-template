@@ -6,7 +6,7 @@
 # but for the purposes of being clear, we **do** have a scheduled build set up to run
 # once per month against 'master' only. This means that we can catch any problems
 # with the template arising from library & framework updates before they affect a new project.
-# 
+#
 # To view the scheduled build configuration, check out: https://travis-ci.org/ackama/rails-template/settings
 language: ruby
 services:
@@ -14,35 +14,58 @@ services:
 before_script:
   - nvm install
 env:
-  # Generate the basic variant with options:
-  #   - example.com (production hostname)
-  #   - staging.example.com (staging hostname)
-  #   - n (no, do not add foundation)
-  #   - n (no, do not overwrite webpacker with rails version)
-  #   - n (no, do not add sidekiq)
-  - VARIANT=basic GENERATOR_INPUT="example.com\nstaging.example.com\nn\nn\nn"
-  # Generate the foundation variant with options:
-  #   - example.com (production hostname)
-  #   - staging.example.com (staging hostname)
-  #   - Y (yes, add foundation)
-  #   - n (no, don't add foundation layout)
-  #   - n (no, do not overwrite webpacker with rails version)
-  #   - n (no, do not add sidekiq)
-  - VARIANT=foundation GENERATOR_INPUT="example.com\nstaging.example.com\nY\nn\nn\n"
-  # Generate the foundation-layout variant with options:
-  #   - example.com (production hostname)
-  #   - staging.example.com (staging hostname)
-  #   - Y (yes, add foundation)
-  #   - Y (yes, add foundation layout)
-  #   - n (no, do not overwrite webpacker with rails version)
-  #   - n (no, do not add sidekiq)
-  - VARIANT=foundation-layout GENERATOR_INPUT="example.com\nstaging.example.com\nY\nY\nY\nn\nn"
-  # Generate the sidekiq variant with options:
-  #   - example.com (production hostname)
-  #   - staging.example.com (staging hostname)
-  #   - n (no, do not add foundation)
-  #   - Y (yes, add Sidekiq)
-  - VARIANT=sidekiq-variant GENERATOR_INPUT="example.com\nstaging.example.com\nn\nY\n"
+  # Variant: basic
+  # - 'example.com'          (Set production URL)
+  # - 'staging.example.com'  (Set staging URL)
+  # - 'No'                   (Install foundation?)
+  # - 'No'                   (Install Sidekiq?)
+  # - ''                     (Choose git remote URL)
+  # - 'No'                   (Install devise?)
+  - VARIANT=basic
+    GENERATOR_INPUT="example.com\nstaging.example.com\nNo\nNo\n\nNo\n"
+
+  # Variant: foundation
+  # - 'example.com'          (Set production URL)
+  # - 'staging.example.com'  (Set staging URL)
+  # - 'Yes'                  (Install foundation?)
+  # - 'No'                   (Install Sidekiq?)
+  # - ''                     (Choose git remote URL)
+  # - 'No'                   (Install devise?)
+  - VARIANT=foundation
+    GENERATOR_INPUT="example.com\nstaging.example.com\nYes\nNo\n\nNo\n"
+
+  # Variant: foundation-layout
+  # - 'example.com'          (Set production URL)
+  # - 'staging.example.com'  (Set staging URL)
+  # - 'Yes'                  (Install foundation?)
+  # - 'Yes'                  (Install foundation-layout?)
+  # - 'No'                   (Install Sidekiq?)
+  # - ''                     (Choose git remote URL)
+  # - 'No'                   (Install devise?)
+  - VARIANT=foundation-layout
+    GENERATOR_INPUT="example.com\nstaging.example.com\nYes\nYes\nNo\n\nNo\n"
+
+  # Variant: sidekiq
+  # - 'example.com'          (Set production URL)
+  # - 'staging.example.com'  (Set staging URL)
+  # - 'No'                   (Install foundation?)
+  # - 'Yes'                  (Install Sidekiq?)
+  # - ''                     (Choose git remote URL)
+  # - 'No'                   (Install devise?)
+  - VARIANT=sidekiq
+    GENERATOR_INPUT="example.com\nstaging.example.com\nNo\nYes\n\nNo\n"
+
+  # Variant: devise
+  # - 'example.com'          (Set production URL)
+  # - 'staging.example.com'  (Set staging URL)
+  # - 'No'                   (Install foundation?)
+  # - 'No'                   (Install Sidekiq?)
+  # - ''                     (Choose git remote URL)
+  # - 'Yes'                  (Install devise?)
+  # - ''                     (Set devise email 'From:' address)
+  # - 'Yes'                  (Should devise do git commit?)
+  - VARIANT=devise
+    GENERATOR_INPUT="example.com\nstaging.example.com\nNo\nNo\n\nYes\n\nYes\n"
 script:
   - ./template-test/ci-run.sh
 notifications:
