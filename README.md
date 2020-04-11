@@ -9,7 +9,7 @@ set up Rails projects the way Ackama likes them.
 
 This is the application template that we use for Rails 6 projects. As a
 fabulous consultancy, we need to be able to start new projects quickly and
-with a good set of defaults. 
+with a good set of defaults.
 
 For older versions of Rails, use these branches of @mattbrictson's original repository:
 
@@ -19,7 +19,7 @@ For older versions of Rails, use these branches of @mattbrictson's original repo
 - [Rails 5.2.x](https://github.com/mattbrictson/rails-template/tree/rails-52)
 
 ## Requirements
- 
+
 - Yarn: Some old versions of Yarn have encountered issues, if you have problems try v1.21.0 or later
 
 This template currently works with:
@@ -51,7 +51,7 @@ rails new blog \
 _Remember that options must go after the name of the application._ The only
 database supported by this template is `postgresql`.
 
-Here are some additional options you can add to this command. We don't _prescribe_ these, 
+Here are some additional options you can add to this command. We don't _prescribe_ these,
 but you may find that many Ackama projects are started with some or all of these options:
 
 * `--skip-action-mailbox` skips the setup of ActionMailbox, which you don't need unless you are receiving emails in your application.
@@ -62,8 +62,8 @@ but you may find that many Ackama projects are started with some or all of these
   having an open websocket connection without knowing about it.
 * `--skip-turbolinks` - in a similar vein to spring, Turbolinks is great and providing some user feedback as pages load
   and speeding up perceived load time, however comes with drawbacks that usually outweight the benefits.
-* `--webpack=react` - this will preconfigure your app to build and serve React code. You only need it if you're going 
-  to be using React, but adding this during app generation will mean that your codebase supports webpack and React 
+* `--webpack=react` - this will preconfigure your app to build and serve React code. You only need it if you're going
+  to be using React, but adding this during app generation will mean that your codebase supports webpack and React
   components right from the first commit.
 
 If you just want to see what the template does, try running `docker build .` and
@@ -74,8 +74,8 @@ include PostgreSQL right now, so database operations don't work.
 ## Installation (Optional)
 
 If you find yourself generating a lot of Rails applications, you
-can load default options into a file in your home directory named `.railsrc`, and 
-these options will be applied as arguments each time you run `rails new` 
+can load default options into a file in your home directory named `.railsrc`, and
+these options will be applied as arguments each time you run `rails new`
 (unless you pass the `--no-rc` option).
 
 To make this the default Rails application template on your system, create a
@@ -89,7 +89,7 @@ To make this the default Rails application template on your system, create a
 Once you’ve installed this template as your default, then all you have to do is run:
 
 ```
-rails new blog
+rails new --database=postgresql blog
 ```
 
 ## What does it do?
@@ -138,6 +138,6 @@ generator system, allowing all of its ERb templates and files to be referenced
 when the application template script is evaluated.
 
 Rails generators are very lightly documented; what you’ll find is that most of
-the heavy lifting is done by [Thor][]. The most common methods used by this
+the heavy lifting is done by [Thor][http://whatisthor.com/]. The most common methods used by this
 template are Thor’s `copy_file`, `template`, and `gsub_file`. You can dig into
-the well-organized and well-documented [Thor source code][thor] to learn more.
+the well-organized and well-documented [Thor source code][https://github.com/erikhuda/thor] to learn more.

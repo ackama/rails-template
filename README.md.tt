@@ -158,3 +158,22 @@ above steps and then running the tests successfully, make sure that it is docume
 * This application uses the `lograge` gem to make Rails create a concise single log line for successful requests in deployed environments. See `config/initializers/lograge.rb` for details.
 * If `LOG_LEVEL` exists in the shell environment then it is used to set the log level. Otherise there is a hard-coded fallback for each environment. See `/config/environments/*.rb` for details.
 
+### Running in staging mode locally
+
+```sh
+# precompile assets
+$ RAILS_ENV=staging RAILS_LOG_TO_STDOUT=true bundle exec rails assets:precompile
+
+# run server (note you need **all** these flags to run staging locally)
+$ RAILS_ENV=staging RAILS_LOG_TO_STDOUT=true RAILS_SERVE_STATIC_FILES=true bundle exec rails server
+```
+
+### Running in production mode locally
+
+```sh
+# precompile assets
+$ RAILS_ENV=production RAILS_LOG_TO_STDOUT=true bundle exec rails assets:precompile
+
+# run server (note you need **all** these flags to run production locally)
+$ RAILS_ENV=production RAILS_LOG_TO_STDOUT=true RAILS_SERVE_STATIC_FILES=true bundle exec rails server
+```
