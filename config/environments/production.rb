@@ -58,7 +58,7 @@ insert_into_file "config/environments/production.rb",
     #
     # Our Cache-Control header:
     #
-    # * tells all caches (both proxies like Cloudflare and the users web browser) that the asset can be cached.
+    # * It tells all caches (both proxies like Cloudflare and the users web browser) that the asset can be cached.
     # * It tells shared caches (e.g. Cloudflare) that they can cache it for 365 days
     # * It tells browsers that they should cache for 365 days
     #
@@ -72,4 +72,3 @@ insert_into_file "config/environments/production.rb",
 
   RUBY
 end
-
