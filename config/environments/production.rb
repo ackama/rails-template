@@ -41,14 +41,12 @@ insert_into_file "config/environments/production.rb",
     # | Seconds  | Days     |
     # |----------|----------|
     # | 86400    | 1 day    |
-    # | 15552000 | 180 days |
     # | 31536000 | 365 days |
     #
     # Overview of Cache-control values:
     #
     #     max-age=<seconds>
-    #         The maximum amount of time a resource is considered fresh. Unlike
-    #         Expires, this directive is relative to the time of the request.
+    #         The maximum amount of time a resource is considered fresh.
     #
     #     s-maxage=<seconds>
     #         Overrides max-age or the Expires header, but only for shared
@@ -58,7 +56,8 @@ insert_into_file "config/environments/production.rb",
     #
     # Our Cache-Control header:
     #
-    # * It tells all caches (both proxies like Cloudflare and the users web browser) that the asset can be cached.
+    # * It tells all caches (both proxies like Cloudflare and the users web
+    #   browser) that the asset can be cached.
     # * It tells shared caches (e.g. Cloudflare) that they can cache it for 365 days
     # * It tells browsers that they should cache for 365 days
     #
@@ -66,8 +65,7 @@ insert_into_file "config/environments/production.rb",
     # want Cloudflare to cache differently than then browser.
     #
     config.public_file_server.headers = {
-      "Cache-Control" => "public, s-maxage=31536000, max-age=31536000",
-      "Expires" => "#{1.year.from_now.to_formatted_s(:rfc822)}"
+      "Cache-Control" => "public, s-maxage=31536000, max-age=31536000"
     }
 
   RUBY
