@@ -38,11 +38,6 @@ insert_into_file "config/environments/production.rb",
     # Ensure that Rails sets appropriate caching headers on static assets if
     # Rails is serving static assets in production e.g. on Heroku
     #
-    # | Seconds  | Days     |
-    # |----------|----------|
-    # | 86400    | 1 day    |
-    # | 31536000 | 365 days |
-    #
     # Overview of Cache-control values:
     #
     #     max-age=<seconds>
@@ -65,7 +60,7 @@ insert_into_file "config/environments/production.rb",
     # want Cloudflare to cache differently than then browser.
     #
     config.public_file_server.headers = {
-      "Cache-Control" => "public, s-maxage=31536000, max-age=31536000"
+      "Cache-Control" => "public, s-maxage=#{365.days.seconds}, max-age=#{365.days.seconds}"
     }
 
   RUBY
