@@ -30,3 +30,38 @@ end
 gsub_file "config/environments/production.rb",
           "config.log_level = :debug",
           'config.log_level = ENV.fetch("LOG_LEVEL", "info").to_sym'
+
+insert_into_file "config/environments/production.rb",
+  after: /.*config\.public_file_server\.enabled.*\n/ do
+  <<~'RUBY'
+
+    # Ensure that Rails sets appropriate caching headers on static assets if
+    # Rails is serving static assets in production e.g. on Heroku
+    #
+    # Overview of Cache-control values:
+    #
+    #     max-age=<seconds>
+    #         The maximum amount of time a resource is considered fresh.
+    #
+    #     s-maxage=<seconds>
+    #         Overrides max-age or the Expires header, but only for shared
+    #         caches (e.g., proxies). Ignored by private caches.
+    #
+    #     More info: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+    #
+    # Our Cache-Control header:
+    #
+    # * It tells all caches (both proxies like Cloudflare and the users web
+    #   browser) that the asset can be cached.
+    # * It tells shared caches (e.g. Cloudflare) that they can cache it for 365 days
+    # * It tells browsers that they should cache for 365 days
+    #
+    # Cloudflare will respect s-maxage if it is set so change that value if you
+    # want Cloudflare to cache differently than then browser.
+    #
+    config.public_file_server.headers = {
+      "Cache-Control" => "public, s-maxage=#{365.days.seconds}, max-age=#{365.days.seconds}"
+    }
+
+  RUBY
+end
