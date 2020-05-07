@@ -8,10 +8,19 @@ insert_into_file "config/environments/production.rb",
   RUBY
 end
 
-uncomment_lines "config/environments/production.rb", /config\.force_ssl = true/
 gsub_file "config/environments/production.rb",
-          "config.force_ssl = true",
-          'config.force_ssl = ENV["RAILS_FORCE_SSL"].present?'
+          "# config.force_ssl = true",
+          <<~RUBY
+            ##
+            # `force_ssl` defaults to on. Turn off `force_ssl` if (and only if) RAILS_FORCE_SSL=false.
+            #
+            config.force_ssl = if ENV.fetch("RAILS_FORCE_SSL", "").casecmp("false").zero?
+                                 false
+                               else
+                                 true
+                               end
+          RUBY
+
 
 insert_into_file "config/environments/production.rb",
                  after: /# config\.action_mailer\.raise_deliv.*\n/ do
