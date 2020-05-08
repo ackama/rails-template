@@ -2,17 +2,63 @@ require "json"
 
 source_paths.unshift(File.dirname(__FILE__))
 
-run "mv app/assets app/frontend"
-run "mkdir app/assets"
-run "mv app/frontend/config app/assets/config"
+# Configure app/assets
 
-run "mv app/javascript/* app/frontend"
-run "rm -rf app/javascript"
-run "rm .browserslistrc"
-apply "config/template.rb"
-apply "app/template.rb"
+remove_file "app/assets/config/manifest.js"
+create_file "app/assets/config/manifest.js" do
+  <<~EO_CONTENT
+  // This file must exist for assets pipeline compatibility.
+  EO_CONTENT
+end
+remove_dir "app/assets/stylesheets"
+remove_dir "app/assets/images"
+
+# Configure app/frontend
+
+run "mv app/javascript app/frontend"
+gsub_file "config/webpacker.yml", "source_path: app/javascript", "source_path: app/frontend", force: true
+empty_directory_with_keep_file "app/frontend/images"
+copy_file "app/frontend/stylesheets/application.scss"
+copy_file "app/frontend/stylesheets/_elements.scss"
+append_to_file "app/frontend/packs/application.js" do
+  <<~EO_CONTENT
+
+  import '../stylesheets/application.scss';
+  EO_CONTENT
+end
+
+enable_imgs_src = <<~EO_SRC
+  //
+  // const images = require.context('../images', true)
+  // const imagePath = (name) => images(name, true)
+EO_SRC
+enable_imgs_replacement = <<~EO_REPLACEMENT
+
+  const images = require.context('../images', true);
+  // eslint-disable-next-line no-unused-vars
+  const imagePath = name => images(name, true);
+EO_REPLACEMENT
+gsub_file "app/frontend/packs/application.js", enable_imgs_src, enable_imgs_replacement
+
+# Configure app/views
+gsub_file "app/views/layouts/application.html.erb",
+          "<%= stylesheet_link_tag(",
+          "<%= stylesheet_pack_tag(",
+          force: true
+
+body_open_tag_with_img_example = <<~EO_IMG_EXAMPLE
+  <body>
+
+      <%
+        # An example of how to load an image via Webpacker. This image is in
+        # app/frontend/images/example.png
+      %>
+      <%# image_pack_tag "example.png", alt: "Example Image" %>
+EO_IMG_EXAMPLE
+gsub_file "app/views/layouts/application.html.erb", "<body>", body_open_tag_with_img_example, force: true
 
 # Javascript code linting and formatting
+run "rm .browserslistrc"
 run "yarn add --dev eslint eslint-plugin-prettier eslint-config-prettier eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y prettier prettier-config-ackama"
 copy_file ".eslintrc.js"
 template ".eslintignore.tt"
