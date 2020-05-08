@@ -65,7 +65,7 @@ env:
   # - ''                     (Set devise email 'From:' address)
   # - 'Yes'                  (Should devise do git commit?)
   - VARIANT=devise
-    GENERATOR_INPUT="example.com\nstaging.example.com\nNo\nNo\n\nYes\n\nYes\n"
+    GENERATOR_INPUT="example.com\nstaging.example.com\nNo\nNo\n\nYes\nYes\nNo\n"
 script:
   - ./template-test/ci-run.sh
 notifications:

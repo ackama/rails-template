@@ -39,11 +39,9 @@ run "bundle exec rails generate devise:views users"
 #
 print_header "Tweaking config/initializers/devise.rb"
 
-mail_sender =  ask_with_default("What 'From:' addresss should this app use for emails from Devise?", :blue, "change-me@example.com")
-
 gsub_file "config/initializers/devise.rb",
           "  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'",
-          "  config.mailer_sender = '#{mail_sender}'"
+          "  config.mailer_sender = Rails.application.secrets.mail_from"
 
 gsub_file "config/initializers/devise.rb",
           "  # config.scoped_views = false",
