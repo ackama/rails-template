@@ -1,6 +1,7 @@
 require:
   - rubocop-performance
   - rubocop-rails
+  - rubocop-rspec
 
 inherit_from:
   - https://bitbucket.org/rabidtech/rabid-dotfiles/raw/master/.rubocop.yml
@@ -100,3 +101,9 @@ Style/StringLiterals:
 
 Style/TrivialAccessors:
   AllowPredicates: true
+
+RSpec/MultipleExpectations:
+  Max: 10
+
+RSpec/ExampleLength:
+  Max: 20

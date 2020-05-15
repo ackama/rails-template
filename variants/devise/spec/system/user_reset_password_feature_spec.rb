@@ -13,7 +13,7 @@ RSpec.describe "Users can reset passwords", type: :system do
 
     before { visit new_user_session_path }
 
-    context "existing users" do
+    context "with existing users" do
       before(:each) do
         FactoryBot.create(:user, email: email_of_existing_user, password: valid_password)
       end
@@ -37,7 +37,7 @@ RSpec.describe "Users can reset passwords", type: :system do
       end
     end
 
-    context "unknown users" do
+    context "with unknown users" do
       it "unknown users get an error when they try to reset a password" do
         click_link "Forgot your password?"
         fill_in "Email", with: email_of_unknown_user
