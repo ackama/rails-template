@@ -11,6 +11,7 @@ copy_file "config/initializers/generators.rb"
 copy_file "config/initializers/rotate_log.rb"
 copy_file "config/initializers/version.rb"
 copy_file "config/initializers/lograge.rb"
+copy_file "config/initializers/health_checks.rb"
 
 gsub_file "config/initializers/filter_parameter_logging.rb", /\[:password\]/ do
   "%w[password secret session cookie csrf]"
@@ -20,6 +21,10 @@ apply "config/environments/development.rb"
 apply "config/environments/production.rb"
 apply "config/environments/test.rb"
 template "config/environments/staging.rb.tt"
+
+route <<~HEALTH_CHECK_ROUTES
+  mount OkComputer::Engine, at: "/healthchecks"
+HEALTH_CHECK_ROUTES
 
 route <<-EO_ROUTES
   ##
