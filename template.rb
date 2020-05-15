@@ -60,7 +60,7 @@ def apply_template!
     apply "variants/sidekiq/template.rb" if apply_variant?(:sidekiq)
 
     binstubs = %w[
-      brakeman bundler bundler-audit rubocop 
+      brakeman bundler bundler-audit rubocop
     ]
     run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')} --force"
 
@@ -74,6 +74,10 @@ def apply_template!
         git remote: "add origin #{git_repo_url.shellescape}"
       end
     end
+
+    # we deliberately place this after the initial git commit because it
+    # contains a lot of changes and adds its own git commit
+    apply "variants/devise/template.rb" if apply_variant?(:devise)
   end
 end
 

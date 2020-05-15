@@ -34,7 +34,10 @@
   <body>
 
     <%%= render("application/flash") %>
-    <%%= yield %>
+
+    <div role="main">
+      <%%= yield %>
+    </div>
 
   </body>
 </html>
