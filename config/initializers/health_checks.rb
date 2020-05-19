@@ -5,9 +5,13 @@ username = ENV["HEALTHCHECK_HTTP_BASIC_AUTH_USERNAME"] || ENV["HTTP_BASIC_AUTH_U
 password = ENV["HEALTHCHECK_HTTP_BASIC_AUTH_PASSWORD"] || ENV["HTTP_BASIC_AUTH_PASSWORD"]
 OkComputer.require_authentication(username, password) if username && password
 
+# Sets the app version from known Heroku environment variables
+ENV["SHA"] ||= ENV["HEROKU_SLUG_COMMIT"]
+
 # Checks the deployed commit. This is discovered from:
 # A 'REVISION' file that is created during a Capistrano deploy
 # ENV['SHA'] that can be set within e.g. a Docker container
+# ENV['HEROKU_SLUG_COMMIT'] set above
 OkComputer::Registry.register "app_version", OkComputer::AppVersionCheck.new
 
 # Additional checks can be added, e.g.
