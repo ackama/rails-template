@@ -15,7 +15,7 @@ RSpec.describe "User sign-in", type: :system do
     visit new_user_session_path
   end
 
-  context "A user with valid account details" do
+  context "when a user has valid account details" do
     it "can sign-in and sign-out successfully" do
       # when we fill in the sign-in form
       fill_in "Email", with: email
@@ -41,7 +41,7 @@ RSpec.describe "User sign-in", type: :system do
       expect(page).to have_text("Signed out successfully")
     end
 
-    context "when user ticks the 'remember me' box on the sign-in page" do
+    context "when a user ticks the 'remember me' box on the sign-in page" do
       it "user gets a new cookie which allows their login to persist for two weeks" do
         # when we fill in the sign-in form **and** check the "Remember me" box
         fill_in "Email", with: email
@@ -78,7 +78,7 @@ RSpec.describe "User sign-in", type: :system do
     end
   end
 
-  context "A user with invalid account details" do
+  context "when a user has invalid account details" do
     context "when the user fails to login" do
       it "a helpful flash message is shown on the sign-in page" do
         # when we fill in the sign-in form with a bad password

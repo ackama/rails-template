@@ -9,7 +9,9 @@ RSpec.describe User, type: :model do
 
   it "is valid when created with valid attributes" do
     valid_password = "aaaabbbbccccdddd"
-    user = User.new(email: "picard@uss1701d.com", password: valid_password, password_confirmation: valid_password)
+    user = User.new(email: "picard@uss1701d.com",
+                    password: valid_password,
+                    password_confirmation: valid_password)
     expect(user).to be_valid
   end
 end
