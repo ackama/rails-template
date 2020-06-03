@@ -14,6 +14,7 @@ gem "turbolinks"<%= gemfile_requirement("turbolinks") %>
 <% end -%>
 gem "webpacker"<%= gemfile_requirement("webpacker") %>
 gem "lograge"
+gem "okcomputer"
 
 gem "rack-canonical-host", "~> 0.2.3"
 

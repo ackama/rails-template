@@ -114,4 +114,15 @@ RSpec.configure do |config|
   #   # test failures related to randomization by passing the same `--seed` value
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
+  
+  # The --only-failures option filters what examples are run so that only those
+  # that failed the last time they ran are executed. To use this option, you
+  # first have to configure config.example_status_persistence_file_path, which
+  # RSpec will use to store the status of each example the last time it ran.
+  # There's also a --next-failure option, which is shorthand for --only-failures
+  # --fail-fast --order defined. It allows you to repeatedly focus on just one
+  # of the currently failing examples, then move on to the next failure, etc.
+  # Either of these options can be combined with another a directory or file
+  # name; RSpec will run just the failures from the set of loaded examples.
+  config.example_status_persistence_file_path = "tmp/rspec_example_status_persistence_file.txt"
 end
