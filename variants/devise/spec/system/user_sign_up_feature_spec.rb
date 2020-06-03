@@ -8,7 +8,7 @@ RSpec.describe "User sign-up", type: :system do
 
   let(:valid_email) { "miles.obrien@transporterrm3.enterprise.uss" }
   let(:invalid_email) { "miles.obrien@" }
-  let(:valid_password) { "aabbccdd" }
+  let(:valid_password) { "aaaabbbbccccdddd" }
   let(:too_short_password) { "aabbcc" }
 
   before { visit new_user_registration_path }
@@ -46,7 +46,7 @@ RSpec.describe "User sign-up", type: :system do
   describe "password validation" do
     it "users are informed about the password length requirements" do
       # we expect the sign-in page to dispaly a message about password requirements
-      expect(page).to have_text("Password (8 characters minimum)")
+      expect(page).to have_text("Password (16 characters minimum)")
     end
 
     it "passwords are validated for length" do
@@ -59,7 +59,7 @@ RSpec.describe "User sign-up", type: :system do
       # we expect to now be on the user registration page ...
       expect(page.current_path).to eq(user_registration_path)
       # ... with a helpful flash message
-      expect(page).to have_text("Password is too short (minimum is 8 characters)")
+      expect(page).to have_text("Password is too short (minimum is 16 characters)")
     end
   end
 end

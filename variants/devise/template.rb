@@ -28,6 +28,27 @@ run "bundle exec rails generate devise:install"
 print_header "Generating User model with devise"
 run "bundle exec rails generate devise User"
 
+gsub_file "app/models/user.rb",
+          ":validatable",
+          ":validatable, :lockable"
+
+devise_migration_filename = Dir.children("db/migrate").find { |filename| filename.match?(/_devise_create_users\.rb\z/) }
+devise_migration_path = "db/migrate/#{devise_migration_filename}"
+
+print_header "Tweaking auto-generated devise migration '#{devise_migration_path}'"
+gsub_file devise_migration_path,
+          "      # t.integer  :failed_attempts",
+          "      t.integer  :failed_attempts"
+gsub_file devise_migration_path,
+          "      # t.string   :unlock_token",
+          "      t.string   :unlock_token"
+gsub_file devise_migration_path,
+          "      # t.datetime :locked_at",
+          "      t.datetime :locked_at"
+gsub_file devise_migration_path,
+          "      # add_index :users, :unlock_token",
+          "      add_index :users, :unlock_token"
+
 print_header "Running db migration"
 run "bundle exec rails db:migrate"
 
@@ -49,7 +70,11 @@ gsub_file "config/initializers/devise.rb",
 
 gsub_file "config/initializers/devise.rb",
           "  config.password_length = 6..128",
-          "  config.password_length = 8..128"
+          "  config.password_length = 16..128"
+
+gsub_file "config/initializers/devise.rb",
+          "  # config.paranoid = true",
+          "  config.paranoid = true"
 
 ##
 # Add a block to config/routes.rb demonstrating how to create authenticated
