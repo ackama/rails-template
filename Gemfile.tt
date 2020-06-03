@@ -25,6 +25,7 @@ group :development do
   gem "rubocop", ">= 0.70.0", require: false
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
+  gem "rubocop-rspec", require: false
   gem "letter_opener"
 
   # Required in Rails 5 by ActiveSupport::EventedFileUpdateChecker
