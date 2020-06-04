@@ -73,15 +73,9 @@ EO_ROUTES
 print_header "Adding example devise links to the homepage"
 gsub_file "app/views/layouts/application.html.erb",
   "<body>",
-  <<~ERB
+  <<~'ERB'
     <body>
-
-    <%
-    # This block uses the "style" attribute to make it easy for you to
-    # delete. This isn't a suggestion that inline styles are a good idea
-    # mmmkay.
-    %>
-    <nav style="border: 1px solid #666; padding: 1em;">
+    <nav>
     <h1>Example devise nav</h1>
     <ul>
       <li>
@@ -90,7 +84,7 @@ gsub_file "app/views/layouts/application.html.erb",
     </ul>
     <% if current_user %>
       <p>
-      You are <span style="color: green">Signed in</span>
+      You are <strong>Signed in</strong>
       </p>
       <ul>
         <li>
@@ -99,7 +93,7 @@ gsub_file "app/views/layouts/application.html.erb",
       </ul>
     <% else %>
       <p>
-      You are <span style="color: darkred">Not signed in</span>
+      You are <strong>Not signed in</strong>
       </p>
       <ul>
         <li>
