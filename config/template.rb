@@ -11,6 +11,7 @@ copy_file "config/initializers/generators.rb"
 copy_file "config/initializers/rotate_log.rb"
 copy_file "config/initializers/version.rb"
 copy_file "config/initializers/lograge.rb"
+copy_file "config/initializers/content_security_policy.rb", force: true
 copy_file "config/initializers/health_checks.rb"
 
 gsub_file "config/initializers/filter_parameter_logging.rb", /\[:password\]/ do
