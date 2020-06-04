@@ -7,7 +7,7 @@ RSpec.describe "User sign-in", type: :system do
   end
 
   let(:email) { "miles.obrien@transporterrm3.enterprise.uss" }
-  let(:password) { "aabbccdd" }
+  let(:password) { "aaaabbbbccccdddd" }
   let(:user) { FactoryBot.create(:user, email: email, password: password) }
 
   before(:each) do

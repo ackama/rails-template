@@ -8,7 +8,7 @@ RSpec.describe User, type: :model do
   end
 
   it "is valid when created with valid attributes" do
-    valid_password = "aabbccdd"
+    valid_password = "aaaabbbbccccdddd"
     user = User.new(email: "picard@uss1701d.com",
                     password: valid_password,
                     password_confirmation: valid_password)
