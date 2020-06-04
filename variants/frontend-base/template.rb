@@ -57,7 +57,50 @@ body_open_tag_with_img_example = <<~EO_IMG_EXAMPLE
 EO_IMG_EXAMPLE
 gsub_file "app/views/layouts/application.html.erb", "<body>", body_open_tag_with_img_example, force: true
 
+# Setup Sentry
+# ############
+
+run "yarn add @sentry/browser"
+run "yarn add dotenv-webpack -D"
+
+gsub_file "config/webpack/environment.js",
+  "module.exports = environment",
+  <<~'EO_JS'
+    const Dotenv = require('dotenv-webpack');
+
+    environment.plugins.prepend('Dotenv', new Dotenv());
+
+    module.exports = environment;
+  EO_JS
+
+append_to_file "app/frontend/packs/application.js" do
+  <<~'EO_JS'
+
+    // Initialize Sentry Error Reporting
+    //
+    // Import all your application's JS after this section because we need Sentry
+    // to be initialized **before** we import any of our actual JS so that Sentry
+    // can report errors from it.
+    //
+    import * as Sentry from '@sentry/browser';
+    Sentry.init({ dsn: process.env.SENTRY_DSN });
+
+    // Uncomment this Sentry by sending an exception every time the page loads.
+    // Obviously this is a very noisy activity and we do have limits on Sentry so
+    // you should never do this on a deployed environment.
+    //
+    // Sentry.captureException(new Error('Away-team to Enterprise, two to beam directly to sick bay...'));
+
+    // Import all your application's JS here
+    //
+    // import '../javascript/example-1.js';
+    // import { someFunc } from '../javascript/funcs.js';
+  EO_JS
+end
+
 # Javascript code linting and formatting
+# ######################################
+
 run "rm .browserslistrc"
 run "yarn add --dev eslint eslint-plugin-prettier eslint-config-prettier eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y prettier prettier-config-ackama"
 copy_file ".eslintrc.js"
