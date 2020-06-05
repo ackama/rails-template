@@ -98,6 +98,10 @@ append_to_file "app/frontend/packs/application.js" do
   EO_JS
 end
 
+gsub_file "config/initializers/content_security_policy.rb",
+  /# policy.report_uri ".+"/,
+  'policy.report_uri ENV.fetch("SENTRY_CSP_HEADER_REPORT_ENDPOINT")'
+
 # Javascript code linting and formatting
 # ######################################
 
