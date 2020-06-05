@@ -83,7 +83,10 @@ append_to_file "app/frontend/packs/application.js" do
     // can report errors from it.
     //
     import * as Sentry from '@sentry/browser';
-    Sentry.init({ dsn: process.env.SENTRY_DSN });
+    Sentry.init({
+      dsn: process.env.SENTRY_DSN,
+      environment: process.env.SENTRY_ENV
+    });
 
     // Uncomment this Sentry by sending an exception every time the page loads.
     // Obviously this is a very noisy activity and we do have limits on Sentry so
