@@ -9,5 +9,5 @@ Raven.configure do |config|
 
   # We expect SENTRY_ENV to always be set so fail with an error if it is
   # missing
-  config.current_environment = ENV.fetch("SENTRY_ENV")
+  config.current_environment = ENV.fetch("SENTRY_ENV", Rails.env)
 end
