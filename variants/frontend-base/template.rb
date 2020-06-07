@@ -85,7 +85,7 @@ append_to_file "app/frontend/packs/application.js" do
     import * as Sentry from '@sentry/browser';
     Sentry.init({
       dsn: process.env.SENTRY_DSN,
-      environment: process.env.SENTRY_ENV
+      environment: process.env.SENTRY_ENV || process.env.RAILS_ENV
     });
 
     // Uncomment this Sentry by sending an exception every time the page loads.
