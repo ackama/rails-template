@@ -33,7 +33,7 @@ Rails.application.config.content_security_policy do |policy|
   #
   # * This example adds the external host to the `default_src` policy meaning
   #   that any kind of asset can be loaded from it. You should be more
-  #   targetted if you can e.g. if the external host is only going to serve
+  #   targeted if you can e.g. if the external host is only going to serve
   #   images then use `policy.img_src` instead.
   # * IMPORTANT: you can't just uncomment these lines to make this work - you
   #   need to merge the example into your existing call to the appropriate
