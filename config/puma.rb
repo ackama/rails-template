@@ -22,6 +22,17 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 #
 workers_count = ENV.fetch("WEB_CONCURRENCY") { 1 }.to_i
 
+if ENV.fetch("RAILS_ENV") == "development" && ENV.fetch("LOCAL_SSL_ENABLE", "").downcase == "yes"
+  local_ssl_port = ENV.fetch("LOCAL_SSL_PORT", "3001")
+  local_ssl_options = {
+    key: ENV.fetch("LOCAL_SSL_PRIVATE_KEY_FILE"),
+    cert: ENV.fetch("LOCAL_SSL_CERT_FILE"),
+    verify_mode: "none"
+  }
+
+  ssl_bind "127.0.0.1", local_ssl_port, local_ssl_options
+end
+
 if workers_count > 1
   workers workers_count
 

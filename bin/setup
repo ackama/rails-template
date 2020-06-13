@@ -15,6 +15,10 @@ def setup!
     run  "bin/rake db:create:all"
     run  "bin/rake db:migrate"
     run  "bin/rake db:seed"
+
+    run "mkdir .ssl"
+    # TODO: figure out how to use the env vars for these paths 
+    run  "mkcert --cert-file .ssl/dev-cert.pem --key-file .ssl/dev-private-key.pem localhost 127.0.0.1"
   end
 end
 
