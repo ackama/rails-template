@@ -1,17 +1,18 @@
 require "rails_helper"
 
 RSpec.describe "User sign-up", type: :system do
-  describe "accessibility" do
-    before { visit new_user_registration_path }
-    it_behaves_like "an accessible page"
-  end
-
-  let(:valid_email) { "miles.obrien@transporterrm3.enterprise.uss" }
-  let(:invalid_email) { "miles.obrien@" }
-  let(:valid_password) { "aaaabbbbccccdddd" }
   let(:too_short_password) { "aabbcc" }
+  let(:valid_password) { "aaaabbbbccccdddd" }
+  let(:invalid_email) { "miles.obrien@" }
+  let(:valid_email) { "miles.obrien@transporterrm3.enterprise.uss" }
 
   before { visit new_user_registration_path }
+
+  describe "accessibility" do
+    before { visit new_user_registration_path }
+
+    it_behaves_like "an accessible page"
+  end
 
   it "Users can sign-up" do
     # when we sign up with valid credentials
@@ -21,7 +22,7 @@ RSpec.describe "User sign-up", type: :system do
     click_button "Sign up"
 
     # we expect to be redirected to the home page ...
-    expect(page.current_path).to eq(root_path)
+    expect(page).to have_current_path(root_path, ignore_query: true)
     # ... with a helpful flash message
     expect(page).to have_text("You have signed up successfully")
     # and to be already signed in
@@ -37,7 +38,7 @@ RSpec.describe "User sign-up", type: :system do
       click_button "Sign up"
 
       # we expect to now be on the user registration page ...
-      expect(page.current_path).to eq(user_registration_path)
+      expect(page).to have_current_path(user_registration_path, ignore_query: true)
       # ... with a helpful flash message
       expect(page).to have_text("Email is invalid")
     end
@@ -57,7 +58,7 @@ RSpec.describe "User sign-up", type: :system do
       click_button "Sign up"
 
       # we expect to now be on the user registration page ...
-      expect(page.current_path).to eq(user_registration_path)
+      expect(page).to have_current_path(user_registration_path, ignore_query: true)
       # ... with a helpful flash message
       expect(page).to have_text("Password is too short (minimum is 16 characters)")
     end
