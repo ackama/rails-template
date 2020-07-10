@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe "Users can reset passwords", type: :system do
   describe "accessibility" do
     before { visit new_user_password_path }
+
     it_behaves_like "an accessible page"
   end
 
@@ -14,7 +15,7 @@ RSpec.describe "Users can reset passwords", type: :system do
     before { visit new_user_session_path }
 
     context "with existing users" do
-      before(:each) do
+      before do
         FactoryBot.create(:user, email: email_of_existing_user, password: valid_password)
       end
 
@@ -24,7 +25,7 @@ RSpec.describe "Users can reset passwords", type: :system do
         click_button "Send me reset password instructions"
 
         # we expect to be redirected to the sign-in page ...
-        expect(page.current_path).to eq(new_user_session_path)
+        expect(page).to have_current_path(new_user_session_path, ignore_query: true)
         # ...with a helpful flash message
         expect(page).to have_text("If your email address exists in our database, you will receive a password recovery")
 
@@ -44,7 +45,7 @@ RSpec.describe "Users can reset passwords", type: :system do
         click_button "Send me reset password instructions"
 
         # we expect to be redirected to the user sign-in page ...
-        expect(page.current_path).to eq(new_user_session_path)
+        expect(page).to have_current_path(new_user_session_path, ignore_query: true)
         # ... with a helpful flash message
         expect(page).to have_text("If your email address exists in our database, you will receive a password recovery")
       end

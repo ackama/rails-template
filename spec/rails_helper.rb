@@ -23,7 +23,7 @@ require "selenium-webdriver"
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
@@ -38,10 +38,10 @@ Capybara.register_driver :chrome do |app|
   options = Selenium::WebDriver::Chrome::Options.new
 
   options.add_argument("--window-size=1920,1080")
-  
+
 
   # Add other Chrome arguments here
-  
+
   # Docker compatibility
   options.add_argument("--headless")
   options.add_argument("--no-sandbox")

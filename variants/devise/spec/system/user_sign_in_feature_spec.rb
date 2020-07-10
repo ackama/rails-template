@@ -1,18 +1,19 @@
 require "rails_helper"
 
 RSpec.describe "User sign-in", type: :system do
-  describe "accessibility" do
-    before { visit new_user_session_path }
-    it_behaves_like "an accessible page"
-  end
-
-  let(:email) { "miles.obrien@transporterrm3.enterprise.uss" }
-  let(:password) { "aaaabbbbccccdddd" }
   let(:user) { FactoryBot.create(:user, email: email, password: password) }
+  let(:password) { "aaaabbbbccccdddd" }
+  let(:email) { "miles.obrien@transporterrm3.enterprise.uss" }
 
-  before(:each) do
+  before do
     user # create the user
     visit new_user_session_path
+  end
+
+  describe "accessibility" do
+    before { visit new_user_session_path }
+
+    it_behaves_like "an accessible page"
   end
 
   context "when a user has valid account details" do
@@ -23,7 +24,7 @@ RSpec.describe "User sign-in", type: :system do
       click_button "Log in"
 
       # we expect to be redirected to the home page with a helpful flash message
-      expect(page.current_path).to eq(root_path)
+      expect(page).to have_current_path(root_path, ignore_query: true)
       expect(page).to have_text("Signed in successfully")
 
       # we expect there to be exactly one cookie set and that cookie has a name
@@ -37,7 +38,7 @@ RSpec.describe "User sign-in", type: :system do
 
       # we expect to still be on the home page with a flash message
       # telling us we have signed out.
-      expect(page.current_path).to eq(root_path)
+      expect(page).to have_current_path(root_path, ignore_query: true)
       expect(page).to have_text("Signed out successfully")
     end
 
@@ -50,14 +51,14 @@ RSpec.describe "User sign-in", type: :system do
         click_button "Log in"
 
         # we expect to be redirected to the home page with a helpful flash message
-        expect(page.current_path).to eq(root_path)
+        expect(page).to have_current_path(root_path, ignore_query: true)
         expect(page).to have_text("Signed in successfully")
 
         # we expect there to be exactly two cookies set and that one of them
         # has the name "remember_user_token"
         response_cookies = Capybara.current_session.driver.request.cookies
         expect(response_cookies.keys.length).to eq(2)
-        expect(response_cookies["remember_user_token"]).to_not eq(nil)
+        expect(response_cookies["remember_user_token"]).not_to eq(nil)
 
         # We expect the "remember me" cookie to have a 14 day expiry
         remember_me_cookie_expiry_date = JSON
@@ -88,7 +89,7 @@ RSpec.describe "User sign-in", type: :system do
 
         # we expect to still be on the sign-in page with a helpful flash message
         # telling us something went wrong
-        expect(page.current_path).to eq(new_user_session_path)
+        expect(page).to have_current_path(new_user_session_path, ignore_query: true)
         expect(page).to have_text("Invalid Email or password")
       end
     end
