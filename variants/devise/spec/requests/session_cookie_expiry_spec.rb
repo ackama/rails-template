@@ -13,7 +13,7 @@ RSpec.describe "Session cookies are expired immediately after logout", type: :re
     get edit_user_registration_path
 
     # ... then it works.
-    expect(response).to have_http_status(200)
+    expect(response).to have_http_status(:ok)
     expect(response.body).to match(/Edit User/)
 
     # Save the signed-in user's session cookie
@@ -26,7 +26,7 @@ RSpec.describe "Session cookies are expired immediately after logout", type: :re
     get edit_user_registration_path
 
     # ... then we are redirected to the sign-in page
-    expect(response).to have_http_status(302)
+    expect(response).to have_http_status(:found)
     expect(response.headers["Location"]).to eq(new_user_session_url)
 
     # When we try to view the private page, this time passing the old session
@@ -35,9 +35,7 @@ RSpec.describe "Session cookies are expired immediately after logout", type: :re
 
     # ... then we are still redirected to the sign-in page (this demonstrates
     # that session cookies are properly invalidated when a user signs out)
-    expect(response).to have_http_status(302)
+    expect(response).to have_http_status(:found)
     expect(response.headers["Location"]).to eq(new_user_session_url)
   end
 end
-
-
