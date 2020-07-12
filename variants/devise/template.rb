@@ -76,6 +76,10 @@ gsub_file "config/initializers/devise.rb",
           "  # config.paranoid = true",
           "  config.paranoid = true"
 
+gsub_file "config/initializers/devise.rb",
+  /  # config.secret_key = '.+'/,
+  "  # config.secret_key = 'do_not_put_secrets_in_source_control_please'"
+
 ##
 # Add a block to config/routes.rb demonstrating how to create authenticated
 # routes
