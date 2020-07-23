@@ -65,7 +65,12 @@ RSpec.describe "User sign-in", type: :system do
                                          .parse(Base64.decode64(response_cookies.fetch("remember_user_token")))
                                          .dig("_rails", "exp")
                                          .to_date
-        expect(Integer(remember_me_cookie_expiry_date - Time.zone.today)).to eq(14)
+
+        # The remember_me cookie expriy is in UTC timezone so we need to
+        # compare it with the date as it is right now in UTC (not in NZ)
+        today_in_utc = Time.current.utc.to_date
+
+        expect(Integer(remember_me_cookie_expiry_date - today_in_utc)).to eq(14)
 
         # when we click on the sign out link
         click_link "Sign out"
