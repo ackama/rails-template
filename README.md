@@ -45,7 +45,7 @@ To generate a Rails application using this template, pass the `--template` optio
 rails new blog \
   --no-rc \
   --database=postgresql \
-  --template=https://raw.githubusercontent.com/ackama/rails-template/master/template.rb
+  --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
 _Remember that options must go after the name of the application._ The only
@@ -83,7 +83,7 @@ To make this the default Rails application template on your system, create a
 
 ```
 -d postgresql
--m https://raw.githubusercontent.com/ackama/rails-template/master/template.rb
+-m https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
 Once you’ve installed this template as your default, then all you have to do is run:
