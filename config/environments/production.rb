@@ -36,7 +36,7 @@ insert_into_file "config/environments/production.rb",
 
   config.action_mailer.smtp_settings = {
     address: ENV.fetch("SMTP_HOSTNAME"),
-    port: ENV.fetch("SMTP_PORT"), 
+    port: ENV.fetch("SMTP_PORT", 587), 
     enable_starttls_auto: true,
     user_name: ENV.fetch("SMTP_USERNAME"),
     password: ENV.fetch("SMTP_PASSWORD"),
