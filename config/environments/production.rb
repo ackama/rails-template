@@ -33,6 +33,17 @@ insert_into_file "config/environments/production.rb",
     protocol: "https"
   }
   config.action_mailer.asset_host = "https://#{production_hostname}"
+
+  config.action_mailer.smtp_settings = {
+    address: ENV.fetch("SMTP_HOSTNAME"),
+    port: ENV.fetch("SMTP_PORT"), 
+    enable_starttls_auto: true,
+    user_name: ENV.fetch("SMTP_USERNAME"),
+    password: ENV.fetch("SMTP_PASSWORD"),
+    authentication: "login",
+    domain: production_hostname
+  }
+
   RUBY
 end
 
