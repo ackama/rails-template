@@ -57,6 +57,9 @@ def apply_template!
 
     # Apply variants after setup and initial install, but before commit
     apply "variants/accessibility/template.rb"
+    # The accessibility template brings in the lighthouse and 
+    # lighthouse matcher parts we need to run performance specs 
+    apply "variants/performance/template.rb"
     apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
     apply "variants/sidekiq/template.rb" if apply_variant?(:sidekiq)
 
