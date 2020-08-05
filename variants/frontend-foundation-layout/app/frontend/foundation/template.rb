@@ -10,6 +10,5 @@ append_to_file "app/frontend/foundation/foundation_and_overrides.scss" do
   @import "components/header";
   @import "components/navigation";
   @import "components/search-bar";
-  @import "components/social-media";
   MODULES
 end

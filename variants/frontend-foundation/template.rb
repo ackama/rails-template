@@ -1,7 +1,6 @@
 source_paths.unshift(File.dirname(__FILE__))
 
 run "yarn add foundation-sites jquery"
-run "yarn add --dev font-awesome"
 
 directory "app/frontend/foundation"
 
