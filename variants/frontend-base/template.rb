@@ -149,6 +149,19 @@ package_json["scripts"] = {
 
 File.write("./package.json", JSON.generate(package_json))
 
+#fix js lint issues with generated defaults before linting runs
+gsub_file "app/frontend/channels/index.js",
+          "/_channel\.js$/",
+          "/_channel\.js$/u"
+
+gsub_file "babel.config.js",
+          "module.exports = function (api) {",
+          "module.exports = api => {"
+
+prepend_to_file "postcss.config.js" do
+  "/* eslint-disable global-require */"
+end
+
 # must be run after prettier is installed and has been configured by setting
 # the 'prettier' key in package.json
 run "yarn run js-lint-fix"
