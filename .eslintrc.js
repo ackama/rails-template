@@ -10,13 +10,14 @@ module.exports = {
   env: { browser: true, commonjs: true, node: true, es6: true },
   plugins: ['react', 'react-hooks', 'jsx-a11y', 'prettier', 'eslint-comments'],
   extends: [
-    'eslint:recommended',
+    'ackama',
     'plugin:eslint-comments/recommended',
     'plugin:prettier/recommended',
     'plugin:react/recommended',
     'plugin:jsx-a11y/strict',
     'prettier/react'
   ],
+  ignorePatterns: ["node_modules/", "coverage/", "public/", "bundle/", "vendor/", "tmp/"],
   settings: {
     react: { version: 'detect' }
   },

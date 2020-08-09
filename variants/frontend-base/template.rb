@@ -126,7 +126,7 @@ gsub_file "config/initializers/content_security_policy.rb",
 # ######################################
 
 run "rm .browserslistrc"
-run "yarn add --dev eslint eslint-plugin-prettier eslint-config-prettier eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y prettier prettier-config-ackama"
+run "yarn add --dev eslint eslint-config-ackama eslint-plugin-import eslint-plugin-prettier prettier prettier-config-ackama eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y"
 copy_file ".eslintrc.js"
 template ".eslintignore.tt"
 template ".prettierignore.tt"
