@@ -28,6 +28,16 @@ This template currently works with:
 - PostgreSQL
 - chromedriver
 
+If you are using Windows Subsystem for Linux (WSL) and using Windows
+applications to work with code (rather than working entirely in WSL), you may
+wish to set an environment variable named `SKIP_INSTALLING_OVERCOMMIT_IN_SETUP`
+to `true` when generating the template (e.g.
+`SKIP_INSTALLING_OVERCOMMIT_IN_SETUP=true rails new ...`). This will prevent git
+hooks from being installed that normally run linting and other checks when
+committing. These checks can fail to bridge between Windows and WSL and
+interfere with the development workflow. We otherwise recommend installing
+overcommit.
+
 ## Usage
 
 This template assumes you will store your project in a remote git repository
