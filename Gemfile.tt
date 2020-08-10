@@ -20,6 +20,7 @@ gem "sentry-raven"
 gem "rack-canonical-host", "~> 0.2.3"
 
 group :development do
+  gem 'bullet', require: false
   gem "bundler-audit", require: false
   gem "brakeman", require: false
   gem "simplecov", require: false
