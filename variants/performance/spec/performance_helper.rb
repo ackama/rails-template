@@ -24,7 +24,7 @@ RSpec.configure do |config|
     puts "NOTICE: We are pre-compiling assets to get realistic results from the performance tests"
     puts "NOTICE: Pre-compilation can take a while ..."
 
-    # Use FileUtils rather than shelling out so that this works on Windows & Unixen
+    # Use FileUtils rather than shelling out so that this works on Windows & Unix environments
     FileUtils.rm_rf(Rails.root.join("public/packs-test"))
     system "bundle exec rake assets:precompile"
 
