@@ -148,7 +148,7 @@ package_json["scripts"] = {
 
 File.write("./package.json", JSON.generate(package_json))
 
-#fix js lint issues with generated defaults before linting runs
+# fix js lint issues with generated defaults before linting runs
 gsub_file "babel.config.js",
           "module.exports = function(api) {",
           "module.exports = api => {"
