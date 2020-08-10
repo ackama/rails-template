@@ -20,7 +20,7 @@ pidfile ENV.fetch("PIDFILE", "tmp/pids/server.pid")
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
 #
-workers_count = ENV.fetch("WEB_CONCURRENCY", 1)
+workers_count = ENV.fetch("WEB_CONCURRENCY", 1).to_i
 
 if workers_count > 1
   workers workers_count
