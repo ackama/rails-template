@@ -2,7 +2,7 @@
 
 const config = {
   root: true,
-  env: { commonjs: true, node: true },
+  env: { commonjs: true, node: true,  browser: true },
   extends: [
     'ackama',
     'ackama/react'
