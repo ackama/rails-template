@@ -150,16 +150,17 @@ package_json["scripts"] = {
 File.write("./package.json", JSON.generate(package_json))
 
 #fix js lint issues with generated defaults before linting runs
-gsub_file "app/frontend/channels/index.js",
-          "/_channel\.js$/",
-          "/_channel\.js$/u"
-
 gsub_file "babel.config.js",
-          "module.exports = function (api) {",
-          "module.exports = api => {"
+          "module.exports = function(api) {",
+          "module.exports = api => {",
+          force: true
+
+gsub_file "app/frontend/channels/index.js",
+          "/_channel\\.js$/",
+          "/_channel\\.js$/u"
 
 prepend_to_file "postcss.config.js" do
-  "/* eslint-disable global-require */"
+  "/* eslint-disable global-require */ \n"
 end
 
 # must be run after prettier is installed and has been configured by setting
