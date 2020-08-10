@@ -151,8 +151,7 @@ File.write("./package.json", JSON.generate(package_json))
 #fix js lint issues with generated defaults before linting runs
 gsub_file "babel.config.js",
           "module.exports = function(api) {",
-          "module.exports = api => {",
-          force: true
+          "module.exports = api => {"
 
 gsub_file "app/frontend/channels/index.js",
           "/_channel\\.js$/",
