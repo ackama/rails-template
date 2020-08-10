@@ -18,7 +18,7 @@ module.exports = {
     'plugin:jsx-a11y/strict',
     'prettier/react'
   ],
-  ignorePatterns: ["node_modules/", "coverage/", "public/", "bundle/", "vendor/", "tmp/"],
+  ignorePatterns: ["tmp/"],
   settings: {
     react: { version: 'detect' }
   },
