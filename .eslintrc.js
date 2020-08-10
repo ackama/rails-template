@@ -11,6 +11,7 @@ module.exports = {
   plugins: ['react', 'react-hooks', 'jsx-a11y', 'prettier', 'eslint-comments'],
   extends: [
     'ackama',
+    'ackama/react',
     'plugin:eslint-comments/recommended',
     'plugin:prettier/recommended',
     'plugin:react/recommended',
