@@ -164,7 +164,6 @@ prepend_to_file "postcss.config.js" do
   ESLINTFIX
 end
 
-prepend_to_file "postcss.config.js", "'use strict';"
 prepend_to_file "babel.config.js", "'use strict';"
 prepend_to_file "config/webpack/development.js", "'use strict';"
 prepend_to_file "config/webpack/environment.js", "'use strict';"
