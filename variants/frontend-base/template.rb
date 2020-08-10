@@ -126,9 +126,8 @@ gsub_file "config/initializers/content_security_policy.rb",
 # ######################################
 
 run "rm .browserslistrc"
-run "yarn add --dev eslint eslint-plugin-prettier eslint-config-prettier eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y prettier prettier-config-ackama"
+run "yarn add --dev eslint eslint-config-ackama eslint-plugin-import eslint-plugin-prettier prettier prettier-config-ackama eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y"
 copy_file ".eslintrc.js"
-template ".eslintignore.tt"
 template ".prettierignore.tt"
 
 package_json = JSON.parse(File.read("./package.json"))
@@ -148,6 +147,28 @@ package_json["scripts"] = {
 }
 
 File.write("./package.json", JSON.generate(package_json))
+
+# fix js lint issues with generated defaults before linting runs
+gsub_file "babel.config.js",
+          "module.exports = function(api) {",
+          "module.exports = api => {"
+
+gsub_file "app/frontend/channels/index.js",
+          "/_channel\\.js$/",
+          "/_channel\\.js$/u"
+
+prepend_to_file "postcss.config.js" do
+  <<~ESLINTFIX
+  /* eslint-disable global-require */ 
+  'use strict'; \n
+  ESLINTFIX
+end
+
+prepend_to_file "babel.config.js", "'use strict';"
+prepend_to_file "config/webpack/development.js", "'use strict';"
+prepend_to_file "config/webpack/environment.js", "'use strict';"
+prepend_to_file "config/webpack/production.js", "'use strict';"
+prepend_to_file "config/webpack/test.js", "'use strict';"
 
 # must be run after prettier is installed and has been configured by setting
 # the 'prettier' key in package.json
