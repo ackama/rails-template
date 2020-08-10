@@ -160,8 +160,19 @@ gsub_file "app/frontend/channels/index.js",
           "/_channel\\.js$/u"
 
 prepend_to_file "postcss.config.js" do
-  "/* eslint-disable global-require */ \n"
+  <<~ESLINTFIX
+  'use strict';
+  /* eslint-disable global-require */ \n
+  ESLINTFIX
 end
+
+prepend_to_file "postcss.config.js", "'use strict';"
+prepend_to_file "babel.config.js", "'use strict';"
+prepend_to_file "app/frontend/channels/index.js", "'use strict';"
+prepend_to_file "config/webpack/development.js", "'use strict';"
+prepend_to_file "config/webpack/environment.js", "'use strict';"
+prepend_to_file "config/webpack/production.js", "'use strict';"
+prepend_to_file "config/webpack/test.js", "'use strict';"
 
 # must be run after prettier is installed and has been configured by setting
 # the 'prettier' key in package.json
