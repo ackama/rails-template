@@ -67,6 +67,7 @@ def apply_template!
 
     template "rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
+    run_bullet_install
 
     unless any_local_git_commits?
       git add: "-A ."
@@ -197,6 +198,10 @@ def run_with_clean_bundler_env(cmd)
     puts "Command failed, exiting: #{cmd}"
     exit(1)
   end
+end
+
+def run_bullet_install
+  run_with_clean_bundler_env "bin/rails g bullet:install"
 end
 
 def run_rubocop_autocorrections
