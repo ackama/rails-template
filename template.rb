@@ -61,13 +61,12 @@ def apply_template!
     apply "variants/sidekiq/template.rb" if apply_variant?(:sidekiq)
 
     binstubs = %w[
-      brakeman bundler bundler-audit rubocop
+      brakeman bundler bundler-audit rubocop bullet
     ]
     run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')} --force"
-
+    run_bullet_install
     template "rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
-    run_bullet_install
 
     unless any_local_git_commits?
       git add: "-A ."
