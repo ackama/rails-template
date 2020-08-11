@@ -61,7 +61,7 @@ def apply_template!
     apply "variants/sidekiq/template.rb" if apply_variant?(:sidekiq)
 
     binstubs = %w[
-      brakeman bundler bundler-audit rubocop bullet
+      brakeman bundler bundler-audit rubocop
     ]
     run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')} --force"
     run_bullet_install
@@ -200,7 +200,7 @@ def run_with_clean_bundler_env(cmd)
 end
 
 def run_bullet_install
-  run_with_clean_bundler_env "bin/rails g bullet:install"
+  run "bundle exec rails g bullet:install"
 end
 
 def run_rubocop_autocorrections
