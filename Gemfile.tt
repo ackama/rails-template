@@ -22,7 +22,6 @@ gem "rack-canonical-host", "~> 0.2.3"
 group :development do
   gem "bundler-audit", require: false
   gem "brakeman", require: false
-  gem "faker", require: false
   gem "simplecov", require: false
   gem "rubocop", ">= 0.70.0", require: false
   gem "rubocop-performance", require: false
@@ -36,6 +35,7 @@ group :development do
 end
 
 group :development, :test do
+  gem "faker"
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "pry-rails"
