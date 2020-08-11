@@ -118,6 +118,21 @@ append_to_file "app/frontend/packs/application.js" do
   EO_JS
 end
 
+prepend_to_file "app/frontend/packs/application.js" do
+  <<~'EO_JS'
+    // The application.js pack is defered by default which means that nothing imported 
+    // in this file will begin executing until after the page has loaded. This helps to 
+    // speed up page loading times, especially in apps that have large amounts of js.
+    //  
+    // If you have javascript that *must* execute before the page has finished loading, 
+    // create a separate 'boot.js' pack in the frontend/packs directory and import any 
+    // required files in that. Also remember to add a separate pack_tag entry with:
+    // <%= javascript_pack_tag "boot", "data-turbolinks-track": "reload" %> 
+    // to the views/layouts/application.html.erb file above the existing application pack tag.
+    // 
+  EO_JS
+end
+
 gsub_file "config/initializers/content_security_policy.rb",
   /# policy.report_uri ".+"/,
   'policy.report_uri ENV.fetch("SENTRY_CSP_HEADER_REPORT_ENDPOINT")'
