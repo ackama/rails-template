@@ -2,7 +2,6 @@ source_paths.unshift(File.dirname(__FILE__))
 
 
 gem "sidekiq"
-gem "redis"
 
 run "bundle install"
 run "bundle binstubs sidekiq --force"
@@ -41,9 +40,7 @@ insert_into_file "docker-compose.yml", "
     image: redis
 ", after: /^services:$"/
 
-insert_into_file "config/routes.rb", before: "root to: \"home#index\"" do
-  <<~ROUTE
-
+route <<~ROUTE
   ##
   # If you want the Sidekiq web console in production environments you need to
   # put it behind some authentication first.
@@ -52,6 +49,4 @@ insert_into_file "config/routes.rb", before: "root to: \"home#index\"" do
     mount Sidekiq::Web => "/sidekiq" # Sidekiq monitoring console
     require "sidekiq/web"
   end
-
-  ROUTE
-end
+ROUTE
