@@ -10,12 +10,13 @@ on:
     - cron:  '0 5 * * MON'
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       # don't stop all variants if one of them fails (we usually want to know
       # how many fail)
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-latest]
         variant:
           - name: basic
             generator_input: example.com\nstaging.example.com\nNo\nNo\n\nNo\n
