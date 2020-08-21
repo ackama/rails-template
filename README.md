@@ -4,6 +4,7 @@
 
 This repo is forked from mattbrictson/rails-template, and has been customized to
 set up Rails projects the way Ackama likes them.
+Many thanks to @joshmcarthur and @mattbrictson upon whose work we have built.
 
 ## Description
 
