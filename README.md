@@ -104,6 +104,15 @@ The template will perform the following steps:
 
 ## What is included?
 
+#### Authentication: [Devise](https://github.com/heartcombo/devise)
+Authentication is a method to verify identity. A failed authentication results in the status code `401 unauthorized`.
+
+Devise is a rack based, complete MVC authentication solution based on Rails engines. It's composed of 10 optional modules.
+
+The relevant config files are found in `variants/devise`.`variants/devise/template.rb` contains detailed comments on Ackama’s custom setup choices.
+
+Noteabley, these files generate a User model with devise `:validatable` and `:lockable`, and add Ackama preferences in the `devise.rb` initialiser file
+
 #### These gems are added to the standard Rails stack
 
 - Core
