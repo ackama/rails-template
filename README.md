@@ -188,19 +188,19 @@ Each subdirectory of the variant directory contains a template.rb file, which is
 
 ### Default Variants
 
-#### Accessibility
+#### accessibility 
 "Web accessibility is the inclusive practice of ensuring there are no barriers that prevent interaction with, or access to, websites on the World Wide Web by people with physical disabilities, situational disabilities, and socio-economic restrictions on bandwidth and speed. When sites are correctly designed, developed and edited, generally all users have equal access to information and functionality." https://en.wikipedia.org/wiki/Web_accessibility
 
-This variant sets up automated accessibility testing. We use a combination of  [axe](https://www.deque.com/axe/) and [lighthouse](https://developers.google.com/web/tools/lighthouse) to provide comprehensive coverage. 
+This variant sets up automated accessibility testing. We use the combination of [axe](https://www.deque.com/axe/) and [lighthouse](https://developers.google.com/web/tools/lighthouse) to provide comprehensive coverage. 
 
 Axe Matchers is a gem that provides cucumber steps and rspec matchers that will check the accessibility compliance of your views. We require a default standard of wcag2a and wcag2aa. We recommend that your tests all live in a `spec/features/accessibility`, to allow for running them separately. Using the shared examples found at `variants/accessibility/spec/support/shared_examples/an_accessible_page.rb` for your base tests avoids duplication and misconfiguration. 
 
 Ackama maintains [lighthouse matchers](https://github.com/ackama/lighthouse-matchers) which provide RSpec matchers to assess the accessibility compliance of your application. We recommend setting your passing score threshold to 100 for new projects. As with Axe, you can keep your test suite tidy by placing these tests in `spec/features/accessibility`. 
 
-#### Authentication: [Devise](https://github.com/heartcombo/devise)
+#### devise
 Authentication refers to verifying identity. A failed authentication results in the status code `401 unauthorized`.
 
-Devise is a rack based, complete MVC authentication solution based on Rails engines.
+[Devise](https://github.com/heartcombo/devise) is a rack based, complete MVC authentication solution based on Rails engines.
 It's composed of 10 optional modules.
 
 The relevant config files are found in `rails-template/variants/devise`.
@@ -208,12 +208,33 @@ The relevant config files are found in `rails-template/variants/devise`.
 
 Noteabley, these files generate a User model with devise `:validatable` and `:lockable`, and add Ackama preferences in the `devise.rb` initialiser file
 
+#### frontend-base
+- renames `app/javascript` to `app/frontend`, a directory containing the webpacker configuration. This allows you to place stylesheets in `app/frontend/stylesheets/`, and images in `app/frontend/images` Rails 6 has added [Webpacker](https://github.com/rails/webpacker) as the default JavaScript compiler instead of Sprockets. Thus, all JS code is compiled with the help of [webpack](https://webpack.js.org/) by default
+- Initializes [sentry](https://sentry.io/welcome/) error reporting 
+- Initializes Ackama’s linting and code formatting settings, see [Code linting and formatting](#code-linting-and-formatting)
 
+#### frontend-foundation
+A framework gives you a base to build on while still allowing flexibility with the final design. For the front end, this base can include things like a grid layout system, and pre-built website components like side panels, buttons, and headers.
 
+[Foundation](https://get.foundation/) is a responsive front-end framework. A key benefit of Foundation is that it allows easy customization. Foundation is modular and consists of Sass stylesheets that implement various components of the toolkit. Developers select components and make global adjustmentments through a central configuration stylesheet. 
 
+Foundation is installed by default via the JS Yarn package manager, with the jquery option: `run yarn add foundation-sites jquery`
+
+It also applies the [foundation-layout variant](#foundation-layout), if this option is specified during setup.
+
+#### performance
+Add configuration and specs to use to perform a [lighthouse performance](https://web.dev/performance-scoring/) audit, requiring a score of at least 95.
+
+#### sidekiq
+A job scheduler is a computer application for controlling unattended background program execution of jobs
+
+Note that the non enterprise version of [Sidekiq](https://github.com/mperham/sidekiq) doesn't do scheduling by default, it only executes jobs
 
 
 ### Optional Variants
+
+#### foundation-layout
+adds scss files to style a footer, header, navigation and search-bar, which are common website components.
 
 
 
