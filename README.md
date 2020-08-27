@@ -163,6 +163,19 @@ SimpleCov is a code coverage analysis tool for Ruby. It provides an API to filte
 #### JS package manager: [Yarn](https://yarnpkg.com/)
 “Yarn is a package manager for your code”. Think of it as Bundler for JavaScript. Yarn uses a file similar to Bundler’s Gemfile called `package.json`, found in the Rails root directory.
 
+#### Code linting and formatting
+Linting is the automated checking of your source code for programmatic and stylistic errors. Check the docs of each linter for how to automatically format code. 
+
+- JS/HTML/CSS:  [Prettier](https://prettier.io/), Set up with  an [Ackama prettier config](https://github.com/ackama/prettier-config-ackama) and a variety of other prettier plugins, see the full list in `variants/frontend-base/template.rb`
+
+- JavaScript: [ESlint](https://eslint.org/), Ackama uses the rules found at [eslint-config-ackama](https://github.com/ackama/eslint-config-ackama)
+Styles: [stylelint](https://github.com/stylelint/stylelint)
+
+- Ruby: [Rubocop](https://github.com/rubocop-hq/rubocop), with [ackama rubocop settings](https://bitbucket.org/rabidtech/rabid-dotfiles/raw/master/.rubocop.yml)
+
+- Editor code style settings: [EditorConfig](https://editorconfig.org/), 
+“EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems”. See the `editorconfig` file for Ackama’s styles. 
+
 
 
 
