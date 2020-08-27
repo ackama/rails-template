@@ -197,6 +197,19 @@ Axe Matchers is a gem that provides cucumber steps and rspec matchers that will 
 
 Ackama maintains [lighthouse matchers](https://github.com/ackama/lighthouse-matchers) which provide RSpec matchers to assess the accessibility compliance of your application. We recommend setting your passing score threshold to 100 for new projects. As with Axe, you can keep your test suite tidy by placing these tests in `spec/features/accessibility`. 
 
+#### Authentication: [Devise](https://github.com/heartcombo/devise)
+Authentication refers to verifying identity. A failed authentication results in the status code `401 unauthorized`.
+
+Devise is a rack based, complete MVC authentication solution based on Rails engines.
+It's composed of 10 optional modules.
+
+The relevant config files are found in `rails-template/variants/devise`.
+`variants/devise/template.rb` contains comments on Ackama’s custom setup choices.
+
+Noteabley, these files generate a User model with devise `:validatable` and `:lockable`, and add Ackama preferences in the `devise.rb` initialiser file
+
+
+
 
 
 
