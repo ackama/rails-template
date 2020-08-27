@@ -143,10 +143,18 @@ If any file finishes with `.tt`, Thor considers it to be a template and places i
 
 ## Tooling choices and configuration
 
-#### [EditorConfig](https://editorconfig.org/) 
+#### Editor code style settings: [EditorConfig](https://editorconfig.org/) 
 “EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems” 
 
 See the `editorconfig` file for Ackama’s styles
+
+#### Git hook manager: [Overcommit](https://github.com/sds/overcommit) 
+Git has a way to fire off custom scripts when certain important actions occur, by using [Git hooks ](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks)
+
+Overcommit is a tool to manage and configure Git hooks
+
+Edit `overcommit.yml` to configure the Overcommit hooks you wish to use
+
 
 
 
