@@ -141,4 +141,12 @@ when the application template script is evaluated.
 Rails generators are very lightly documented; what you’ll find is that most of the heavy lifting is done by  [Thor](http://whatisthor.com/). Thor is a tool that allows you to easily perform command line utilities.  The most common methods used by this template are Thor’s `copy_file`, `template`, and `gsub_file`. You can dig into the well-organized and well-documented [Thor source code](https://github.com/erikhuda/thor) to learn more.
 If any file finishes with `.tt`, Thor considers it to be a template and places it in the destination without the extension `.tt`. 
 
+## Tooling choices and configuration
+
+#### [EditorConfig](https://editorconfig.org/) 
+“EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems” 
+
+See the `editorconfig` file for Ackama’s styles
+
+
 
