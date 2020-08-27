@@ -103,21 +103,6 @@ The template will perform the following steps:
 4. Commit everything to git
 5. Push the project to the remote git repository you specified
 
-## What is included?
-
-#### These gems are added to the standard Rails stack
-
-- Core
-  - [puma](https://github.com/puma/puma) - application web server used for all environments
-- Configuration
-  - [dotenv](https://github.com/bkeepers/dotenv) – in place of the Rails `secrets.yml`
-- Utilities
-  - [rubocop](https://github.com/rubocop-hq/rubocop) – enforces Ruby code style
-- Security
-  - [brakeman](https://github.com/presidentbeef/brakeman) and [bundler-audit](https://github.com/rubysec/bundler-audit) – detect security vulnerabilities
-- Testing
-  - [simplecov](https://github.com/colszowka/simplecov) – code coverage reports
-  - [webdrivers](https://github.com/titusfortner/webdrivers) - auto-installs headless Chrome
 
 #### Other tweaks that patch over some Rails shortcomings
 
@@ -142,6 +127,16 @@ Rails generators are very lightly documented; what you’ll find is that most of
 If any file finishes with `.tt`, Thor considers it to be a template and places it in the destination without the extension `.tt`. 
 
 ## Tooling choices and configuration
+  
+#### Testing: [webdrivers](https://github.com/titusfortner/webdrivers)
+auto-installs headless Chrome
+
+#### ENV managment: [dotenv](https://github.com/bkeepers/dotenv)  
+in place of the Rails `secrets.yml`
+  
+#### Application web server: [puma](https://github.com/puma/puma)
+  
+#### Security Auditing: [brakeman](https://github.com/presidentbeef/brakeman) and [bundler-audit](https://github.com/rubysec/bundler-audit)
 
 #### Editor code style settings: [EditorConfig](https://editorconfig.org/) 
 “EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems” 
