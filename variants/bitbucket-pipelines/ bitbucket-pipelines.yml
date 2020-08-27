@@ -1,0 +1,58 @@
+# This is a sample build configuration for Docker.
+# Check our guides at https://confluence.atlassian.com/x/O1toN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: docker/compose
+clone:
+  depth: full
+pipelines:
+  pull-requests:
+    '**':
+      - step: &default
+          services:
+            - docker
+          caches:
+            - docker
+            - node
+            - bundler
+            - pip
+          script:
+            - cd $BITBUCKET_CLONE_DIR
+            - chmod -R 777 vendor/bundle node_modules
+            - docker-compose build
+            - docker-compose run -e CI=true -e RAILS_ENV=test app bin/setup
+            - docker-compose run -e CI=true -e RAILS_ENV=test app bin/ci-run
+  branches:
+    master:
+      - step:
+          <<: *default
+      - parallel:
+        - step:
+            deployment: UAT
+            script:
+              - apk add --no-cache git
+              - git checkout -b deploy-uat
+              - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git deploy-uat:master
+        - step:
+            deployment: Demo
+            script:
+              - apk add --no-cache git
+              - git checkout -b deploy-demo
+              - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git deploy-demo:master
+    production:
+      - step:
+          <<: *default
+      - step:
+          deployment: Production
+          script:
+            - apk add --no-cache git
+            - git checkout -b deploy-production
+            - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git deploy-production:master
+
+definitions:
+  services:
+    docker:
+      memory: 3072
+  caches:
+    bundler: vendor/bundle
