@@ -155,6 +155,12 @@ Overcommit is a tool to manage and configure Git hooks
 
 Edit `overcommit.yml` to configure the Overcommit hooks you wish to use
 
+#### Code coverage measurement: [Simplecov](https://github.com/simplecov-ruby/simplecov)
+Code coverage is a measurement of how many lines/blocks/arcs of your code are executed while the automated tests are running.
+
+SimpleCov is a code coverage analysis tool for Ruby. It provides an API to filter, group, merge, format, and display the results
+
+
 
 
 
