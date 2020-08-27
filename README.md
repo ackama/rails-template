@@ -192,6 +192,16 @@ Axe Matchers is a gem that provides cucumber steps and rspec matchers that will 
 
 Ackama maintains [lighthouse matchers](https://github.com/ackama/lighthouse-matchers) which provide RSpec matchers to assess the accessibility compliance of your application. We recommend setting your passing score threshold to 100 for new projects. As with Axe, you can keep your test suite tidy by placing these tests in `spec/features/accessibility`. 
 
+#### frontend-base
+- renames `app/javascript` to `app/frontend`, a directory containing the webpacker configuration. This allows you to place stylesheets in `app/frontend/stylesheets/`, and images in `app/frontend/images` Rails 6 has added [Webpacker](https://github.com/rails/webpacker) as the default JavaScript compiler instead of Sprockets. Thus, all JS code is compiled with the help of [webpack](https://webpack.js.org/) by default
+- Initializes [sentry](https://sentry.io/welcome/) error reporting 
+- Initializes Ackama’s linting and code formatting settings, see [Code linting and formatting](#code-linting-and-formatting)
+
+#### performance
+Add configuration and specs to use to perform a [lighthouse performance](https://web.dev/performance-scoring/) audit, requiring a score of at least 95.
+
+### Optional Variants
+
 #### devise
 Authentication refers to verifying identity. A failed authentication results in the status code `401 unauthorized`.
 
@@ -203,11 +213,6 @@ The relevant config files are found in `rails-template/variants/devise`.
 
 Noteabley, these files generate a User model with devise `:validatable` and `:lockable`, and add Ackama preferences in the `devise.rb` initialiser file
 
-#### frontend-base
-- renames `app/javascript` to `app/frontend`, a directory containing the webpacker configuration. This allows you to place stylesheets in `app/frontend/stylesheets/`, and images in `app/frontend/images` Rails 6 has added [Webpacker](https://github.com/rails/webpacker) as the default JavaScript compiler instead of Sprockets. Thus, all JS code is compiled with the help of [webpack](https://webpack.js.org/) by default
-- Initializes [sentry](https://sentry.io/welcome/) error reporting 
-- Initializes Ackama’s linting and code formatting settings, see [Code linting and formatting](#code-linting-and-formatting)
-
 #### frontend-foundation
 A framework gives you a base to build on while still allowing flexibility with the final design. For the front end, this base can include things like a grid layout system, and pre-built website components like side panels, buttons, and headers.
 
@@ -217,19 +222,13 @@ Foundation is installed by default via the JS Yarn package manager, with the jqu
 
 It also applies the [foundation-layout variant](#foundation-layout), if this option is specified during setup.
 
-#### performance
-Add configuration and specs to use to perform a [lighthouse performance](https://web.dev/performance-scoring/) audit, requiring a score of at least 95.
+#### foundation-layout
+adds scss files to style a footer, header, navigation and search-bar, which are common website components.
 
 #### sidekiq
 A job scheduler is a computer application for controlling unattended background program execution of jobs
 
 Note that the non enterprise version of [Sidekiq](https://github.com/mperham/sidekiq) doesn't do scheduling by default, it only executes jobs
-
-
-### Optional Variants
-
-#### foundation-layout
-adds scss files to style a footer, header, navigation and search-bar, which are common website components.
 
 
 
