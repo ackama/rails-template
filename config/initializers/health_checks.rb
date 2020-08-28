@@ -16,8 +16,8 @@ OkComputer::Registry.register "app_version", OkComputer::AppVersionCheck.new
 
 # Additional checks can be added, e.g.
 # OkComputer::Registry.register "mailing", OkComputer::ActionMailerCheck.new
-# OkComputer::Registry.register "redis", OkComputer::RedisCheck.new({})
-# OkComputer::Registry.register "sidekiq_default", OkComputer::SidekiqLatencyCheck.new(:default)
+OkComputer::Registry.register "redis", OkComputer::RedisCheck.new({})
+OkComputer::Registry.register "sidekiq_default", OkComputer::SidekiqLatencyCheck.new(:default)
 # OkComputer::Registry.register "sidekiq_mailers", OkComputer::SidekiqLatencyCheck.new(:mailers)
 # => More at https://github.com/sportngin/okcomputer/tree/master/lib/ok_computer/built_in_checks/
 
