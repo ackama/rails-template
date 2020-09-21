@@ -47,3 +47,12 @@ yarn-debug.log*
 
 # Ignore MacOS system files
 .DS_Store
+
+# Ignore temp files
+*.swp
+.eslintcache
+*.tsbuildinfo
+pids
+*.pid
+*.seed
+*.pid.lock
