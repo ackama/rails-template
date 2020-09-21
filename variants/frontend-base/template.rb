@@ -141,7 +141,7 @@ gsub_file "config/initializers/content_security_policy.rb",
 # ######################################
 
 run "rm .browserslistrc"
-run "yarn add --dev eslint eslint-config-ackama eslint-plugin-import eslint-plugin-prettier prettier prettier-config-ackama eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y"
+run "yarn add --dev eslint eslint-config-ackama eslint-plugin-node eslint-plugin-import eslint-plugin-prettier prettier prettier-config-ackama eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y"
 copy_file ".eslintrc.js"
 template ".prettierignore.tt"
 
@@ -174,7 +174,7 @@ gsub_file "app/frontend/channels/index.js",
 
 prepend_to_file "postcss.config.js" do
   <<~ESLINTFIX
-  /* eslint-disable global-require */ 
+  /* eslint-disable node/global-require */
   'use strict'; \n
   ESLINTFIX
 end
