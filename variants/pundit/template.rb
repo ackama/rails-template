@@ -8,14 +8,19 @@ run "bundle install"
 run "rails g pundit:install"
 
 # Configure app/controllers/application_controller.rb
-insert_into_file "app/controllers/application_controller.rb", before: /^end/ do
-  <<-'RUBY'
+insert_into_file "app/controllers/application_controller.rb",
+                 after: /^class ApplicationController < ActionController::Base\n/ do
+  <<-RUBY
     include Pundit
 
     after_action :verify_authorized, except: %i[index], unless: :current_devise_controller?
     after_action :verify_policy_scoped, only: :index, unless: :skip_policy_scoped_controller?
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  
+  RUBY
+end
+
+insert_into_file "app/controllers/application_controller.rb", before: /^end/ do
+  <<-RUBY
     private
   
     def skip_policy_scoped_controller?
