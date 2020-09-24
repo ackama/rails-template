@@ -6,6 +6,9 @@ gem "pundit"
 
 run "bundle install"
 run "rails g pundit:install"
+run "rails g pundit:policy example"
+
+copy_file "spec/policies/example_policy_spec.rb", force: true
 
 # Configure app/controllers/application_controller.rb
 insert_into_file "app/controllers/application_controller.rb",
@@ -39,3 +42,5 @@ insert_into_file "app/controllers/application_controller.rb", before: /^end/ do
     end
   RUBY
 end
+
+apply "spec/rails_helper.rb"
