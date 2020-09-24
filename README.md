@@ -4,6 +4,7 @@
 
 This repo is forked from mattbrictson/rails-template, and has been customized to
 set up Rails projects the way Ackama likes them.
+Many thanks to @joshmcarthur and @mattbrictson upon whose work we have built.
 
 ## Description
 
@@ -55,7 +56,7 @@ To generate a Rails application using this template, pass the `--template` optio
 rails new blog \
   --no-rc \
   --database=postgresql \
-  --template=https://raw.githubusercontent.com/ackama/rails-template/master/template.rb
+  --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
 _Remember that options must go after the name of the application._ The only
@@ -93,7 +94,7 @@ To make this the default Rails application template on your system, create a
 
 ```
 -d postgresql
--m https://raw.githubusercontent.com/ackama/rails-template/master/template.rb
+-m https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
 Once you’ve installed this template as your default, then all you have to do is run:
@@ -117,16 +118,16 @@ The template will perform the following steps:
 #### These gems are added to the standard Rails stack
 
 - Core
-  - `puma` - application web server used for all environments
+  - [puma](https://github.com/puma/puma) - application web server used for all environments
 - Configuration
-  - [dotenv][] – in place of the Rails `secrets.yml`
+  - [dotenv](https://github.com/bkeepers/dotenv) – in place of the Rails `secrets.yml`
 - Utilities
-  - [rubocop][] – enforces Ruby code style
+  - [rubocop](https://github.com/rubocop-hq/rubocop) – enforces Ruby code style
 - Security
-  - [brakeman][] and [bundler-audit][] – detect security vulnerabilities
+  - [brakeman](https://github.com/presidentbeef/brakeman) and [bundler-audit](https://github.com/rubysec/bundler-audit) – detect security vulnerabilities
 - Testing
-  - [simplecov][] – code coverage reports
-  - `webdrivers` - auto-installs headless Chrome
+  - [simplecov](https://github.com/colszowka/simplecov) – code coverage reports
+  - [webdrivers](https://github.com/titusfortner/webdrivers) - auto-installs headless Chrome
 
 #### Other tweaks that patch over some Rails shortcomings
 
@@ -134,8 +135,8 @@ The template will perform the following steps:
 
 ## How does it work?
 
-This project works by hooking into the standard Rails [application templates][]
-system, with some caveats. The entry point is the [template.rb][] file in the
+This project works by hooking into the standard Rails [application templates](https://guides.rubyonrails.org/rails_application_templates.html)
+system, with some caveats. The entry point is the [template.rb](https://github.com/ackama/rails-template/blob/main/template.rb) file in the
 root of this repository.
 
 Normally, Rails only allows a single file to be specified as an application
@@ -148,6 +149,6 @@ generator system, allowing all of its ERb templates and files to be referenced
 when the application template script is evaluated.
 
 Rails generators are very lightly documented; what you’ll find is that most of
-the heavy lifting is done by [Thor][http://whatisthor.com/]. The most common methods used by this
+the heavy lifting is done by [Thor](http://whatisthor.com/). The most common methods used by this
 template are Thor’s `copy_file`, `template`, and `gsub_file`. You can dig into
-the well-organized and well-documented [Thor source code][https://github.com/erikhuda/thor] to learn more.
+the well-organized and well-documented [Thor source code](https://github.com/erikhuda/thor) to learn more.

@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "<%= RUBY_VERSION %>"
+ruby File.read(".ruby-version")
 
 gem "rails", "<%= Rails.version %>"
 gem "puma", "~> 4.1"
@@ -35,6 +35,7 @@ group :development do
 end
 
 group :development, :test do
+  gem "faker"
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "pry-rails"

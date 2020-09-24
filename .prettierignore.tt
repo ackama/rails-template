@@ -6,6 +6,5 @@ vendor/
 tmp/
 
 # We don't control these files
-app/assets/stylesheets/bootstrap.scss
 app/frontend/foundation/foundation_and_overrides.scss
 app/frontend/foundation/settings.scss

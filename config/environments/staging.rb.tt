@@ -10,4 +10,5 @@ Rails.application.configure do
     :protocol => "https"
   }
   config.action_mailer.asset_host = "https://<%= staging_hostname %>"
+  config.action_mailer.smtp_settings[:domain] = staging_hostname
 end

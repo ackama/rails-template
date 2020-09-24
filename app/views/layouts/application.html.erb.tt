@@ -18,7 +18,7 @@
     <%%= stylesheet_link_tag("application", media: "all", "data-turbolinks-track": "reload") %>
 
     <%%# JavaScript must be in head for Turbolinks to work. %>
-    <%%= javascript_pack_tag "application", "data-turbolinks-track": "reload" %>
+    <%%= javascript_pack_tag "application", "data-turbolinks-track": "reload", defer: true %>
 
     <%%= yield(:head) %>
 

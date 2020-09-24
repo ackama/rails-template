@@ -57,7 +57,7 @@ end
 
 def with_clean_bundler_env(&block)
   return block.call unless defined?(Bundler)
-  Bundler.with_clean_env(&block)
+  Bundler.with_original_env(&block)
 end
 
 def copy(example_path)

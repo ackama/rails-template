@@ -15,10 +15,10 @@ This project follows [Ackama standard branch and environment naming](https://git
 
     TODO: If this project cannot follow our standard naming conventions you must document why here.
 
-| **Environment** | **URL** | **Hosting Platform**                 | **Git Branch** | **Exception monitoring URL** | **Logs available at**                                            |
-| --------------- | ------- | ------------------------------------ | -------------- | ---------------------------- | ---------------------------------------------------------------- |
-| Staging         | TODO    | TODO (one of Heroku/RimuHosting/AWS) | master         | TODO (E.G. RAYGUN URL)       | TODO (Examples: On-disk/Heroku/AWS Cloudwatch/Papertrail/Loggly) |
-| Production      | TODO    | TODO (one of Heroku/RimuHosting/AWS) | production     | TODO (E.G. RAYGUN URL)       | TODO (Examples: On-disk/Heroku/AWS Cloudwatch/Papertrail/Loggly) |
+| **Environment** | **URL** | **Hosting Platform**     | **Git Branch** | **Exception monitoring URL** | **Logs available at**                                            |
+| --------------- | ------- | ------------------------ | -------------- | ---------------------------- | ---------------------------------------------------------------- |
+| Staging         | TODO    | TODO (one of Heroku/AWS) | main           | TODO (E.G. RAYGUN URL)       | TODO (Examples: On-disk/Heroku/AWS Cloudwatch/Papertrail/Loggly) |
+| Production      | TODO    | TODO (one of Heroku/AWS) | production     | TODO (E.G. RAYGUN URL)       | TODO (Examples: On-disk/Heroku/AWS Cloudwatch/Papertrail/Loggly) |
 
     TODO: Add columns to the table above if there are resources that are required for that environment e.g. a Redis, ElasticSearch etc.
     TODO: If we need to assume role into their AWS account you should mention that here (don't list the role name - leave that in 1Password)
@@ -63,7 +63,7 @@ All credentials and the `.env` file for this project are stored in Ackama 1Passw
 
 ## Healthchecks
 
-A healthcheck endpoint is available at http://localhost:3000/healthchecks/all. Healthchecks are 
+A healthcheck endpoint is available at http://localhost:3000/healthchecks/all. Healthchecks are
 configured in `config/initializers/health_checks.rb`. By default, the following health checks are enabled:
 
 * Default (app is running)
