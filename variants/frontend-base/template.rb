@@ -78,7 +78,7 @@ gsub_file "app/views/layouts/application.html.erb", "<body>", body_open_tag_with
 # ############
 
 run "yarn add @sentry/browser"
-run "yarn add dotenv-webpack -D"
+run "yarn add dotenv-webpack"
 
 gsub_file "config/webpack/environment.js",
   "module.exports = environment",
