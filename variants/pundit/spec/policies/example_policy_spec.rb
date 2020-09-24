@@ -8,7 +8,7 @@ RSpec.describe ExamplePolicy, type: :policy do
 
   permissions ".scope" do
     pending "add some examples to (or delete) #{__FILE__}"
-    # if { expect(ExamplePolicy::Scope.new(user, scope).resolve).to eq [] }
+    # it { expect(ExamplePolicy::Scope.new(user, scope).resolve).to eq [] }
   end
 
   permissions :show? do
