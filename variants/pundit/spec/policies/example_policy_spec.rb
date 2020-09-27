@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ExamplePolicy, type: :policy do
+RSpec.describe ExamplePolicy, type: :policy do # rubocop:disable RSpec/EmptyExampleGroup
   let(:scope) { Example.all }
   let(:user) { FactoryBot.create(:user) }
 
