@@ -13,7 +13,7 @@ copy_file "spec/policies/example_policy_spec.rb", force: true
 # Configure app/controllers/application_controller.rb
 insert_into_file "app/controllers/application_controller.rb",
                  after: /^class ApplicationController < ActionController::Base\n/ do
-  <<-RUBY
+  <<~RUBY
     include Pundit
 
     after_action :verify_authorized, except: %i[index], unless: :current_devise_controller?
@@ -23,7 +23,7 @@ insert_into_file "app/controllers/application_controller.rb",
 end
 
 insert_into_file "app/controllers/application_controller.rb", before: /^end/ do
-  <<-RUBY
+  <<~RUBY
     private
   
     def skip_policy_scoped_controller?
