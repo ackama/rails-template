@@ -16,8 +16,8 @@ insert_into_file "app/controllers/application_controller.rb",
   <<~RUBY
     include Pundit
 
-    after_action :verify_authorized, except: %i[index], unless: :current_devise_controller?
-    after_action :verify_policy_scoped, only: :index, unless: :skip_policy_scoped_controller?
+    after_action :verify_authorized, except: %i[index], unless: :skip_verify_authorized?
+    after_action :verify_policy_scoped, only: :index, unless: :skip_verify_policy_scoped?
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   RUBY
 end
@@ -26,19 +26,19 @@ insert_into_file "app/controllers/application_controller.rb", before: /^end/ do
   <<~RUBY
     private
 
-    def skip_policy_scoped_controller?
+    def skip_verify_authorized?
+      return false unless respond_to?(:devise_controller?)
+
+      devise_controller?
+    end
+
+    def skip_verify_policy_scoped?
       is_a?(::HomeController) || current_devise_controller?
     end
 
     def user_not_authorized
       flash[:alert] = "You are not authorized to perform this action."
       redirect_to(request.referer || root_path)
-    end
-
-    def current_devise_controller?
-      return false unless respond_to?(:devise_controller?)
-
-      devise_controller?
     end
   RUBY
 end
