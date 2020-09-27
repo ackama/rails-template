@@ -25,20 +25,20 @@ end
 insert_into_file "app/controllers/application_controller.rb", before: /^end/ do
   <<~RUBY
     private
-  
+
     def skip_policy_scoped_controller?
       is_a?(::HomeController) || current_devise_controller?
     end
-  
+
     def user_not_authorized
       flash[:alert] = "You are not authorized to perform this action."
       redirect_to(request.referer || root_path)
     end
-  
+
     def current_devise_controller?
-      devise_controller?
-    rescue NoMethodError
-      false
+      return false unless respond_to?(:devise_controller?)
+
+       devise_controller?
     end
   RUBY
 end
