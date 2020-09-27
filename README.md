@@ -234,9 +234,3 @@ Note that the non enterprise version of [Sidekiq](https://github.com/mperham/sid
 When there arises need for restricting access to your application for certain users, role based authorization comes into play. This is where you can make leverage of Pundit.
 
 [Pundit](https://github.com/varvet/pundit) helps us to define policies which are PORC - Plain Old Ruby Classes - which means that the class does not inherit from other classes nor include in other modules from the framework.
-
-
-
-
-
-
