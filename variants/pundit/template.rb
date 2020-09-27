@@ -38,7 +38,7 @@ insert_into_file "app/controllers/application_controller.rb", before: /^end/ do
     def current_devise_controller?
       return false unless respond_to?(:devise_controller?)
 
-       devise_controller?
+      devise_controller?
     end
   RUBY
 end
