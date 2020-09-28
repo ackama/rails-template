@@ -41,10 +41,11 @@ insert_into_file "app/controllers/application_controller.rb", before: /^end/ do
     end
 
     def user_not_authorized
-      flash[:alert] = "You are not authorized to perform this action."
+      flash[:alert] = I18n.t("authorization.not_authorized")
       redirect_to(request.referer || root_path)
     end
   RUBY
 end
 
 apply "spec/rails_helper.rb"
+apply "config/locales/en.yml.rb"
