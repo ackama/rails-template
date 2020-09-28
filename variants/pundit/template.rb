@@ -27,13 +27,17 @@ insert_into_file "app/controllers/application_controller.rb", before: /^end/ do
     private
 
     def skip_verify_authorized?
-      return false unless respond_to?(:devise_controller?)
-
-      devise_controller?
+      current_devise_controller?
     end
 
     def skip_verify_policy_scoped?
       is_a?(::HomeController) || current_devise_controller?
+    end
+
+    def current_devise_controller?
+      return false unless respond_to?(:devise_controller?)
+
+      devise_controller?
     end
 
     def user_not_authorized
