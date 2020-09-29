@@ -29,11 +29,11 @@
     <meta name="apple-mobile-web-app-title" content="<%= app_const_base.titleize %>">
   </head>
   <body>
+    <%%= render("application/header") %>
     <%%= render("application/flash") %>
 
     <div role="main">
       <%%= yield %>
     </div>
-
   </body>
 </html>
