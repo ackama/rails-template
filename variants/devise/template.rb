@@ -103,7 +103,6 @@ print_header "Adding example devise links to the homepage"
 
 append_to_file "app/views/application/_header.html.erb" do
   <<~ERB
-
     <nav>
       <h1>Example devise nav</h1>
       <ul>
