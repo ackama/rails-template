@@ -100,42 +100,30 @@ EO_ROUTES
 # devs know they have both things enabled in the application now.
 #
 print_header "Adding example devise links to the homepage"
-gsub_file "app/views/layouts/application.html.erb",
-  "<body>",
-  <<~'ERB'
-    <body>
+
+append_to_file "app/views/application/_header.html.erb" do
+  <<~ERB
+
     <nav>
-    <h1>Example devise nav</h1>
-    <ul>
-      <li>
-        <%= link_to "Home", root_path %>
-      </li>
-    </ul>
-    <% if current_user %>
-      <p>
-      You are <strong>Signed in</strong>
-      </p>
+      <h1>Example devise nav</h1>
       <ul>
-        <li>
-          <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
-        </li>
+        <li><%= link_to "Home", root_path %></li>
+      </ul>
+    <% if current_user %>
+      <p>You are <strong>Signed in</strong></p>
+      <ul>
+        <li><%= link_to "Sign out", destroy_user_session_path, method: :delete %></li>
       </ul>
     <% else %>
-      <p>
-      You are <strong>Not signed in</strong>
-      </p>
+      <p>You are <strong>Not signed in</strong></p>
       <ul>
-        <li>
-          <%= link_to "Sign in", new_user_session_path %>
-        </li>
-        <li>
-          <%= link_to "Sign up", new_user_registration_path %>
-        </li>
+        <li><%= link_to "Sign in", new_user_session_path %></li>
+        <li><%= link_to "Sign up", new_user_registration_path %></li>
       </ul>
     <% end %>
     </nav>
   ERB
-
+end
 
 print_header "Fixing session cookie expiry"
 
