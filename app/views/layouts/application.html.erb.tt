@@ -28,6 +28,7 @@
     <%%# Specifies the default name of home screen bookmark in iOS %>
     <meta name="apple-mobile-web-app-title" content="<%= app_const_base.titleize %>">
   </head>
+
   <body>
     <%%= render("application/header") %>
     <%%= render("application/flash") %>
