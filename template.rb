@@ -62,6 +62,7 @@ def apply_template!
     apply "variants/performance/template.rb"
     apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
     apply "variants/sidekiq/template.rb" if apply_variant?(:sidekiq)
+    apply "variants/frontend-react/template.rb" if apply_variant?(:react)
 
     binstubs = %w[
       brakeman bundler bundler-audit rubocop
