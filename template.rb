@@ -52,11 +52,7 @@ def apply_template!
     run_with_clean_bundler_env "bin/setup"
 
     apply "frontend-base/template.rb"
-
-    # The accessibility template brings in the lighthouse and
-    # lighthouse matcher parts we need to run performance specs
-    apply "backend-base/accessibility/template.rb"
-    apply "backend-base/performance/template.rb"
+    apply "backend-base/template.rb"
 
     create_initial_migration
 
