@@ -51,7 +51,7 @@ def apply_template!
 
     run_with_clean_bundler_env "bin/setup"
 
-    apply "variants/frontend-base/template.rb"
+    apply "frontend-base/template.rb"
 
     create_initial_migration
 
