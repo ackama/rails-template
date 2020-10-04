@@ -33,12 +33,8 @@ def apply_template!
 
   apply "Rakefile.rb"
   apply "config.ru.rb"
-  apply "app/template.rb"
-  apply "bin/template.rb"
-  apply "config/template.rb"
-  apply "doc/template.rb"
-  apply "lib/template.rb"
-  apply "public/template.rb"
+
+  apply "backend-base/template.rb"
 
   # The block passed to "after_bundle" seems to run after `bundle install`
   # but also after `webpacker:install` and after Rails has initialized the git
@@ -51,7 +47,6 @@ def apply_template!
     run_with_clean_bundler_env "bin/setup"
 
     apply "frontend-base/template.rb"
-    apply "backend-base/template.rb"
 
     create_initial_migration
 
