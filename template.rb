@@ -39,7 +39,6 @@ def apply_template!
   apply "doc/template.rb"
   apply "lib/template.rb"
   apply "public/template.rb"
-  apply "spec/template.rb"
 
   # The block passed to "after_bundle" seems to run after `bundle install`
   # but also after `webpacker:install` and after Rails has initialized the git
