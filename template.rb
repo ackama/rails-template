@@ -52,6 +52,9 @@ def apply_template!
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
+    apply "variants/frontend-react/template.rb" if apply_variant?(:react)
+    apply "variants/frontend-base/template_sentry.rb"
+    apply "variants/frontend-base/template_js_fix.rb"
 
     create_initial_migration
 
@@ -62,7 +65,6 @@ def apply_template!
     apply "variants/performance/template.rb"
     apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
     apply "variants/sidekiq/template.rb" if apply_variant?(:sidekiq)
-    apply "variants/frontend-react/template.rb" if apply_variant?(:react)
 
     binstubs = %w[
       brakeman bundler bundler-audit rubocop
