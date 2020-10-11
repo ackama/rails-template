@@ -52,6 +52,9 @@ def apply_template!
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
+    apply "variants/frontend-react/template.rb" if apply_variant?(:react)
+    apply "variants/frontend-base/sentry/template.rb"
+    apply "variants/frontend-base/js-lint/template.rb"
 
     create_initial_migration
 
