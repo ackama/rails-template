@@ -225,6 +225,11 @@ It also applies the [foundation-layout variant](#foundation-layout), if this opt
 #### foundation-layout
 adds scss files to style a footer, header, navigation and search-bar, which are common website components.
 
+#### foundation-react
+adds configuration, example of react, which is based on [rails-react](https://github.com/reactjs/react-rails)
+
+The relevant config files are found in `variants/frontend-react`
+
 #### sidekiq
 A job scheduler is a computer application for controlling unattended background program execution of jobs
 
