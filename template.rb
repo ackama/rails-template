@@ -64,7 +64,6 @@ def apply_template!
       brakeman bundler bundler-audit rubocop
     ]
     run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')} --force"
-    run_bullet_install
     template "rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
 
@@ -197,10 +196,6 @@ def run_with_clean_bundler_env(cmd)
     puts "Command failed, exiting: #{cmd}"
     exit(1)
   end
-end
-
-def run_bullet_install
-  run "bundle exec rails g bullet:install"
 end
 
 def run_rubocop_autocorrections
