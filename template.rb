@@ -71,6 +71,7 @@ def apply_template!
       brakeman bundler bundler-audit rubocop
     ]
     run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')} --force"
+
     template "rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
 
