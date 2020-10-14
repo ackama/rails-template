@@ -52,11 +52,17 @@ def apply_template!
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
+    apply "variants/frontend-react/template.rb" if apply_variant?(:react)
+    apply "variants/frontend-base/sentry/template.rb"
+    apply "variants/frontend-base/js-lint/template.rb"
 
     create_initial_migration
 
     # Apply variants after setup and initial install, but before commit
     apply "variants/accessibility/template.rb"
+    # The accessibility template brings in the lighthouse and 
+    # lighthouse matcher parts we need to run performance specs 
+    apply "variants/performance/template.rb"
     apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
     apply "variants/sidekiq/template.rb" if apply_variant?(:sidekiq)
 
