@@ -8,4 +8,3 @@ empty_directory_with_keep_file "spec/models"
 empty_directory_with_keep_file "spec/factories"
 empty_directory_with_keep_file "spec/support"
 empty_directory_with_keep_file "spec/features"
-
