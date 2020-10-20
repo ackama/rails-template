@@ -9,6 +9,7 @@ require "capybara/rspec"
 require "selenium-webdriver"
 
 # Add additional requires below this line. Rails is not loaded until this point!
+require "support/helpers/download_helper"
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -47,15 +48,21 @@ Capybara.register_driver :chrome do |app|
   options.add_argument("--no-sandbox")
   options.add_argument("--disable-dev-shm-usage")
 
+  # Download test
+  options.add_preference(:download, prompt_for_download: false, default_directory: DownloadHelpers::PATH.to_s)
+  options.add_preference(:browser, set_download_behavior: { behavior: "allow" })
+
   Capybara::Selenium::Driver.new app, browser: :chrome, options: options
 end
+
+Capybara.javascript_driver = :chrome
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
+  # examples withian a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
 

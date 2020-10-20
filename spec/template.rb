@@ -7,4 +7,5 @@ directory "spec/helpers"
 empty_directory_with_keep_file "spec/models"
 empty_directory_with_keep_file "spec/factories"
 empty_directory_with_keep_file "spec/support"
-empty_directory_with_keep_file "spec/features"
+copy_file "spec/support/helpers/download_helper.rb", force: true
+copy_file "spec/features/download/download_spec.rb", force: true
