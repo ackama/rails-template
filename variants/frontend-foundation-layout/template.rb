@@ -7,6 +7,8 @@ directory "app/views/home"
 
 gsub_file "app/views/layouts/application.html.erb", "<body>", "<body class=\"no-js\">"
 gsub_file "app/views/layouts/application.html.erb",
+          "    <%= render(\"application/header\") %>\n", ""
+gsub_file "app/views/layouts/application.html.erb",
           "render(\"application/flash\")",
           "render(\"application/header/header\")"
 

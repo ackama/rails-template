@@ -65,7 +65,6 @@ gsub_file "app/views/layouts/application.html.erb",
 
 body_open_tag_with_img_example = <<~EO_IMG_EXAMPLE
   <body>
-
       <%
         # An example of how to load an image via Webpacker. This image is in
         # app/frontend/images/example.png
