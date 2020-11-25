@@ -1,6 +1,3 @@
-<%# The "application" layout is the default layout. It includes  %>
-<%# things like header, footer, and alerts that are common  %>
-<%# to most (but not all) views.                                       %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -36,13 +33,13 @@
     <%%# Specifies the default name of home screen bookmark in iOS %>
     <meta name="apple-mobile-web-app-title" content="<%= app_const_base.titleize %>">
   </head>
-  <body>
 
+  <body>
+    <%%= render("application/header") %>
     <%%= render("application/flash") %>
 
     <div role="main">
       <%%= yield %>
     </div>
-
   </body>
 </html>
