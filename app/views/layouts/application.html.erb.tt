@@ -23,7 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <%%# Prevents the app is indexed by Google %>
-    <%% if ENV.fetch("NO_INDEX", "YES") == "YES" %>
+    <%% if ENV.fetch("PREVENT_SEARCH_ENGINE_INDEXING", "YES") == "YES" %>
       <meta name="robots" content="noindex" />
     <%% end %>
 
