@@ -51,6 +51,10 @@ gsub_file "config/environments/production.rb",
           "config.log_level = :debug",
           'config.log_level = ENV.fetch("LOG_LEVEL", "info").to_sym'
 
+gsub_file "config/environments/production.rb",
+          "ActiveSupport::Logger.new(STDOUT)",
+          "ActiveSupport::Logger.new($stdout)"
+
 insert_into_file "config/environments/production.rb",
   after: /.*config\.public_file_server\.enabled.*\n/ do
   <<~'RUBY'
