@@ -86,3 +86,12 @@ append_to_file "bin/ci-run" do
   yarn run scss-lint
   SASSLINT
 end
+
+append_to_file "bin/ci-run" do
+  <<~AUDIT
+  echo "* ******************************************************"
+  echo "* Running JS package audit"
+  echo "* ******************************************************"
+  yarn audit
+  AUDIT
+end
