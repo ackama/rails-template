@@ -1,0 +1,163 @@
+#!/usr/bin/env ruby
+
+require "yaml"
+require "optparse"
+require "set"
+
+class Config
+  attr_reader :options
+
+  ##
+  # We need to preserve the order of answers, so we are using nested arrays
+  # rather than a hash. Note that the questions asked in later steps can depend
+  # on the answers to previous steps
+  #
+  VARIANTS = {
+    "basic" => [
+      # [answer, description-of-answer]
+      ["example.com",         "Set production URL"],
+      ["staging.example.com", "Set staging URL"],
+      ["No",                  "Install foundation?"],
+      ["No",                  "Install Sidekiq?"],
+      ["",                    "Choose git remote URL"],
+      ["No",                  "Install devise?"],
+    ],
+    "foundation" => [
+      # [answer, description-of-answer]
+      ["example.com",         "Set production URL"],
+      ["staging.example.com", "Set staging URL"],
+      ["Yes",                 "Install foundation?"],
+      ["No",                  "Install Sidekiq?"],
+      ["",                    "Choose git remote URL"],
+      ["No",                  "Install devise?"],
+    ],
+    "foundation_layout" => [
+      # [answer, description-of-answer]
+      ["example.com",         "Set production URL"],
+      ["staging.example.com", "Set staging URL"],
+      ["Yes",                 "Install foundation?"],
+      ["Yes",                 "Install foundation-layout?"],
+      ["No",                  "Install Sidekiq?"],
+      ["",                    "Choose git remote URL"],
+      ["No",                  "Install devise?"],
+    ],
+    "sidekiq" => [
+      # [answer, description-of-answer]
+      ["example.com",         "Set production URL"],
+      ["staging.example.com", "Set staging URL"],
+      ["No",                  "Install foundation?"],
+      ["Yes",                 "Install Sidekiq?"],
+      ["",                    "Choose git remote URL"],
+      ["No",                  "Install devise?"],
+    ],
+    "devise" => [
+      # [answer, description-of-answer]
+      ["example.com",         "Set production URL"],
+      ["staging.example.com", "Set staging URL"],
+      ["No",                  "Install foundation?"],
+      ["No",                  "Install Sidekiq?"],
+      ["",                    "Choose git remote URL"],
+      ["Yes",                 "Install devise?"],
+      ["Yes",                 "Should devise do git commit?"],
+    ],
+  }
+
+  def initialize
+    @options = default_options
+
+    parser = OptionParser.new do |opts|
+      opts.banner = "Usage: ./bin/template-run-ci [options]"
+      
+      opts.on("-d", "--drop-dbs [FLAG]", FalseClass, "Drop databases before running") do |answer|
+        @options[:drop_databases] = answer
+      end
+
+      opts.on("-h", "--help", "Prints this help") do
+        puts opts
+        exit
+      end
+
+      opts.on("-v", "--variants VARIANT_NAMES", Array, "Comma separated list of variants to build and test") do |variants|
+        all_variants_set = Set.new(VARIANTS.keys.map(&:to_s))
+        new_variants_set = Set.new(variants)
+
+        unless new_variants_set.subset?(all_variants_set)
+          puts "These are not valid variant names"
+          exit
+        end
+
+        @options[:variant_names] = variants
+      end
+    end
+
+    parser.parse!
+  end
+
+  def answers_for(variant_name)
+    VARIANTS[variant_name]
+  end
+
+  private
+
+  def default_options
+    {
+      variant_names: VARIANTS.keys,
+      drop_databases: false
+    }
+  end
+end
+
+
+
+def print_header(msg)
+  puts ""
+  puts "*" * 80
+  puts msg
+  puts "*" * 80
+  puts ""
+end
+
+##
+# This generates a snippet of YAML for Github Actions.
+#
+# We always generate YAML for **all** variants (ignoring the variant names
+# which might have been passed to this script as a command line arg)
+#
+def generate_yaml_snippet_for_github_actions
+  print_header("Generating snippet for Github actions YAML")
+
+  matrix = {
+    "matrix" => {
+      "variant" => Config::VARIANTS.keys.map { |vname| {"name" => vname } }
+    }
+  }
+
+  puts matrix.to_yaml
+end
+
+def main
+  config = Config.new
+  print_header("Running with options: #{p config.options}")
+
+  generate_yaml_snippet_for_github_actions
+
+  if config.options[:drop_databases]
+    print_header("Dropping databases from the last run")
+
+    config.options[:variant_names].each do |variant_name|
+      print_header("Dropping databases for variant: #{variant_name}")
+      puts `psql -c 'DROP DATABASE IF EXISTS #{variant_name}_test_app_development;'`
+      puts `psql -c 'DROP DATABASE IF EXISTS #{variant_name}_test_app_test;'`
+      puts `psql -c 'DROP DATABASE IF EXISTS #{variant_name}_test_app_staging;'`
+      puts `psql -c 'DROP DATABASE IF EXISTS #{variant_name}_test_app_production;'`
+    end
+  end
+
+  config.options[:variant_names].each do |variant_name|
+    print_header("Running tests for variant: #{variant_name}")
+    generator_input = config.answers_for(variant_name).map(&:first).join("\\n").concat("\\n")
+    fail "Test run failed" unless system "VARIANT=#{variant_name} GENERATOR_INPUT=\"#{generator_input}\" ./template-test/ci-run.sh"
+  end
+end
+
+main
