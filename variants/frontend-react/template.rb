@@ -22,6 +22,21 @@ gsub_file "app/frontend/packs/application.js",
 gsub_file "app/frontend/packs/server_rendering.js",
           "ReactRailsUJS.useContext(componentRequireContext);", react_rails_replacement
 
+gsub_file(
+  "app/frontend/packs/application.js",
+  'var ReactRailsUJS = require("react_ujs")',
+  "import ReactRailsUJS from 'react_ujs';"
+)
+
+gsub_file(
+  "app/frontend/packs/server_rendering.js",
+  'var ReactRailsUJS = require("react_ujs")',
+  "import ReactRailsUJS from 'react_ujs';"
+)
+
+# var ReactRailsUJS = require('react_ujs');
+# import ReactRailsUJS from 'react_ujs';
+
 javascript_pack_tag_replacement = <<-ERB
     <%= javascript_pack_tag "application", "data-turbolinks-track": "reload", defer: true %>
     <%= javascript_pack_tag "application" %>

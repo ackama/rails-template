@@ -14,6 +14,10 @@ gsub_file "config/webpack/environment.js",
     module.exports = environment;
 EO_JS
 
+insert_into_file "app/frontend/packs/application.js",
+                 "import * as Sentry from '@sentry/browser';\n",
+                 after: /import Rails from "@rails\/ujs"\n/
+
 append_to_file "app/frontend/packs/application.js" do
   <<~'EO_JS'
 
@@ -23,7 +27,6 @@ append_to_file "app/frontend/packs/application.js" do
     // to be initialized **before** we import any of our actual JS so that Sentry
     // can report errors from it.
     //
-    import * as Sentry from '@sentry/browser';
     Sentry.init({
       dsn: process.env.SENTRY_DSN,
       environment: process.env.SENTRY_ENV || process.env.RAILS_ENV
