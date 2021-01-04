@@ -200,6 +200,9 @@ Ackama maintains [lighthouse matchers](https://github.com/ackama/lighthouse-matc
 #### performance
 Add configuration and specs to use to perform a [lighthouse performance](https://web.dev/performance-scoring/) audit, requiring a score of at least 95.
 
+#### bullet
+Add configuration to use to prevent N+1 queries, see  [bullet](https://github.com/flyerhzm/bullet) 
+
 ### Optional Variants
 
 #### devise

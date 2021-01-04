@@ -63,6 +63,7 @@ def apply_template!
     # The accessibility template brings in the lighthouse and 
     # lighthouse matcher parts we need to run performance specs 
     apply "variants/performance/template.rb"
+    apply "variants/bullet/template.rb"
     apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
     apply "variants/sidekiq/template.rb" if apply_variant?(:sidekiq)
 
