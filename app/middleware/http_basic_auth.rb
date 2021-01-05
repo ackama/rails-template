@@ -4,7 +4,7 @@ class HttpBasicAuth
   end
 
   def call(env)
-    if self.class.should_enable?
+    if username && password
       auth = Rack::Auth::Basic.new(@app) do |u, p|
         u == username && p == password
       end
