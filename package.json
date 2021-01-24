@@ -1,8 +1,16 @@
 {
   "name": "rails-template",
   "version": "1.0.0",
-  "repository": "git@github.com:ackama/rails-template.git",
   "private": true,
+  "repository": "git@github.com:ackama/rails-template.git",
+  "scripts": {
+    "format-check": "prettier --check './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
+    "format-fix": "prettier --write './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
+    "js-lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
+    "js-lint-fix": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
+    "scss-lint": "stylelint '**/*.{css,scss}'",
+    "scss-lint-fix": "stylelint '**/*.{css,scss}' --fix"
+  },
   "prettier": "prettier-config-ackama",
   "devDependencies": {
     "eslint": "^7.6.0",
@@ -16,16 +24,9 @@
     "eslint-plugin-react-hooks": "^4.0.8",
     "prettier": "^2.1.1",
     "prettier-config-ackama": "^0.1.2",
+    "prettier-plugin-packagejson": "^2.2.9",
     "stylelint": "^13.0.0",
     "stylelint-config-recommended-scss": "^4.1.0",
     "stylelint-scss": "^3.13.0"
-  },
-  "scripts": {
-    "js-lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
-    "js-lint-fix": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
-    "format-check": "prettier --check './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
-    "format-fix": "prettier --write './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
-    "scss-lint": "stylelint '**/*.{css,scss}'",
-    "scss-lint-fix": "stylelint '**/*.{css,scss}' --fix"
   }
 }
