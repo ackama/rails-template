@@ -20,7 +20,9 @@ jobs:
           - name: basic
             generator_input: example.com\nstaging.example.com\nNo\nNo\nNo\n\nNo\n
           - name: react
-            generator_input: example.com\nstaging.example.com\nYes\nNo\nNo\n\nNo\n
+            generator_input: example.com\nstaging.example.com\nYes\nNo\nNo\nNo\n\nNo\n
+          - name: react-typescript
+            generator_input: example.com\nstaging.example.com\nYes\nYes\n\No\nNo\n\nNo\n
           - name: foundation
             generator_input: example.com\nstaging.example.com\nNo\nYes\nNo\n\nNo\n
           - name: foundation-layout
