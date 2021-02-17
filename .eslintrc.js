@@ -2,8 +2,19 @@
 
 const config = {
   root: true,
-  env: { commonjs: true, node: true, browser: true },
-  extends: ['ackama'],
+  env: {
+    commonjs: true,
+    node: true,
+    browser: true,
+    jest: true
+  },
+  extends: [
+    'ackama',
+    'ackama/react',
+    'plugin:testing-library/recommended',
+    'plugin:testing-library/react'
+  ],
+  plugins: ['testing-library', 'jest-dom', 'jest'],
   ignorePatterns: ['tmp/'],
   parserOptions: { sourceType: 'module' },
   overrides: [

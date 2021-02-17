@@ -9,6 +9,9 @@ run "rails webpacker:install:react"
 run "rails generate react:install"
 
 yarn_add_dev_dependencies %w[
+  @testing-library/react
+  @testing-library/jest-dom
+  @testing-library/user-event
   eslint-plugin-react
   eslint-plugin-react-hooks
   eslint-plugin-jsx-a11y
@@ -57,8 +60,13 @@ gsub_file "app/views/layouts/application.html.erb",
 
 # example file
 copy_file "app/frontend/components/HelloWorld.jsx", force: true
+
+# example test
+copy_file "app/frontend/tests/HelloWorld.spec.jsx", force: true
+
 append_to_file "app/views/home/index.html.erb" do
   <<~ERB
-    <%= react_component("HelloWorld", { greeting: "Hello from react-rails." }) %>
+    <%= react_component("HelloWorld", { initialGreeting: "Hello from react-rails." }) %>
   ERB
+
 end

@@ -215,7 +215,9 @@ Noteabley, these files generate a User model with devise `:validatable` and `:lo
 #### frontend-react
 adds configuration, example of react, which is based on [rails-react](https://github.com/reactjs/react-rails)
 
-The relevant config files are found in `variants/frontend-react`
+The relevant config files are found in `variants/frontend-react`.
+
+An example react test using [react-testing-library](https://testing-library.com/docs/react-testing-library/intro/) is shown. Before you start adding more tests, it is recommended you read [common-mistakes-with-react-testing-library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
 
 #### sidekiq
 A job scheduler is a computer application for controlling unattended background program execution of jobs
