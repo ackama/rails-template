@@ -11,12 +11,14 @@ describe('HelloWorld', () => {
     );
 
     await findByText(/hello ackama/iu);
+
     userEvent.type(
       screen.getByRole('textbox', {
         name: /change the greeting/iu
       }),
       'Hello from the other side'
     );
+
     expect(screen.getByText(/hello from the other side/iu)).toBeInTheDocument();
   });
 });
