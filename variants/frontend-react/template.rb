@@ -68,5 +68,4 @@ append_to_file "app/views/home/index.html.erb" do
   <<~ERB
     <%= react_component("HelloWorld", { initialGreeting: "Hello from react-rails." }) %>
   ERB
-
 end
