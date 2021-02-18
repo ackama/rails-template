@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 const HelloWorld = ({ initialGreeting }) => {
   const [greeting, setGreeting] = useState(initialGreeting);
 
-  function updateGreeting(e) {
-    setGreeting(e.target.value);
-  }
+  function updateGreeting (event) {
+    setGreeting(event.target.value);
+  };
 
   return (
     <>

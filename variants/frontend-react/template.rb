@@ -58,6 +58,8 @@ gsub_file "app/views/layouts/application.html.erb",
           "    <%= javascript_pack_tag \"application\", \"data-turbolinks-track\": \"reload\", defer: true %>\n",
           javascript_pack_tag_replacement
 
+copy_file "jest.config.js"
+
 # example file
 copy_file "app/frontend/components/HelloWorld.jsx", force: true
 

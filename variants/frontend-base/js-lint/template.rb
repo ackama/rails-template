@@ -31,12 +31,6 @@ package_json["browserslist"] = [
   "not IE 11",
   "not IE_Mob 11"
 ]
-package_json["jest"] = {
-  "moduleDirectories": [
-    "node_modules",
-    "app/frontend"
-  ]
-}
 package_json["scripts"] = {
   "js-lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
   "js-lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
