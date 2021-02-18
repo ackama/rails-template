@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 const HelloWorld = ({ initialGreeting }) => {
   const [greeting, setGreeting] = useState(initialGreeting);
 
-  function updateGreeting (event) {
+  const updateGreeting = event => {
     setGreeting(event.target.value);
   };
 

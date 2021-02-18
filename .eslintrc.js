@@ -3,10 +3,7 @@
 const config = {
   root: true,
   env: { commonjs: true, node: true, browser: true },
-  extends: [
-    'ackama',
-    'ackama/react',
-  ],
+  extends: ['ackama', 'ackama/react'],
   ignorePatterns: ['tmp/'],
   parserOptions: { sourceType: 'module' },
   overrides: [
@@ -21,14 +18,16 @@ const config = {
     },
     {
       files: ['app/frontend/tests/**'],
-      extends: ['ackama/jest', 'ackama/jest-formatting', 'plugin:testing-library/recommended',
+      extends: [
+        'ackama/jest',
+        'plugin:testing-library/recommended',
         'plugin:testing-library/react'
       ],
-      plugins: ['testing-library', 'jest-dom', 'jest'],
+      plugins: ['testing-library', 'jest-dom'],
       rules: {
-        'jest/prefer-expect-assertions': 'off',
+        'jest/prefer-expect-assertions': 'off'
       }
-    },
+    }
   ],
   rules: {}
 };
