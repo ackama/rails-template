@@ -5,8 +5,7 @@ const config = {
   env: {
     commonjs: true,
     node: true,
-    browser: true,
-    jest: true
+    browser: true
   },
   extends: [
     'ackama',
