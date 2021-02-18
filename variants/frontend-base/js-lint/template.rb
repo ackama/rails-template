@@ -45,7 +45,6 @@ package_json["scripts"] = {
   "scss-lint-fix" => "stylelint '**/*.{css,scss}' --fix",
   "test" => "jest /app/frontend",
   "watch-tests" => "jest --watch"
-
 }
 
 File.write("./package.json", JSON.generate(package_json))
