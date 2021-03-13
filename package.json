@@ -13,6 +13,7 @@
   },
   "prettier": "prettier-config-ackama",
   "devDependencies": {
+    "audit-app": "^0.5.2",
     "eslint": "^7.6.0",
     "eslint-config-ackama": "^2.0.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
