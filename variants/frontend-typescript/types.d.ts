@@ -28,12 +28,6 @@ declare module 'react_ujs' {
   export default ReactRailsUJS;
 }
 
-declare module '@rails/actioncable' {
-  import ActionCable from 'actioncable';
-
-  export = ActionCable;
-}
-
 declare module '*.svg' {
   const content: string;
   export default content;
