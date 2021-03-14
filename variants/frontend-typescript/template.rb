@@ -8,7 +8,7 @@ types_packages = %w[
   rails__ujs
   actioncable
   turbolinks
-  dotenv-webpack@^6.0.4
+  dotenv-webpack@^6.0.0
   postcss-import
   postcss-flexbugs-fixes
   postcss-preset-env
