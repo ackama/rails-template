@@ -2,7 +2,7 @@
 # ############
 
 run "yarn add @sentry/browser"
-run "yarn add dotenv-webpack"
+run "yarn add dotenv-webpack@^6.0.4"
 
 gsub_file "config/webpack/environment.js",
           "module.exports = environment",
