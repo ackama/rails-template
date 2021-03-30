@@ -4,6 +4,7 @@ run "rails webpacker:install:typescript"
 remove_file "app/frontend/packs/hello_typescript.ts"
 
 types_packages = %w[
+  rails__actioncable
   rails__activestorage
   rails__ujs
   actioncable
