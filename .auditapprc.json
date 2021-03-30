@@ -1,4 +1,4 @@
 {
   "$schema": "node_modules/audit-app/config.schema.json",
-  "ignore": ["1650|lighthouse>jsonld>xmldom"]
+  "ignore": []
 }
