@@ -7,7 +7,6 @@ types_packages = %w[
   rails__actioncable
   rails__activestorage
   rails__ujs
-  actioncable
   turbolinks
   dotenv-webpack@^6.0.0
   postcss-import
