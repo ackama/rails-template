@@ -2,7 +2,20 @@
 # ######################################
 
 run "rm .browserslistrc"
-run "yarn add --dev eslint eslint-config-ackama eslint-plugin-node eslint-plugin-import eslint-plugin-prettier prettier prettier-config-ackama prettier-plugin-packagejson eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y"
+yarn_add_dev_dependencies %w[
+  eslint
+  eslint-config-ackama
+  eslint-plugin-node
+  eslint-plugin-import
+  eslint-plugin-prettier
+  eslint-plugin-eslint-comments
+  eslint-plugin-react
+  eslint-plugin-react-hooks
+  eslint-plugin-jsx-a11y
+  prettier
+  prettier-config-ackama
+  prettier-plugin-packagejson
+]
 copy_file ".eslintrc.js"
 template ".prettierignore.tt"
 
@@ -73,7 +86,11 @@ append_to_file "bin/ci-run" do
 end
 
 # SCSS Linting
-run "yarn add --dev stylelint stylelint-scss stylelint-config-recommended-scss"
+yarn_add_dev_dependencies %w[
+  stylelint
+  stylelint-scss
+  stylelint-config-recommended-scss
+]
 copy_file ".stylelintrc.js"
 template ".stylelintignore.tt"
 

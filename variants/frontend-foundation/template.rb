@@ -1,6 +1,6 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-run "yarn add foundation-sites jquery"
+yarn_add_dependencies %w[foundation-sites jquery]
 
 directory "app/frontend/foundation"
 
