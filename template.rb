@@ -65,8 +65,8 @@ def apply_template!
 
     # Apply variants after setup and initial install, but before commit
     apply "variants/accessibility/template.rb"
-    # The accessibility template brings in the lighthouse and 
-    # lighthouse matcher parts we need to run performance specs 
+    # The accessibility template brings in the lighthouse and
+    # lighthouse matcher parts we need to run performance specs
     apply "variants/performance/template.rb"
     apply "variants/bullet/template.rb"
     apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
@@ -79,6 +79,8 @@ def apply_template!
 
     template "rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
+
+    apply "variants/frontend-audit-app/template.rb"
 
     unless any_local_git_commits?
       git add: "-A ."

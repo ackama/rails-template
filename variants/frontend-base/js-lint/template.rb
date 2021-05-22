@@ -2,8 +2,7 @@
 # ######################################
 
 run "rm .browserslistrc"
-run "yarn add --dev audit-app eslint eslint-config-ackama eslint-plugin-node eslint-plugin-import eslint-plugin-prettier prettier prettier-config-ackama prettier-plugin-packagejson eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y"
-copy_file ".auditapprc.json"
+run "yarn add --dev eslint eslint-config-ackama eslint-plugin-node eslint-plugin-import eslint-plugin-prettier prettier prettier-config-ackama prettier-plugin-packagejson eslint-plugin-eslint-comments eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y"
 copy_file ".eslintrc.js"
 template ".prettierignore.tt"
 
@@ -86,13 +85,4 @@ append_to_file "bin/ci-run" do
   echo "* ******************************************************"
   yarn run scss-lint
   SASSLINT
-end
-
-append_to_file "bin/ci-run" do
-  <<~AUDIT
-  echo "* ******************************************************"
-  echo "* Running JS package audit"
-  echo "* ******************************************************"
-  npx audit-app
-  AUDIT
 end
