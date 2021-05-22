@@ -96,6 +96,20 @@ def apply_template!
   end
 end
 
+# Adds the given <code>packages</code> as dependencies using <code>yarn add</code>
+#
+# @param [Array<String>] packages
+def yarn_add_dependencies(packages)
+  run "yarn add #{packages.join " "}"
+end
+
+# Adds the given <code>packages</code> as devDependencies using <code>yarn add --dev</code>
+#
+# @param [Array<String>] packages
+def yarn_add_dev_dependencies(packages)
+  run "yarn add --dev #{packages.join " "}"
+end
+
 # Add this template directory to source_paths so that Thor actions like
 # copy_file and template resolve against our source files. If this file was
 # invoked remotely via HTTP, that means the files are not present locally.

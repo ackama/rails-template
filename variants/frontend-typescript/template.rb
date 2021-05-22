@@ -18,8 +18,8 @@ types_packages = %w[
 ].map { |name| "@types/#{name}" }
 
 run "yarn remove prop-types"
-run "yarn add #{types_packages.join " "}"
-run "yarn add -D @typescript-eslint/parser @typescript-eslint/eslint-plugin"
+yarn_add_dependencies types_packages
+yarn_add_dev_dependencies %w[@typescript-eslint/parser @typescript-eslint/eslint-plugin]
 run "yarn install"
 
 %w[
