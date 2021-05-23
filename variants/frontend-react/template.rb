@@ -69,7 +69,7 @@ copy_file "jest.config.js"
 copy_file "app/frontend/components/HelloWorld.jsx", force: true
 
 # example test
-copy_file "app/frontend/tests/HelloWorld.spec.jsx", force: true
+copy_file "app/frontend/test/components/HelloWorld.spec.jsx", force: true
 
 append_to_file "app/views/home/index.html.erb" do
   <<~ERB

@@ -17,7 +17,7 @@ const config = {
       parserOptions: { sourceType: 'script' }
     },
     {
-      files: ['app/frontend/tests/**'],
+      files: ['app/frontend/test/**'],
       extends: [
         'ackama/jest',
         'plugin:jest-dom/recommended',
