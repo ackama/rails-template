@@ -4,20 +4,26 @@ import React from 'react';
 import HelloWorld from '../../components/HelloWorld';
 
 describe('HelloWorld', () => {
-  it('renders personalized greeting', async () => {
-    const { findByText } = render(
-      <HelloWorld initialGreeting="Hello Ackama" />
-    );
+  it('renders the initial greeting', async () => {
+    const { container } = render(<HelloWorld initialGreeting="Hello Ackama" />);
 
-    await findByText(/hello ackama/iu);
+    expect(container).toHaveTextContent(/Hello Ackama/iu);
+  });
 
-    userEvent.type(
-      screen.getByRole('textbox', {
-        name: /change the greeting/iu
-      }),
-      'Hello from the other side'
-    );
+  describe('when the user types in a new greeting', () => {
+    it('changes to render that one', async () => {
+      const { container } = render(
+        <HelloWorld initialGreeting="Hello Ackama" />
+      );
 
-    expect(screen.getByText(/hello from the other side/iu)).toBeInTheDocument();
+      userEvent.type(
+        screen.getByRole('textbox', {
+          name: /change the greeting/iu
+        }),
+        'Hello from the other side'
+      );
+
+      expect(container).toHaveTextContent(/Hello from the other side/iu);
+    });
   });
 });
