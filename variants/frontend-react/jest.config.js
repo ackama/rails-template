@@ -6,7 +6,10 @@ const config = {
 
   moduleDirectories: ['node_modules', 'app/frontend'],
 
-  setupFilesAfterEnv: ['app/frontend/tests/setupExpectEachTestHasAssertions.js']
+  setupFilesAfterEnv: [
+    '@testing-library/jest-dom/extend-expect',
+    'app/frontend/test/setupExpectEachTestHasAssertions.js'
+  ]
 };
 
 export default config;
