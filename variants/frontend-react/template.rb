@@ -76,3 +76,13 @@ append_to_file "app/views/home/index.html.erb" do
     <%= react_component("HelloWorld", { initialGreeting: "Hello from react-rails." }) %>
   ERB
 end
+
+package_json = JSON.parse(File.read("./package.json"))
+package_json["scripts"] = package_json["scripts"].merge(
+  {
+    "test" => "jest /app/frontend",
+    "watch-tests" => "jest --watch"
+  }
+)
+
+File.write("./package.json", JSON.generate(package_json))

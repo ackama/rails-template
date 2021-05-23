@@ -29,9 +29,7 @@ package_json["scripts"] = {
   "format-check" => "prettier --check './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
   "format-fix" => "prettier --write './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
   "scss-lint" => "stylelint '**/*.{css,scss}'",
-  "scss-lint-fix" => "stylelint '**/*.{css,scss}' --fix",
-  "test" => "jest /app/frontend",
-  "watch-tests" => "jest --watch"
+  "scss-lint-fix" => "stylelint '**/*.{css,scss}' --fix"
 }
 
 File.write("./package.json", JSON.generate(package_json))
