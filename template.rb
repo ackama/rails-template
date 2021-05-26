@@ -56,10 +56,10 @@ def apply_template!
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
 
-    apply_react = apply_variant?(:react)
-
-    apply "variants/frontend-react/template.rb" if apply_react
-    apply "variants/frontend-typescript/template.rb" if apply_react & apply_variant?(:typescript)
+    if apply_variant?(:react)
+      apply "variants/frontend-react/template.rb"
+      apply "variants/frontend-typescript/template.rb" if apply_variant?(:typescript)
+    end
 
     create_initial_migration
 
