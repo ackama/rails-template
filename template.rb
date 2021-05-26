@@ -53,12 +53,12 @@ def apply_template!
 
     apply "variants/frontend-base/template.rb"
 
-    apply_react = apply_variant?(:react)
-
-    apply "variants/frontend-react/template.rb" if apply_react
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
 
+    apply_react = apply_variant?(:react)
+
+    apply "variants/frontend-react/template.rb" if apply_react
     apply "variants/frontend-typescript/template.rb" if apply_react & apply_variant?(:typescript)
 
     create_initial_migration
@@ -81,6 +81,7 @@ def apply_template!
     run_rubocop_autocorrections
 
     apply "variants/frontend-audit-app/template.rb"
+    apply "variants/frontend-base/js-lint/fixes.rb"
 
     unless any_local_git_commits?
       git add: "-A ."
