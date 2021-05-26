@@ -15,18 +15,6 @@ const config = {
         '.eslintrc.js'
       ],
       parserOptions: { sourceType: 'script' }
-    },
-    {
-      files: ['app/frontend/tests/**'],
-      extends: [
-        'ackama/jest',
-        'plugin:jest-dom/recommended',
-        'plugin:testing-library/dom',
-        'plugin:testing-library/react'
-      ],
-      rules: {
-        'jest/prefer-expect-assertions': 'off'
-      }
     }
   ]
 };
