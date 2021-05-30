@@ -15,6 +15,11 @@ yarn_add_dev_dependencies %w[
   eslint-plugin-react
   eslint-plugin-react-hooks
   eslint-plugin-jsx-a11y
+  eslint-plugin-jest
+  eslint-plugin-jest-formatting
+  eslint-plugin-jest-dom
+  eslint-plugin-testing-library
+  jest
 ]
 copy_file ".eslintrc.js", force: true
 

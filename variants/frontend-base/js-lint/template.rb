@@ -9,14 +9,6 @@ yarn_add_dev_dependencies %w[
   eslint-plugin-import
   eslint-plugin-prettier
   eslint-plugin-eslint-comments
-  eslint-plugin-react
-  eslint-plugin-react-hooks
-  eslint-plugin-jsx-a11y
-  eslint-plugin-jest
-  eslint-plugin-jest-formatting
-  eslint-plugin-jest-dom
-  eslint-plugin-testing-library
-  jest
   prettier
   prettier-config-ackama
   prettier-plugin-packagejson
