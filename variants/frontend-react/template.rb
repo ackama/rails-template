@@ -80,7 +80,7 @@ end
 package_json = JSON.parse(File.read("./package.json"))
 package_json["scripts"] = package_json["scripts"].merge(
   {
-    "test" => "jest /app/frontend",
+    "test" => "jest",
     "watch-tests" => "jest --watch"
   }
 )
