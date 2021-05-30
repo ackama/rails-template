@@ -1,15 +1,17 @@
+'use strict';
+
 const config = {
-  testEnvironment: 'node',
   clearMocks: true,
   restoreMocks: true,
   resetMocks: true,
 
-  moduleDirectories: ['node_modules', 'app/frontend'],
+  testEnvironment: 'jsdom',
 
+  testPathIgnorePatterns: ['config/'],
   setupFilesAfterEnv: [
     '@testing-library/jest-dom/extend-expect',
-    'app/frontend/test/setupExpectEachTestHasAssertions.js'
+    './app/frontend/test/setupExpectEachTestHasAssertions.js'
   ]
 };
 
-export default config;
+module.exports = config;

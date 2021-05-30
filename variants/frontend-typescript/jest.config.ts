@@ -10,16 +10,15 @@ const config: Config.InitialOptions = {
     }
   },
 
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
   clearMocks: true,
   restoreMocks: true,
   resetMocks: true,
 
-  moduleDirectories: ['node_modules', 'app/frontend'],
-
+  testPathIgnorePatterns: ['config/'],
   setupFilesAfterEnv: [
     '@testing-library/jest-dom/extend-expect',
-    'app/frontend/test/setupExpectEachTestHasAssertions.ts'
+    './app/frontend/test/setupExpectEachTestHasAssertions.ts'
   ],
 
   transform: {
