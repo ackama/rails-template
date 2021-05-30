@@ -94,6 +94,5 @@ append_to_file "bin/ci-run" do
   TYPECHECK
 end
 
-# for now just remove the testing-library tests
-
-remove_file "app/frontend/test/components/HelloWorld.spec.jsx"
+remove_dir "app/frontend/test"
+directory "app/frontend/test"
