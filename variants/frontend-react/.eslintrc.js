@@ -3,7 +3,7 @@
 const config = {
   root: true,
   env: { commonjs: true, node: true, browser: true },
-  extends: ['ackama'],
+  extends: ['ackama', 'ackama/react'],
   ignorePatterns: ['tmp/'],
   parserOptions: { sourceType: 'module' },
   overrides: [
@@ -16,8 +16,7 @@ const config = {
       ],
       parserOptions: { sourceType: 'script' }
     }
-  ],
-  rules: {}
+  ]
 };
 
 module.exports = config;

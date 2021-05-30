@@ -45,25 +45,24 @@ gsub_file(
 
 babel_config_file = "babel.config.js"
 
-insert_into_file babel_config_file, after: /^'use strict';\n/ do
-  <<-JS
+prepend_to_file babel_config_file do
+  <<~JS
+    /**
+     * Guards that `value` is not `false`
+     *
+     * @param {T | false} value
+     *
+     * @return {value is T}
+     *
+     * @template T
+     */
+    const notFalseGuard = value => value !== false;
 
-/**
- * Guards that `value` is not `false`
- *
- * @param {T | false} value
- *
- * @return {value is T}
- *
- * @template T
- */
-const notFalseGuard = value => value !== false;
-
-/** @type {import('@babel/core').ConfigFunction} */
+    /** @type {import('@babel/core').ConfigFunction} */
   JS
 end
 
-gsub_file babel_config_file, "\nmodule.exports = api => {", "const config = api => {"
+gsub_file babel_config_file, "\nmodule.exports = ", "\nconst config = "
 gsub_file babel_config_file, "].filter(Boolean)", "].filter(notFalseGuard)"
 append_to_file babel_config_file, "\nmodule.exports = config;"
 
@@ -83,9 +82,6 @@ gsub_file(
   'react_component("home/index")'
 )
 
-# we need to re-run these to apply the ts rules
-run "yarn run js-lint-fix"
-run "yarn run format-fix"
 run "yarn run typecheck"
 
 append_to_file "bin/ci-run" do
