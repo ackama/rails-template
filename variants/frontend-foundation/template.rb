@@ -31,4 +31,17 @@ def ask_with_default(question, color, default)
   answer.to_s.strip.empty? ? default : answer
 end
 
+# the foundation variant tend to make lighthouse sad *sometimes* - while we're
+# currently discussing switching to bootstrap, we're not yet ready to remove
+# this variant so for now we lower the required lighthouse scores to pass just
+# enough to stop CI failing without having to disable the tests entirely
+
+# gsub_file "spec/support/shared_examples/an_accessible_page.rb",
+#   "pass_lighthouse_audit(:accessibility)",
+#   "pass_lighthouse_audit(:accessibility, score: 95)"
+#
+# gsub_file "spec/support/shared_examples/a_performant_page.rb",
+#   "pass_lighthouse_audit(:performance, score: 95)",
+#   "pass_lighthouse_audit(:performance, score: 90)"
+
 apply "variants/frontend-foundation-layout/template.rb" if apply_variant?(:"foundation-layout")
