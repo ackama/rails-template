@@ -26,9 +26,6 @@ AllCops:
     - Guardfile
     - Rakefile
 
-Layout/SpaceAroundEqualsInParameterDefault:
-  EnforcedStyle: no_space
-
 Metrics/AbcSize:
   Exclude:
     - "spec/**/*"
