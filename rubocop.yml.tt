@@ -66,6 +66,12 @@ Rails/ApplicationRecord:
   Exclude:
     - "db/migrate/**"
 
+# we don't require using Rails.logger in lib, as it often doesn't go where
+# we'd want for the code that lives there, or otherwise isn't even available
+Rails/Output:
+  Exclude:
+    - "lib/**/*"
+
 Style/BarePercentLiterals:
   EnforcedStyle: percent_q
 
