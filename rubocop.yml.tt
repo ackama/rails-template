@@ -66,9 +66,6 @@ Rails/ApplicationRecord:
   Exclude:
     - "db/migrate/**"
 
-Rails/Validation:
-  Enabled: false
-
 Style/BarePercentLiterals:
   EnforcedStyle: percent_q
 
