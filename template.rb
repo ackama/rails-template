@@ -170,18 +170,30 @@ def assert_postgresql
 end
 
 def git_repo_url
-  @git_repo_url ||=
-    ask_with_default("What is the git remote URL for this project?", :blue, "skip")
+  @git_repo_url ||= ask_with_default(
+    "What is the git remote URL for this project?",
+    :blue,
+    "skip",
+    "RT_GIT_REPO_URL"
+  )
 end
 
 def production_hostname
-  @production_hostname ||=
-    ask_with_default("Production hostname?", :blue, "example.com")
+  @production_hostname ||= ask_with_default(
+    "Production hostname?",
+    :blue,
+    "example.com",
+    "RT_HOSTNAME_PRODUCTION"
+  )
 end
 
 def staging_hostname
-  @staging_hostname ||=
-    ask_with_default("Staging hostname?", :blue, "staging.example.com")
+  @staging_hostname ||= ask_with_default(
+    "Staging hostname?",
+    :blue,
+    "staging.example.com",
+    "RT_HOSTNAME_STAGING"
+  )
 end
 
 def any_local_git_commits?
@@ -198,12 +210,26 @@ end
 def apply_variant?(name)
   return true if ENV.fetch("VARIANTS", "").split(",").include?(name.to_s)
 
-  ask_with_default("Add #{name} to this application?", :blue, 'N').downcase.start_with?("y")
+  ask_with_default(
+    "Add #{name} to this application?",
+    :blue,
+    'N',
+    "RT_APPLY_VARIANT_#{name}".gsub("-", "_").upcase
+  ).downcase.start_with?("y")
 end
 
-def ask_with_default(question, color, default)
+def fetch_answer(question, color, env_variable)
+  env_answer = ENV.fetch(env_variable, nil).to_s.strip
+
+  return ask(question, color) if env_answer.empty?
+
+  say "#{question}: #{env_answer}", color
+  env_answer
+end
+
+def ask_with_default(question, color, default, env_variable)
   question = (question.split("?") << " [#{default}]?").join
-  answer = ask(question, color)
+  answer = fetch_answer(question, color, env_variable)
   answer.to_s.strip.empty? ? default : answer
 end
 
