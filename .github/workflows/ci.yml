@@ -54,7 +54,7 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '14'
 
       # We don't cache gems or JS packages because we are actually testing how
       # installation and setup works in this project so, while caching would
