@@ -19,7 +19,13 @@ types_packages = %w[
 
 run "yarn remove prop-types"
 yarn_add_dependencies types_packages
-yarn_add_dev_dependencies %w[@typescript-eslint/parser @typescript-eslint/eslint-plugin @jest/types ts-jest]
+yarn_add_dev_dependencies %w[
+  @typescript-eslint/parser
+  @typescript-eslint/eslint-plugin
+  @jest/types
+  ts-jest
+  ts-node
+]
 run "yarn install"
 
 %w[
