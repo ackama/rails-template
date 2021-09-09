@@ -86,3 +86,12 @@ package_json["scripts"] = package_json["scripts"].merge(
 )
 
 File.write("./package.json", JSON.generate(package_json))
+
+append_to_file "bin/ci-run" do
+  <<~JEST
+    echo "* ******************************************************"
+    echo "* Running JS tests"
+    echo "* ******************************************************"
+    yarn run test --coverage
+  JEST
+end
