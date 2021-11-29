@@ -71,7 +71,7 @@ RSpec.describe "User sign-in", type: :system do
                                          .parse(Base64.decode64(remember_me_cookie_data))
                                          .dig("_rails", "exp")
                                          .to_date
- 
+
         # The remember_me cookie expriy is in UTC timezone so we need to
         # compare it with the date as it is right now in UTC (not in NZ)
         today_in_utc = Time.current.utc.to_date
