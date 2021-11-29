@@ -61,11 +61,17 @@ RSpec.describe "User sign-in", type: :system do
         expect(response_cookies["remember_user_token"]).not_to eq(nil)
 
         # We expect the "remember me" cookie to have a 14 day expiry
+        remember_me_cookie = response_cookies.fetch("remember_user_token")
+
+        # The cookie is signed - base64 data separated from the signature for verification by '--'
+        # Parsing the signature can fail because it is not base64 encoded so can add extra bytes to the
+        # parsed message
+        remember_me_cookie_data, _remember_me_cookie_signature = remember_me_cookie.split("--", 2)
         remember_me_cookie_expiry_date = JSON
-                                         .parse(Base64.decode64(response_cookies.fetch("remember_user_token")))
+                                         .parse(Base64.decode64(remember_me_cookie_data))
                                          .dig("_rails", "exp")
                                          .to_date
-
+ 
         # The remember_me cookie expriy is in UTC timezone so we need to
         # compare it with the date as it is right now in UTC (not in NZ)
         today_in_utc = Time.current.utc.to_date
