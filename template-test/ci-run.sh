@@ -16,6 +16,7 @@ cd template-test/dummy
 echo -e $GENERATOR_INPUT | RACK_ENV=development RAILS_ENV=development rails new $APP_NAME -d postgresql -m $TEMPLATE \
   --skip_javascript
 
+echo "--- Finished generating, now running running tests ---"
 cd $ROOT && bash template-test/test.sh template-test/dummy/$APP_NAME
 
 
