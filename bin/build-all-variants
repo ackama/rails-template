@@ -24,6 +24,28 @@ class Config
       ["",                    "Choose git remote URL"],
       ["No",                  "Install devise?"],
     ],
+    "react" => [
+      # [answer, description-of-answer]
+      ["example.com",         "Set production URL"],
+      ["staging.example.com", "Set staging URL"],
+      ["Y",                   "Add React"],
+      ["N",                   "Add Typescript"],
+      ["No",                  "Install foundation?"],
+      ["No",                  "Install Sidekiq?"],
+      ["",                    "Choose git remote URL"],
+      ["No",                  "Install devise?"],
+    ],
+    "typescript" => [
+      # [answer, description-of-answer]
+      ["example.com",         "Set production URL"],
+      ["staging.example.com", "Set staging URL"],
+      ["N",                   "Add React"],
+      ["Y",                   "Add Typescript"],
+      ["No",                  "Install foundation?"],
+      ["No",                  "Install Sidekiq?"],
+      ["",                    "Choose git remote URL"],
+      ["No",                  "Install devise?"],
+    ],
     "foundation" => [
       # [answer, description-of-answer]
       ["example.com",         "Set production URL"],
@@ -77,7 +99,7 @@ class Config
 
     parser = OptionParser.new do |opts|
       opts.banner = "Usage: ./bin/template-run-ci [options]"
-      
+
       opts.on("-d", "--drop-dbs [FLAG]", FalseClass, "Drop databases before running") do |answer|
         @options[:drop_databases] = answer
       end
