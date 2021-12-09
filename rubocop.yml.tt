@@ -26,9 +26,6 @@ AllCops:
     - Guardfile
     - Rakefile
 
-Layout/SpaceAroundEqualsInParameterDefault:
-  EnforcedStyle: no_space
-
 Metrics/AbcSize:
   Exclude:
     - "spec/**/*"
@@ -69,11 +66,11 @@ Rails/ApplicationRecord:
   Exclude:
     - "db/migrate/**"
 
-Rails/RefuteMethods:
-  Enabled: false
-
-Rails/Validation:
-  Enabled: false
+# we don't require using Rails.logger in lib, as it often doesn't go where
+# we'd want for the code that lives there, or otherwise isn't even available
+Rails/Output:
+  Exclude:
+    - "lib/**/*"
 
 Style/BarePercentLiterals:
   EnforcedStyle: percent_q

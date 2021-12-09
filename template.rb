@@ -52,17 +52,23 @@ def apply_template!
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
-    apply "variants/frontend-react/template.rb" if apply_variant?(:react)
+
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
+
+    if apply_variant?(:react)
+      apply "variants/frontend-react/template.rb"
+      apply "variants/frontend-typescript/template.rb" if apply_variant?(:typescript)
+    end
 
     create_initial_migration
 
     # Apply variants after setup and initial install, but before commit
     apply "variants/accessibility/template.rb"
-    # The accessibility template brings in the lighthouse and 
-    # lighthouse matcher parts we need to run performance specs 
+    # The accessibility template brings in the lighthouse and
+    # lighthouse matcher parts we need to run performance specs
     apply "variants/performance/template.rb"
+    apply "variants/bullet/template.rb"
     apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
     apply "variants/sidekiq/template.rb" if apply_variant?(:sidekiq)
 
@@ -73,6 +79,9 @@ def apply_template!
 
     template "rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
+
+    apply "variants/frontend-audit-app/template.rb"
+    apply "variants/frontend-base/js-lint/fixes.rb"
 
     unless any_local_git_commits?
       git add: "-A ."
@@ -86,6 +95,20 @@ def apply_template!
     # contains a lot of changes and adds its own git commit
     apply "variants/devise/template.rb" if apply_variant?(:devise)
   end
+end
+
+# Adds the given <code>packages</code> as dependencies using <code>yarn add</code>
+#
+# @param [Array<String>] packages
+def yarn_add_dependencies(packages)
+  run "yarn add #{packages.join " "}"
+end
+
+# Adds the given <code>packages</code> as devDependencies using <code>yarn add --dev</code>
+#
+# @param [Array<String>] packages
+def yarn_add_dev_dependencies(packages)
+  run "yarn add --dev #{packages.join " "}"
 end
 
 # Add this template directory to source_paths so that Thor actions like
@@ -147,18 +170,30 @@ def assert_postgresql
 end
 
 def git_repo_url
-  @git_repo_url ||=
-    ask_with_default("What is the git remote URL for this project?", :blue, "skip")
+  @git_repo_url ||= ask_with_default(
+    "What is the git remote URL for this project?",
+    :blue,
+    "skip",
+    "RT_GIT_REPO_URL"
+  )
 end
 
 def production_hostname
-  @production_hostname ||=
-    ask_with_default("Production hostname?", :blue, "example.com")
+  @production_hostname ||= ask_with_default(
+    "Production hostname?",
+    :blue,
+    "example.com",
+    "RT_HOSTNAME_PRODUCTION"
+  )
 end
 
 def staging_hostname
-  @staging_hostname ||=
-    ask_with_default("Staging hostname?", :blue, "staging.example.com")
+  @staging_hostname ||= ask_with_default(
+    "Staging hostname?",
+    :blue,
+    "staging.example.com",
+    "RT_HOSTNAME_STAGING"
+  )
 end
 
 def any_local_git_commits?
@@ -175,12 +210,26 @@ end
 def apply_variant?(name)
   return true if ENV.fetch("VARIANTS", "").split(",").include?(name.to_s)
 
-  ask_with_default("Add #{name} to this application?", :blue, 'N').downcase.start_with?("y")
+  ask_with_default(
+    "Add #{name} to this application?",
+    :blue,
+    'N',
+    "RT_APPLY_VARIANT_#{name}".gsub("-", "_").upcase
+  ).downcase.start_with?("y")
 end
 
-def ask_with_default(question, color, default)
+def fetch_answer(question, color, env_variable)
+  env_answer = ENV.fetch(env_variable, nil).to_s.strip
+
+  return ask(question, color) if env_answer.empty?
+
+  say "#{question}: #{env_answer}", color
+  env_answer
+end
+
+def ask_with_default(question, color, default, env_variable)
   question = (question.split("?") << " [#{default}]?").join
-  answer = ask(question, color)
+  answer = fetch_answer(question, color, env_variable)
   answer.to_s.strip.empty? ? default : answer
 end
 

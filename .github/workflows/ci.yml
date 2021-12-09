@@ -20,15 +20,17 @@ jobs:
           - name: basic
             generator_input: example.com\nstaging.example.com\nNo\nNo\nNo\n\nNo\n
           - name: react
-            generator_input: example.com\nstaging.example.com\nYes\No\nNo\n\nNo\n
+            generator_input: example.com\nstaging.example.com\nYes\nNo\nNo\nNo\n\nNo\n
+          - name: react-typescript
+            generator_input: example.com\nstaging.example.com\nYes\nYes\n\No\nNo\n\nNo\n
           - name: foundation
-            generator_input: example.com\nstaging.example.com\nNo\Yes\nNo\n\nNo\n
+            generator_input: example.com\nstaging.example.com\nNo\nYes\nNo\n\nNo\n
           - name: foundation-layout
-            generator_input: example.com\nstaging.example.com\nNo\Yes\nYes\nNo\n\nNo\n
+            generator_input: example.com\nstaging.example.com\nNo\nYes\nYes\nNo\n\nNo\n
           - name: sidekiq
-            generator_input: example.com\nstaging.example.com\nNo\No\nYes\n\nNo\n
+            generator_input: example.com\nstaging.example.com\nNo\nNo\nYes\n\nNo\n
           - name: devise
-            generator_input: example.com\nstaging.example.com\nNo\No\nNo\n\nYes\nYes\n
+            generator_input: example.com\nstaging.example.com\nNo\nNo\nNo\n\nYes\nYes\n
     services:
       db:
         image: postgres
@@ -50,9 +52,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install NodeJS
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '14'
 
       # We don't cache gems or JS packages because we are actually testing how
       # installation and setup works in this project so, while caching would

@@ -1,8 +1,7 @@
 # Setup Sentry
 # ############
 
-run "yarn add @sentry/browser"
-run "yarn add dotenv-webpack"
+yarn_add_dependencies %w[@sentry/browser dotenv-webpack@^6.0.4]
 
 gsub_file "config/webpack/environment.js",
           "module.exports = environment",

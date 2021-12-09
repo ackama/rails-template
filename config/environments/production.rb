@@ -41,7 +41,7 @@ insert_into_file "config/environments/production.rb",
     user_name: ENV.fetch("SMTP_USERNAME"),
     password: ENV.fetch("SMTP_PASSWORD"),
     authentication: "login",
-    domain: production_hostname
+    domain: "#{production_hostname}"
   }
 
   RUBY
