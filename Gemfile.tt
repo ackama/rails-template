@@ -15,7 +15,8 @@ gem "turbolinks"<%= gemfile_requirement("turbolinks") %>
 gem "webpacker"<%= gemfile_requirement("webpacker") %>
 gem "lograge"
 gem "okcomputer"
-gem "sentry-raven"
+gem "sentry-ruby"
+gem "sentry-rails"
 
 gem "rack-canonical-host", "~> 0.2.3"
 

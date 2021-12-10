@@ -23,11 +23,10 @@ OkComputer::Registry.register "app_version", OkComputer::AppVersionCheck.new
 
 # Checks can be made optional. This means that the status of the checks is still reported,
 # but the overall health check status won't be affected.
-# From the checks above, we do not want our overall server health to be determined 
-# based on mailing, redis or sidekiq, but we do want to report on any of these checks 
+# From the checks above, we do not want our overall server health to be determined
+# based on mailing, redis or sidekiq, but we do want to report on any of these checks
 # that have failed.
-# OkComputer.make_optional %w(mailing redis sidekiq_default sidekiq_mailers)
-
+# OkComputer.make_optional %w[mailing redis sidekiq_default sidekiq_mailers]
 
 # Run checks in parallel
 OkComputer.check_in_parallel = true
