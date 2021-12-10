@@ -60,6 +60,7 @@ end
 
 # SCSS Linting
 yarn_add_dev_dependencies %w[
+  postcss
   stylelint
   stylelint-scss
   stylelint-config-recommended-scss
