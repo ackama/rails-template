@@ -18,19 +18,15 @@ jobs:
       matrix:
         variant:
           - name: basic
-            generator_input: example.com\nstaging.example.com\nNo\nNo\nNo\n\nNo\n
+            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nNo\n\nNo\n
           - name: react
-            generator_input: example.com\nstaging.example.com\nYes\nNo\nNo\nNo\n\nNo\n
-          - name: react-typescript
-            generator_input: example.com\nstaging.example.com\nYes\nYes\n\No\nNo\n\nNo\n
-          - name: foundation
-            generator_input: example.com\nstaging.example.com\nNo\nYes\nNo\n\nNo\n
-          - name: foundation-layout
-            generator_input: example.com\nstaging.example.com\nNo\nYes\nYes\nNo\n\nNo\n
+            generator_input: example.com\nstaging.example.com\nY\nN\nNo\nNo\n\nNo\n
+          - name: typescript
+            generator_input: example.com\nstaging.example.com\nN\nY\nNo\nNo\n\nNo\n
           - name: sidekiq
-            generator_input: example.com\nstaging.example.com\nNo\nNo\nYes\n\nNo\n
+            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nYes\n\nNo\n
           - name: devise
-            generator_input: example.com\nstaging.example.com\nNo\nNo\nNo\n\nYes\nYes\n
+            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nNo\n\nYes\nYes\n
     services:
       db:
         image: postgres
