@@ -124,26 +124,26 @@ generator system, allowing all of its ERb templates and files to be referenced
 when the application template script is evaluated.
 
 Rails generators are very lightly documented; what you’ll find is that most of the heavy lifting is done by  [Thor](http://whatisthor.com/). Thor is a tool that allows you to easily perform command line utilities.  The most common methods used by this template are Thor’s `copy_file`, `template`, and `gsub_file`. You can dig into the well-organized and well-documented [Thor source code](https://github.com/erikhuda/thor) to learn more.
-If any file finishes with `.tt`, Thor considers it to be a template and places it in the destination without the extension `.tt`. 
+If any file finishes with `.tt`, Thor considers it to be a template and places it in the destination without the extension `.tt`.
 
 ## Tooling choices and configuration
-  
+
 #### Testing: [webdrivers](https://github.com/titusfortner/webdrivers)
 auto-installs headless Chrome
 
-#### ENV managment: [dotenv](https://github.com/bkeepers/dotenv)  
+#### ENV managment: [dotenv](https://github.com/bkeepers/dotenv)
 in place of the Rails `secrets.yml`
-  
+
 #### Application web server: [puma](https://github.com/puma/puma)
-  
+
 #### Security Auditing: [brakeman](https://github.com/presidentbeef/brakeman) and [bundler-audit](https://github.com/rubysec/bundler-audit)
 
-#### Editor code style settings: [EditorConfig](https://editorconfig.org/) 
-“EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems” 
+#### Editor code style settings: [EditorConfig](https://editorconfig.org/)
+“EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems”
 
 See the `editorconfig` file for Ackama’s styles
 
-#### Git hook manager: [Overcommit](https://github.com/sds/overcommit) 
+#### Git hook manager: [Overcommit](https://github.com/sds/overcommit)
 Git has a way to fire off custom scripts when certain important actions occur, by using [Git hooks ](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks)
 
 Overcommit is a tool to manage and configure Git hooks
@@ -159,7 +159,7 @@ SimpleCov is a code coverage analysis tool for Ruby. It provides an API to filte
 “Yarn is a package manager for your code”. Think of it as Bundler for JavaScript. Yarn uses a file similar to Bundler’s Gemfile called `package.json`, found in the Rails root directory.
 
 #### Code linting and formatting
-Linting is the automated checking of your source code for programmatic and stylistic errors. Check the docs of each linter for how to automatically format code. 
+Linting is the automated checking of your source code for programmatic and stylistic errors. Check the docs of each linter for how to automatically format code.
 
 - JS/HTML/CSS:  [Prettier](https://prettier.io/), Set up with  an [Ackama prettier config](https://github.com/ackama/prettier-config-ackama) and a variety of other prettier plugins, see the full list in `variants/frontend-base/template.rb`
 
@@ -168,13 +168,13 @@ Styles: [stylelint](https://github.com/stylelint/stylelint)
 
 - Ruby: [Rubocop](https://github.com/rubocop-hq/rubocop), with [ackama rubocop settings](https://bitbucket.org/rabidtech/rabid-dotfiles/raw/master/.rubocop.yml)
 
-- Editor code style settings: [EditorConfig](https://editorconfig.org/), 
-“EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems”. See the `editorconfig` file for Ackama’s styles. 
+- Editor code style settings: [EditorConfig](https://editorconfig.org/),
+“EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems”. See the `editorconfig` file for Ackama’s styles.
 
-## Variants 
+## Variants
 We consider variants as variations on the default rails app generated by `rails new`
 
-In the medium-to-long term, we intend to move as much of the template code into the 'variants' folder as possible. 
+In the medium-to-long term, we intend to move as much of the template code into the 'variants' folder as possible.
 
 We aim to have the variants run as part of a configuration file, so that the rails-template becomes a metapackage where the template simply applies an "ackama-core" variant.
 After that, all the opt-in variants will get applied in some kind of configuration step.
@@ -183,25 +183,25 @@ Each subdirectory of the variant directory contains a template.rb file, which is
 
 ### Default Variants
 
-#### accessibility 
+#### accessibility
 "Web accessibility is the inclusive practice of ensuring there are no barriers that prevent interaction with, or access to, websites on the World Wide Web by people with physical disabilities, situational disabilities, and socio-economic restrictions on bandwidth and speed. When sites are correctly designed, developed and edited, generally all users have equal access to information and functionality." https://en.wikipedia.org/wiki/Web_accessibility
 
-This variant sets up automated accessibility testing. We use the combination of [axe](https://www.deque.com/axe/) and [lighthouse](https://developers.google.com/web/tools/lighthouse) to provide comprehensive coverage. 
+This variant sets up automated accessibility testing. We use the combination of [axe](https://www.deque.com/axe/) and [lighthouse](https://developers.google.com/web/tools/lighthouse) to provide comprehensive coverage.
 
-Axe Matchers is a gem that provides cucumber steps and rspec matchers that will check the accessibility compliance of your views. We require a default standard of wcag2a and wcag2aa. We recommend that your tests all live in a `spec/features/accessibility`, to allow for running them separately. Using the shared examples found at `variants/accessibility/spec/support/shared_examples/an_accessible_page.rb` for your base tests avoids duplication and misconfiguration. 
+Axe Matchers is a gem that provides cucumber steps and rspec matchers that will check the accessibility compliance of your views. We require a default standard of wcag2a and wcag2aa. We recommend that your tests all live in a `spec/features/accessibility`, to allow for running them separately. Using the shared examples found at `variants/accessibility/spec/support/shared_examples/an_accessible_page.rb` for your base tests avoids duplication and misconfiguration.
 
-Ackama maintains [lighthouse matchers](https://github.com/ackama/lighthouse-matchers) which provide RSpec matchers to assess the accessibility compliance of your application. We recommend setting your passing score threshold to 100 for new projects. As with Axe, you can keep your test suite tidy by placing these tests in `spec/features/accessibility`. 
+Ackama maintains [lighthouse matchers](https://github.com/ackama/lighthouse-matchers) which provide RSpec matchers to assess the accessibility compliance of your application. We recommend setting your passing score threshold to 100 for new projects. As with Axe, you can keep your test suite tidy by placing these tests in `spec/features/accessibility`.
 
 #### frontend-base
 - renames `app/javascript` to `app/frontend`, a directory containing the webpacker configuration. This allows you to place stylesheets in `app/frontend/stylesheets/`, and images in `app/frontend/images` Rails 6 has added [Webpacker](https://github.com/rails/webpacker) as the default JavaScript compiler instead of Sprockets. Thus, all JS code is compiled with the help of [webpack](https://webpack.js.org/) by default
-- Initializes [sentry](https://sentry.io/welcome/) error reporting 
+- Initializes [sentry](https://sentry.io/welcome/) error reporting
 - Initializes Ackama’s linting and code formatting settings, see [Code linting and formatting](#code-linting-and-formatting)
 
 #### performance
 Add configuration and specs to use to perform a [lighthouse performance](https://web.dev/performance-scoring/) audit, requiring a score of at least 95.
 
 #### bullet
-Add configuration to use to prevent N+1 queries, see  [bullet](https://github.com/flyerhzm/bullet) 
+Add configuration to use to prevent N+1 queries, see  [bullet](https://github.com/flyerhzm/bullet)
 
 ### Optional Variants
 
@@ -216,19 +216,7 @@ The relevant config files are found in `rails-template/variants/devise`.
 
 Noteabley, these files generate a User model with devise `:validatable` and `:lockable`, and add Ackama preferences in the `devise.rb` initialiser file
 
-#### frontend-foundation
-A framework gives you a base to build on while still allowing flexibility with the final design. For the front end, this base can include things like a grid layout system, and pre-built website components like side panels, buttons, and headers.
-
-[Foundation](https://get.foundation/) is a responsive front-end framework. A key benefit of Foundation is that it allows easy customization. Foundation is modular and consists of Sass stylesheets that implement various components of the toolkit. Developers select components and make global adjustmentments through a central configuration stylesheet. 
-
-Foundation is installed by default via the JS Yarn package manager, with the jquery option: `run yarn add foundation-sites jquery`
-
-It also applies the [foundation-layout variant](#foundation-layout), if this option is specified during setup.
-
-#### foundation-layout
-adds scss files to style a footer, header, navigation and search-bar, which are common website components.
-
-#### foundation-react
+#### frontend-react
 adds configuration, example of react, which is based on [rails-react](https://github.com/reactjs/react-rails)
 
 The relevant config files are found in `variants/frontend-react`
