@@ -40,3 +40,19 @@ yarn-debug.log*
 /.envrc
 /config/master.key
 /.env
+
+# Ignore configs for editors
+.idea
+.vscode
+
+# Ignore MacOS system files
+.DS_Store
+
+# Ignore temp files
+*.swp
+.eslintcache
+*.tsbuildinfo
+pids
+*.pid
+*.seed
+*.pid.lock
