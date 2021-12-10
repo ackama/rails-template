@@ -87,7 +87,7 @@ To make this the default Rails application template on your system, create a
 -m https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
-Once you’ve installed this template as your default, then all you have to do is run:
+Once you've installed this template as your default, then all you have to do is run:
 
 ```
 rails new --database=postgresql blog
@@ -123,7 +123,7 @@ This temporary directory is then added to the `source_paths` of the Rails
 generator system, allowing all of its ERb templates and files to be referenced
 when the application template script is evaluated.
 
-Rails generators are very lightly documented; what you’ll find is that most of the heavy lifting is done by  [Thor](http://whatisthor.com/). Thor is a tool that allows you to easily perform command line utilities.  The most common methods used by this template are Thor’s `copy_file`, `template`, and `gsub_file`. You can dig into the well-organized and well-documented [Thor source code](https://github.com/erikhuda/thor) to learn more.
+Rails generators are very lightly documented; what you'll find is that most of the heavy lifting is done by  [Thor](http://whatisthor.com/). Thor is a tool that allows you to easily perform command line utilities.  The most common methods used by this template are Thor's `copy_file`, `template`, and `gsub_file`. You can dig into the well-organized and well-documented [Thor source code](https://github.com/erikhuda/thor) to learn more.
 If any file finishes with `.tt`, Thor considers it to be a template and places it in the destination without the extension `.tt`.
 
 ## Tooling choices and configuration
@@ -139,9 +139,10 @@ in place of the Rails `secrets.yml`
 #### Security Auditing: [brakeman](https://github.com/presidentbeef/brakeman) and [bundler-audit](https://github.com/rubysec/bundler-audit)
 
 #### Editor code style settings: [EditorConfig](https://editorconfig.org/)
-“EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems”
 
-See the `editorconfig` file for Ackama’s styles
+> EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems
+
+See the `editorconfig` file for Ackama's styles
 
 #### Git hook manager: [Overcommit](https://github.com/sds/overcommit)
 Git has a way to fire off custom scripts when certain important actions occur, by using [Git hooks ](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks)
@@ -156,7 +157,7 @@ Code coverage is a measurement of how many lines/blocks/arcs of your code are ex
 SimpleCov is a code coverage analysis tool for Ruby. It provides an API to filter, group, merge, format, and display the results
 
 #### JS package manager: [Yarn](https://yarnpkg.com/)
-“Yarn is a package manager for your code”. Think of it as Bundler for JavaScript. Yarn uses a file similar to Bundler’s Gemfile called `package.json`, found in the Rails root directory.
+"Yarn is a package manager for your code". Think of it as Bundler for JavaScript. Yarn uses a file similar to Bundler's Gemfile called `package.json`, found in the Rails root directory.
 
 #### Code linting and formatting
 Linting is the automated checking of your source code for programmatic and stylistic errors. Check the docs of each linter for how to automatically format code.
@@ -169,7 +170,7 @@ Styles: [stylelint](https://github.com/stylelint/stylelint)
 - Ruby: [Rubocop](https://github.com/rubocop-hq/rubocop), with [ackama rubocop settings](https://bitbucket.org/rabidtech/rabid-dotfiles/raw/master/.rubocop.yml)
 
 - Editor code style settings: [EditorConfig](https://editorconfig.org/),
-“EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems”. See the `editorconfig` file for Ackama’s styles.
+"EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems". See the `editorconfig` file for Ackama's styles.
 
 ## Variants
 We consider variants as variations on the default rails app generated by `rails new`
@@ -179,7 +180,7 @@ In the medium-to-long term, we intend to move as much of the template code into 
 We aim to have the variants run as part of a configuration file, so that the rails-template becomes a metapackage where the template simply applies an "ackama-core" variant.
 After that, all the opt-in variants will get applied in some kind of configuration step.
 
-Each subdirectory of the variant directory contains a template.rb file, which is used to customize the newly generated app. Each `template.rb` tends to be well commented, and acts as the variant’s documentation.
+Each subdirectory of the variant directory contains a template.rb file, which is used to customize the newly generated app. Each `template.rb` tends to be well commented, and acts as the variant's documentation.
 
 ### Default Variants
 
@@ -195,7 +196,7 @@ Ackama maintains [lighthouse matchers](https://github.com/ackama/lighthouse-matc
 #### frontend-base
 - renames `app/javascript` to `app/frontend`, a directory containing the webpacker configuration. This allows you to place stylesheets in `app/frontend/stylesheets/`, and images in `app/frontend/images` Rails 6 has added [Webpacker](https://github.com/rails/webpacker) as the default JavaScript compiler instead of Sprockets. Thus, all JS code is compiled with the help of [webpack](https://webpack.js.org/) by default
 - Initializes [sentry](https://sentry.io/welcome/) error reporting
-- Initializes Ackama’s linting and code formatting settings, see [Code linting and formatting](#code-linting-and-formatting)
+- Initializes Ackama's linting and code formatting settings, see [Code linting and formatting](#code-linting-and-formatting)
 
 #### performance
 Add configuration and specs to use to perform a [lighthouse performance](https://web.dev/performance-scoring/) audit, requiring a score of at least 95.
@@ -212,7 +213,7 @@ Authentication refers to verifying identity. A failed authentication results in 
 It's composed of 10 optional modules.
 
 The relevant config files are found in `rails-template/variants/devise`.
-`variants/devise/template.rb` contains comments on Ackama’s custom setup choices.
+`variants/devise/template.rb` contains comments on Ackama's custom setup choices.
 
 Noteabley, these files generate a User model with devise `:validatable` and `:lockable`, and add Ackama preferences in the `devise.rb` initialiser file
 
@@ -226,11 +227,25 @@ A job scheduler is a computer application for controlling unattended background 
 
 Note that the non enterprise version of [Sidekiq](https://github.com/mperham/sidekiq) doesn't do scheduling by default, it only executes jobs
 
+## Improving this template
 
+We have a script which will build various configurations of this template into the `template-test/dummy` directory.
 
+```bash
+$ ./bin/build -h
+Usage: ./bin/template-run-ci [options]
+    -d, --drop-dbs [FLAG]            Drop databases before running
+    -h, --help                       Prints this help
+    -l, --list-for-ci                Output the commands that should be embedded into Github Actions yaml
+    -v, --variants VARIANT_NAMES     Comma separated list of variants to build and test
 
+# setup all variants of the template into template-test/dummy - read the build
+# script code for details of each variant
+$ ./bin/build
 
+# setup the basic variant only
+$ ./bin/build -v basic
 
-
-
-
+# generate some output for building the variants suitable for pasting into ./github/ci.yml
+$ ./bin/build --list-for-ci
+```
