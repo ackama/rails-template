@@ -46,29 +46,6 @@ class Config
       ["",                    "Choose git remote URL"],
       ["No",                  "Install devise?"],
     ],
-    "foundation" => [
-      # [answer, description-of-answer]
-      ["example.com",         "Set production URL"],
-      ["staging.example.com", "Set staging URL"],
-      ["N",                   "Add React"],
-      ["N",                   "Add Typescript"],
-      ["Yes",                 "Install foundation?"],
-      ["No",                  "Install Sidekiq?"],
-      ["",                    "Choose git remote URL"],
-      ["No",                  "Install devise?"],
-    ],
-    "foundation_layout" => [
-      # [answer, description-of-answer]
-      ["example.com",         "Set production URL"],
-      ["staging.example.com", "Set staging URL"],
-      ["N",                   "Add React"],
-      ["N",                   "Add Typescript"],
-      ["Yes",                 "Install foundation?"],
-      ["Yes",                 "Install foundation-layout?"],
-      ["No",                  "Install Sidekiq?"],
-      ["",                    "Choose git remote URL"],
-      ["No",                  "Install devise?"],
-    ],
     "sidekiq" => [
       # [answer, description-of-answer]
       ["example.com",         "Set production URL"],
