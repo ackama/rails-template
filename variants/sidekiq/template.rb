@@ -2,6 +2,7 @@ source_paths.unshift(File.dirname(__FILE__))
 
 
 gem "sidekiq"
+gem "sentry-sidekiq"
 
 run "bundle install"
 run "bundle binstubs sidekiq --force"
