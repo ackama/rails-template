@@ -23,10 +23,6 @@ jobs:
             generator_input: example.com\nstaging.example.com\nY\nN\nNo\nNo\n\nNo\n
           - name: typescript
             generator_input: example.com\nstaging.example.com\nN\nY\nNo\nNo\n\nNo\n
-          - name: foundation
-            generator_input: example.com\nstaging.example.com\nN\nN\nYes\nNo\n\nNo\n
-          - name: foundation_layout
-            generator_input: example.com\nstaging.example.com\nN\nN\nYes\nYes\nNo\n\nNo\n
           - name: sidekiq
             generator_input: example.com\nstaging.example.com\nN\nN\nNo\nYes\n\nNo\n
           - name: devise
