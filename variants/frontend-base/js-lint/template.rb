@@ -60,9 +60,9 @@ end
 
 # SCSS Linting
 yarn_add_dev_dependencies %w[
-  stylelint
-  stylelint-scss
-  stylelint-config-recommended-scss
+  stylelint@^13.0.0
+  stylelint-scss@^4.0.0
+  stylelint-config-recommended-scss@^4.0.0
 ]
 copy_file ".stylelintrc.js"
 template ".stylelintignore.tt"
