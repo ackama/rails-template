@@ -9,7 +9,7 @@
 copy_file ".auditapprc.json"
 
 audit_app_config = JSON.parse(File.read("./.auditapprc.json"))
-audit_app_config["ignore"] = `npx audit-app --no-config --output paths`.split("\n")
+audit_app_config["ignore"] = `CI=true npx audit-app --no-config --output paths`.split("\n")
 
 File.write("./.auditapprc.json", JSON.generate(audit_app_config))
 
