@@ -34,10 +34,6 @@ package_json["scripts"] = {
 
 File.write("./package.json", JSON.generate(package_json))
 
-gsub_file "app/frontend/channels/index.js",
-          "/_channel\\.js$/",
-          "/_channel\\.js$/u"
-
 append_to_file "bin/ci-run" do
   <<~ESLINT
 
