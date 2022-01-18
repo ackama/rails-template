@@ -13,6 +13,8 @@ end
 remove_dir "app/assets/stylesheets"
 remove_dir "app/assets/images"
 
+run "rails webpacker:install"
+
 # Configure app/frontend
 
 run "mv app/javascript app/frontend"
