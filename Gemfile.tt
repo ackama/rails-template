@@ -46,6 +46,7 @@ end
 
 group :test do
   gem "capybara"<%= gemfile_requirement("capybara") %>
+  gem "cucumber"
   gem "mock_redis"
   gem "selenium-webdriver"
   gem "webdrivers"
