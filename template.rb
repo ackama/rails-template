@@ -4,7 +4,7 @@ require "fileutils"
 require "shellwords"
 require "pp"
 
-RAILS_REQUIREMENT = "~> 6.1.0".freeze
+RAILS_REQUIREMENT = "~> 7.0.1".freeze
 
 def apply_template!
   assert_minimum_rails_version
