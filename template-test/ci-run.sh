@@ -13,7 +13,8 @@ APP_NAME="${VARIANT}-test-app"
 rm -rf template-test/dummy/$APP_NAME
 cd template-test/dummy
 
-echo -e $GENERATOR_INPUT | RACK_ENV=development RAILS_ENV=development rails new $APP_NAME -d postgresql -m $TEMPLATE
+echo -e $GENERATOR_INPUT | RACK_ENV=development RAILS_ENV=development rails new $APP_NAME -d postgresql -m $TEMPLATE \
+--skip_javascript
 
 cd $ROOT && bash template-test/test.sh template-test/dummy/$APP_NAME
 
