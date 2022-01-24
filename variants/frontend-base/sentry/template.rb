@@ -13,9 +13,7 @@ gsub_file "config/webpack/environment.js",
     module.exports = environment;
 EO_JS
 
-insert_into_file "app/frontend/packs/application.js",
-                 "import * as Sentry from '@sentry/browser';\n",
-                 after: /import Rails from "@rails\/ujs"\n/
+prepend_to_file "app/frontend/packs/application.js", "import * as Sentry from '@sentry/browser';"
 
 append_to_file "app/frontend/packs/application.js" do
   <<~'EO_JS'
