@@ -8,18 +8,10 @@ Many thanks to @joshmcarthur and @mattbrictson upon whose work we have built.
 
 ## Description
 
-This is the application template that we use for Rails 6 projects. As a
+This is the application template that we use for Rails 7 projects. As a
 fabulous consultancy, we need to be able to start new projects quickly and
 with a good set of defaults.
 
-For older versions of Rails, use these branches of @mattbrictson's original repository:
-
-- [Rails 4.2.x](https://github.com/mattbrictson/rails-template/tree/rails-42)
-- [Rails 5.0.x](https://github.com/mattbrictson/rails-template/tree/rails-50)
-- [Rails 5.1.x](https://github.com/mattbrictson/rails-template/tree/rails-51)
-- [Rails 5.2.x](https://github.com/mattbrictson/rails-template/tree/rails-52)
-- [Rails 6.0.x](https://github.com/mattbrictson/rails-template/tree/rails-60)
-- [Rails 6.1.x](https://github.com/mattbrictson/rails-template/tree/rails-61)
 
 ## Requirements
 
