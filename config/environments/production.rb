@@ -14,11 +14,7 @@ gsub_file "config/environments/production.rb",
             ##
             # `force_ssl` defaults to on. Turn off `force_ssl` if (and only if) RAILS_FORCE_SSL=false.
             #
-            config.force_ssl = if ENV.fetch("RAILS_FORCE_SSL", "").casecmp("false").zero?
-                                 false
-                               else
-                                 true
-                               end
+            config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "").downcase == "false"
           RUBY
 
 
@@ -36,7 +32,7 @@ insert_into_file "config/environments/production.rb",
 
   config.action_mailer.smtp_settings = {
     address: ENV.fetch("SMTP_HOSTNAME"),
-    port: ENV.fetch("SMTP_PORT", 587), 
+    port: ENV.fetch("SMTP_PORT", 587),
     enable_starttls_auto: true,
     user_name: ENV.fetch("SMTP_USERNAME"),
     password: ENV.fetch("SMTP_PASSWORD"),

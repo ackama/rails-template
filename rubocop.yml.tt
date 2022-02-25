@@ -8,6 +8,7 @@ inherit_from:
 
 
 AllCops:
+  NewCops: enable
   DisplayCopNames: true
   DisplayStyleGuide: true
   TargetRubyVersion: <%= RUBY_VERSION[/\d+\.\d+/] %>
