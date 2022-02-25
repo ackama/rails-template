@@ -149,12 +149,11 @@ bundle exec sidekiq
 ### Running the tests
 
     TODO: Describe how to run the project's test suite. Are there any other
-          tests that a new dev should know about? Cucumber? Performance tests?
+          tests that a new dev should know about? Performance tests?
           Include all testing info in this section.
 
 ```
 bundle exec rspec spec
-bundle exec cucumber
 npm run lighthouse-spec
 ```
 

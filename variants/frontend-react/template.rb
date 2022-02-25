@@ -32,8 +32,11 @@ gsub_file "app/frontend/packs/server_rendering.js",
 gsub_file(
   "app/frontend/packs/application.js",
   'var ReactRailsUJS = require("react_ujs")',
-  "import ReactRailsUJS from 'react_ujs';"
+  ""
 )
+
+prepend_to_file "app/frontend/packs/application.js",
+                 "import ReactRailsUJS from 'react_ujs';\n"
 
 gsub_file(
   "app/frontend/packs/server_rendering.js",
