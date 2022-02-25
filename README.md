@@ -8,16 +8,10 @@ Many thanks to @joshmcarthur and @mattbrictson upon whose work we have built.
 
 ## Description
 
-This is the application template that we use for Rails 6 projects. As a
+This is the application template that we use for Rails 7 projects. As a
 fabulous consultancy, we need to be able to start new projects quickly and
 with a good set of defaults.
 
-For older versions of Rails, use these branches of @mattbrictson's original repository:
-
-- [Rails 4.2.x](https://github.com/mattbrictson/rails-template/tree/rails-42)
-- [Rails 5.0.x](https://github.com/mattbrictson/rails-template/tree/rails-50)
-- [Rails 5.1.x](https://github.com/mattbrictson/rails-template/tree/rails-51)
-- [Rails 5.2.x](https://github.com/mattbrictson/rails-template/tree/rails-52)
 
 ## Requirements
 
@@ -25,7 +19,7 @@ For older versions of Rails, use these branches of @mattbrictson's original repo
 
 This template currently works with:
 
-- Rails 6.0.x
+- Rails 7.0.x
 - PostgreSQL
 - chromedriver
 
@@ -46,6 +40,7 @@ To generate a Rails application using this template, pass the `--template` optio
 rails new blog \
   --no-rc \
   --database=postgresql \
+  --skip_javascript \
   --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
@@ -55,6 +50,7 @@ database supported by this template is `postgresql`.
 Here are some additional options you can add to this command. We don't _prescribe_ these,
 but you may find that many Ackama projects are started with some or all of these options:
 
+* `--skip_javascript` skips the setup of JavaScript imports/compilers, Rails 7.0.x is no longer automatically includes [Webpacker](https://github.com/rails/webpacker), instead it uses [Importmap](https://github.com/rails/importmap-rails) by default.
 * `--skip-action-mailbox` skips the setup of ActionMailbox, which you don't need unless you are receiving emails in your application.
 * `--skip-active-storage` skips the setup of ActiveStorage. If you don't need support for file attachments, this can be skipped.
 * `--skip-spring` - you _probably_ want to use this. Spring is great at reducing the start time of Rails processes once

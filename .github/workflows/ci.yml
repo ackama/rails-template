@@ -50,7 +50,7 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16'
 
       # We don't cache gems or JS packages because we are actually testing how
       # installation and setup works in this project so, while caching would
@@ -60,7 +60,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: '2.7'
+          ruby-version: '3.0'
 
       - name: Setup git for commiting
         run: |

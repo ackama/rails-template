@@ -13,6 +13,9 @@ end
 remove_dir "app/assets/stylesheets"
 remove_dir "app/assets/images"
 
+run "yarn init --yes"
+run "rails webpacker:install"
+
 # Configure app/frontend
 
 run "mv app/javascript app/frontend"
@@ -37,25 +40,12 @@ gsub_file "config/webpacker.yml", "  extract_css: false", "  extract_css: true",
 empty_directory_with_keep_file "app/frontend/images"
 copy_file "app/frontend/stylesheets/application.scss"
 copy_file "app/frontend/stylesheets/_elements.scss"
-append_to_file "app/frontend/packs/application.js" do
+prepend_to_file "app/frontend/packs/application.js" do
   <<~EO_CONTENT
 
   import '../stylesheets/application.scss';
   EO_CONTENT
 end
-
-enable_imgs_src = <<~EO_SRC
-  //
-  // const images = require.context('../images', true)
-  // const imagePath = (name) => images(name, true)
-EO_SRC
-enable_imgs_replacement = <<~EO_REPLACEMENT
-
-  const images = require.context('../images', true);
-  // eslint-disable-next-line no-unused-vars
-  const imagePath = name => images(name, true);
-EO_REPLACEMENT
-gsub_file "app/frontend/packs/application.js", enable_imgs_src, enable_imgs_replacement
 
 # Configure app/views
 gsub_file "app/views/layouts/application.html.erb",

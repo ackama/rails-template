@@ -4,7 +4,7 @@ require "fileutils"
 require "shellwords"
 require "pp"
 
-RAILS_REQUIREMENT = "~> 6.1.0".freeze
+RAILS_REQUIREMENT = "~> 7.0.1".freeze
 
 def apply_template!
   assert_minimum_rails_version
@@ -202,7 +202,7 @@ end
 
 def gemfile_requirement(name)
   @original_gemfile ||= IO.read("Gemfile")
-  req = @original_gemfile[/gem\s+['"]#{name}['"]\s*(,[><~= \t\d\.\w'"]*)?.*$/, 1]
+  req = @original_gemfile[/gem\s+['"]#{name}['"]\s*(, +['"][><~= \t\d\.\w'"]*)?.*$/, 1]
   req && req.gsub("'", %(")).strip.sub(/^,\s*"/, ', "')
 end
 

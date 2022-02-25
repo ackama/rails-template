@@ -17,6 +17,6 @@ module RetinaImageHelper
     src_2x = image_path(src.sub(/^(.*)(\.[^\.]+)$/, '\1@2x\2'))
     srcset = "#{src_1x} 1x,#{src_2x} 2x"
 
-    tag(:img, options.reverse_merge(src: src_1x, srcset: srcset, alt: ""))
+    tag(:img, **options.reverse_merge(src: src_1x, srcset: srcset, alt: ""))
   end
 end

@@ -23,8 +23,6 @@ yarn_add_dev_dependencies %w[@typescript-eslint/parser @typescript-eslint/eslint
 run "yarn install"
 
 %w[
-  app/frontend/channels/consumer
-  app/frontend/channels/index
   app/frontend/packs/application
   app/frontend/packs/server_rendering
 ].each do |file|
@@ -36,7 +34,6 @@ copy_file "tsconfig.json", force: true
 copy_file ".eslintrc.js", force: true
 copy_file "types.d.ts", force: true
 
-gsub_file "app/frontend/channels/index.ts", '_channel\.js', '_channel\.ts'
 gsub_file(
   "app/frontend/packs/application.ts",
   "process.env.SENTRY_ENV || process.env.RAILS_ENV",
