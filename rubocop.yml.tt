@@ -104,4 +104,7 @@ RSpec/MultipleExpectations:
   Max: 10
 
 RSpec/ExampleLength:
-  Max: 20
+  Max: 30
+
+RSpec/FactoryBot/SyntaxMethods:
+  Enabled: false
