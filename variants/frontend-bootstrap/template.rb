@@ -9,7 +9,7 @@ insert_into_file "app/frontend/packs/application.js", "import '../js/bootstrap.j
 copy_file "app/frontend/stylesheets/customized_bootstrap.scss", force: true
 prepend_to_file "app/frontend/stylesheets/application.scss" do
   <<~EO_CONTENT
-  @import '../stylesheets/customized_bootstrap.scss';
+  @import '../stylesheets/customized_bootstrap';
   EO_CONTENT
 end
 
