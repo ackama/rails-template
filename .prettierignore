@@ -2,8 +2,3 @@
 # is copied into the Rails app we build.
 node_modules/
 template-test/dummy/
-
-# We don't control these files
-variants/bootstrap/app/assets/stylesheets/bootstrap.scss
-variants/frontend-foundation/app/frontend/foundation/foundation_and_overrides.scss
-variants/frontend-foundation/app/frontend/foundation/settings.scss

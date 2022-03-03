@@ -1,6 +1,3 @@
-<%# The "application" layout is the default layout. It includes  %>
-<%# things like header, footer, and alerts that are common  %>
-<%# to most (but not all) views.                                       %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,7 +15,7 @@
     <%%= stylesheet_link_tag("application", media: "all", "data-turbolinks-track": "reload") %>
 
     <%%# JavaScript must be in head for Turbolinks to work. %>
-    <%%= javascript_pack_tag "application", "data-turbolinks-track": "reload" %>
+    <%%= javascript_pack_tag "application", "data-turbolinks-track": "reload", defer: true %>
 
     <%%= yield(:head) %>
 
@@ -26,18 +23,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <%%# Prevents the full URL, including potentially sensitive query strings being sent to external origins %>
-    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="referrer" content="origin-when-cross-origin">
 
     <%%# Specifies the default name of home screen bookmark in iOS %>
     <meta name="apple-mobile-web-app-title" content="<%= app_const_base.titleize %>">
   </head>
-  <body>
 
+  <body>
+    <%%= render("application/header") %>
     <%%= render("application/flash") %>
 
     <div role="main">
       <%%= yield %>
     </div>
-
   </body>
 </html>

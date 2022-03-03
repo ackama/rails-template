@@ -7,9 +7,18 @@ source_paths.unshift(File.dirname(__FILE__))
 #
 #     bundle exec rails app:template LOCATION=http://path/to/this/template.rb
 #
-def ask_with_default(question, color, default)
+def fetch_answer(question, color, env_variable)
+  env_answer = ENV.fetch(env_variable, nil).to_s.strip
+
+  return ask(question, color) if env_answer.empty?
+
+  say "#{question}: #{env_answer}", color
+  env_answer
+end
+
+def ask_with_default(question, color, default, env_variable)
   question = (question.split("?") << " [#{default}]?").join
-  answer = ask(question, color)
+  answer = fetch_answer(question, color, env_variable)
   answer.to_s.strip.empty? ? default : answer
 end
 
@@ -27,6 +36,27 @@ run "bundle exec rails generate devise:install"
 
 print_header "Generating User model with devise"
 run "bundle exec rails generate devise User"
+
+gsub_file "app/models/user.rb",
+          ":validatable",
+          ":validatable, :lockable"
+
+devise_migration_filename = Dir.children("db/migrate").find { |filename| filename.match?(/_devise_create_users\.rb\z/) }
+devise_migration_path = "db/migrate/#{devise_migration_filename}"
+
+print_header "Tweaking auto-generated devise migration '#{devise_migration_path}'"
+gsub_file devise_migration_path,
+          "      # t.integer  :failed_attempts",
+          "      t.integer  :failed_attempts"
+gsub_file devise_migration_path,
+          "      # t.string   :unlock_token",
+          "      t.string   :unlock_token"
+gsub_file devise_migration_path,
+          "      # t.datetime :locked_at",
+          "      t.datetime :locked_at"
+gsub_file devise_migration_path,
+          "      # add_index :users, :unlock_token",
+          "      add_index :users, :unlock_token"
 
 print_header "Running db migration"
 run "bundle exec rails db:migrate"
@@ -49,7 +79,15 @@ gsub_file "config/initializers/devise.rb",
 
 gsub_file "config/initializers/devise.rb",
           "  config.password_length = 6..128",
-          "  config.password_length = 8..128"
+          "  config.password_length = 16..128"
+
+gsub_file "config/initializers/devise.rb",
+          "  # config.paranoid = true",
+          "  config.paranoid = true"
+
+gsub_file "config/initializers/devise.rb",
+  /  # config.secret_key = '.+'/,
+  "  # config.secret_key = 'do_not_put_secrets_in_source_control_please'"
 
 ##
 # Add a block to config/routes.rb demonstrating how to create authenticated
@@ -71,48 +109,86 @@ EO_ROUTES
 # devs know they have both things enabled in the application now.
 #
 print_header "Adding example devise links to the homepage"
-gsub_file "app/views/layouts/application.html.erb",
-  "<body>",
-  <<~ERB
-    <body>
 
-    <%
-    # This block uses the "style" attribute to make it easy for you to
-    # delete. This isn't a suggestion that inline styles are a good idea
-    # mmmkay.
-    %>
-    <nav style="border: 1px solid #666; padding: 1em;">
-    <h1>Example devise nav</h1>
-    <ul>
-      <li>
-        <%= link_to "Home", root_path %>
-      </li>
-    </ul>
-    <% if current_user %>
-      <p>
-      You are <span style="color: green">Signed in</span>
-      </p>
+append_to_file "app/views/application/_header.html.erb" do
+  <<~ERB
+    <nav>
+      <h1>Example devise nav</h1>
       <ul>
-        <li>
-          <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
-        </li>
+        <li><%= link_to "Home", root_path %></li>
+      </ul>
+    <% if current_user %>
+      <p>You are <strong>Signed in</strong></p>
+      <ul>
+        <li><%= link_to "Sign out", destroy_user_session_path, method: :delete %></li>
       </ul>
     <% else %>
-      <p>
-      You are <span style="color: darkred">Not signed in</span>
-      </p>
+      <p>You are <strong>Not signed in</strong></p>
       <ul>
-        <li>
-          <%= link_to "Sign in", new_user_session_path %>
-        </li>
-        <li>
-          <%= link_to "Sign up", new_user_registration_path %>
-        </li>
+        <li><%= link_to "Sign in", new_user_session_path %></li>
+        <li><%= link_to "Sign up", new_user_registration_path %></li>
       </ul>
     <% end %>
     </nav>
   ERB
+end
 
+print_header "Fixing session cookie expiry"
+
+run "bundle exec rails g migration AddSessionTokenToUser session_token:string"
+run "bundle exec rails db:migrate"
+
+copy_file "app/controllers/users/sessions_controller.rb"
+
+gsub_file "config/routes.rb",
+          "devise_for :users",
+          <<~'EO_DEVISE'
+            devise_for :users, controllers: {
+              sessions: "users/sessions"
+            }
+          EO_DEVISE
+
+insert_into_file "app/models/user.rb", before: /^end/ do
+  <<~'RUBY'
+
+    ##
+    # The `session_token` attribute is used to build the Devise
+    # `authenticatable_salt` so changing the `session_token` has the effect of
+    # invalidating any existing sessions for the current user.
+    #
+    # This method is called by Users::SessionsController#destroy to make sure
+    # that when a user logs out (i.e. destroys their session) then the session
+    # cookie they had cannot be used again. This closes a security issue with
+    # cookie based sessions.
+    #
+    # References
+    #   * https://github.com/plataformatec/devise/issues/3031
+    #   * http://maverickblogging.com/logout-is-broken-by-default-ruby-on-rails-web-applications/
+    #   * https://makandracards.com/makandra/53562-devise-invalidating-all-sessions-for-a-user
+    #
+    def invalidate_all_sessions!
+      update!(session_token: SecureRandom.hex(16))
+    end
+
+    ##
+    # devise calls this method to generate a salt for creating the session
+    # cookie. We override the built-in devise implementation (which comes from
+    # the devise `authenticable` module - see link below) to also include our
+    # `session_token` attribute. This means that whenever the session_token
+    # changes, the user's session cookie will be invalidated.
+    #
+    # `session_token` is `nil` until the user has signed out once. That is fine
+    # because we only care about making the `session_token` **different** after
+    # they logout so that the cookie is invalidated.
+    #
+    # References
+    #  * https://github.com/heartcombo/devise/blob/master/lib/devise/models/authenticatable.rb#L97-L98
+    #
+    def authenticatable_salt
+      "#{super}#{session_token}"
+    end
+  RUBY
+end
 
 print_header "Writing tests for you - you're welcome!"
 
@@ -123,13 +199,17 @@ copy_file "spec/factories/users.rb", force: true
 copy_file "spec/system/user_sign_in_feature_spec.rb"
 copy_file "spec/system/user_sign_up_feature_spec.rb"
 copy_file "spec/system/user_reset_password_feature_spec.rb"
+copy_file "spec/requests/session_cookie_expiry_spec.rb"
 
 print_header "Running rubocop -a to fix formatting in files generated by devise"
 run "bundle exec rubocop -aD"
 
-if ask_with_default("Do you want to create a git commit with these changes?",
-                    :yellow,
-                    "N").downcase.start_with?("y")
+if ask_with_default(
+  "Do you want to create a git commit with these changes?",
+  :yellow,
+  "N",
+  "RT_CREATE_GIT_COMMIT_FOR_DEVISE"
+).downcase.start_with?("y")
   git add: "-A ."
   git commit: "-n -m 'Install and configure devise with default Ackama settings'"
 end

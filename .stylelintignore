@@ -2,6 +2,3 @@
 # stylelintignore.tt is the one that is copied into the Rails app we build
 node_modules/
 template-test/dummy/
-variants/bootstrap/app/assets/stylesheets/bootstrap.scss
-variants/frontend-foundation/app/frontend/foundation/foundation_and_overrides.scss
-variants/frontend-foundation/app/frontend/foundation/**/*.scss

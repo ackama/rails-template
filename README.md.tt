@@ -15,10 +15,10 @@ This project follows [Ackama standard branch and environment naming](https://git
 
     TODO: If this project cannot follow our standard naming conventions you must document why here.
 
-| **Environment** | **URL** | **Hosting Platform**                 | **Git Branch** | **Exception monitoring URL** | **Logs available at**                                            |
-| --------------- | ------- | ------------------------------------ | -------------- | ---------------------------- | ---------------------------------------------------------------- |
-| Staging         | TODO    | TODO (one of Heroku/RimuHosting/AWS) | master         | TODO (E.G. RAYGUN URL)       | TODO (Examples: On-disk/Heroku/AWS Cloudwatch/Papertrail/Loggly) |
-| Production      | TODO    | TODO (one of Heroku/RimuHosting/AWS) | production     | TODO (E.G. RAYGUN URL)       | TODO (Examples: On-disk/Heroku/AWS Cloudwatch/Papertrail/Loggly) |
+| **Environment** | **URL** | **Hosting Platform**     | **Git Branch** | **Exception monitoring URL** | **Logs available at**                                            |
+| --------------- | ------- | ------------------------ | -------------- | ---------------------------- | ---------------------------------------------------------------- |
+| Staging         | TODO    | TODO (one of Heroku/AWS) | main           | TODO (E.G. RAYGUN URL)       | TODO (Examples: On-disk/Heroku/AWS Cloudwatch/Papertrail/Loggly) |
+| Production      | TODO    | TODO (one of Heroku/AWS) | production     | TODO (E.G. RAYGUN URL)       | TODO (Examples: On-disk/Heroku/AWS Cloudwatch/Papertrail/Loggly) |
 
     TODO: Add columns to the table above if there are resources that are required for that environment e.g. a Redis, ElasticSearch etc.
     TODO: If we need to assume role into their AWS account you should mention that here (don't list the role name - leave that in 1Password)
@@ -60,6 +60,33 @@ This project follows [Ackama standard branch and environment naming](https://git
 All credentials and the `.env` file for this project are stored in Ackama 1Password vault named `TODO`
 
     TODO: Ensure that all secrets in this app are stored **only** in Ackama 1Password
+
+## Healthchecks
+
+A healthcheck endpoint is available at http://localhost:3000/healthchecks/all. Healthchecks are
+configured in `config/initializers/health_checks.rb`. By default, the following health checks are enabled:
+
+* Default (app is running)
+* App version (the git commit that is running)
+* Database connectivity
+
+Extra checks can be enabled or added within this initializer.
+
+The health check endpoint has it's own authentication checks that can be specified:
+
+* `ENV["HEALTHCHECK_HTTP_BASIC_AUTH_USERNAME]`
+* `ENV["HEALTHCHECK_HTTP_BASIC_AUTH_PASSWORD]`
+
+This enables a unique set of credentials to exist for accessing the health checks endpoint.
+
+If either of these settings are unspecified, then the configuration will fall back to the default
+HTTP basic auth settings:
+
+* `ENV["HTTP_BASIC_AUTH_USERNAME]`
+* `ENV["HTTP_BASIC_AUTH_PASSWORD]`
+
+If neither of these credentials are configured, then the healthcheck endpoint will be
+publicly available, which may be what you want, but maybe not.
 
 ## Project Resources:
 
@@ -122,12 +149,11 @@ bundle exec sidekiq
 ### Running the tests
 
     TODO: Describe how to run the project's test suite. Are there any other
-          tests that a new dev should know about? Cucumber? Performance tests?
+          tests that a new dev should know about? Performance tests?
           Include all testing info in this section.
 
 ```
 bundle exec rspec spec
-bundle exec cucumber
 npm run lighthouse-spec
 ```
 

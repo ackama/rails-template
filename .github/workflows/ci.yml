@@ -1,0 +1,78 @@
+name: Rails Template CI
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    # * At 05:00 UTC every Monday, run the latest commit on the default or base branch
+    - cron:  '0 5 * * MON'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      # don't stop all variants if one of them fails (we usually want to know
+      # how many fail)
+      fail-fast: false
+      matrix:
+        variant:
+          - name: basic
+            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nNo\n\nNo\n
+          - name: react
+            generator_input: example.com\nstaging.example.com\nY\nN\nNo\nNo\n\nNo\n
+          - name: typescript
+            generator_input: example.com\nstaging.example.com\nN\nY\nNo\nNo\n\nNo\n
+          - name: sidekiq
+            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nYes\n\nNo\n
+          - name: devise
+            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nNo\n\nYes\nYes\n
+    services:
+      db:
+        image: postgres
+        env:
+          # The Postgres service fails its docker health check unless you
+          # specify these environment variables
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: anything # can be anything, is ignored by the tests
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v2
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      # We don't cache gems or JS packages because we are actually testing how
+      # installation and setup works in this project so, while caching would
+      # make CI faster, it might hide problems.
+
+      - name: Install Ruby and Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: '3.0'
+
+      - name: Setup git for commiting
+        run: |
+          # We do some git commits during our testing so these need to be set
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+
+      - name: Run CI script
+        env:
+          VARIANT: ${{ matrix.variant.name }}
+          GENERATOR_INPUT: ${{ matrix.variant.generator_input }}
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGHOST: localhost
+        run: ./template-test/ci-run.sh

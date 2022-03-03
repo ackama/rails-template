@@ -1,12 +1,14 @@
 require:
   - rubocop-performance
   - rubocop-rails
+  - rubocop-rspec
 
 inherit_from:
   - https://bitbucket.org/rabidtech/rabid-dotfiles/raw/master/.rubocop.yml
 
 
 AllCops:
+  NewCops: enable
   DisplayCopNames: true
   DisplayStyleGuide: true
   TargetRubyVersion: <%= RUBY_VERSION[/\d+\.\d+/] %>
@@ -24,9 +26,6 @@ AllCops:
     - Gemfile
     - Guardfile
     - Rakefile
-
-Layout/SpaceAroundEqualsInParameterDefault:
-  EnforcedStyle: no_space
 
 Metrics/AbcSize:
   Exclude:
@@ -68,11 +67,11 @@ Rails/ApplicationRecord:
   Exclude:
     - "db/migrate/**"
 
-Rails/RefuteMethods:
-  Enabled: false
-
-Rails/Validation:
-  Enabled: false
+# we don't require using Rails.logger in lib, as it often doesn't go where
+# we'd want for the code that lives there, or otherwise isn't even available
+Rails/Output:
+  Exclude:
+    - "lib/**/*"
 
 Style/BarePercentLiterals:
   EnforcedStyle: percent_q
@@ -100,3 +99,12 @@ Style/StringLiterals:
 
 Style/TrivialAccessors:
   AllowPredicates: true
+
+RSpec/MultipleExpectations:
+  Max: 10
+
+RSpec/ExampleLength:
+  Max: 30
+
+RSpec/FactoryBot/SyntaxMethods:
+  Enabled: false

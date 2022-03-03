@@ -36,6 +36,7 @@ PreCommit:
 
   RuboCop:
     enabled: true
+    command: ['bundle', 'exec', 'rubocop', '--disable-pending-cops']
 
   TrailingWhitespace:
     enabled: true

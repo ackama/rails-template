@@ -1,8 +1,6 @@
 files:
   include: "**/*.s+(a|c)ss"
   ignore:
-    - "app/assets/stylesheets/foundation_and_overrides.scss"
-    - "app/assets/stylesheets/_settings.scss"
     - "node_modules/**/*"
 options:
   formatter: stylish
