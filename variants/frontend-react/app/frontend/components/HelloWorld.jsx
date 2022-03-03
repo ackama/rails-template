@@ -8,6 +8,10 @@ const HelloWorld = ({ initialGreeting }) => {
     setGreeting(event.target.value);
   };
 
+  const resetGreeting = () => {
+    setGreeting(initialGreeting);
+  };
+
   return (
     <>
       <b>{greeting}</b>
@@ -15,6 +19,7 @@ const HelloWorld = ({ initialGreeting }) => {
         Change the greeting
         <input id="greeting-input" type="text" onChange={updateGreeting} />
       </label>
+      <button onClick={resetGreeting}>Reset</button>
     </>
   );
 };

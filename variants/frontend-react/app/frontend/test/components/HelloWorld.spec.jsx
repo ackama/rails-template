@@ -25,5 +25,26 @@ describe('HelloWorld', () => {
 
       expect(container).toHaveTextContent(/Hello from the other side/iu);
     });
+
+    it('can be reset back to the initial greeting', async () => {
+      const { container } = render(
+        <HelloWorld initialGreeting="Hello Ackama" />
+      );
+
+      userEvent.type(
+        screen.getByRole('textbox', {
+          name: /change the greeting/iu
+        }),
+        'Hello from the other side'
+      );
+
+      expect(container).not.toHaveTextContent("Hello Ackama");
+
+      userEvent.click(
+        screen.getByText('Reset')
+      )
+
+      expect(container).toHaveTextContent("Hello Ackama");
+    });
   });
 });
