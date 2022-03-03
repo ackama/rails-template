@@ -52,6 +52,7 @@ def apply_template!
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
+    apply "variants/frontend-bootstrap/template.rb" if apply_variant?(:bootstrap)
 
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
