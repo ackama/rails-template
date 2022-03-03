@@ -19,14 +19,22 @@ jobs:
         variant:
           - name: basic
             generator_input: example.com\nstaging.example.com\nN\nN\nNo\nNo\n\nNo\n
+            skips: --skip-javascript
           - name: react
             generator_input: example.com\nstaging.example.com\nY\nN\nNo\nNo\n\nNo\n
+            skips: --skip-javascript
           - name: typescript
             generator_input: example.com\nstaging.example.com\nN\nY\nNo\nNo\n\nNo\n
+            skips: --skip-javascript
           - name: sidekiq
             generator_input: example.com\nstaging.example.com\nN\nN\nNo\nYes\n\nNo\n
+            skips: --skip-javascript
           - name: devise
             generator_input: example.com\nstaging.example.com\nN\nN\nNo\nNo\n\nYes\nYes\n
+            skips: --skip-javascript
+          - name: basic_with_skips
+            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nNo\n\nNo\n
+            skips: --skip-active-storage --skip-spring --skip-javascript
     services:
       db:
         image: postgres
@@ -72,6 +80,7 @@ jobs:
         env:
           VARIANT: ${{ matrix.variant.name }}
           GENERATOR_INPUT: ${{ matrix.variant.generator_input }}
+          SKIPS: ${{ matrix.variant.skips }}
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
