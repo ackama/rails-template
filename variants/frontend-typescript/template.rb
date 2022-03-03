@@ -17,7 +17,13 @@ types_packages = %w[
 
 run "yarn remove prop-types"
 yarn_add_dependencies types_packages + %w[@babel/preset-typescript typescript]
-yarn_add_dev_dependencies %w[@typescript-eslint/parser @typescript-eslint/eslint-plugin]
+yarn_add_dev_dependencies %w[
+  @typescript-eslint/parser
+  @typescript-eslint/eslint-plugin
+  @jest/types
+  ts-jest
+  ts-node
+]
 run "yarn install"
 
 %w[
@@ -33,6 +39,9 @@ copy_file ".eslintrc.js", force: true
 copy_file "babel.config.js", force: true
 copy_file "types.d.ts", force: true
 
+remove_file "jest.config.js"
+copy_file "jest.config.ts"
+
 gsub_file(
   "app/frontend/packs/application.ts",
   "process.env.SENTRY_ENV || process.env.RAILS_ENV",
@@ -45,10 +54,7 @@ File.write("./package.json", JSON.generate(package_json))
 
 # example files
 remove_file "app/frontend/components/HelloWorld.jsx", force: true
-copy_file "app/frontend/components/home/index.tsx", force: true
-copy_file "app/frontend/components/utils/index.ts", force: true
-copy_file "app/frontend/components/utils/Form.tsx", force: true
-copy_file "app/frontend/components/utils/TextInput.tsx", force: true
+copy_file "app/frontend/components/HelloWorld.tsx", force: true
 gsub_file(
   "app/views/home/index.html.erb",
   'react_component("HelloWorld", { greeting: "Hello from react-rails." })',
@@ -66,3 +72,6 @@ append_to_file "bin/ci-run" do
     yarn run typecheck
   TYPECHECK
 end
+
+remove_dir "app/frontend/test"
+directory "app/frontend/test"
