@@ -17,6 +17,7 @@ gem "lograge"
 gem "okcomputer"
 gem "sentry-ruby"
 gem "sentry-rails"
+gem "strong_migrations"
 
 gem "rack-canonical-host", "~> 0.2.3"
 
