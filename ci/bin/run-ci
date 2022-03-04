@@ -8,6 +8,7 @@ p builds_path = File.join(root_path, "tmp/builds")
 p app_name = ENV.fetch("VARIANT_NAME", "basic")
 p app_path = File.join(builds_path, app_name)
 p config_path = File.join(root_path, ENV.fetch("CONFIG_PATH", "ci/configs/basic_only.yml"))
+p extra_skip_flags = ENV.fetch("SKIPS", "")
 
 puts "Installing latest rails gem"
 system "gem install rails --no-document"
@@ -24,7 +25,7 @@ end
 
 Dir.chdir(builds_path) do |cwd|
   puts "Working dir is now #{cwd}"
-  p cmd = %Q{ACKAMA_RT_CONFIG_PATH="#{config_path}" RACK_ENV=development RAILS_ENV=development rails new "#{app_name}" -d postgresql --skip_javascript -m "#{template_path}"}
+  p cmd = %Q{ACKAMA_RT_CONFIG_PATH="#{config_path}" RACK_ENV=development RAILS_ENV=development rails new "#{app_name}" -d postgresql --skip-javascript #{extra_skip_flags} -m "#{template_path}"}
 
   system cmd
 end

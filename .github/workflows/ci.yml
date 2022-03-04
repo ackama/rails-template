@@ -19,14 +19,22 @@ jobs:
         variant:
           - name: basic
             config: "ci/configs/basic_only.yml"
+            skips: --skip-javascript
           - name: react
             config: "ci/configs/basic_w_react.yml"
+            skips: --skip-javascript
           - name: typescript
             config: "ci/configs/basic_w_typescript.yml"
+            skips: --skip-javascript
           - name: sidekiq
             config: "ci/configs/basic_w_sidekiq.yml"
+            skips: --skip-javascript
           - name: devise
             config: "ci/configs/basic_w_devise.yml"
+            skips: --skip-javascript
+          - name: basic_with_skips
+            config: "ci/configs/basic_only.yml"
+            skips: --skip-active-storage --skip-spring --skip-javascript
     services:
       db:
         image: postgres
@@ -72,6 +80,7 @@ jobs:
         env:
           VARIANT_NAME: ${{ matrix.variant.name }}
           CONFIG_PATH:  ${{ matrix.variant.config_path }}
+          SKIPS: ${{ matrix.variant.skips }}
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
