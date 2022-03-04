@@ -78,7 +78,11 @@ jobs:
 
       - name: Run CI script
         env:
-          APP_NAME: ${{ matrix.variant.name }}
+          # Remember that your app name becomes a top-level constant in the
+          # Rails app so you'll run into issues if that constant shares a name
+          # with a class provided by a gem. Basically, don't name your app
+          # "react", "sidekiq" etc.
+          APP_NAME: ${{ matrix.variant.name }}demo
           CONFIG_PATH:  ${{ matrix.variant.config_path }}
           SKIPS: ${{ matrix.variant.skips }}
           PGUSER: postgres
