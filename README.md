@@ -25,27 +25,27 @@ This template currently works with:
 
 ## Usage
 
-This template assumes you will store your project in a remote git repository
-(e.g. Bitbucket or GitHub) and that you will deploy to a production environment.
-It will prompt you for this information in order to pre-configure your app, so
-be ready to provide:
+This template requires a configuration file to to configure options.
 
-1. The git URL of your (freshly created and empty) Bitbucket/GitHub repository
-2. The hostname of your production server
+It will use `ackama_rails_template.config.yml` in your current working directory
+if it exists. Otherwise you can specify a path using the `ACKAMA_RT_CONFIG_PATH`
+environment variable.
+
+[ackama_rails_template.config.yml](./ackama_rails_template.config.yml) is a
+documented configuration example that you can copy.
 
 To generate a Rails application using this template, pass the `--template` option to
 `rails new`, like this:
 
-```
-rails new blog \
-  --no-rc \
-  --database=postgresql \
-  --skip_javascript \
-  --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
+```bash
+# options taken from ./ackama_rails_template.config.yml
+$ rails new my_app --no-rc --database=postgresql --skip_javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
+
+# load options from your custom config file
+$ ACKAMA_RT_CONFIG_PATH=./my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip_javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
-_Remember that options must go after the name of the application._ The only
-database supported by this template is `postgresql`.
+The only database supported by this template is `postgresql`.
 
 Here are some additional options you can add to this command. We don't _prescribe_ these,
 but you may find that many Ackama projects are started with some or all of these options:
