@@ -227,7 +227,7 @@ Note that the non enterprise version of [Sidekiq](https://github.com/mperham/sid
 
 ```bash
 # create new rails app in tmp/builds/enterprise using ci/configs/react.yml as configuration
-CONFIG_PATH="ci/configs/react.yml" APP_NAME="enterprise" ./ci/bin/run-ci
+CONFIG_PATH="ci/configs/react.yml" APP_NAME="enterprise" ./ci/bin/build-and-test
 
 # or do it manually:
 #

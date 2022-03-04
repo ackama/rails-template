@@ -84,4 +84,4 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
-        run: ./ci/bin/run-ci
+        run: ./ci/bin/build-and-test
