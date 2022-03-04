@@ -10,6 +10,8 @@ p app_path = File.join(builds_path, app_name)
 p config_path = File.join(root_path, ENV.fetch("CONFIG_PATH", "ci/configs/basic_only.yml"))
 p extra_skip_flags = ENV.fetch("SKIPS", "")
 
+fail "Missing config YML file" unless File.exist?(config_path)
+
 puts "Installing latest rails gem"
 system "gem install rails --no-document"
 
@@ -33,5 +35,5 @@ end
 puts "Running test suite"
 Dir.chdir(app_path) do |cwd|
   puts "Working dir is now #{cwd}"
-  system "./bin/ci-run"
+  system("./bin/ci-run", exception: true)
 end
