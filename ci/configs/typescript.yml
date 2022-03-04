@@ -1,0 +1,9 @@
+---
+staging_hostname: "staging.example.com"
+production_hostname: "www.example.com"
+git_repo_url: ""
+apply_variant_react: false
+apply_variant_devise: false
+apply_variant_devise_2fa: false
+apply_variant_sidekiq: false
+apply_variant_typescript: true

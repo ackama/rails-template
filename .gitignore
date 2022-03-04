@@ -1,2 +1,3 @@
 template-test/dummy/*
 node_modules/
+tmp/*
