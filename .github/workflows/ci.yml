@@ -34,7 +34,7 @@ jobs:
             skips: --skip-javascript
           - name: basic_with_skips
             generator_input: example.com\nstaging.example.com\nN\nN\nNo\nNo\n\nNo\n
-            skips: --skip-active-storage --skip-spring --skip-javascript
+            skips: --skip-spring --skip-javascript
     services:
       db:
         image: postgres
