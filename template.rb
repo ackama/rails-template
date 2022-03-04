@@ -150,6 +150,7 @@ def assert_valid_options
     skip_bundle: false,
     skip_git: false,
     skip_test_unit: true,
+    skip_active_storage: false,
     edge: false
   }
   valid_options.each do |key, expected|
