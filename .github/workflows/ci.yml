@@ -18,22 +18,22 @@ jobs:
       matrix:
         variant:
           - name: basic
-            config_path: "ci/configs/basic_only.yml"
+            config_path: "ci/configs/basic.yml"
             skips: --skip-javascript
           - name: react
-            config_path: "ci/configs/basic_w_react.yml"
+            config_path: "ci/configs/react.yml"
             skips: --skip-javascript
           - name: typescript
-            config_path: "ci/configs/basic_w_typescript.yml"
+            config_path: "ci/configs/typescript.yml"
             skips: --skip-javascript
           - name: sidekiq
-            config_path: "ci/configs/basic_w_sidekiq.yml"
+            config_path: "ci/configs/sidekiq.yml"
             skips: --skip-javascript
           - name: devise
-            config_path: "ci/configs/basic_w_devise.yml"
+            config_path: "ci/configs/devise.yml"
             skips: --skip-javascript
           - name: basic_with_skips
-            config_path: "ci/configs/basic_only.yml"
+            config_path: "ci/configs/basic.yml"
             skips: --skip-active-storage --skip-spring --skip-javascript
     services:
       db:
@@ -78,7 +78,7 @@ jobs:
 
       - name: Run CI script
         env:
-          VARIANT_NAME: ${{ matrix.variant.name }}
+          APP_NAME: ${{ matrix.variant.name }}
           CONFIG_PATH:  ${{ matrix.variant.config_path }}
           SKIPS: ${{ matrix.variant.skips }}
           PGUSER: postgres

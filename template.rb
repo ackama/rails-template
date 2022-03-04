@@ -15,7 +15,7 @@ class Config
   DEFAULT_CONFIG_FILE_PATH = "./ackama_rails_template.config.yml".freeze
 
   def initialize
-    p config_file_path = File.absolute_path(ENV.fetch("ACKAMA_RT_CONFIG_PATH", DEFAULT_CONFIG_FILE_PATH))
+    config_file_path = File.absolute_path(ENV.fetch("CONFIG_PATH", DEFAULT_CONFIG_FILE_PATH))
     @yaml_config = YAML.load(File.read(config_file_path))
   end
 

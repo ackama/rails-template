@@ -28,7 +28,7 @@ This template currently works with:
 This template requires a configuration file to to configure options.
 
 It will use `ackama_rails_template.config.yml` in your current working directory
-if it exists. Otherwise you can specify a path using the `ACKAMA_RT_CONFIG_PATH`
+if it exists. Otherwise you can specify a path using the `CONFIG_PATH`
 environment variable.
 
 [ackama_rails_template.config.yml](./ackama_rails_template.config.yml) is a
@@ -39,10 +39,10 @@ To generate a Rails application using this template, pass the `--template` optio
 
 ```bash
 # options taken from ./ackama_rails_template.config.yml
-$ rails new my_app --no-rc --database=postgresql --skip_javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
+$ rails new my_app --no-rc --database=postgresql --skip-javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 
 # load options from your custom config file
-$ ACKAMA_RT_CONFIG_PATH=./my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip_javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
+$ CONFIG_PATH=./my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip-javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
 The only database supported by this template is `postgresql`.
@@ -50,7 +50,7 @@ The only database supported by this template is `postgresql`.
 Here are some additional options you can add to this command. We don't _prescribe_ these,
 but you may find that many Ackama projects are started with some or all of these options:
 
-* `--skip_javascript` skips the setup of JavaScript imports/compilers, Rails 7.0.x is no longer automatically includes [Webpacker](https://github.com/rails/webpacker), instead it uses [Importmap](https://github.com/rails/importmap-rails) by default.
+* `--skip-javascript` skips the setup of JavaScript imports/compilers, Rails 7.0.x is no longer automatically includes [Webpacker](https://github.com/rails/webpacker), instead it uses [Importmap](https://github.com/rails/importmap-rails) by default.
 * `--skip-action-mailbox` skips the setup of ActionMailbox, which you don't need unless you are receiving emails in your application.
 * `--skip-active-storage` skips the setup of ActiveStorage. If you don't need support for file attachments, this can be skipped.
 * `--skip-spring` - you _probably_ want to use this. Spring is great at reducing the start time of Rails processes once
@@ -223,7 +223,20 @@ A job scheduler is a computer application for controlling unattended background 
 Note that the non enterprise version of [Sidekiq](https://github.com/mperham/sidekiq) doesn't do scheduling by default, it only executes jobs
 
 
+## Setup for contributing to this template
 
+```bash
+# create new rails app in tmp/builds/enterprise using ci/configs/react.yml as configuration
+CONFIG_PATH="ci/configs/react.yml" APP_NAME="enterprise" ./ci/bin/run-ci
+
+# or do it manually:
+#
+# CONFIG_PATH must be relative to the dir that the rails app is created in
+# because the template is run by `rails new` which uses the rails app dir as
+# it's working dir, hence the `../` at the start.
+#
+rm -rf mydemoapp && CONFIG_PATH="../ci/configs/react.yml" rails new mydemoapp -d postgresql --skip-javascript -m ./template.rb
+```
 
 
 

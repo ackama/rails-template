@@ -2,13 +2,26 @@
 
 require "fileutils"
 
-p root_path = File.absolute_path(File.join(__dir__, "../.."))
-p template_path = File.join(root_path, "template.rb")
-p builds_path = File.join(root_path, "tmp/builds")
-p app_name = ENV.fetch("VARIANT_NAME", "basic")
-p app_path = File.join(builds_path, app_name)
-p config_path = File.join(root_path, ENV.fetch("CONFIG_PATH", "ci/configs/basic_only.yml"))
-p extra_skip_flags = ENV.fetch("SKIPS", "")
+root_path = File.absolute_path(File.join(__dir__, "../.."))
+template_path = File.join(root_path, "template.rb")
+builds_path = File.join(root_path, "tmp/builds")
+app_name = ENV.fetch("APP_NAME", "app")
+app_path = File.join(builds_path, app_name)
+config_path = File.join(root_path, ENV.fetch("CONFIG_PATH", "ci/configs/basic.yml"))
+extra_skip_flags = ENV.fetch("SKIPS", "")
+
+puts "=" * 80
+puts <<~EO_CONFIG_SUMMARY
+  Config summary:
+
+    template_path = #{template_path}
+    builds_path = #{builds_path}
+    app_name = #{app_name}
+    app_path = #{app_path}
+    template_path = #{template_path}
+    config_path = #{config_path}
+EO_CONFIG_SUMMARY
+puts "=" * 80
 
 fail "Missing config YML file" unless File.exist?(config_path) & File.file?(config_path)
 
@@ -27,9 +40,13 @@ end
 
 Dir.chdir(builds_path) do |cwd|
   puts "Working dir is now #{cwd}"
-  p cmd = %Q{ACKAMA_RT_CONFIG_PATH="#{config_path}" RACK_ENV=development RAILS_ENV=development rails new "#{app_name}" -d postgresql --skip-javascript #{extra_skip_flags} -m "#{template_path}"}
+  cmd = %Q{CONFIG_PATH="#{config_path}" RACK_ENV=development RAILS_ENV=development rails new "#{app_name}" -d postgresql --skip-javascript #{extra_skip_flags} -m "#{template_path}"}
+  puts <<~EOM
+    Build command:
+    #{cmd}
+  EOM
 
-  system cmd
+  system(cmd, exception: true)
 end
 
 puts "Running test suite"
