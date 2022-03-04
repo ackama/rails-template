@@ -6,6 +6,51 @@ require "pp"
 
 RAILS_REQUIREMENT = "~> 7.0.1".freeze
 
+##
+# This single template file will be downloaded and run by the `rails new`
+# command so all code it needs must be inlined we cannot load other files from
+# this repo.
+#
+class Config
+  DEFAULT_CONFIG_FILE_PATH = "./ackama_rails_template.config.yml".freeze
+
+  def initialize
+    config_file_path = File.absolute_path(ENV.fetch("CONFIG_PATH", DEFAULT_CONFIG_FILE_PATH))
+    @yaml_config = YAML.load(File.read(config_file_path))
+  end
+
+  def staging_hostname
+    @yaml_config.fetch("staging_hostname")
+  end
+
+  def production_hostname
+    @yaml_config.fetch("production_hostname")
+  end
+
+  def git_repo_url
+    @yaml_config.fetch("git_repo_url")
+  end
+
+  def apply_variant_react?
+    @yaml_config.fetch("apply_variant_react")
+  end
+
+  def apply_variant_devise?
+    @yaml_config.fetch("apply_variant_devise")
+  end
+
+  def apply_variant_sidekiq?
+    @yaml_config.fetch("apply_variant_sidekiq")
+  end
+
+  def apply_variant_typescript?
+    @yaml_config.fetch("apply_variant_typescript")
+  end
+end
+
+# Allow access to our configuration as a global
+$config = Config.new
+
 def apply_template!
   assert_minimum_rails_version
   assert_valid_options
@@ -56,9 +101,9 @@ def apply_template!
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
 
-    if apply_variant?(:react)
+    if $config.apply_variant_react?
       apply "variants/frontend-react/template.rb"
-      apply "variants/frontend-typescript/template.rb" if apply_variant?(:typescript)
+      apply "variants/frontend-typescript/template.rb" if $config.apply_variant_typescript?
     end
 
     create_initial_migration
@@ -69,7 +114,7 @@ def apply_template!
     # lighthouse matcher parts we need to run performance specs
     apply "variants/performance/template.rb"
     apply "variants/bullet/template.rb"
-    apply "variants/sidekiq/template.rb" if apply_variant?(:sidekiq)
+    apply "variants/sidekiq/template.rb" if $config.apply_variant_sidekiq?
 
     binstubs = %w[
       brakeman bundler bundler-audit rubocop
@@ -92,7 +137,7 @@ def apply_template!
 
     # we deliberately place this after the initial git commit because it
     # contains a lot of changes and adds its own git commit
-    apply "variants/devise/template.rb" if apply_variant?(:devise)
+    apply "variants/devise/template.rb" if $config.apply_variant_devise?
   end
 end
 
@@ -138,9 +183,8 @@ def assert_minimum_rails_version
   rails_version = Gem::Version.new(Rails::VERSION::STRING)
   return if requirement.satisfied_by?(rails_version)
 
-  prompt = "This template requires Rails #{RAILS_REQUIREMENT}. "\
-           "You are using #{rails_version}. Continue anyway?"
-  exit 1 if no?(prompt)
+  puts "ERROR: This template requires Rails #{RAILS_REQUIREMENT}. You are using #{rails_version}"
+  exit 1
 end
 
 # Bail out if user has passed in contradictory generator options.
@@ -165,40 +209,12 @@ def assert_postgresql
   return if IO.read("Gemfile") =~ /^\s*gem ['"]pg['"]/
   fail Rails::Generators::Error,
        "This template requires PostgreSQL, "\
-       "but the pg gem isn’t present in your Gemfile."
-end
-
-def git_repo_url
-  @git_repo_url ||= ask_with_default(
-    "What is the git remote URL for this project?",
-    :blue,
-    "skip",
-    "RT_GIT_REPO_URL"
-  )
-end
-
-def production_hostname
-  @production_hostname ||= ask_with_default(
-    "Production hostname?",
-    :blue,
-    "example.com",
-    "RT_HOSTNAME_PRODUCTION"
-  )
-end
-
-def staging_hostname
-  @staging_hostname ||= ask_with_default(
-    "Staging hostname?",
-    :blue,
-    "staging.example.com",
-    "RT_HOSTNAME_STAGING"
-  )
+       "but the pg gem isn't present in your Gemfile."
 end
 
 def any_local_git_commits?
   system("git log > /dev/null 2>&1")
 end
-
 
 def gemfile_requirement(name)
   @original_gemfile ||= IO.read("Gemfile")
@@ -206,34 +222,8 @@ def gemfile_requirement(name)
   req && req.gsub("'", %(")).strip.sub(/^,\s*"/, ', "')
 end
 
-def apply_variant?(name)
-  return true if ENV.fetch("VARIANTS", "").split(",").include?(name.to_s)
-
-  ask_with_default(
-    "Add #{name} to this application?",
-    :blue,
-    'N',
-    "RT_APPLY_VARIANT_#{name}".gsub("-", "_").upcase
-  ).downcase.start_with?("y")
-end
-
-def fetch_answer(question, color, env_variable)
-  env_answer = ENV.fetch(env_variable, nil).to_s.strip
-
-  return ask(question, color) if env_answer.empty?
-
-  say "#{question}: #{env_answer}", color
-  env_answer
-end
-
-def ask_with_default(question, color, default, env_variable)
-  question = (question.split("?") << " [#{default}]?").join
-  answer = fetch_answer(question, color, env_variable)
-  answer.to_s.strip.empty? ? default : answer
-end
-
 def git_repo_specified?
-  git_repo_url != "skip" && !git_repo_url.strip.empty?
+  $config.git_repo_url != "skip" && !$config.git_repo_url.strip.empty?
 end
 
 def preexisting_git_repo?
