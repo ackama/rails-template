@@ -1,18 +1,6 @@
 # Allow us to copy file with root at the directory this file is in
 source_paths.unshift(File.dirname(__FILE__))
 
-##
-# This template can be used either as part of starting a new Rails project or
-# by running:
-#
-#     bundle exec rails app:template LOCATION=http://path/to/this/template.rb
-#
-def ask_with_default(question, color, default)
-  question = (question.split("?") << " [#{default}]?").join
-  answer = ask(question, color)
-  answer.to_s.strip.empty? ? default : answer
-end
-
 def print_header(msg)
   puts "=" * 80
   puts msg
@@ -59,4 +47,4 @@ end
 
 # TODO: got to clean up stuff to keep rubocop happy
 print_header "Running rubocop to clean up generated files"
-run "bundle exec rubocop -aD"
+run "bundle exec rubocop -A"

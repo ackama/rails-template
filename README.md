@@ -237,10 +237,8 @@ CONFIG_PATH="ci/configs/react.yml" APP_NAME="enterprise" ./ci/bin/build-and-test
 # because the template is run by `rails new` which uses the rails app dir as
 # it's working dir, hence the `../` at the start.
 #
-rm -rf mydemoapp && CONFIG_PATH="../ci/configs/react.yml" rails new mydemoapp -d postgresql --skip-javascript -m ./template.rb
+rm -rf demoapp
+psql -c "DROP DATABASE IF EXISTS demoapp_development;"
+psql -c "DROP DATABASE IF EXISTS demoapp_test;"
+CONFIG_PATH="../ci/configs/react.yml" rails new mydemoapp -d postgresql --skip-javascript -m ./template.rb
 ```
-
-
-
-
-

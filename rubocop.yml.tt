@@ -108,3 +108,6 @@ RSpec/ExampleLength:
 
 RSpec/FactoryBot/SyntaxMethods:
   Enabled: false
+
+Rails/BulkChangeTable:
+  Enabled: false
