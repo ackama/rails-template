@@ -18,15 +18,15 @@ jobs:
       matrix:
         variant:
           - name: basic
-            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nNo\n\nNo\n
+            config: "ci/configs/basic_only.yml"
           - name: react
-            generator_input: example.com\nstaging.example.com\nY\nN\nNo\nNo\n\nNo\n
+            config: "ci/configs/basic_w_react.yml"
           - name: typescript
-            generator_input: example.com\nstaging.example.com\nN\nY\nNo\nNo\n\nNo\n
+            config: "ci/configs/basic_w_typescript.yml"
           - name: sidekiq
-            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nYes\n\nNo\n
+            config: "ci/configs/basic_w_sidekiq.yml"
           - name: devise
-            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nNo\n\nYes\nYes\n
+            config: "ci/configs/basic_w_devise.yml"
     services:
       db:
         image: postgres
@@ -62,7 +62,7 @@ jobs:
           bundler-cache: true
           ruby-version: '3.0'
 
-      - name: Setup git for commiting
+      - name: Setup git for committing
         run: |
           # We do some git commits during our testing so these need to be set
           git config --global user.email "you@example.com"
@@ -70,9 +70,9 @@ jobs:
 
       - name: Run CI script
         env:
-          VARIANT: ${{ matrix.variant.name }}
-          GENERATOR_INPUT: ${{ matrix.variant.generator_input }}
+          VARIANT_NAME: ${{ matrix.variant.name }}
+          CONFIG_PATH:  ${{ matrix.variant.config_path }}
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
-        run: ./template-test/ci-run.sh
+        run: ./ci/bin/run-ci
