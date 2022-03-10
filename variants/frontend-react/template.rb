@@ -9,9 +9,17 @@ run "rails webpacker:install:react"
 run "rails generate react:install"
 
 yarn_add_dev_dependencies %w[
+  @testing-library/react
+  @testing-library/jest-dom
+  @testing-library/user-event
   eslint-plugin-react
   eslint-plugin-react-hooks
   eslint-plugin-jsx-a11y
+  eslint-plugin-jest
+  eslint-plugin-jest-formatting
+  eslint-plugin-jest-dom
+  eslint-plugin-testing-library
+  jest
 ]
 copy_file ".eslintrc.js", force: true
 
@@ -55,10 +63,35 @@ gsub_file "app/views/layouts/application.html.erb",
           "    <%= javascript_pack_tag \"application\", \"data-turbolinks-track\": \"reload\", defer: true %>\n",
           javascript_pack_tag_replacement
 
+copy_file "jest.config.js"
+
 # example file
 copy_file "app/frontend/components/HelloWorld.jsx", force: true
+
+# test files
+directory "app/frontend/test"
+
 append_to_file "app/views/home/index.html.erb" do
   <<~ERB
-    <%= react_component("HelloWorld", { greeting: "Hello from react-rails." }) %>
+    <%= react_component("HelloWorld", { initialGreeting: "Hello from react-rails." }) %>
   ERB
+end
+
+package_json = JSON.parse(File.read("./package.json"))
+package_json["scripts"] = package_json["scripts"].merge(
+  {
+    "test" => "jest",
+    "watch-tests" => "jest --watch"
+  }
+)
+
+File.write("./package.json", JSON.generate(package_json))
+
+append_to_file "bin/ci-run" do
+  <<~JEST
+    echo "* ******************************************************"
+    echo "* Running JS tests"
+    echo "* ******************************************************"
+    yarn run test --coverage
+  JEST
 end
