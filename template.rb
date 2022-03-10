@@ -46,6 +46,10 @@ class Config
   def apply_variant_typescript?
     @yaml_config.fetch("apply_variant_typescript")
   end
+
+  def apply_variant_bootstrap?
+    @yaml_config.fetch("apply_variant_bootstrap")
+  end
 end
 
 # Allow access to our configuration as a global
@@ -97,7 +101,7 @@ def apply_template!
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
-    apply "variants/frontend-bootstrap/template.rb" if apply_variant?(:bootstrap)
+    apply "variants/bootstrap/template.rb" if $config.apply_variant_bootstrap?
 
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"

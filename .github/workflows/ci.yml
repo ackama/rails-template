@@ -35,6 +35,9 @@ jobs:
           - name: basic_with_skips
             config_path: "ci/configs/basic.yml"
             skips: --skip-active-storage --skip-spring --skip-javascript
+          - name: bootstrap
+            config_path: "ci/configs/bootstrap.yml"
+            skips: --skip-javascript
     services:
       db:
         image: postgres
