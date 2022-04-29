@@ -152,8 +152,15 @@ bundle exec sidekiq
           tests that a new dev should know about? Performance tests?
           Include all testing info in this section.
 
-```
+```bash
+# run all specs
 bundle exec rspec spec
+
+# run Capybara specs showing browser GUI (very useful for debugging when you
+# pause a test with binding.pry)
+HEADFUL=1 bundle exec rspec spec/features
+
+# run lighthouse specs
 npm run lighthouse-spec
 ```
 
