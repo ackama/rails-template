@@ -73,7 +73,6 @@ def apply_template!
   copy_file "Procfile"
 
   copy_file "variants/backend-base/.node-version", ".node-version"
-  create_link ".nvmrc", ".node-version"
 
   copy_file "Dockerfile"
   copy_file "docker-compose.yml"
@@ -133,7 +132,7 @@ def apply_template!
     # Set engines constraint in package.json
     node_version = File.read("./.node-version").strip
     package_json = JSON.parse(File.read("./package.json"))
-    package_json["engines"]= { node: ">= #{node_version}" }
+    package_json["engines"]= { node: "^#{node_version}" }
     File.write("./package.json", JSON.pretty_generate(package_json))
     run "yarn run prettier --write ./package.json"
 
