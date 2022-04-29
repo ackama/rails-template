@@ -19,6 +19,7 @@ yarn_add_dev_dependencies %w[
   eslint-plugin-jest-formatting
   eslint-plugin-jest-dom
   eslint-plugin-testing-library
+  jest-environment-jsdom
   jest
 ]
 copy_file ".eslintrc.js", force: true
