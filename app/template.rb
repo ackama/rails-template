@@ -1,9 +1,11 @@
 # Configure app/controllers
 copy_file "app/controllers/home_controller.rb"
+copy_file "app/controllers/active_storage/base_controller.rb"
 
 # Configure app/views
 template "app/views/layouts/application.html.erb", force: true
 copy_file "app/views/application/_flash.html.erb"
+copy_file "app/views/application/_header.html.erb"
 copy_file "app/views/home/index.html.erb"
 
 # Configure app/helpers

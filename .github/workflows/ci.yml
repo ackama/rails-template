@@ -18,15 +18,26 @@ jobs:
       matrix:
         variant:
           - name: basic
-            generator_input: example.com\nstaging.example.com\nNo\nNo\n\nNo\n
-          - name: foundation
-            generator_input: example.com\nstaging.example.com\nYes\nNo\n\nNo\n
-          - name: foundation-layout
-            generator_input: example.com\nstaging.example.com\nYes\nYes\nNo\n\nNo\n
+            config_path: "ci/configs/basic.yml"
+            skips: --skip-javascript
+          - name: react
+            config_path: "ci/configs/react.yml"
+            skips: --skip-javascript
+          - name: typescript
+            config_path: "ci/configs/typescript.yml"
+            skips: --skip-javascript
           - name: sidekiq
-            generator_input: example.com\nstaging.example.com\nNo\nYes\n\nNo\n
+            config_path: "ci/configs/sidekiq.yml"
+            skips: --skip-javascript
           - name: devise
-            generator_input: example.com\nstaging.example.com\nNo\nNo\n\nYes\nYes\n
+            config_path: "ci/configs/devise.yml"
+            skips: --skip-javascript
+          - name: basic_with_skips
+            config_path: "ci/configs/basic.yml"
+            skips: --skip-spring --skip-javascript
+          - name: bootstrap
+            config_path: "ci/configs/bootstrap.yml"
+            skips: --skip-javascript
     services:
       db:
         image: postgres
@@ -48,9 +59,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install NodeJS
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '16'
 
       # We don't cache gems or JS packages because we are actually testing how
       # installation and setup works in this project so, while caching would
@@ -60,9 +71,9 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: '2.7'
+          ruby-version: '3.0'
 
-      - name: Setup git for commiting
+      - name: Setup git for committing
         run: |
           # We do some git commits during our testing so these need to be set
           git config --global user.email "you@example.com"
@@ -70,9 +81,14 @@ jobs:
 
       - name: Run CI script
         env:
-          VARIANT: ${{ matrix.variant.name }}
-          GENERATOR_INPUT: ${{ matrix.variant.generator_input }}
+          # Remember that your app name becomes a top-level constant in the
+          # Rails app so you'll run into issues if that constant shares a name
+          # with a class provided by a gem. Basically, don't name your app
+          # "react", "sidekiq" etc.
+          APP_NAME: ${{ matrix.variant.name }}demo
+          CONFIG_PATH:  ${{ matrix.variant.config_path }}
+          SKIPS: ${{ matrix.variant.skips }}
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
-        run: ./template-test/ci-run.sh
+        run: ./ci/bin/build-and-test

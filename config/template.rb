@@ -73,4 +73,4 @@ gsub_file "config/storage.yml", /#   service: S3/ do
     #     #
     #     cache_control: 'private, max-age=<%= 365.days.seconds %>'
   YAML
-end
+end if File.exist? "config/storage.yml"

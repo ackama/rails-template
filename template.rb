@@ -4,7 +4,56 @@ require "fileutils"
 require "shellwords"
 require "pp"
 
-RAILS_REQUIREMENT = "~> 6.0.0".freeze
+RAILS_REQUIREMENT = "~> 7.0.1".freeze
+
+##
+# This single template file will be downloaded and run by the `rails new`
+# command so all code it needs must be inlined we cannot load other files from
+# this repo.
+#
+class Config
+  DEFAULT_CONFIG_FILE_PATH = "./ackama_rails_template.config.yml".freeze
+
+  def initialize
+    config_file_path = File.absolute_path(ENV.fetch("CONFIG_PATH", DEFAULT_CONFIG_FILE_PATH))
+    @yaml_config = YAML.load(File.read(config_file_path))
+  end
+
+  def staging_hostname
+    @yaml_config.fetch("staging_hostname")
+  end
+
+  def production_hostname
+    @yaml_config.fetch("production_hostname")
+  end
+
+  def git_repo_url
+    @yaml_config.fetch("git_repo_url")
+  end
+
+  def apply_variant_react?
+    @yaml_config.fetch("apply_variant_react")
+  end
+
+  def apply_variant_devise?
+    @yaml_config.fetch("apply_variant_devise")
+  end
+
+  def apply_variant_sidekiq?
+    @yaml_config.fetch("apply_variant_sidekiq")
+  end
+
+  def apply_variant_typescript?
+    @yaml_config.fetch("apply_variant_typescript")
+  end
+
+  def apply_variant_bootstrap?
+    @yaml_config.fetch("apply_variant_bootstrap")
+  end
+end
+
+# Allow access to our configuration as a global
+$config = Config.new
 
 def apply_template!
   assert_minimum_rails_version
@@ -52,17 +101,26 @@ def apply_template!
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
+    apply "variants/frontend-bootstrap/template.rb" if $config.apply_variant_bootstrap?
+
+    apply "variants/frontend-base/sentry/template.rb"
+    apply "variants/frontend-base/js-lint/template.rb"
+
+    if $config.apply_variant_react?
+      apply "variants/frontend-react/template.rb"
+      apply "variants/frontend-typescript/template.rb" if $config.apply_variant_typescript?
+    end
 
     create_initial_migration
 
     # Apply variants after setup and initial install, but before commit
     apply "variants/accessibility/template.rb"
-    # The accessibility template brings in the lighthouse and 
-    # lighthouse matcher parts we need to run performance specs 
+    # The accessibility template brings in the lighthouse and
+    # lighthouse matcher parts we need to run performance specs
     apply "variants/performance/template.rb"
-    apply "variants/frontend-foundation/template.rb" if apply_variant?(:foundation)
-    apply "variants/sidekiq/template.rb" if apply_variant?(:sidekiq)
     apply "variants/pundit/template.rb" if apply_variant?(:pundit)
+    apply "variants/bullet/template.rb"
+    apply "variants/sidekiq/template.rb" if $config.apply_variant_sidekiq?
 
     binstubs = %w[
       brakeman bundler bundler-audit rubocop
@@ -71,6 +129,9 @@ def apply_template!
 
     template "rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
+
+    apply "variants/frontend-audit-app/template.rb"
+    apply "variants/frontend-base/js-lint/fixes.rb"
 
     unless any_local_git_commits?
       git add: "-A ."
@@ -82,8 +143,22 @@ def apply_template!
 
     # we deliberately place this after the initial git commit because it
     # contains a lot of changes and adds its own git commit
-    apply "variants/devise/template.rb" if apply_variant?(:devise)
+    apply "variants/devise/template.rb" if $config.apply_variant_devise?
   end
+end
+
+# Adds the given <code>packages</code> as dependencies using <code>yarn add</code>
+#
+# @param [Array<String>] packages
+def yarn_add_dependencies(packages)
+  run "yarn add #{packages.join " "}"
+end
+
+# Adds the given <code>packages</code> as devDependencies using <code>yarn add --dev</code>
+#
+# @param [Array<String>] packages
+def yarn_add_dev_dependencies(packages)
+  run "yarn add --dev #{packages.join " "}"
 end
 
 # Add this template directory to source_paths so that Thor actions like
@@ -114,9 +189,8 @@ def assert_minimum_rails_version
   rails_version = Gem::Version.new(Rails::VERSION::STRING)
   return if requirement.satisfied_by?(rails_version)
 
-  prompt = "This template requires Rails #{RAILS_REQUIREMENT}. "\
-           "You are using #{rails_version}. Continue anyway?"
-  exit 1 if no?(prompt)
+  puts "ERROR: This template requires Rails #{RAILS_REQUIREMENT}. You are using #{rails_version}"
+  exit 1
 end
 
 # Bail out if user has passed in contradictory generator options.
@@ -126,6 +200,7 @@ def assert_valid_options
     skip_bundle: false,
     skip_git: false,
     skip_test_unit: true,
+    skip_active_storage: false,
     edge: false
   }
   valid_options.each do |key, expected|
@@ -141,49 +216,21 @@ def assert_postgresql
   return if IO.read("Gemfile") =~ /^\s*gem ['"]pg['"]/
   fail Rails::Generators::Error,
        "This template requires PostgreSQL, "\
-       "but the pg gem isn’t present in your Gemfile."
-end
-
-def git_repo_url
-  @git_repo_url ||=
-    ask_with_default("What is the git remote URL for this project?", :blue, "skip")
-end
-
-def production_hostname
-  @production_hostname ||=
-    ask_with_default("Production hostname?", :blue, "example.com")
-end
-
-def staging_hostname
-  @staging_hostname ||=
-    ask_with_default("Staging hostname?", :blue, "staging.example.com")
+       "but the pg gem isn't present in your Gemfile."
 end
 
 def any_local_git_commits?
   system("git log > /dev/null 2>&1")
 end
 
-
 def gemfile_requirement(name)
   @original_gemfile ||= IO.read("Gemfile")
-  req = @original_gemfile[/gem\s+['"]#{name}['"]\s*(,[><~= \t\d\.\w'"]*)?.*$/, 1]
+  req = @original_gemfile[/gem\s+['"]#{name}['"]\s*(, +['"][><~= \t\d\.\w'"]*)?.*$/, 1]
   req && req.gsub("'", %(")).strip.sub(/^,\s*"/, ', "')
 end
 
-def apply_variant?(name)
-  return true if ENV.fetch("VARIANTS", "").split(",").include?(name.to_s)
-
-  ask_with_default("Add #{name} to this application?", :blue, 'N').downcase.start_with?("y")
-end
-
-def ask_with_default(question, color, default)
-  question = (question.split("?") << " [#{default}]?").join
-  answer = ask(question, color)
-  answer.to_s.strip.empty? ? default : answer
-end
-
 def git_repo_specified?
-  git_repo_url != "skip" && !git_repo_url.strip.empty?
+  $config.git_repo_url != "skip" && !$config.git_repo_url.strip.empty?
 end
 
 def preexisting_git_repo?
