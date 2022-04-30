@@ -75,7 +75,9 @@ def apply_template!
   copy_file "simplecov", ".simplecov"
 
   copy_file "Procfile"
-  copy_file ".nvmrc"
+
+  copy_file "variants/backend-base/.node-version", ".node-version"
+
   copy_file "Dockerfile"
   copy_file "docker-compose.yml"
   copy_file ".dockerignore"
@@ -132,6 +134,13 @@ def apply_template!
 
     apply "variants/frontend-audit-app/template.rb"
     apply "variants/frontend-base/js-lint/fixes.rb"
+
+    # Set engines constraint in package.json
+    node_version = File.read("./.node-version").strip
+    package_json = JSON.parse(File.read("./package.json"))
+    package_json["engines"]= { node: "^#{node_version}" }
+    File.write("./package.json", JSON.pretty_generate(package_json))
+    run "yarn run prettier --write ./package.json"
 
     unless any_local_git_commits?
       git add: "-A ."
@@ -240,7 +249,7 @@ end
 
 def run_with_clean_bundler_env(cmd)
   success = if defined?(Bundler)
-              Bundler.with_clean_env { run(cmd) }
+              Bundler.with_unbundled_env { run(cmd) }
             else
               run(cmd)
             end
