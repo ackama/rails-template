@@ -120,7 +120,6 @@ def apply_template!
     # The accessibility template brings in the lighthouse and
     # lighthouse matcher parts we need to run performance specs
     apply "variants/performance/template.rb"
-    apply "variants/pundit/template.rb"
     apply "variants/bullet/template.rb"
     apply "variants/sidekiq/template.rb" if $config.apply_variant_sidekiq?
 
@@ -149,6 +148,9 @@ def apply_template!
         git remote: "add origin #{git_repo_url.shellescape}"
       end
     end
+
+    # TEMP LOCATION
+    apply "variants/pundit/template.rb"
 
     # we deliberately place this after the initial git commit because it
     # contains a lot of changes and adds its own git commit
