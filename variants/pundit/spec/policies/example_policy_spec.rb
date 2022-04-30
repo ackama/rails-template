@@ -1,10 +1,10 @@
 require "rails_helper"
 
-RSpec.describe ExamplePolicy, type: :policy do # rubocop:disable RSpec/EmptyExampleGroup
+RSpec.describe ExamplePolicy, type: :policy do
+  subject { described_class }
+
   let(:scope) { Example.all }
   let(:user) { FactoryBot.create(:user) }
-
-  subject { described_class }
 
   permissions ".scope" do
     pending "add some examples to (or delete) #{__FILE__}"

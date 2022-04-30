@@ -16,29 +16,16 @@ insert_into_file "app/controllers/application_controller.rb",
   <<-RUBY
   include Pundit
 
-  after_action :verify_authorized, except: :index, unless: :skip_verify_authorized?
-  after_action :verify_policy_scoped, only: :index, unless: :skip_verify_policy_scoped?
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
   RUBY
 end
 
 insert_into_file "app/controllers/application_controller.rb", before: /^end/ do
   <<-RUBY
+
   private
-
-  def skip_verify_authorized?
-    current_devise_controller?
-  end
-
-  def skip_verify_policy_scoped?
-    is_a?(::HomeController) || current_devise_controller?
-  end
-
-  def current_devise_controller?
-    return false unless respond_to?(:devise_controller?)
-
-    devise_controller?
-  end
 
   def user_not_authorized
     flash[:alert] = I18n.t("authorization.not_authorized")
@@ -58,4 +45,11 @@ insert_into_file "spec/rails_helper.rb", after: %r{require "axe/rspec"\n} do
   <<~REQUIRE
     require "pundit/rspec"
   REQUIRE
+end
+
+insert_into_file "app/controllers/home_controller.rb", after: %r{def index\n} do
+  <<-RUBY
+    # tell pundit that we are ok with not having authorization on this endpoint
+    skip_policy_scope
+  RUBY
 end

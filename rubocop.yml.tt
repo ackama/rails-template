@@ -108,3 +108,7 @@ RSpec/ExampleLength:
 
 RSpec/FactoryBot/SyntaxMethods:
   Enabled: false
+
+Rails/LexicallyScopedActionFilter:
+  Exclude:
+    - "app/controllers/application_controller.rb"
