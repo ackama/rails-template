@@ -3,8 +3,11 @@ require "rails_helper"
 RSpec.describe ApplicationPolicy, type: :policy do
   subject(:policy) { described_class }
 
-  let(:scope) { "Can be anything" }
-  let(:user) { FactoryBot.create(:user) }
+  let(:scope) { "REPLACE_ME_WITH_REAL_SCOPE" }
+  let(:user) do
+    # FactoryBot.create(:user)
+    "REPLACE_ME_WITH_REAL_USER"
+  end
 
   permissions ".scope" do
     it { expect { ApplicationPolicy::Scope.new(user, scope).resolve }.to raise_error(NotImplementedError) }
