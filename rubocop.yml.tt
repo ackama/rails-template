@@ -112,3 +112,7 @@ RSpec/FactoryBot/SyntaxMethods:
 Rails/LexicallyScopedActionFilter:
   Exclude:
     - "app/controllers/application_controller.rb"
+
+RSpec/RepeatedExample:
+  Exclude:
+    - "spec/policies/**"

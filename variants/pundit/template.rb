@@ -9,12 +9,13 @@ run "rails g pundit:install"
 run "rails g pundit:policy example"
 
 copy_file "spec/policies/example_policy_spec.rb", force: true
+copy_file "spec/policies/application_policy_spec.rb", force: true
 
 # Configure app/controllers/application_controller.rb
 insert_into_file "app/controllers/application_controller.rb",
                  after: /^class ApplicationController < ActionController::Base\n/ do
   <<-RUBY
-  include Pundit
+  include Pundit::Authorization
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   after_action :verify_authorized, except: :index
