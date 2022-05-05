@@ -4,7 +4,7 @@ require "fileutils"
 require "shellwords"
 require "pp"
 
-RAILS_REQUIREMENT = "~> 7.0.1".freeze
+RAILS_REQUIREMENT = "~> 7.0.2.4".freeze
 
 ##
 # This single template file will be downloaded and run by the `rails new`
@@ -121,6 +121,7 @@ def apply_template!
     # lighthouse matcher parts we need to run performance specs
     apply "variants/performance/template.rb"
     apply "variants/bullet/template.rb"
+    apply "variants/pundit/template.rb"
     apply "variants/sidekiq/template.rb" if $config.apply_variant_sidekiq?
 
     binstubs = %w[

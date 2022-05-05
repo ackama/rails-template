@@ -3,6 +3,7 @@
 # The base class for all Active Storage controllers.
 # Copied from
 # https://github.com/rails/rails/blob/main/activestorage/app/controllers/active_storage/base_controller.rb
+# :nocov:
 class ActiveStorage::BaseController < ActionController::Base # rubocop:disable Rails/ApplicationController
   include ActiveStorage::SetCurrent
 
@@ -22,3 +23,4 @@ class ActiveStorage::BaseController < ActionController::Base # rubocop:disable R
     raise StandardError.new "No authentication is configured for ActiveStorage"
   end
 end
+# :nocov:
