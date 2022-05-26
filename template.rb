@@ -4,7 +4,7 @@ require "fileutils"
 require "shellwords"
 require "pp"
 
-RAILS_REQUIREMENT = "~> 7.0.2.4".freeze
+RAILS_REQUIREMENT = "~> 7.0.3".freeze
 
 ##
 # This single template file will be downloaded and run by the `rails new`
