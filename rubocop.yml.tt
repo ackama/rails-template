@@ -62,7 +62,7 @@ Metrics/BlockLength:
 
 # We generally don't want methods longer than 15 lines, except in migrations where it's probably okay.
 Metrics/MethodLength:
-  Max: 15
+  Max: 20
   Exclude:
     - 'db/migrate/**/*.rb'
     - 'spec/**/*'
@@ -199,6 +199,7 @@ Style/HashTransformValues:
   Enabled: false
 
 Metrics/AbcSize:
+  Max: 18
   Exclude:
     - 'spec/**/*'
 
