@@ -89,21 +89,22 @@ end
 insert_into_file "config/environments/production.rb",
   after: /.*config.cache_store = :mem_cache_store\n/ do
   <<~'RUBY'
-    # config.cache_store = :redis_cache_store, {
-    #   url: ENV.fetch("RAILS_CACHE_REDIS_URL"),
-    #   ##
-    #   # Configuring a connection pool for Redis as Rails cache is documented in:
-    #   #
-    #   # * https://edgeguides.rubyonrails.org/caching_with_rails.html#connection-pool-options
-    #   #
-    #   # but some more details are available in:
-    #   #
-    #   # * https://github.com/rails/rails/blob/a5d1628c79ab89dfae57ec1e1aeca467e29de188/activesupport/lib/active_support/cache.rb#L168-L173
-    #   # * https://github.com/rails/rails/blob/9b4aef4be3dc58eb08f694387857b52be8050954/activesupport/lib/active_support/cache/redis_cache_store.rb#L185-L192
-    #   #
-    #   pool_size: Integer(ENV.fetch("RAILS_MAX_THREADS", 5)), # number of connections **per puma process**
-    #   pool_timeout: 5 # num seconds to wait for a connection
-    # }
-
+    if ENV.fetch("RAILS_CACHE_REDIS_URL")
+      config.cache_store = :redis_cache_store, {
+        url: ENV.fetch("RAILS_CACHE_REDIS_URL"),
+        ##
+        # Configuring a connection pool for Redis as Rails cache is documented in:
+        #
+        # * https://edgeguides.rubyonrails.org/caching_with_rails.html#connection-pool-options
+        #
+        # but some more details are available in:
+        #
+        # * https://github.com/rails/rails/blob/a5d1628c79ab89dfae57ec1e1aeca467e29de188/activesupport/lib/active_support/cache.rb#L168-L173
+        # * https://github.com/rails/rails/blob/9b4aef4be3dc58eb08f694387857b52be8050954/activesupport/lib/active_support/cache/redis_cache_store.rb#L185-L192
+        #
+        pool_size: Integer(ENV.fetch("RAILS_MAX_THREADS", 5)), # number of connections **per puma process**
+        pool_timeout: 5 # num seconds to wait for a connection
+      }
+    end
   RUBY
 end
