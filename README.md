@@ -31,10 +31,29 @@ their own in-house template.
   - PostgreSQL as database. This template only supports PostgreSQL.
   - A much-improved `bin/setup` script
   - Install [dotenv](https://github.com/bkeepers/dotenv)
+  - Create a `doc/` directory for docs
+  - Add a middleware to implement HTTP Basic Auth by setting environment
+    variables. We use this regularly for pre-production envs.
+  - Use [okcomputer](https://github.com/sportngin/okcomputer) for health check
+    endpoints. Configured in
+    [./config/initializers/health_checks.rb](./config/initializers/health_checks.rb)
+  - Install [lograge](https://github.com/roidrage/lograge) for better logs in
+    production.
+  - Create `app/services` as the place to hold our plain ol' Ruby objects
+    wherein we put most of our business logic.
+  - Override the default ActiveStorage base controller to force the team to make
+    a decision about whether ActiveStorage files must be behind authentication
+    or not. The default Rails behaviour here can be a security gotcha.
 - Security
   - Install and configure [brakeman](https://github.com/presidentbeef/brakeman)
   - Install and configure
     [bundler-audit](https://github.com/rubysec/bundler-audit)
+  - Create `.well-known/security.txt`
+  - Add a well documented
+    [Content Security Policy initializer](./config/initializers/content_security_policy.rb)
+    with secure defaults.
+  - Install [pundit](https://github.com/varvet/pundit) as our preferred
+    authorization gem
 - Error reporting
   - Setup Sentry for error reporting
 - Code style
@@ -56,6 +75,8 @@ their own in-house template.
   - Install [webdrivers](https://github.com/titusfortner/webdrivers)
   - Install [Simplecov](https://github.com/simplecov-ruby/simplecov) for test
     coverage. Configures it with our defaults.
+  - Debug system specs using a visible browser (not headless) by adding
+    `HEADFUL=1 enviornment variable to your command line
 - Accessibility testing - sets up automated accessibility testing.
   - Install [axe](https://www.deque.com/axe/) and
     [lighthouse](https://developers.google.com/web/tools/lighthouse) to provide
@@ -93,6 +114,8 @@ their own in-house template.
 - Devise (optional)
   - Install devise and tweak the configuration. if enabled in the configuration
     file.
+  - Configure devise to destroy session cookies on log out (this comes up
+    regularly in penetration tests)
 - Bootstrap (optional)
   - Installs and configures
     [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
@@ -106,6 +129,8 @@ their own in-house template.
     [react-testing-library](https://testing-library.com/docs/react-testing-library/intro/)
     is provided. Before you start adding more tests, it is recommended you read
     [common-mistakes-with-react-testing-library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
+- Typescript (optional)
+  - Install and configure Typescript including linting
 - Sidekiq (optional)
   - Install and configure Sidekiq
 
