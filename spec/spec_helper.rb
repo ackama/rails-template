@@ -13,8 +13,12 @@ SimpleCov.minimum_coverage 90
 # SimpleCov.minimum_coverage_by_file 80
 # SimpleCov.maximum_coverage_drop 5
 # SimpleCov.refuse_coverage_drop
+SimpleCov.use_merging false
 
 SimpleCov.start do
+  add_filter "/bin/"
+  add_filter "/lib/tasks/auto_annotate_models.rake"
+  add_filter "/lib/tasks/coverage.rake"
   add_filter "/spec/support/"
   add_filter "/spec/factories/"
   add_filter "/spec/rails_helper.rb"
