@@ -72,7 +72,6 @@ def apply_template!
   copy_file "gitignore", ".gitignore", force: true
   copy_file "overcommit.yml", ".overcommit.yml"
   template "ruby-version.tt", ".ruby-version", force: true
-  copy_file "simplecov", ".simplecov"
 
   copy_file "Procfile"
 
