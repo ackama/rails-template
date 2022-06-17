@@ -1,5 +1,7 @@
 # Ackama Rails Template
 
+[![Rails Template CI](https://github.com/ackama/rails-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ackama/rails-template/actions/workflows/ci.yml)
+
 This is a template you can use to create new Rails applications.
 
 - [Ackama Rails Template](#ackama-rails-template)
@@ -153,8 +155,8 @@ machine:
 The following are not strictly required to run the template but you will need it
 to start the Rails app that this template creates:
 
-- PostgreSQL
-- Chromedriver
+- [PostgreSQL](https://www.postgresql.org/)
+- [Chromedriver](https://chromedriver.chromium.org/)
 
 ## How do I use this?
 
@@ -173,12 +175,23 @@ option to `rails new`, like this:
 # Ensure you have the latest version of Rails
 $ gem install rails
 
-# Example 1:
+# Example 1
+# #########
+
+# Create a config file using the example
+$ wget https://raw.githubusercontent.com/ackama/rails-template/main/ackama_rails_template.config.yml
+
+# Tweak the config file as you see fit
+
 # Create a new app using the template. Template options will be taken from
 # ./ackama_rails_template.config.yml
 $ rails new my_app --no-rc --database=postgresql --skip-javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 
-# Example 2:
+# Example 2
+# #########
+
+# Create a custom config YAML file, saving as ./my_custom_config.yml
+
 # Template options will be taken from ./my_custom_config.yml
 $ CONFIG_PATH=./my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip-javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
