@@ -1,155 +1,121 @@
 # Ackama Rails Template
 
-This is the application template that we use for new Rails projects. As a
-fabulous consultancy, we need to be able to start new projects quickly and with
-a good set of defaults.
-
-This template bakes in the gems and configuration choices that we want to have
-on **all** of our Rails apps. Some of these choices are based on years of
-creating Rails apps and feedback from multiple pen-tests and security reviews.
-Some of these choices are just our preferences :shrug:.
+This is a template you can use to create new Rails applications.
 
 - [Ackama Rails Template](#ackama-rails-template)
-  - [What does this template provide me?](#what-does-this-template-provide-me)
-    - [Standard Rails stuff](#standard-rails-stuff)
-    - [General](#general)
-    - [Security](#security)
-    - [Error reporting](#error-reporting)
-    - [Code style](#code-style)
-    - [General testing](#general-testing)
-    - [Accessibility testing](#accessibility-testing)
-    - [Front-end](#front-end)
-    - [Performance testing](#performance-testing)
-    - [N+1 queries](#n1-queries)
-    - [Devise (optional)](#devise-optional)
-    - [Bootstrap (optional)](#bootstrap-optional)
-    - [React (optional)](#react-optional)
-    - [Sidekiq (optional)](#sidekiq-optional)
+  - [Background](#background)
+  - [Features](#features)
+  - [Other templates](#other-templates)
   - [Requirements](#requirements)
-  - [Usage](#usage)
-  - [Installation (Optional)](#installation-optional)
-  - [Contributing to this template](#contributing-to-this-template)
-  - [Origins](#origins)
+  - [How do I use this?](#how-do-i-use-this)
+  - [How do I use this template for every Rails app I create?](#how-do-i-use-this-template-for-every-rails-app-i-create)
+  - [Contributing](#contributing)
+  - [Credits](#credits)
 
-## What does this template provide me?
+## Background
 
-Our starting point is a vanilla Rails 7 install.
+This template is the set of things we (the Ackama Ruby team) want in **every**
+Rails application we create, based on 10+ years of creating new Rails
+applications, having them penetration tested and maintaining them for years.
 
-### Standard Rails stuff
+Some of these choices are objectively good ideas. Some of them are subjective
+opinions :shrug:. We are delighted when other teams find this template useful as
+either the starting point for their apps, or as the starting point for creating
+their own in-house template.
 
-- Use [puma](https://github.com/puma/puma) as application server
-- Use [Yarn](https://yarnpkg.com/) for managing JS packages
+## Features
 
-### General
+- General
+  - [puma](https://github.com/puma/puma) as application server
+  - [Yarn](https://yarnpkg.com/) for managing JS packages
+  - PostgreSQL as database. This template only supports PostgreSQL.
+  - A much-improved `bin/setup` script
+  - Install [dotenv](https://github.com/bkeepers/dotenv)
+- Security
+  - Install and configure [brakeman](https://github.com/presidentbeef/brakeman)
+  - Install and configure
+    [bundler-audit](https://github.com/rubysec/bundler-audit)
+- Error reporting
+  - Setup Sentry for error reporting
+- Code style
+  - Add [EditorConfig](https://editorconfig.org/) config file
+    ([.editorconfig](./editorconfig))
+  - JS/HTML/CSS: [Prettier](https://prettier.io/), Set up with an
+    [Ackama prettier config](https://github.com/ackama/prettier-config-ackama)
+    and a variety of other prettier plugins, see the full list in
+    [variants/frontend-base/template.rb](./variants/frontend-base/template.rb)
+  - JavaScript: [ESlint](https://eslint.org/), Ackama uses the rules found at
+    [eslint-config-ackama](https://github.com/ackama/eslint-config-ackama)
+    Styles: [stylelint](https://github.com/stylelint/stylelint)
+  - Ruby: [Rubocop](https://github.com/rubocop-hq/rubocop), with
+    [ackama rubocop settings](./rubocop.yml.tt)
+  - Install [Overcommit](https://github.com/sds/overcommit) for managing custom
+    git hooks. Configure it with our default settings
+    ([overcommit.yml](./overcommit.yml)
+- General testing
+  - Install [webdrivers](https://github.com/titusfortner/webdrivers)
+  - Install [Simplecov](https://github.com/simplecov-ruby/simplecov) for test
+    coverage. Configures it with our defaults.
+- Accessibility testing - sets up automated accessibility testing.
+  - Install [axe](https://www.deque.com/axe/) and
+    [lighthouse](https://developers.google.com/web/tools/lighthouse) to provide
+    comprehensive coverage.
+    - Axe Matchers is a gem that provides cucumber steps and rspec matchers that
+      will check the accessibility compliance of your views. We require a
+      default standard of wcag2a and wcag2aa.
+    - We recommend that your tests all live in a `spec/features/accessibility`,
+      to allow for running them separately. Using the shared examples found at
+      `variants/accessibility/spec/support/shared_examples/an_accessible_page.rb`
+      for your base tests avoids duplication and misconfiguration.
+  - Install our
+    [lighthouse matchers](https://github.com/ackama/lighthouse-matchers) gem
+    which provide RSpec matchers to assess the accessibility compliance of your
+    application.
+    - We recommend setting your passing score threshold to 100 for new projects.
+      As with Axe, you can keep your test suite tidy by placing these tests in
+      `spec/features/accessibility`.
+- Front-end
+  - Rename `app/javascript` to `app/frontend`
+  - Setup Webpacker.
+  - > **Note** We are trialing the new JS packaging options that Rails 7+
+    > provides. For now our default is still Webpacker because it provides us
+    > the most flexibility.
+  - Initializes [sentry](https://sentry.io/welcome/) JS for error reporting
+  - Initializes Ackama's linting and code formatting settings, see
+    [Code linting and formatting](#code-linting-and-formatting)
+- Performance testing
+  - Add configuration and specs to use to perform a
+    [lighthouse performance](https://web.dev/performance-scoring/) audit,
+    requiring a score of at least 95.
+- N+1 queries
+  - Add configuration to use to prevent N+1 queries, see
+    [bullet](https://github.com/flyerhzm/bullet)
+- Devise (optional)
+  - Install devise and tweak the configuration. if enabled in the configuration
+    file.
+- Bootstrap (optional)
+  - Installs and configures
+    [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
+    if enabled in the configuration file.
+- React (optional)
+  - Add configuration and example componenents if enabled in the configuration
+    file.
+  - Based on [rails-react](https://github.com/reactjs/react-rails)
+  - The relevant config files are found in `variants/frontend-react`.
+  - An example react test using
+    [react-testing-library](https://testing-library.com/docs/react-testing-library/intro/)
+    is provided. Before you start adding more tests, it is recommended you read
+    [common-mistakes-with-react-testing-library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
+- Sidekiq (optional)
+  - Install and configure Sidekiq
 
-- A much-improved `bin/setup` script
-- Install [dotenv](https://github.com/bkeepers/dotenv)
-- We use PostgreSQL because it's great
+## Other templates
 
-### Security
+Some functionality which isn't something we need on every app is available in
+our other templates:
 
-- Install and configure [brakeman](https://github.com/presidentbeef/brakeman)
-- Install and configure
-  [bundler-audit](https://github.com/rubysec/bundler-audit)
-
-### Error reporting
-
-- Setup Sentry for error reporting
-
-### Code style
-
-- Add [EditorConfig](https://editorconfig.org/) config file
-  ([.editorconfig](./editorconfig))
-- JS/HTML/CSS: [Prettier](https://prettier.io/), Set up with an
-  [Ackama prettier config](https://github.com/ackama/prettier-config-ackama) and
-  a variety of other prettier plugins, see the full list in
-  `variants/frontend-base/template.rb`
-- JavaScript: [ESlint](https://eslint.org/), Ackama uses the rules found at
-  [eslint-config-ackama](https://github.com/ackama/eslint-config-ackama) Styles:
-  [stylelint](https://github.com/stylelint/stylelint)
-- Ruby: [Rubocop](https://github.com/rubocop-hq/rubocop), with
-  [ackama rubocop settings](https://bitbucket.org/rabidtech/rabid-dotfiles/raw/master/.rubocop.yml)
-- Install [Overcommit](https://github.com/sds/overcommit) for managing custom
-  git hooks. Configure it with our default settings
-  ([overcommit.yml](./overcommit.yml)
-
-### General testing
-
-- Install [webdrivers](https://github.com/titusfortner/webdrivers)
-- Install [Simplecov](https://github.com/simplecov-ruby/simplecov) for test
-  coverage. Configures it with our defaults.
-
-### Accessibility testing
-
-Sets up automated accessibility testing.
-
-- Install [axe](https://www.deque.com/axe/) and
-  [lighthouse](https://developers.google.com/web/tools/lighthouse) to provide
-  comprehensive coverage.
-  - Axe Matchers is a gem that provides cucumber steps and rspec matchers that
-    will check the accessibility compliance of your views. We require a default
-    standard of wcag2a and wcag2aa.
-  - We recommend that your tests all live in a `spec/features/accessibility`, to
-    allow for running them separately. Using the shared examples found at
-    `variants/accessibility/spec/support/shared_examples/an_accessible_page.rb`
-    for your base tests avoids duplication and misconfiguration.
-- Install our
-  [lighthouse matchers](https://github.com/ackama/lighthouse-matchers) gem which
-  provide RSpec matchers to assess the accessibility compliance of your
-  application.
-  - We recommend setting your passing score threshold to 100 for new projects.
-    As with Axe, you can keep your test suite tidy by placing these tests in
-    `spec/features/accessibility`.
-
-### Front-end
-
-> **Note** We are trialing the new JS packaging options that Rails 7+ provides.
-> For now our default is still Webpacker because it provides us the most
-> flexibility.
-
-- rename `app/javascript` to `app/frontend`
-- Setup Webpacker.
-- Initializes [sentry](https://sentry.io/welcome/) JS for error reporting
-- Initializes Ackama's linting and code formatting settings, see
-  [Code linting and formatting](#code-linting-and-formatting)
-
-### Performance testing
-
-Add configuration and specs to use to perform a
-[lighthouse performance](https://web.dev/performance-scoring/) audit, requiring
-a score of at least 95.
-
-### N+1 queries
-
-Add configuration to use to prevent N+1 queries, see
-[bullet](https://github.com/flyerhzm/bullet)
-
-### Devise (optional)
-
-Install devise and tweak the configuration. if enabled in the configuration
-file.
-
-### Bootstrap (optional)
-
-Installs and configures
-[Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/) if
-enabled in the configuration file.
-
-### React (optional)
-
-- Add configuration and example componenents if enabled in the configuration
-  file.
-- Based on [rails-react](https://github.com/reactjs/react-rails)
-- The relevant config files are found in `variants/frontend-react`.
-- An example react test using
-  [react-testing-library](https://testing-library.com/docs/react-testing-library/intro/)
-  is provided. Before you start adding more tests, it is recommended you read
-  [common-mistakes-with-react-testing-library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
-
-### Sidekiq (optional)
-
-A job scheduler is a computer application for controlling unattended background
-program execution of jobs
+- [Rails template to enable SSL/TLS for local development](https://github.com/ackama/rails-template-ssl-local-dev)
+- [Rails template to render PDFs using Puppeteer and Chrome](https://github.com/ackama/rails-template-pdf-rendering)
 
 ## Requirements
 
@@ -163,15 +129,14 @@ The following are not strictly required to run the template but you will need it
 to start the Rails app that this template creates:
 
 - PostgreSQL
-- chromedriver
+- Chromedriver
 
-## Usage
+## How do I use this?
 
-This template requires a YAML configuration file to to configure options.
-
-It will use `ackama_rails_template.config.yml` in your current working directory
-if it exists. Otherwise you can specify a path using the `CONFIG_PATH`
-environment variable.
+This template requires a YAML configuration file to to configure options. It
+will use a file called `ackama_rails_template.config.yml` in your current
+working directory if it exists. Otherwise you can specify a path using the
+`CONFIG_PATH` environment variable.
 
 [ackama_rails_template.config.yml](./ackama_rails_template.config.yml) is a
 documented configuration example that you can copy.
@@ -180,41 +145,36 @@ To generate a Rails application using this template, pass the `--template`
 option to `rails new`, like this:
 
 ```bash
-# template options will be taken from ./ackama_rails_template.config.yml
+# Ensure you have the latest version of Rails
+$ gem install rails
+
+# Example 1:
+# Create a new app using the template. Template options will be taken from
+# ./ackama_rails_template.config.yml
 $ rails new my_app --no-rc --database=postgresql --skip-javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 
-# template options will be taken from from your custom config file
+# Example 2:
+# Template options will be taken from ./my_custom_config.yml
 $ CONFIG_PATH=./my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip-javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
-
-The only database supported by this template is `postgresql`.
 
 Here are some additional options you can add to this command. We don't
 _prescribe_ these, but you may find that many Ackama projects are started with
 some or all of these options:
 
-- `--skip-javascript` skips the setup of JavaScript imports/compilers, Rails
-  7.0.x is no longer automatically includes
-  [Webpacker](https://github.com/rails/webpacker), instead it uses
-  [Importmap](https://github.com/rails/importmap-rails) by default.
 - `--skip-action-mailbox` skips the setup of ActionMailbox, which you don't need
   unless you are receiving emails in your application.
 - `--skip-active-storage` skips the setup of ActiveStorage. If you don't need
   support for file attachments, this can be skipped.
-- `--skip-action-cable` - if you're not doing things with websockets, you may
+- `--skip-action-cable` - if you're not doing things with Websockets, you may
   want to consider skipping this one to avoid having an open websocket
   connection without knowing about it.
-- `--webpack=react` - this will preconfigure your app to build and serve React
-  code. You only need it if you're going to be using React, but adding this
-  during app generation will mean that your codebase supports webpack and React
-  components right from the first commit.
 
-## Installation (Optional)
+## How do I use this template for every Rails app I create?
 
-If you find yourself generating a lot of Rails applications, you can load
-default options into a file in your home directory named `.railsrc`, and these
-options will be applied as arguments each time you run `rails new` (unless you
-pass the `--no-rc` option).
+The `rails` command will pull options from a `.railsrc` file in your home
+directory. These options will be applied as arguments each time you run
+`rails new` (unless you pass the `--no-rc` option).
 
 To make this the default Rails application template on your system, create a
 `~/.railsrc` file with these contents:
@@ -222,6 +182,7 @@ To make this the default Rails application template on your system, create a
 ```
 # ~/.railsrc
 -d postgresql
+--skip-javascript
 -m https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
@@ -232,7 +193,7 @@ run:
 $ rails new my-awesome-app
 ```
 
-## Contributing to this template
+## Contributing
 
 This project works by hooking into the standard Rails
 [application templates](https://guides.rubyonrails.org/rails_application_templates.html)
@@ -259,8 +220,9 @@ finishes with `.tt`, Thor considers it to be a template and places it in the
 destination without the extension `.tt`.
 
 ```bash
-# create new rails app in tmp/builds/enterprise using ci/configs/react.yml as configuration
-CONFIG_PATH="ci/configs/react.yml" APP_NAME="enterprise" ./ci/bin/build-and-test
+# create new rails app in tmp/builds/enterprise using ci/configs/react.yml as
+# configuration
+$ CONFIG_PATH="ci/configs/react.yml" APP_NAME="enterprise" ./ci/bin/build-and-test
 
 # or do it manually:
 #
@@ -268,13 +230,16 @@ CONFIG_PATH="ci/configs/react.yml" APP_NAME="enterprise" ./ci/bin/build-and-test
 # because the template is run by `rails new` which uses the rails app dir as
 # it's working dir, hence the `../` at the start.
 #
-rm -rf mydemoapp && CONFIG_PATH="../ci/configs/react.yml" rails new mydemoapp -d postgresql --skip-javascript -m ./template.rb
+$ rm -rf mydemoapp && CONFIG_PATH="../ci/configs/react.yml" rails new mydemoapp -d postgresql --skip-javascript -m ./template.rb
 ```
 
-## Origins
+## Credits
 
-This repo is forked from
-[mattbrictson/rails-template](https://github.com/mattbrictson/rails-template),
-and has been customized to set up Rails projects the way Ackama likes them. Many
-thanks to [@joshmcarthur](https://github.com/joshmcarthur) and
-[@mattbrictson](https://github.com/mattbrictson) upon whose work we have built.
+This repo was forked from
+[mattbrictson/rails-template](https://github.com/mattbrictson/rails-template)
+via [@joshmcarthur](https://github.com/joshmcarthur). Many thanks to
+[@mattbrictson](https://github.com/mattbrictson) upon whose foundation we are
+building.
+
+Beyond the folks in the contributor graph, the ideas and choices in this
+template have been shaped by all the Ackama Ruby team, past and present :heart:.
