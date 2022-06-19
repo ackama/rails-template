@@ -20,12 +20,14 @@ This template is the set of things we (the Ackama Ruby team) want in **every**
 Rails application we create, based on 10+ years of creating new Rails
 applications, having them penetration tested and maintaining them for years.
 
-Some of these choices are objectively good ideas. Some of them are subjective
+Some of these choices are objectively good ideas, some of them are subjective
 opinions :shrug:. We are delighted when other teams find this template useful as
 either the starting point for their apps, or as the starting point for creating
 their own in-house template.
 
 ## Features
+
+Where possible we stick to Rails defaults.
 
 - General
   - [puma](https://github.com/puma/puma) as application server
@@ -71,14 +73,15 @@ their own in-house template.
   - Ruby: [Rubocop](https://github.com/rubocop-hq/rubocop), with
     [ackama rubocop settings](./rubocop.yml.tt)
   - Install [Overcommit](https://github.com/sds/overcommit) for managing custom
-    git hooks. Configure it with our default settings
-    ([overcommit.yml](./overcommit.yml)
+    git hooks. Configure it with our default settings:
+    [overcommit.yml](./overcommit.yml)
 - General testing
+  - RSpec for tests
   - Install [webdrivers](https://github.com/titusfortner/webdrivers)
   - Install [Simplecov](https://github.com/simplecov-ruby/simplecov) for test
     coverage. Configures it with our defaults.
   - Debug system specs using a visible browser (not headless) by adding
-    `HEADFUL=1 enviornment variable to your command line
+    `HEADFUL=1` environment variable to your command line
 - Accessibility testing - sets up automated accessibility testing.
   - Install [axe](https://www.deque.com/axe/) and
     [lighthouse](https://developers.google.com/web/tools/lighthouse) to provide
@@ -103,7 +106,6 @@ their own in-house template.
   - > **Note** We are trialing the new JS packaging options that Rails 7+
     > provides. For now our default is still Webpacker because it provides us
     > the most flexibility.
-  - Initializes [sentry](https://sentry.io/welcome/) JS for error reporting
   - Initializes Ackama's linting and code formatting settings, see
     [Code linting and formatting](#code-linting-and-formatting)
 - Performance testing
@@ -111,8 +113,8 @@ their own in-house template.
     [lighthouse performance](https://web.dev/performance-scoring/) audit,
     requiring a score of at least 95.
 - N+1 queries
-  - Add configuration to use to prevent N+1 queries, see
-    [bullet](https://github.com/flyerhzm/bullet)
+  - Install & configure [bullet](https://github.com/flyerhzm/bullet) to help
+    prevent N+1 queries
 - Devise (optional)
   - Install devise and tweak the configuration. if enabled in the configuration
     file.
@@ -123,7 +125,7 @@ their own in-house template.
     [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
     if enabled in the configuration file.
 - React (optional)
-  - Add configuration and example componenents if enabled in the configuration
+  - Add configuration and example components if enabled in the configuration
     file.
   - Based on [rails-react](https://github.com/reactjs/react-rails)
   - The relevant config files are found in `variants/frontend-react`.
