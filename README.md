@@ -18,7 +18,8 @@ This is a template you can use to create new Rails applications.
 
 This template is the set of things we (the Ackama Ruby team) want in **every**
 Rails application we create, based on 10+ years of creating new Rails
-applications, having them penetration tested and maintaining them for years.
+applications, numerous pen-tests and then maintaining those applications for
+years.
 
 Some of these choices are objectively good ideas, some of them are subjective
 opinions :shrug:. We are delighted when other teams find this template useful as
