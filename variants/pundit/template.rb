@@ -33,7 +33,7 @@ insert_into_file "app/controllers/application_controller.rb", before: /^end/ do
     # records in the database.
     #
     # This means there are security implications to how you inform a user that
-    # they are not authorized.  If this app returns a different error message
+    # they are not authorized. If this app returns a different error message
     # depending on whether the resource exists or not, then a (potentially
     # malicious) user could use the different error messages to discover how
     # many instances of a model exist in the database. Depending on the context,
