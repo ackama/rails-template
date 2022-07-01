@@ -1,7 +1,8 @@
 'use strict';
 
+const defaultConfigFunc = require('shakapacker/package/babel/preset.js');
+
 module.exports = api => {
-  const defaultConfigFunc = require('shakapacker/package/babel/preset.js');
   const resultConfig = defaultConfigFunc(api);
   const isDevelopmentEnv = api.env('development');
   const isProductionEnv = api.env('production');

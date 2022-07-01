@@ -1,3 +1,4 @@
+'use strict';
 
 const { webpackConfig, merge } = require('shakapacker');
 const Dotenv = require('dotenv-webpack');
@@ -5,7 +6,7 @@ const Dotenv = require('dotenv-webpack');
 const customConfig = {
   plugins: [
     new Dotenv()
-  ],  
+  ],
   module: {
     rules: [
       // ...
