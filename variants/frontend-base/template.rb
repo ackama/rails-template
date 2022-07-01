@@ -22,6 +22,10 @@ run "mv app/javascript app/frontend"
 run "mkdir app/frontend/packs"
 run "mv app/frontend/application.js app/frontend/packs/application.js"
 
+copy_file "config/webpack/webpack.config.js", force: true
+
+gsub_file "config/webpacker.yml", "source_entry_path: /", "source_entry_path: packs", force: true
+gsub_file "config/webpacker.yml", "cache_path: tmp/webpacker", "cache_path: tmp/cache/webpacker", force: true
 gsub_file "config/webpacker.yml", "source_path: app/javascript", "source_path: app/frontend", force: true
 
 # Yarn's integrity check command is quite buggy, to the point that yarn v2 removed it
@@ -30,14 +34,6 @@ gsub_file "config/webpacker.yml", "source_path: app/javascript", "source_path: a
 # currently pull in v4, so we just set it to false to be safe
 #
 gsub_file "config/webpacker.yml", "check_yarn_integrity: true", "check_yarn_integrity: false", force: true
-
-# We want webpacker to generate a separate CSS file in all environments because
-#
-# 1. It makes things look more "normal" in browser dev tools
-# 2. We don't have to add 'unsafe-inline' to the CSP header to allow Webpack to
-#    create inline stylesheets
-#
-gsub_file "config/webpacker.yml", "  extract_css: false", "  extract_css: true", force: true
 
 empty_directory_with_keep_file "app/frontend/images"
 copy_file "app/frontend/stylesheets/application.scss"
