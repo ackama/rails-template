@@ -19,6 +19,8 @@ run "rails webpacker:install"
 # Configure app/frontend
 
 run "mv app/javascript app/frontend"
+run "mkdir app/frontend/packs"
+run "mv app/frontend/application.js app/frontend/packs/application.js"
 
 gsub_file "config/webpacker.yml", "source_path: app/javascript", "source_path: app/frontend", force: true
 
