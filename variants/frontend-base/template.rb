@@ -27,6 +27,7 @@ copy_file "config/webpack/webpack.config.js", force: true
 gsub_file "config/webpacker.yml", "source_entry_path: /", "source_entry_path: packs", force: true
 gsub_file "config/webpacker.yml", "cache_path: tmp/webpacker", "cache_path: tmp/cache/webpacker", force: true
 gsub_file "config/webpacker.yml", "source_path: app/javascript", "source_path: app/frontend", force: true
+gsub_file "config/webpacker.yml", "ensure_consistent_versioning: false", "ensure_consistent_versioning: true", force: true
 
 # Yarn's integrity check command is quite buggy, to the point that yarn v2 removed it
 #

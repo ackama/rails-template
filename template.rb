@@ -157,11 +157,15 @@ end
 #
 # @return [Hash]
 def normalize_dependency_constraints(deps)
-  deps.transform_values do |v|
+  new = deps.transform_values do |v|
     v = "^#{v}" unless v.start_with? "^"
     v = "#{v}.0.0" if v.count(".").zero?
     v
   end
+
+  # shakapacker currently wants to be constrained to an exact version in package.json
+  new["shakapacker"] = deps["shakapacker"] if deps.key? "shakapacker"
+  new
 end
 
 def cleanup_package_json
@@ -180,6 +184,9 @@ def cleanup_package_json
   File.write("./package.json", JSON.pretty_generate(package_json))
   run "npx -y sort-package-json"
   run "yarn run prettier --write ./package.json"
+
+  # recompute the hash
+  run "yarn install"
 end
 
 # Adds the given <code>packages</code> as dependencies using <code>yarn add</code>
