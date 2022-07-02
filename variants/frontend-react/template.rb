@@ -12,6 +12,7 @@ yarn_add_dependencies %w[
   babel-plugin-transform-react-remove-prop-types
   react
   react-dom
+  prop-types
 ]
 
 yarn_add_dev_dependencies %w[
