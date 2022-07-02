@@ -63,13 +63,9 @@ gsub_file(
 # var ReactRailsUJS = require('react_ujs');
 # import ReactRailsUJS from 'react_ujs';
 
-# a clean version of this was already added by webpacker:install
 gsub_file "app/views/layouts/application.html.erb",
-          "    <%# JavaScript must be in head for Turbolinks to work. %>\n",
-          ""
-gsub_file "app/views/layouts/application.html.erb",
-          "    <%= javascript_pack_tag \"application\", \"data-turbolinks-track\": \"reload\", defer: true %>\n",
-          ""
+  "    <%= javascript_pack_tag \"application\", \"data-turbolinks-track\": \"reload\", defer: true %>\n",
+  "    <%= javascript_pack_tag \"application\" %>\n"
 
 copy_file "jest.config.js"
 
