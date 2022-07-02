@@ -13,7 +13,7 @@ end
 remove_dir "app/assets/stylesheets"
 remove_dir "app/assets/images"
 
-run "yarn init --yes"
+# this will create a package.json for us
 run "rails webpacker:install"
 
 # Configure app/frontend
