@@ -89,7 +89,7 @@ end
 insert_into_file "config/environments/production.rb",
   after: /.*config.cache_store = :mem_cache_store\n/ do
   <<~'RUBY'
-    if ENV.fetch("RAILS_CACHE_REDIS_URL")
+    if ENV.fetch("RAILS_CACHE_REDIS_URL", nil)
       config.cache_store = :redis_cache_store, {
         url: ENV.fetch("RAILS_CACHE_REDIS_URL"),
         ##
