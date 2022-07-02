@@ -1,19 +1,23 @@
-/* eslint-disable import/order */
+declare module 'shakapacker' {
+  import { Configuration } from 'webpack';
 
-declare module '@rails/webpacker' {
-  import { Configuration, WebpackPluginInstance } from 'webpack';
+  export { merge } from 'webpack-merge';
+  export const webpackConfig: Configuration;
+}
 
-  interface Plugins {
-    prepend(name: string, plugin: WebpackPluginInstance): void;
+declare module 'shakapacker/package/babel/preset.js' {
+  import { ConfigAPI, PluginItem, TransformOptions } from '@babel/core';
+
+  interface RequiredTransformOptions {
+    plugins: PluginItem[];
+    presets: PluginItem[];
   }
 
-  interface Environment {
-    plugins: Plugins;
+  const defaultConfigFunc: (
+    api: ConfigAPI
+  ) => TransformOptions & RequiredTransformOptions;
 
-    toWebpackConfig(): Configuration;
-  }
-
-  export const environment: Environment;
+  export = defaultConfigFunc;
 }
 
 declare module 'react_ujs' {
