@@ -63,13 +63,10 @@ gsub_file(
 # var ReactRailsUJS = require('react_ujs');
 # import ReactRailsUJS from 'react_ujs';
 
-javascript_pack_tag_replacement = <<-ERB
-    <%= javascript_pack_tag "application", "data-turbolinks-track": "reload", defer: true %>
-    <%= javascript_pack_tag "application" %>
-ERB
+# a clean version of this was already added by webpacker:install
 gsub_file "app/views/layouts/application.html.erb",
           "    <%= javascript_pack_tag \"application\", \"data-turbolinks-track\": \"reload\", defer: true %>\n",
-          javascript_pack_tag_replacement
+          ""
 
 copy_file "jest.config.js"
 
