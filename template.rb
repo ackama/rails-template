@@ -168,6 +168,11 @@ def normalize_dependency_constraints(deps)
   new
 end
 
+def build_engines_field
+  node_version = File.read("./.node-version").strip
+  { node: "^#{node_version}" }
+end
+
 def cleanup_package_json
   package_json = JSON.parse(File.read("./package.json"))
 
@@ -175,17 +180,17 @@ def cleanup_package_json
   package_json["name"] = File.basename(__dir__)
 
   # set engines constraint in package.json
-  node_version = File.read("./.node-version").strip
-  package_json["engines"] = { node: "^#{node_version}" }
+  package_json["engines"] = build_engines_field
 
   # ensure that all dependency constraints are normalized
   %w[dependencies devDependencies].each { |k| package_json[k] = normalize_dependency_constraints(package_json[k]) }
 
   File.write("./package.json", JSON.pretty_generate(package_json))
+
   run "npx -y sort-package-json"
   run "yarn run prettier --write ./package.json"
 
-  # recompute the hash
+  # ensure the yarn.lock is up to date with any changes we've made to package.json
   run "yarn install"
 end
 
