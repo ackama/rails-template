@@ -12,7 +12,6 @@ yarn_add_dependencies %w[
   babel-plugin-transform-react-remove-prop-types
   react
   react-dom
-  react-refresh
 ]
 
 yarn_add_dev_dependencies %w[
