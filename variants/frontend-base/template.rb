@@ -16,6 +16,12 @@ remove_dir "app/assets/images"
 # this will create a package.json for us
 run "rails webpacker:install"
 
+# this is added by webpacker:install, but we've already got one (with some extra tags)
+# in our template, so remove theirs otherwise the app will error when rendering this
+gsub_file "app/views/layouts/application.html.erb",
+  "    <%= javascript_pack_tag \"application\" %>\n",
+  ""
+
 # Configure app/frontend
 
 run "mv app/javascript app/frontend"
