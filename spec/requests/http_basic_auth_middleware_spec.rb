@@ -22,7 +22,7 @@ RSpec.describe "HTTP Basic Auth Middleware", type: :request do
       it "rendered page contains both base and application layouts" do
         get root_path, headers: http_basic_auth_header
 
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
       end
     end
 
@@ -31,7 +31,7 @@ RSpec.describe "HTTP Basic Auth Middleware", type: :request do
         get root_path, headers: {}
 
         expect(response.headers["WWW-Authenticate"]).to eq('Basic realm=""')
-        expect(response.status).to eq(401)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end
