@@ -53,7 +53,7 @@ end
 # Allow access to our configuration as a global
 TEMPLATE_CONFIG = Config.new
 
-def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity
   assert_minimum_rails_version
   assert_valid_options
   assert_postgresql
@@ -100,10 +100,13 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
-    apply "variants/frontend-bootstrap/template.rb" if TEMPLATE_CONFIG.apply_variant_bootstrap?
-
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
+
+    if TEMPLATE_CONFIG.apply_variant_bootstrap?
+      apply "variants/frontend-bootstrap/template.rb"
+      apply "variants/frontend-bootstrap-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_typescript?
+    end
 
     if TEMPLATE_CONFIG.apply_variant_react?
       apply "variants/frontend-react/template.rb"
