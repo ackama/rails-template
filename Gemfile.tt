@@ -52,6 +52,7 @@ group :development do
   gem "rubocop-rails", require: false
   gem "rubocop-rspec", require: false
   gem "overcommit", require: false
+  gem "spellr", require: false
 end
 
 group :development, :test do

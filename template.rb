@@ -131,6 +131,10 @@ def apply_template!
     template "rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
 
+    copy_file ".spellr.yml"
+    copy_file ".spellr_wordlists/english.txt"
+    # TODO: add the @app_name to the wordlist then clean it
+
     apply "variants/frontend-audit-app/template.rb"
     apply "variants/frontend-base/js-lint/fixes.rb"
 

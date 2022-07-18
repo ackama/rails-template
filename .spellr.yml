@@ -1,0 +1,11 @@
+excludes:
+  - yarn.lock
+  - .auditapprc.json
+  # add other excluded files in gitignore format
+languages:
+  english:
+    locale: [US, AU]
+  # use language specific dictionaries for additional files
+  # ruby:
+  #   includes:
+  #     - in/gitignore-ish/format

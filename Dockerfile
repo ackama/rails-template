@@ -27,7 +27,7 @@ RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable 
 # We also clean out system files we don't need to reduce image size:
 #   * /usr/share/man - manual pages
 #   * /usr/share/locales - we don't need to support multiple languages at the OS level
-#   * /var/cache/apt/arhives - we don't need to hold onto deb packages once they're installed
+#   * /var/cache/apt/archives - we don't need to hold onto deb packages once they're installed
 RUN apt-get update -qq &&\
     apt-get upgrade -y &&\
     apt-get install -y google-chrome-stable libpq-dev nodejs --no-install-recommends &&\

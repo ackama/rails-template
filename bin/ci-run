@@ -27,6 +27,11 @@ echo "* Running all rspec specs"
 echo "* ******************************************************"
 bundle exec rspec --format=progress
 
+echo "* ******************************************************"
+echo "* Running spellr"
+echo "* ******************************************************"
+bundle exec spellr
+
 # If/when your test suite gets slow, we often run "system" tests in parallel to
 # the other kinds of tests. The exact details of how to do this depends on your
 # CI server.
