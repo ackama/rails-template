@@ -22,7 +22,7 @@ This project follows [Ackama standard branch and environment naming](https://git
 
     TODO: Add columns to the table above if there are resources that are required for that environment e.g. a Redis, ElasticSearch etc.
     TODO: If we need to assume role into their AWS account you should mention that here (don't list the role name - leave that in 1Password)
-    TODO: If there are any unusaual aspects to the deployment of this app you should mention them e.g.
+    TODO: If there are any unusual aspects to the deployment of this app you should mention them e.g.
              * Uses Chef but is controlled by AWS Opsworks
              * Gets
     TODO: The typical log level for production environments are 'info' - if you are not using 'info' then please document why.
