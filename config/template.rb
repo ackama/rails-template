@@ -13,6 +13,7 @@ copy_file "config/initializers/version.rb"
 copy_file "config/initializers/lograge.rb"
 copy_file "config/initializers/content_security_policy.rb", force: true
 copy_file "config/initializers/health_checks.rb"
+copy_file "config/initializers/check_env.rb"
 copy_file "config/initializers/sentry.rb"
 
 gsub_file "config/initializers/filter_parameter_logging.rb", /\[:password\]/ do
