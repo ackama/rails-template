@@ -17,7 +17,6 @@ AllCops:
   Exclude:
     - 'tmp/**/*'
     - 'vendor/**/*'
-    # - Gemfile
     - 'node_modules/**/*'
 
 Style/Documentation:
