@@ -77,7 +77,7 @@ end
 def log(color, message, out = $stdout)
   message.sub!(/^(\S*)/) { HighLine::String.new(Regexp.last_match(1)).public_send(color) } if defined?(HighLine::String)
 
-  if block
+  if block_given?
     out.print("#{message}… ")
     yield
     log(:green, "✔︎")
