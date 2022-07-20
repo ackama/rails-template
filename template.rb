@@ -55,7 +55,7 @@ end
 # Allow access to our configuration as a global
 $config = Config.new
 
-def apply_template!
+def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   assert_minimum_rails_version
   assert_valid_options
   assert_postgresql
@@ -252,10 +252,11 @@ def run_with_clean_bundler_env(cmd)
             else
               run(cmd)
             end
-  unless success
-    puts "Command failed, exiting: #{cmd}"
-    exit(1)
-  end
+
+  return if success
+
+  puts "Command failed, exiting: #{cmd}"
+  exit(1)
 end
 
 def run_rubocop_autocorrections

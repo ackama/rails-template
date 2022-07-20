@@ -41,10 +41,10 @@ end
 Dir.chdir(builds_path) do |cwd|
   puts "Working dir is now #{cwd}"
   cmd = %Q{CONFIG_PATH="#{config_path}" RACK_ENV=development RAILS_ENV=development rails new "#{app_name}" -d postgresql --skip-javascript #{extra_skip_flags} -m "#{template_path}"}
-  puts <<~EOM
+  puts <<~EO_HELP
     Build command:
     #{cmd}
-  EOM
+  EO_HELP
 
   system(cmd, exception: true)
 end
