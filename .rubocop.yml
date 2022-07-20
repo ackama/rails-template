@@ -34,6 +34,9 @@ Metrics/CyclomaticComplexity:
 Metrics/MethodLength:
   Max: 50
 
+Style/GlobalVars:
+  Enabled: false
+
 # This cop complains when you have variables named things like:
 #     address_line_1
 #     address_line_2
