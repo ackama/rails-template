@@ -1,6 +1,6 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-yarn_add_dependencies %w[bootstrap @popperjs/core]
+yarn_add_dependencies %w[bootstrap@5.1.3 @popperjs/core]
 run "yarn install"
 
 copy_file "app/frontend/js/bootstrap.js", force: true
