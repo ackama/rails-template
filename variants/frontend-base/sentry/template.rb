@@ -44,7 +44,7 @@ end
 
 prepend_to_file "app/frontend/packs/application.js" do
   <<~'EO_JS'
-    // The application.js pack is defered by default which means that nothing imported 
+    // The application.js pack is deferred by default which means that nothing imported 
     // in this file will begin executing until after the page has loaded. This helps to 
     // speed up page loading times, especially in apps that have large amounts of js.
     //  
