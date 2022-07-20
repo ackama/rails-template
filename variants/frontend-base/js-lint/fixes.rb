@@ -6,13 +6,13 @@
 # if it needs to modify <code>babel.config.js</code> and we've already modified
 prepend_to_file "babel.config.js", "'use strict';"
 gsub_file "babel.config.js",
-  " = function (api) {",
-  " = api => {"
+          " = function (api) {",
+          " = api => {"
 
 prepend_to_file "postcss.config.js" do
   <<~ESLINTFIX
-  /* eslint-disable node/global-require */
-  'use strict'; \n
+    /* eslint-disable node/global-require */
+    'use strict'; \n
   ESLINTFIX
 end
 

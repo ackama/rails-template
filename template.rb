@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require "fileutils"
 require "shellwords"
 require "pp"
@@ -16,7 +14,7 @@ class Config
 
   def initialize
     config_file_path = File.absolute_path(ENV.fetch("CONFIG_PATH", DEFAULT_CONFIG_FILE_PATH))
-    @yaml_config = YAML.load(File.read(config_file_path))
+    @yaml_config = YAML.safe_load(File.read(config_file_path))
   end
 
   def staging_hostname
@@ -126,7 +124,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     binstubs = %w[
       brakeman bundler bundler-audit rubocop
     ]
-    run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')} --force"
+    run_with_clean_bundler_env "bundle binstubs #{binstubs.join(" ")} --force"
 
     template "rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
@@ -137,16 +135,14 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     # Set engines constraint in package.json
     node_version = File.read("./.node-version").strip
     package_json = JSON.parse(File.read("./package.json"))
-    package_json["engines"]= { node: "^#{node_version}" }
+    package_json["engines"] = { node: "^#{node_version}" }
     File.write("./package.json", JSON.pretty_generate(package_json))
     run "yarn run prettier --write ./package.json"
 
     unless any_local_git_commits?
       git add: "-A ."
       git commit: "-n -m 'Initial commit' -m 'Project generated with options:\n\n#{options.pretty_inspect}'"
-      if git_repo_specified?
-        git remote: "add origin #{git_repo_url.shellescape}"
-      end
+      git remote: "add origin #{git_repo_url.shellescape}" if git_repo_specified?
     end
 
     # we deliberately place this after the initial git commit because it
@@ -174,7 +170,7 @@ end
 # invoked remotely via HTTP, that means the files are not present locally.
 # In that case, use `git clone` to download them to a local temporary dir.
 def add_template_repository_to_source_path
-  if __FILE__ =~ %r{\Ahttps?://}
+  if __FILE__.match?(%r{\Ahttps?://})
     require "tmpdir"
     source_paths.unshift(tempdir = Dir.mktmpdir("rails-template-"))
     at_exit { FileUtils.remove_entry(tempdir) }
@@ -213,17 +209,17 @@ def assert_valid_options
   }
   valid_options.each do |key, expected|
     next unless options.key?(key)
+
     actual = options[key]
-    unless actual == expected
-      fail Rails::Generators::Error, "Unsupported option: #{key}=#{actual}"
-    end
+    fail Rails::Generators::Error, "Unsupported option: #{key}=#{actual}" unless actual == expected
   end
 end
 
 def assert_postgresql
-  return if IO.read("Gemfile") =~ /^\s*gem ['"]pg['"]/
+  return if /^\s*gem ['"]pg['"]/.match?(File.read("Gemfile"))
+
   fail Rails::Generators::Error,
-       "This template requires PostgreSQL, "\
+       "This template requires PostgreSQL, " \
        "but the pg gem isn't present in your Gemfile."
 end
 
@@ -232,9 +228,9 @@ def any_local_git_commits?
 end
 
 def gemfile_requirement(name)
-  @original_gemfile ||= IO.read("Gemfile")
-  req = @original_gemfile[/gem\s+['"]#{name}['"]\s*(, +['"][><~= \t\d\.\w'"]*)?.*$/, 1]
-  req && req.gsub("'", %(")).strip.sub(/^,\s*"/, ', "')
+  @original_gemfile ||= File.read("Gemfile")
+  req = @original_gemfile[/gem\s+['"]#{name}['"]\s*(, +['"][><~= \t\d.\w'"]*)?.*$/, 1]
+  req && req.tr("'", '"').strip.sub(/^,\s*"/, ', "')
 end
 
 def git_repo_specified?
@@ -265,6 +261,7 @@ end
 
 def create_initial_migration
   return if Dir["db/migrate/**/*.rb"].any?
+
   run_with_clean_bundler_env "bin/rails generate migration initial_migration"
   run_with_clean_bundler_env "bin/rake db:migrate"
 end

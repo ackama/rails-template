@@ -6,12 +6,12 @@ yarn_add_dependencies %w[@sentry/browser dotenv-webpack@^6.0.4]
 gsub_file "config/webpack/environment.js",
           "module.exports = environment",
           <<~'EO_JS'
-    const Dotenv = require('dotenv-webpack');
+            const Dotenv = require('dotenv-webpack');
 
-    environment.plugins.prepend('Dotenv', new Dotenv());
+            environment.plugins.prepend('Dotenv', new Dotenv());
 
-    module.exports = environment;
-EO_JS
+            module.exports = environment;
+          EO_JS
 
 prepend_to_file "app/frontend/packs/application.js", "import * as Sentry from '@sentry/browser';"
 

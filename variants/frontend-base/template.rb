@@ -7,7 +7,7 @@ source_paths.unshift(File.dirname(__FILE__))
 remove_file "app/assets/config/manifest.js"
 create_file "app/assets/config/manifest.js" do
   <<~EO_CONTENT
-  // This file must exist for assets pipeline compatibility.
+    // This file must exist for assets pipeline compatibility.
   EO_CONTENT
 end
 remove_dir "app/assets/stylesheets"
@@ -43,7 +43,7 @@ copy_file "app/frontend/stylesheets/_elements.scss"
 prepend_to_file "app/frontend/packs/application.js" do
   <<~EO_CONTENT
 
-  import '../stylesheets/application.scss';
+    import '../stylesheets/application.scss';
   EO_CONTENT
 end
 

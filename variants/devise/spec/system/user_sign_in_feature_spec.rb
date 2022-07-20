@@ -58,7 +58,7 @@ RSpec.describe "User sign-in", type: :system do
         # has the name "remember_user_token"
         response_cookies = Capybara.current_session.driver.request.cookies
         expect(response_cookies.keys.length).to eq(2)
-        expect(response_cookies["remember_user_token"]).not_to eq(nil)
+        expect(response_cookies["remember_user_token"]).not_to be_nil
 
         # We expect the "remember me" cookie to have a 14 day expiry
         remember_me_cookie = response_cookies.fetch("remember_user_token")

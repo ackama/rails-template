@@ -18,7 +18,6 @@ def setup!
   end
 end
 
-
 require "fileutils"
 begin
   require "highline"
@@ -27,23 +26,19 @@ rescue LoadError
 end
 
 def within_project_root(&block)
-  Dir.chdir(File.expand_path("../..", __FILE__), &block)
+  Dir.chdir(File.expand_path("..", __dir__), &block)
 end
 
 def test(opts)
   command, output = opts.first
 
   log(:yellow, "test #{command}") do
-    unless `#{command}`.include?(output)
-      die("#{command} does not include #{output}")
-    end
+    die("#{command} does not include #{output}") unless `#{command}`.include?(output)
   end
 end
 
 def ruby_version
-  @ruby_version ||= begin
-    IO.read(".ruby-version").strip
-  end
+  @ruby_version ||= File.read(".ruby-version").strip
 end
 
 def run(command)
@@ -56,7 +51,8 @@ def run(command)
 end
 
 def with_clean_bundler_env(&block)
-  return block.call unless defined?(Bundler)
+  return yield unless defined?(Bundler)
+
   Bundler.with_original_env(&block)
 end
 
@@ -70,22 +66,18 @@ def copy(example_path)
 end
 
 def test_local_env_contains_required_keys
-  keys = ->(f) { IO.readlines(f).map { |l| l[/^([^#\s][^=\s]*)/, 1] }.compact }
+  keys = ->(f) { File.readlines(f).map { |l| l[/^([^#\s][^=\s]*)/, 1] }.compact }
 
   log(:yellow, "test .env contents") do
     missing = keys["example.env"] - keys[".env"]
-    if missing.any?
-      die("Your .env file is missing #{missing.join(', ')}")
-    end
+    die("Your .env file is missing #{missing.join(", ")}") if missing.any?
   end
 end
 
-def log(color, message, out=$stdout, &block)
-  if defined?(HighLine::String)
-    message.sub!(/^(\S*)/) { HighLine::String.new($1).public_send(color) }
-  end
+def log(color, message, out = $stdout)
+  message.sub!(/^(\S*)/) { HighLine::String.new(Regexp.last_match(1)).public_send(color) } if defined?(HighLine::String)
 
-  if block_given?
+  if block
     out.print("#{message}… ")
     yield
     log(:green, "✔︎")

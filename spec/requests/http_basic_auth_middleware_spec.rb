@@ -10,7 +10,7 @@ RSpec.describe "HTTP Basic Auth Middleware", type: :request do
       }
     end
 
-    around(:each) do |example|
+    around do |example|
       ENV["HTTP_BASIC_AUTH_USERNAME"] = username
       ENV["HTTP_BASIC_AUTH_PASSWORD"] = password
       example.run

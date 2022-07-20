@@ -17,7 +17,6 @@ gsub_file "config/environments/production.rb",
             config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "").downcase == "false"
           RUBY
 
-
 insert_into_file "config/environments/production.rb",
                  after: /# config\.action_mailer\.raise_deliv.*\n/ do
   <<-RUBY
@@ -52,7 +51,7 @@ gsub_file "config/environments/production.rb",
           "ActiveSupport::Logger.new($stdout)"
 
 insert_into_file "config/environments/production.rb",
-  after: /.*config\.public_file_server\.enabled.*\n/ do
+                 after: /.*config\.public_file_server\.enabled.*\n/ do
   <<~'RUBY'
 
     # Ensure that Rails sets appropriate caching headers on static assets if
@@ -87,7 +86,7 @@ insert_into_file "config/environments/production.rb",
 end
 
 insert_into_file "config/environments/production.rb",
-  after: /.*config.cache_store = :mem_cache_store\n/ do
+                 after: /.*config.cache_store = :mem_cache_store\n/ do
   <<~'RUBY'
     if ENV.fetch("RAILS_CACHE_REDIS_URL", nil)
       config.cache_store = :redis_cache_store, {

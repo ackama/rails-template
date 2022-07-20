@@ -28,7 +28,7 @@ fail "Missing config YML file" unless File.exist?(config_path) & File.file?(conf
 puts "Installing latest rails gem"
 system "gem install rails --no-document"
 
-if !Dir.exist?(builds_path)
+unless Dir.exist?(builds_path)
   puts "Creating #{builds_path}"
   FileUtils.mkdir_p(builds_path)
 end
@@ -40,7 +40,7 @@ end
 
 Dir.chdir(builds_path) do |cwd|
   puts "Working dir is now #{cwd}"
-  cmd = %Q{CONFIG_PATH="#{config_path}" RACK_ENV=development RAILS_ENV=development rails new "#{app_name}" -d postgresql --skip-javascript #{extra_skip_flags} -m "#{template_path}"}
+  cmd = %Q(CONFIG_PATH="#{config_path}" RACK_ENV=development RAILS_ENV=development rails new "#{app_name}" -d postgresql --skip-javascript #{extra_skip_flags} -m "#{template_path}")
   puts <<~EO_HELP
     Build command:
     #{cmd}
