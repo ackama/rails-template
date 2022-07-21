@@ -10,16 +10,20 @@
 // `body { color: red; }`.
 
 @import "bootstrap/scss/functions"; // required
+@import "bootstrap/scss/mixins"; // required
 
 // Customize defaults
 // To see a full list of variables that can be set visit https://github.com/twbs/bootstrap/blob/main/scss/_variables.scss
+
 $success: #038500;
 $warning: #fce16e;
 $alert: #ff7070;
+
 @import "bootstrap/scss/variables"; // required, must happen after setting variables
 
-@import "bootstrap/scss/maps"; // required
-@import "bootstrap/scss/mixins"; // required
+// Bring in Bootstrap
+
+// Configuration
 @import "bootstrap/scss/utilities";
 
 // Layout & components
