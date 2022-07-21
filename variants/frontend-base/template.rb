@@ -76,3 +76,6 @@ yarn_add_dependencies %w[
   sass
   sass-loader
 ]
+
+# css-loader (added just above) requires postcss
+copy_file "variants/backend-base/postcss.config.js", "postcss.config.js"

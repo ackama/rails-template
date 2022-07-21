@@ -183,7 +183,7 @@ def cleanup_package_json
   package_json["engines"] = build_engines_field
 
   # ensure that all dependency constraints are normalized
-  %w[dependencies devDependencies].each { |k| package_json[k] = normalize_dependency_constraints(package_json[k]) }
+  # %w[dependencies devDependencies].each { |k| package_json[k] = normalize_dependency_constraints(package_json[k]) }
 
   File.write("./package.json", JSON.pretty_generate(package_json))
 
