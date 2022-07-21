@@ -50,7 +50,7 @@ Rails.application.config.content_security_policy do |policy|
   # ###########################
   #
   # * This example adds the S3 bucket to the `default_src` policy meaning that
-  #   any kind of asset can be loaded from it. You should be more targetted if
+  #   any kind of asset can be loaded from it. You should be more targeted if
   #   you can e.g. if the bucket is only going to serve images then use
   #   `policy.img_src` instead.
   # * IMPORTANT: you can't just uncomment these lines to make this work - you
