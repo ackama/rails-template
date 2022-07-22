@@ -134,12 +134,7 @@ def apply_template!
     apply "variants/frontend-audit-app/template.rb"
     apply "variants/frontend-base/js-lint/fixes.rb"
 
-    # Set engines constraint in package.json
-    node_version = File.read("./.node-version").strip
-    package_json = JSON.parse(File.read("./package.json"))
-    package_json["engines"]= { node: "^#{node_version}" }
-    File.write("./package.json", JSON.pretty_generate(package_json))
-    run "yarn run prettier --write ./package.json"
+    cleanup_package_json
 
     unless any_local_git_commits?
       git add: "-A ."
@@ -153,6 +148,52 @@ def apply_template!
     # contains a lot of changes and adds its own git commit
     apply "variants/devise/template.rb" if $config.apply_variant_devise?
   end
+end
+
+# Normalizes the constraints of the given hash of dependencies so that they
+# all have an explicit constraint and define a minor & patch version
+#
+# @param [Hash] deps
+#
+# @return [Hash]
+def normalize_dependency_constraints(deps)
+  new = deps.transform_values do |v|
+    v = "^#{v}" unless v.start_with? "^"
+    v = "#{v}.0.0" if v.count(".").zero?
+    v
+  end
+
+  # shakapacker currently wants to be constrained to an exact version in package.json
+  new["shakapacker"] = deps["shakapacker"] if deps.key? "shakapacker"
+  # bootstrap needs to be constrained for now due to css variable errors
+  new["bootstrap"] = deps["bootstrap"] if deps.key? "bootstrap"
+  new
+end
+
+def build_engines_field
+  node_version = File.read("./.node-version").strip
+  { node: "^#{node_version}" }
+end
+
+def cleanup_package_json
+  package_json = JSON.parse(File.read("./package.json"))
+
+  # ensure that the package name is set based on the folder
+  package_json["name"] = File.basename(__dir__)
+
+  # set engines constraint in package.json
+  package_json["engines"] = build_engines_field
+
+  # ensure that all dependency constraints are normalized
+  %w[dependencies devDependencies].each { |k| package_json[k] = normalize_dependency_constraints(package_json[k]) }
+
+  File.write("./package.json", JSON.pretty_generate(package_json))
+
+  run "npx -y sort-package-json"
+  run "yarn run prettier --write ./package.json"
+
+  # ensure the yarn.lock is up to date with any changes we've made to package.json
+  run "yarn install"
 end
 
 # Adds the given <code>packages</code> as dependencies using <code>yarn add</code>
@@ -223,7 +264,7 @@ end
 def assert_postgresql
   return if IO.read("Gemfile") =~ /^\s*gem ['"]pg['"]/
   fail Rails::Generators::Error,
-       "This template requires PostgreSQL, "\
+    "This template requires PostgreSQL, "\
        "but the pg gem isn't present in your Gemfile."
 end
 
