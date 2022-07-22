@@ -6,9 +6,9 @@ require_relative "./production"
 Rails.application.configure do
 
   config.action_mailer.default_url_options = {
-    :host => "<%= $config.staging_hostname %>",
+    :host => "<%= TEMPLATE_CONFIG.staging_hostname %>",
     :protocol => "https"
   }
-  config.action_mailer.asset_host = "https://<%= $config.staging_hostname %>"
-  config.action_mailer.smtp_settings[:domain] = "<%= $config.staging_hostname %>"
+  config.action_mailer.asset_host = "https://<%= TEMPLATE_CONFIG.staging_hostname %>"
+  config.action_mailer.smtp_settings[:domain] = "<%= TEMPLATE_CONFIG.staging_hostname %>"
 end

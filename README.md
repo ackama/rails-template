@@ -103,9 +103,9 @@ Where possible we stick to Rails defaults.
       `spec/features/accessibility`.
 - Front-end
   - Rename `app/javascript` to `app/frontend`
-  - Setup Webpacker.
+  - Setup Shakapacker (the maintained fork of Webpacker).
   - > **Note** We are trialing the new JS packaging options that Rails 7+
-    > provides. For now our default is still Webpacker because it provides us
+    > provides. For now our default is still Shakapacker because it provides us
     > the most flexibility.
   - Initializes Ackama's linting and code formatting settings, see
     [Code linting and formatting](#code-linting-and-formatting)
@@ -272,6 +272,13 @@ $ CONFIG_PATH="ci/configs/react.yml" APP_NAME="enterprise" ./ci/bin/build-and-te
 # it's working dir, hence the `../` at the start.
 #
 $ rm -rf mydemoapp && CONFIG_PATH="../ci/configs/react.yml" rails new mydemoapp -d postgresql --skip-javascript -m ./template.rb
+```
+
+Rubocop is configured for this repo and is run as part of CI. Run rubocop locally via the usual method:
+
+```
+$ bundle install
+$ bundle exec rubocop # optionally adding -A for autofixes
 ```
 
 ## Credits

@@ -7,7 +7,7 @@ RSpec.describe "Content-Security-Policy HTTP Header", type: :request do
     end
 
     it "returns a Content-Security-Policy header as part of the response" do
-      expect(response.headers["Content-Security-Policy"]).not_to eq(nil)
+      expect(response.headers["Content-Security-Policy"]).not_to be_nil
     end
   end
 end

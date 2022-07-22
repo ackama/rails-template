@@ -36,20 +36,20 @@ File.write("./package.json", JSON.generate(package_json))
 append_to_file "bin/ci-run" do
   <<~ESLINT
 
-  echo "* ******************************************************"
-  echo "* Running JS linting"
-  echo "* ******************************************************"
-  yarn run js-lint
+    echo "* ******************************************************"
+    echo "* Running JS linting"
+    echo "* ******************************************************"
+    yarn run js-lint
   ESLINT
 end
 
 append_to_file "bin/ci-run" do
   <<~PRETTIER
 
-  echo "* ******************************************************"
-  echo "* Running JS linting"
-  echo "* ******************************************************"
-  yarn run format-check
+    echo "* ******************************************************"
+    echo "* Running JS linting"
+    echo "* ******************************************************"
+    yarn run format-check
   PRETTIER
 end
 
@@ -66,9 +66,9 @@ template ".stylelintignore.tt"
 append_to_file "bin/ci-run" do
   <<~SASSLINT
 
-  echo "* ******************************************************"
-  echo "* Running SCSS linting"
-  echo "* ******************************************************"
-  yarn run scss-lint
+    echo "* ******************************************************"
+    echo "* Running SCSS linting"
+    echo "* ******************************************************"
+    yarn run scss-lint
   SASSLINT
 end

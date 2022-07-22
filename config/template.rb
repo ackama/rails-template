@@ -6,7 +6,6 @@ remove_file "config/spring.rb"
 copy_file "config/puma.rb", force: true
 remove_file "config/secrets.yml"
 
-
 copy_file "config/initializers/generators.rb"
 copy_file "config/initializers/rotate_log.rb"
 copy_file "config/initializers/version.rb"
@@ -57,21 +56,23 @@ route <<-EO_ROUTES
   root "home#index"
 EO_ROUTES
 
-gsub_file "config/storage.yml", /#   service: S3/ do
-  <<~YAML
-    #   service: S3
-    #   upload:
-    #     # TEAM DECISION REQUIRED: The correct caching duration for files
-    #     # stored by Active Storage is project dependent so you should discuss
-    #     # this with you team if you don't feel able to make the decision solo.
-    #     #
-    #     # These options are are not well documented in ActiveStorage. They
-    #     # are passed directly to the S3 SDK. Details:
-    #     # https://github.com/rails/rails/blob/master/activestorage/lib/active_storage/service/s3_service.rb
-    #     #
-    #     # * private: the browser should cache but intermediate proxies (e.g. CDNs) should not
-    #     # * max-age: the number of seconds to cache the file for
-    #     #
-    #     cache_control: 'private, max-age=<%= 365.days.seconds %>'
-  YAML
-end if File.exist? "config/storage.yml"
+if File.exist? "config/storage.yml"
+  gsub_file "config/storage.yml", /#   service: S3/ do
+    <<~YAML
+      #   service: S3
+      #   upload:
+      #     # TEAM DECISION REQUIRED: The correct caching duration for files
+      #     # stored by Active Storage is project dependent so you should discuss
+      #     # this with you team if you don't feel able to make the decision solo.
+      #     #
+      #     # These options are are not well documented in ActiveStorage. They
+      #     # are passed directly to the S3 SDK. Details:
+      #     # https://github.com/rails/rails/blob/master/activestorage/lib/active_storage/service/s3_service.rb
+      #     #
+      #     # * private: the browser should cache but intermediate proxies (e.g. CDNs) should not
+      #     # * max-age: the number of seconds to cache the file for
+      #     #
+      #     cache_control: 'private, max-age=<%= 365.days.seconds %>'
+    YAML
+  end
+end

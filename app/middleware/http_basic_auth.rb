@@ -16,10 +16,10 @@ class HttpBasicAuth
   end
 
   def username
-    ENV["HTTP_BASIC_AUTH_USERNAME"]
+    ENV.fetch("HTTP_BASIC_AUTH_USERNAME", nil)
   end
 
   def password
-    ENV["HTTP_BASIC_AUTH_PASSWORD"]
+    ENV.fetch("HTTP_BASIC_AUTH_PASSWORD", nil)
   end
 end

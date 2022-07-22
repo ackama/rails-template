@@ -1,12 +1,12 @@
 # okcomputer is used for health checks
 # https://github.com/sportngin/okcomputer/
 
-username = ENV["HEALTHCHECK_HTTP_BASIC_AUTH_USERNAME"] || ENV["HTTP_BASIC_AUTH_USERNAME"]
-password = ENV["HEALTHCHECK_HTTP_BASIC_AUTH_PASSWORD"] || ENV["HTTP_BASIC_AUTH_PASSWORD"]
+username = ENV.fetch("HEALTHCHECK_HTTP_BASIC_AUTH_USERNAME") { ENV.fetch("HTTP_BASIC_AUTH_USERNAME", nil) }
+password = ENV.fetch("HEALTHCHECK_HTTP_BASIC_AUTH_PASSWORD") { ENV.fetch("HTTP_BASIC_AUTH_PASSWORD", nil) }
 OkComputer.require_authentication(username, password) if username && password
 
 # Sets the app version from known Heroku environment variables
-ENV["SHA"] ||= ENV["HEROKU_SLUG_COMMIT"]
+ENV["SHA"] ||= ENV.fetch("HEROKU_SLUG_COMMIT", nil)
 
 # Checks the deployed commit. This is discovered from:
 # A 'REVISION' file that is created during a Capistrano deploy

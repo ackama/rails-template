@@ -4,9 +4,9 @@ gsub_file "config/application.rb",
 
 insert_into_file "config/application.rb", after: /^require_relative ['"]boot['"]/ do
   # the empty line at the beginning of this string is required
-  <<-'RUBY'
+  <<~'RUBY'
 
-require_relative '../app/middleware/http_basic_auth'
+    require_relative '../app/middleware/http_basic_auth'
   RUBY
 end
 

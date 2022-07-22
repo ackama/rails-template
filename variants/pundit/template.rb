@@ -75,7 +75,7 @@ insert_into_file "spec/rails_helper.rb", after: %r{require "axe/rspec"\n} do
   REQUIRE
 end
 
-insert_into_file "app/controllers/home_controller.rb", after: %r{def index\n} do
+insert_into_file "app/controllers/home_controller.rb", after: /def index\n/ do
   <<-RUBY
     # tell pundit that we are ok with not having authorization on this endpoint
     skip_policy_scope

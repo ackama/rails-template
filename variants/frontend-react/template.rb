@@ -53,7 +53,7 @@ gsub_file(
 )
 
 prepend_to_file "app/frontend/packs/application.js",
-                 "import ReactRailsUJS from 'react_ujs';\n"
+                "import ReactRailsUJS from 'react_ujs';\n"
 
 gsub_file(
   "app/frontend/packs/server_rendering.js",
@@ -65,8 +65,8 @@ gsub_file(
 # import ReactRailsUJS from 'react_ujs';
 
 gsub_file "app/views/layouts/application.html.erb",
-  "    <%= javascript_pack_tag \"application\", \"data-turbolinks-track\": \"reload\", defer: true %>\n",
-  "    <%= javascript_pack_tag \"application\" %>\n"
+          "    <%= javascript_pack_tag \"application\", \"data-turbolinks-track\": \"reload\", defer: true %>\n",
+          "    <%= javascript_pack_tag \"application\" %>\n"
 
 copy_file "jest.config.js"
 

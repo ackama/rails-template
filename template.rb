@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require "fileutils"
 require "shellwords"
 require "pp"
@@ -16,7 +14,7 @@ class Config
 
   def initialize
     config_file_path = File.absolute_path(ENV.fetch("CONFIG_PATH", DEFAULT_CONFIG_FILE_PATH))
-    @yaml_config = YAML.load(File.read(config_file_path))
+    @yaml_config = YAML.safe_load(File.read(config_file_path))
   end
 
   def staging_hostname
@@ -53,9 +51,9 @@ class Config
 end
 
 # Allow access to our configuration as a global
-$config = Config.new
+TEMPLATE_CONFIG = Config.new
 
-def apply_template!
+def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   assert_minimum_rails_version
   assert_valid_options
   assert_postgresql
@@ -102,14 +100,14 @@ def apply_template!
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
-    apply "variants/frontend-bootstrap/template.rb" if $config.apply_variant_bootstrap?
+    apply "variants/frontend-bootstrap/template.rb" if TEMPLATE_CONFIG.apply_variant_bootstrap?
 
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
 
-    if $config.apply_variant_react?
+    if TEMPLATE_CONFIG.apply_variant_react?
       apply "variants/frontend-react/template.rb"
-      apply "variants/frontend-typescript/template.rb" if $config.apply_variant_typescript?
+      apply "variants/frontend-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_typescript?
     end
 
     create_initial_migration
@@ -121,12 +119,12 @@ def apply_template!
     apply "variants/performance/template.rb"
     apply "variants/bullet/template.rb"
     apply "variants/pundit/template.rb"
-    apply "variants/sidekiq/template.rb" if $config.apply_variant_sidekiq?
+    apply "variants/sidekiq/template.rb" if TEMPLATE_CONFIG.apply_variant_sidekiq?
 
     binstubs = %w[
       brakeman bundler bundler-audit rubocop
     ]
-    run_with_clean_bundler_env "bundle binstubs #{binstubs.join(' ')} --force"
+    run_with_clean_bundler_env "bundle binstubs #{binstubs.join(" ")} --force"
 
     template "rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
@@ -139,14 +137,12 @@ def apply_template!
     unless any_local_git_commits?
       git add: "-A ."
       git commit: "-n -m 'Initial commit' -m 'Project generated with options:\n\n#{options.pretty_inspect}'"
-      if git_repo_specified?
-        git remote: "add origin #{git_repo_url.shellescape}"
-      end
+      git remote: "add origin #{git_repo_url.shellescape}" if git_repo_specified?
     end
 
     # we deliberately place this after the initial git commit because it
     # contains a lot of changes and adds its own git commit
-    apply "variants/devise/template.rb" if $config.apply_variant_devise?
+    apply "variants/devise/template.rb" if TEMPLATE_CONFIG.apply_variant_devise?
   end
 end
 
@@ -215,7 +211,7 @@ end
 # invoked remotely via HTTP, that means the files are not present locally.
 # In that case, use `git clone` to download them to a local temporary dir.
 def add_template_repository_to_source_path
-  if __FILE__ =~ %r{\Ahttps?://}
+  if __FILE__.match?(%r{\Ahttps?://})
     require "tmpdir"
     source_paths.unshift(tempdir = Dir.mktmpdir("rails-template-"))
     at_exit { FileUtils.remove_entry(tempdir) }
@@ -254,17 +250,17 @@ def assert_valid_options
   }
   valid_options.each do |key, expected|
     next unless options.key?(key)
+
     actual = options[key]
-    unless actual == expected
-      fail Rails::Generators::Error, "Unsupported option: #{key}=#{actual}"
-    end
+    fail Rails::Generators::Error, "Unsupported option: #{key}=#{actual}" unless actual == expected
   end
 end
 
 def assert_postgresql
-  return if IO.read("Gemfile") =~ /^\s*gem ['"]pg['"]/
+  return if /^\s*gem ['"]pg['"]/.match?(File.read("Gemfile"))
+
   fail Rails::Generators::Error,
-    "This template requires PostgreSQL, "\
+       "This template requires PostgreSQL, " \
        "but the pg gem isn't present in your Gemfile."
 end
 
@@ -273,13 +269,13 @@ def any_local_git_commits?
 end
 
 def gemfile_requirement(name)
-  @original_gemfile ||= IO.read("Gemfile")
-  req = @original_gemfile[/gem\s+['"]#{name}['"]\s*(, +['"][><~= \t\d\.\w'"]*)?.*$/, 1]
-  req && req.gsub("'", %(")).strip.sub(/^,\s*"/, ', "')
+  @original_gemfile ||= File.read("Gemfile")
+  req = @original_gemfile[/gem\s+['"]#{name}['"]\s*(, +['"][><~= \t\d.\w'"]*)?.*$/, 1]
+  req && req.tr("'", '"').strip.sub(/^,\s*"/, ', "')
 end
 
 def git_repo_specified?
-  $config.git_repo_url != "skip" && !$config.git_repo_url.strip.empty?
+  TEMPLATE_CONFIG.git_repo_url != "skip" && !TEMPLATE_CONFIG.git_repo_url.strip.empty?
 end
 
 def preexisting_git_repo?
@@ -293,10 +289,11 @@ def run_with_clean_bundler_env(cmd)
             else
               run(cmd)
             end
-  unless success
-    puts "Command failed, exiting: #{cmd}"
-    exit(1)
-  end
+
+  return if success
+
+  puts "Command failed, exiting: #{cmd}"
+  exit(1)
 end
 
 def run_rubocop_autocorrections
@@ -305,6 +302,7 @@ end
 
 def create_initial_migration
   return if Dir["db/migrate/**/*.rb"].any?
+
   run_with_clean_bundler_env "bin/rails generate migration initial_migration"
   run_with_clean_bundler_env "bin/rake db:migrate"
 end
