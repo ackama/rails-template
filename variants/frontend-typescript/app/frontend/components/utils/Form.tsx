@@ -1,6 +1,7 @@
 import React from 'react';
 
 interface Props {
+  children?: React.ReactNode;
   submitText?: string;
 
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
