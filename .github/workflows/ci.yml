@@ -23,8 +23,8 @@ jobs:
           - name: react
             config_path: "ci/configs/react.yml"
             skips: --skip-javascript
-          - name: typescript
-            config_path: "ci/configs/typescript.yml"
+          - name: react-typescript
+            config_path: "ci/configs/react-typescript.yml"
             skips: --skip-javascript
           - name: sidekiq
             config_path: "ci/configs/sidekiq.yml"
