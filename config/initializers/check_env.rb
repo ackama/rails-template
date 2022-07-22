@@ -4,5 +4,5 @@
 
 if Rails.env.production? && Rails.root.join("example.env").read.include?(ENV.fetch("RAILS_SECRET_KEY_BASE"))
   fail "RAILS_SECRET_KEY_BASE is unchanged from example.env. " \
-       "Generate a new one with `bundle exec rails secret"
+       "Generate a new one with `bundle exec rails secret`"
 end

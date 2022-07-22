@@ -24,10 +24,10 @@ insert_into_file "config/environments/production.rb",
   # Production email config
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = {
-    host: "#{$config.production_hostname}",
+    host: "#{TEMPLATE_CONFIG.production_hostname}",
     protocol: "https"
   }
-  config.action_mailer.asset_host = "https://#{$config.production_hostname}"
+  config.action_mailer.asset_host = "https://#{TEMPLATE_CONFIG.production_hostname}"
 
   config.action_mailer.smtp_settings = {
     address: ENV.fetch("SMTP_HOSTNAME"),
@@ -36,7 +36,7 @@ insert_into_file "config/environments/production.rb",
     user_name: ENV.fetch("SMTP_USERNAME"),
     password: ENV.fetch("SMTP_PASSWORD"),
     authentication: "login",
-    domain: "#{$config.production_hostname}"
+    domain: "#{TEMPLATE_CONFIG.production_hostname}"
   }
 
   RUBY

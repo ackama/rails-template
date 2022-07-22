@@ -1,6 +1,6 @@
 insert_into_file "Gemfile", after: /^group :development, :test do\n/ do
-  <<-GEMS
-  gem "bullet"
+  <<~GEMS
+    gem "bullet"
   GEMS
 end
 

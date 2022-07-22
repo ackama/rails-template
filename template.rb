@@ -51,7 +51,7 @@ class Config
 end
 
 # Allow access to our configuration as a global
-$config = Config.new
+TEMPLATE_CONFIG = Config.new
 
 def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   assert_minimum_rails_version
@@ -100,14 +100,14 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
-    apply "variants/frontend-bootstrap/template.rb" if $config.apply_variant_bootstrap?
+    apply "variants/frontend-bootstrap/template.rb" if TEMPLATE_CONFIG.apply_variant_bootstrap?
 
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
 
-    if $config.apply_variant_react?
+    if TEMPLATE_CONFIG.apply_variant_react?
       apply "variants/frontend-react/template.rb"
-      apply "variants/frontend-typescript/template.rb" if $config.apply_variant_typescript?
+      apply "variants/frontend-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_typescript?
     end
 
     create_initial_migration
@@ -119,7 +119,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     apply "variants/performance/template.rb"
     apply "variants/bullet/template.rb"
     apply "variants/pundit/template.rb"
-    apply "variants/sidekiq/template.rb" if $config.apply_variant_sidekiq?
+    apply "variants/sidekiq/template.rb" if TEMPLATE_CONFIG.apply_variant_sidekiq?
 
     binstubs = %w[
       brakeman bundler bundler-audit rubocop
@@ -147,7 +147,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
     # we deliberately place this after the initial git commit because it
     # contains a lot of changes and adds its own git commit
-    apply "variants/devise/template.rb" if $config.apply_variant_devise?
+    apply "variants/devise/template.rb" if TEMPLATE_CONFIG.apply_variant_devise?
   end
 end
 
@@ -234,7 +234,7 @@ def gemfile_requirement(name)
 end
 
 def git_repo_specified?
-  $config.git_repo_url != "skip" && !$config.git_repo_url.strip.empty?
+  TEMPLATE_CONFIG.git_repo_url != "skip" && !TEMPLATE_CONFIG.git_repo_url.strip.empty?
 end
 
 def preexisting_git_repo?

@@ -1,3 +1,6 @@
+# This configures Rubocop for this template repo - see
+# [rubocop.yml.tt](./rubocop.yml.tt) if you want to change the Rubocop
+# configuration which is copied into generated applications.
 ---
 require:
   - rubocop-performance
@@ -11,6 +14,8 @@ Rails:
   Enabled: true
 
 AllCops:
+  # Target the oldest version of Ruby that Rails 7 supports
+  TargetRubyVersion: 2.7
   NewCops: enable
   DisplayCopNames: true
   DisplayStyleGuide: true
@@ -33,9 +38,6 @@ Metrics/CyclomaticComplexity:
 
 Metrics/MethodLength:
   Max: 50
-
-Style/GlobalVars:
-  Enabled: false
 
 # This cop complains when you have variables named things like:
 #     address_line_1
