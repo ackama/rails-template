@@ -1,7 +1,6 @@
 # Javascript code linting and formatting
 # ######################################
 
-run "rm .browserslistrc"
 yarn_add_dev_dependencies %w[
   eslint
   eslint-config-ackama
