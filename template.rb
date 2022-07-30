@@ -161,8 +161,6 @@ def normalize_dependency_constraints(deps)
 
   # shakapacker currently wants to be constrained to an exact version in package.json
   new["shakapacker"] = deps["shakapacker"] if deps.key? "shakapacker"
-  # bootstrap needs to be constrained for now due to css variable errors
-  new["bootstrap"] = deps["bootstrap"] if deps.key? "bootstrap"
   new
 end
 
