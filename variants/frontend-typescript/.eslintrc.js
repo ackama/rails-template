@@ -26,6 +26,19 @@ const config = {
         '@typescript-eslint/no-require-imports': 'off',
         '@typescript-eslint/no-var-requires': 'off'
       }
+    },
+    {
+      files: ['app/frontend/test/**'],
+      extends: [
+        'ackama/jest',
+        'plugin:jest-dom/recommended',
+        'plugin:testing-library/dom',
+        'plugin:testing-library/react'
+      ],
+      plugins: ['testing-library', 'jest-dom'],
+      rules: {
+        'jest/prefer-expect-assertions': 'off'
+      }
     }
   ],
   rules: {}
