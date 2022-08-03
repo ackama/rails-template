@@ -73,6 +73,6 @@ yarn_add_dependencies %w[
   css-loader
   css-minimizer-webpack-plugin
   mini-css-extract-plugin
-  sass
+  sass-embedded
   sass-loader
 ]
