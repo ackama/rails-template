@@ -52,19 +52,33 @@ prepend_to_file "app/frontend/packs/application.js" do
   EO_CONTENT
 end
 
+images_disabled_chunk = <<~EO_IMAGES_DISABLED
+  // const images = require.context('./images', true)
+  // const imagePath = (name) => images(name, true)
+EO_IMAGES_DISABLED
+
+images_enabled_chunk = <<~EO_ENABLE_IMAGES
+  const images = require.context('../images', true);
+  // eslint-disable-next-line no-unused-vars
+  const imagePath = name => images(name, true);
+EO_ENABLE_IMAGES
+
+gsub_file "app/frontend/packs/application.js", images_disabled_chunk, images_enabled_chunk, force: true
+
 # Configure app/views
 gsub_file "app/views/layouts/application.html.erb",
           "<%= stylesheet_link_tag(",
           "<%= stylesheet_pack_tag(",
           force: true
 
+copy_file "app/frontend/images/example.png"
 body_open_tag_with_img_example = <<~EO_IMG_EXAMPLE
   <body>
       <%
         # An example of how to load an image via Webpacker. This image is in
         # app/frontend/images/example.png
       %>
-      <%# image_pack_tag "example.png", alt: "Example Image" %>
+      <%= image_pack_tag "example.png", alt: "Example Image" %>
 EO_IMG_EXAMPLE
 gsub_file "app/views/layouts/application.html.erb", "<body>", body_open_tag_with_img_example, force: true
 
