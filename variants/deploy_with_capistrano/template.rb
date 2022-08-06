@@ -17,10 +17,7 @@ append_to_file("Gemfile") do
     gem "capistrano-bundler", require: false
     gem "capistrano-rails", require: false
     gem "capistrano-rbenv", require: false
-
-    # these are quite specific to how Ackama deploys on EC2
     gem "capistrano-rake", require: false
-    gem "capistrano-locally", require: false
 
     # Capistrano fails when run from Github Action CI unless these gems are
     # present in the bundle. See https://github.com/net-ssh/net-ssh/issues/565
@@ -43,14 +40,12 @@ insert_into_file "Capfile", after: /install_plugin Capistrano::SCM::Git/ do
     #   https://github.com/capistrano/bundler
     #   https://github.com/capistrano/rails
     #   https://github.com/sheharyarn/capistrano-rake
-    #   https://github.com/komazarari/capistrano-locally
     #
     require "capistrano/rbenv"
     require "capistrano/bundler"
     require "capistrano/rails/assets"
     require "capistrano/rails/migrations"
     require "capistrano/rake"
-    require "capistrano/locally"
   EO_RUBY
 end
 
