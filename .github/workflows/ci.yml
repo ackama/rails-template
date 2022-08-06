@@ -41,6 +41,9 @@ jobs:
           - name: capistrano
             config_path: "ci/configs/deploy_with_capistrano.yml"
             skips: --skip-javascript
+          - name: ackama_ec2_capistrano
+            config_path: "ci/configs/deploy_with_ackama_ec2_capistrano.yml"
+            skips: --skip-javascript
     services:
       db:
         image: postgres
