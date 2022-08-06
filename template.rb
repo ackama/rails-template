@@ -48,12 +48,16 @@ class Config
   def apply_variant_bootstrap?
     @yaml_config.fetch("apply_variant_bootstrap")
   end
+
+  def apply_variant_deploy_with_capistrano?
+    @yaml_config.fetch("apply_variant_deploy_with_capistrano")
+  end
 end
 
 # Allow access to our configuration as a global
 TEMPLATE_CONFIG = Config.new
 
-def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity
   assert_minimum_rails_version
   assert_valid_options
   assert_postgresql
@@ -120,6 +124,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     apply "variants/bullet/template.rb"
     apply "variants/pundit/template.rb"
     apply "variants/sidekiq/template.rb" if TEMPLATE_CONFIG.apply_variant_sidekiq?
+    apply "variants/deploy_with_capistrano/template.rb" if TEMPLATE_CONFIG.apply_variant_deploy_with_capistrano?
 
     binstubs = %w[
       brakeman bundler bundler-audit rubocop

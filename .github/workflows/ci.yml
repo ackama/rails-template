@@ -38,6 +38,9 @@ jobs:
           - name: bootstrap
             config_path: "ci/configs/bootstrap.yml"
             skips: --skip-javascript
+          - name: capistrano
+            config_path: "ci/configs/deploy_with_capistrano.yml"
+            skips: --skip-javascript
     services:
       db:
         image: postgres
