@@ -28,6 +28,9 @@ append_to_file("Gemfile") do
   EO_RUBY
 end
 
+run "bundle install"
+run "bundle exec cap install"
+
 old_generated_cap_config_snippet = <<~EO_RUBY
   set :application, "my_app_name"
   set :repo_url, "git@example.com:me/my_repo.git"
