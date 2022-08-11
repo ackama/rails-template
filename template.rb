@@ -134,6 +134,11 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
     cleanup_package_json
 
+    # add the Linux x86-64 platform to the lock file. Gems with native
+    # extensions will not install on Linux will not install without this.
+    # See https://bundler.io/man/bundle-lock.1.html
+    run_with_clean_bundler_env "bundle lock --add-platform x86_64-linux"
+
     unless any_local_git_commits?
       git add: "-A ."
       git commit: "-n -m 'Initial commit' -m 'Project generated with options:\n\n#{options.pretty_inspect}'"

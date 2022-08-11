@@ -12,9 +12,9 @@ gsub_file "config/environments/production.rb",
           "# config.force_ssl = true",
           <<~RUBY
             ##
-            # `force_ssl` defaults to on. Turn off `force_ssl` if (and only if) RAILS_FORCE_SSL=false.
+            # `force_ssl` defaults to on. Set `force_ssl` to false if (and only if) RAILS_FORCE_SSL=false, otherwise set it to true.
             #
-            config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "").downcase == "false"
+            config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "true").downcase != "false"
           RUBY
 
 insert_into_file "config/environments/production.rb",
