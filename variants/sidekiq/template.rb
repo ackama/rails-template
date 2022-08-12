@@ -49,3 +49,17 @@ route <<~ROUTE
     require "sidekiq/web"
   end
 ROUTE
+
+original_health_check_chunk = <<~EO_OLD
+  # OkComputer::Registry.register "redis", OkComputer::RedisCheck.new({})
+  # OkComputer::Registry.register "sidekiq_default", OkComputer::SidekiqLatencyCheck.new(:default)
+  # OkComputer::Registry.register "sidekiq_mailers", OkComputer::SidekiqLatencyCheck.new(:mailers)
+EO_OLD
+
+new_health_checks_chunk = <<~EO_NEW
+  OkComputer::Registry.register "redis", OkComputer::RedisCheck.new({})
+  OkComputer::Registry.register "sidekiq_default", OkComputer::SidekiqLatencyCheck.new(:default)
+  OkComputer::Registry.register "sidekiq_mailers", OkComputer::SidekiqLatencyCheck.new(:mailers)
+EO_NEW
+
+gsub_file("config/initializers/health_checks.rb", original_health_check_chunk, new_health_checks_chunk, force: true)
