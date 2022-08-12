@@ -1,10 +1,11 @@
 apply "config/application.rb"
-template "config/database.example.yml.tt"
+
+template "config/database.yml.tt", force: true
+
 template "config/secrets.example.yml"
-remove_file "config/database.yml"
-remove_file "config/spring.rb"
-copy_file "config/puma.rb", force: true
 remove_file "config/secrets.yml"
+
+copy_file "config/puma.rb", force: true
 
 copy_file "config/initializers/generators.rb"
 copy_file "config/initializers/rotate_log.rb"
