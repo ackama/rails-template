@@ -36,6 +36,9 @@ gsub_file devise_migration_path,
 gsub_file devise_migration_path,
           "      # add_index :users, :unlock_token",
           "      add_index :users, :unlock_token"
+gsub_file devise_migration_path,
+          /  # add_index :users, :unlock_token.+/,
+          "  add_index :users, :unlock_token, unique: true"
 
 print_header "Running db migration"
 run "bundle exec rails db:migrate"
@@ -67,6 +70,28 @@ gsub_file "config/initializers/devise.rb",
 gsub_file "config/initializers/devise.rb",
           /  # config.secret_key = '.+'/,
           "  # config.secret_key = 'do_not_put_secrets_in_source_control_please'"
+
+gsub_file "config/initializers/devise.rb",
+          /  # config.lock_strategy = .+/,
+          "  config.lock_strategy = :failed_attempts"
+
+gsub_file "config/initializers/devise.rb",
+          /  # config.unlock_strategy = .+/,
+          "  config.lock_strategy = :email"
+
+gsub_file "config/initializers/devise.rb",
+          /  # config.maximum_attempts = .+/,
+          <<-EO_CHUNK
+  #
+  # https://www.nzism.gcsb.govt.nz/ism-document/#1887 recommends 3 as a default. FYI to
+  # be fully compliant with https://www.nzism.gcsb.govt.nz/ism-document/#1887 then only
+  # Administrators should be able to unlock.
+  config.maximum_attempts = 3
+          EO_CHUNK
+
+gsub_file "config/initializers/devise.rb",
+          /  # config.last_attempt_warning = .+/,
+          "  config.last_attempt_warning = true"
 
 ##
 # Add a block to config/routes.rb demonstrating how to create authenticated
