@@ -17,7 +17,7 @@ SimpleCov.use_merging false
 
 SimpleCov.start do
   enable_coverage :branch
-  
+
   add_filter "/bin/"
   add_filter "/lib/tasks/auto_annotate_models.rake"
   add_filter "/lib/tasks/coverage.rake"
