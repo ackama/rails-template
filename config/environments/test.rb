@@ -13,6 +13,6 @@ insert_into_file \
   config.action_mailer.asset_host = "http://localhost:3000"
   
   # Raise an error if we try and look up a missing translation
-  config.action_view.raise_on_missing_translations = true
+  config.i18n.raise_on_missing_translations = true
   RUBY
 end
