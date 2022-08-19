@@ -107,7 +107,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 
     if TEMPLATE_CONFIG.apply_variant_react?
       apply "variants/frontend-react/template.rb"
-      apply "variants/frontend-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_typescript?
+      apply "variants/frontend-react-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_typescript?
     end
 
     create_initial_migration
