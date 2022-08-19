@@ -158,15 +158,11 @@ end
 #
 # @return [Hash]
 def normalize_dependency_constraints(deps)
-  new = deps.transform_values do |v|
+  deps.transform_values do |v|
     v = "^#{v}" unless v.start_with? "^"
     v = "#{v}.0.0" if v.count(".").zero?
     v
   end
-
-  # shakapacker currently wants to be constrained to an exact version in package.json
-  new["shakapacker"] = deps["shakapacker"] if deps.key? "shakapacker"
-  new
 end
 
 def build_engines_field
