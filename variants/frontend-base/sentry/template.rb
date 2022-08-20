@@ -1,7 +1,7 @@
 # Setup Sentry
 # ############
 
-yarn_add_dependencies %w[@sentry/browser dotenv-webpack@^6.0.4]
+yarn_add_dependencies %w[@sentry/browser dotenv-webpack]
 
 prepend_to_file "app/frontend/packs/application.js", "import * as Sentry from '@sentry/browser';"
 

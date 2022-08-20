@@ -7,7 +7,7 @@ types_packages = %w[
   rails__activestorage
   rails__ujs
   turbolinks
-  dotenv-webpack@^6.0.0
+  dotenv-webpack
   webpack-env
   eslint
   babel__core
