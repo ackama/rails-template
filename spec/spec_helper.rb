@@ -8,7 +8,7 @@ ENV["TZ"] = "UTC"
 #
 # Details of default values for these configuration options can be seen at
 # https://github.com/colszowka/simplecov/blob/master/lib/simplecov/configuration.rb#L217
-SimpleCov.start do
+SimpleCov.start("rails") do
   enable_coverage :branch
 
   use_merging false
