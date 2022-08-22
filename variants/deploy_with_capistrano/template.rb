@@ -15,9 +15,6 @@ append_to_file("Gemfile") do
     gem "capistrano-rails", require: false
     gem "capistrano-rbenv", require: false
     gem "capistrano-rake", require: false
-
-    # Capistrano fails when run from Github Action CI unless these gems are
-    # present in the bundle. See https://github.com/net-ssh/net-ssh/issues/565
     gem "ed25519", require: false
     gem "bcrypt_pbkdf", require: false
 
@@ -144,11 +141,20 @@ deploy_envs = Dir.children("config/deploy")
 end
 
 deploy_envs.each do |env_name, file_path|
+  likely_branch_name = case env_name
+                       when "staging"
+                         "main"
+                       when "production"
+                         "production"
+                       else
+                         "TODO_branch_name"
+                       end
+
   prepend_to_file(file_path) do
     <<~EO_RUBY
       # These are the most common settings required to deploy to a server
       set :rails_env, "#{env_name}"
-      set :branch, "#{env_name}"
+      set :branch, "#{likely_branch_name}"
       set :user, "TODO_your_ssh_user"
       set :deploy_to, "/var/www/TODO_path_to_app_on_server"
       server "TODO.server.example.com", user: "TODO_your_ssh_user", roles: [:app], primary: true
