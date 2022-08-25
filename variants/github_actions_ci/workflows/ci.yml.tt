@@ -28,6 +28,14 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 
 jobs:
+  audit_dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - name: Audit dependencies for security vulnerabilities
+        uses: g-rath/check-with-osv-detector@main
   js_based_checks:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -92,7 +100,6 @@ jobs:
         run: bundle exec chusaku --exit-with-error-on-annotation
       - run: bundle exec rubocop
       - run: bundle exec brakeman --run-all-checks --exit-on-warn --format plain .
-      - run: bundle exec bundle audit --update
       - run: bundle exec rails db:setup
       - run: bundle exec rspec spec --format progress
       - name: Archive spec outputs
@@ -115,6 +122,7 @@ jobs:
   # deploy_to_ec2_staging:
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
   #   needs:
+  #     - audit_dependencies
   #     - ruby_based_checks
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_ec2.yml
@@ -131,6 +139,7 @@ jobs:
   # deploy_to_ec2_production:
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/production'
   #   needs:
+  #     - audit_dependencies
   #     - ruby_based_checks
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_ec2.yml
@@ -152,6 +161,7 @@ jobs:
   # deploy_to_heroku_staging:
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
   #   needs:
+  #     - audit_dependencies
   #     - ruby_based_checks
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_heroku.yml
@@ -165,6 +175,7 @@ jobs:
   # deploy_to_heroku_production:
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/production'
   #   needs:
+  #     - audit_dependencies
   #     - ruby_based_checks
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_heroku.yml

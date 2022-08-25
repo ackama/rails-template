@@ -103,6 +103,10 @@ jobs:
         with:
           persist-credentials: false
 
+      # this ensures that osv-detector is available for running bin/ci-run
+      - name: Check dependencies for security vulnerabilities (and setup osv-detector)
+        uses: g-rath/check-with-osv-detector@main
+
       - name: Install NodeJS
         uses: actions/setup-node@v3
         with:

@@ -98,6 +98,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
   copy_file "variants/backend-base/Dockerfile", "Dockerfile"
   copy_file "variants/backend-base/docker-compose.yml", "docker-compose.yml"
+  copy_file "variants/backend-base/.osv-detector.yml", ".osv-detector.yml"
   copy_file "variants/backend-base/.dockerignore", ".dockerignore"
 
   apply "variants/backend-base/Rakefile.rb"
@@ -158,14 +159,13 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     end
 
     binstubs = %w[
-      brakeman bundler bundler-audit rubocop
+      brakeman bundler rubocop
     ]
     run_with_clean_bundler_env "bundle binstubs #{binstubs.join(" ")} --force"
 
     template "variants/backend-base/rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
 
-    apply "variants/frontend-audit-app/template.rb"
     apply "variants/frontend-base/js-lint/fixes.rb"
 
     cleanup_package_json
