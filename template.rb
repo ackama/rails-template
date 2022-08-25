@@ -29,6 +29,10 @@ class Config
     @yaml_config.fetch("git_repo_url")
   end
 
+  def use_typescript?
+    @yaml_config.fetch("use_typescript")
+  end
+
   def apply_variant_react?
     @yaml_config.fetch("apply_variant_react")
   end
@@ -41,10 +45,6 @@ class Config
     @yaml_config.fetch("apply_variant_sidekiq")
   end
 
-  def apply_variant_typescript?
-    @yaml_config.fetch("apply_variant_typescript")
-  end
-
   def apply_variant_bootstrap?
     @yaml_config.fetch("apply_variant_bootstrap")
   end
@@ -53,7 +53,7 @@ end
 # Allow access to our configuration as a global
 TEMPLATE_CONFIG = Config.new
 
-def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity
   assert_minimum_rails_version
   assert_valid_options
   assert_postgresql
@@ -100,14 +100,17 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
-    apply "variants/frontend-bootstrap/template.rb" if TEMPLATE_CONFIG.apply_variant_bootstrap?
-
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
 
+    if TEMPLATE_CONFIG.apply_variant_bootstrap?
+      apply "variants/frontend-bootstrap/template.rb"
+      apply "variants/frontend-bootstrap-typescript/template.rb" if TEMPLATE_CONFIG.use_typescript?
+    end
+
     if TEMPLATE_CONFIG.apply_variant_react?
       apply "variants/frontend-react/template.rb"
-      apply "variants/frontend-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_typescript?
+      apply "variants/frontend-react-typescript/template.rb" if TEMPLATE_CONFIG.use_typescript?
     end
 
     create_initial_migration
