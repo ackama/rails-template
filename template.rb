@@ -148,7 +148,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     unless any_local_git_commits?
       git add: "-A ."
       git commit: "-n -m 'Initial commit' -m 'Project generated with options:\n\n#{options.pretty_inspect}'"
-      git remote: "add origin #{git_repo_url.shellescape}" if git_repo_specified?
+      git remote: "add origin #{TEMPLATE_CONFIG.git_repo_url.shellescape}" if TEMPLATE_CONFIG.git_repo_url.present?
     end
 
     # we deliberately place this after the initial git commit because it
@@ -277,10 +277,6 @@ def gemfile_requirement(name)
   @original_gemfile ||= File.read("Gemfile")
   req = @original_gemfile[/gem\s+['"]#{name}['"]\s*(, +['"][><~= \t\d.\w'"]*)?.*$/, 1]
   req && req.tr("'", '"').strip.sub(/^,\s*"/, ', "')
-end
-
-def git_repo_specified?
-  TEMPLATE_CONFIG.git_repo_url != "skip" && !TEMPLATE_CONFIG.git_repo_url.strip.empty?
 end
 
 def preexisting_git_repo?
