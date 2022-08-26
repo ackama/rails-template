@@ -74,6 +74,7 @@ new_ackama_cap_config_snippet = <<~EO_RUBY
   set :default_env, path: "$HOME/.rbenv/shims:$HOME/bin:/snap/bin:$PATH"
 
   set :rbenv_path, "$HOME/.rbenv"
+  # set :rbenv_type, :user # or :system, or :fullstaq (for Fullstaq Ruby), depends on your rbenv setup
   set :rbenv_ruby, File.read(".ruby-version").strip
   set :rbenv_prefix, "$HOME/.rbenv/bin/rbenv exec"
   set :rbenv_map_bins, %w[rake gem bundle ruby rails]
