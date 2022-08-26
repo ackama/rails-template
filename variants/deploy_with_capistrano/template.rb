@@ -29,7 +29,7 @@ old_generated_cap_config_snippet = <<~EO_RUBY
   set :repo_url, "git@example.com:me/my_repo.git"
 EO_RUBY
 
-new_ackama_cap_config_snippet = <<~'EO_RUBY'
+new_ackama_cap_config_snippet = <<~EO_RUBY
 
   ##
   # Uncomment and configure this block if your deployments go through a
@@ -38,11 +38,11 @@ new_ackama_cap_config_snippet = <<~'EO_RUBY'
   # CAP_BASTION_USER = "deploy".freeze
   # CAP_BASTION_HOST = "some-ip-or-hostname".freeze
   # set :ssh_options, {
-  #   proxy: Net::SSH::Proxy::Command.new("ssh -o StrictHostKeyChecking=no #{CAP_BASTION_USER}@#{CAP_BASTION_HOST} -W %h:%p")
+  #   proxy: Net::SSH::Proxy::Command.new("ssh -o StrictHostKeyChecking=no \#{CAP_BASTION_USER}@\#{CAP_BASTION_HOST} -W %h:%p")
   # }
 
   set :application, "TODO_set_app_name"
-  set :repo_url, "TODO_set_git_repo_url"
+  set :repo_url, "#{TEMPLATE_CONFIG.git_repo_url.presence || "TODO_set_git_repo_url"}"
 
   set :bundle_config, {
     deployment: true,
@@ -82,27 +82,29 @@ new_ackama_cap_config_snippet = <<~'EO_RUBY'
     desc "Restart application"
     task :restart do
       on roles(:app), in: :sequence, wait: 5 do
-        # TODO: replace these examples with the real commands that control your
-        # server
         execute :sudo, "systemctl restart puma"
+        #{TEMPLATE_CONFIG.apply_variant_sidekiq? ? 'execute :sudo, "systemctl restart sidekiq"' : ""}
       end
     end
 
     task :start do
       on roles(:app) do
         execute :sudo, "systemctl start puma"
+        #{TEMPLATE_CONFIG.apply_variant_sidekiq? ? 'execute :sudo, "systemctl start sidekiq"' : ""}
       end
     end
 
     task :stop do
       on roles(:app) do
         execute :sudo, "systemctl stop puma"
+        #{TEMPLATE_CONFIG.apply_variant_sidekiq? ? 'execute :sudo, "systemctl stop sidekiq"' : ""}
       end
     end
 
     task :status do
       on roles(:app) do
         execute :sudo, "systemctl status puma"
+        #{TEMPLATE_CONFIG.apply_variant_sidekiq? ? 'execute :sudo, "systemctl status sidekiq"' : ""}
       end
     end
 
