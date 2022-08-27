@@ -29,6 +29,10 @@ class Config
     @yaml_config.fetch("git_repo_url")
   end
 
+  def use_typescript?
+    @yaml_config.fetch("use_typescript")
+  end
+
   def apply_variant_react?
     @yaml_config.fetch("apply_variant_react")
   end
@@ -39,10 +43,6 @@ class Config
 
   def apply_variant_sidekiq?
     @yaml_config.fetch("apply_variant_sidekiq")
-  end
-
-  def apply_variant_typescript?
-    @yaml_config.fetch("apply_variant_typescript")
   end
 
   def apply_variant_bootstrap?
@@ -104,14 +104,17 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
-    apply "variants/frontend-bootstrap/template.rb" if TEMPLATE_CONFIG.apply_variant_bootstrap?
-
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
 
+    if TEMPLATE_CONFIG.apply_variant_bootstrap?
+      apply "variants/frontend-bootstrap/template.rb"
+      apply "variants/frontend-bootstrap-typescript/template.rb" if TEMPLATE_CONFIG.use_typescript?
+    end
+
     if TEMPLATE_CONFIG.apply_variant_react?
       apply "variants/frontend-react/template.rb"
-      apply "variants/frontend-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_typescript?
+      apply "variants/frontend-react-typescript/template.rb" if TEMPLATE_CONFIG.use_typescript?
     end
 
     create_initial_migration

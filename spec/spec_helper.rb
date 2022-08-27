@@ -8,14 +8,15 @@ ENV["TZ"] = "UTC"
 #
 # Details of default values for these configuration options can be seen at
 # https://github.com/colszowka/simplecov/blob/master/lib/simplecov/configuration.rb#L217
-#
-SimpleCov.minimum_coverage 90
-# SimpleCov.minimum_coverage_by_file 80
-# SimpleCov.maximum_coverage_drop 5
-# SimpleCov.refuse_coverage_drop
-SimpleCov.use_merging false
+SimpleCov.start("rails") do
+  enable_coverage :branch
 
-SimpleCov.start do
+  use_merging false
+  # minimum_coverage_by_file 80
+  # maximum_coverage_drop 5
+  # refuse_coverage_drop
+  minimum_coverage line: 90, branch: 80
+
   add_filter "/bin/"
   add_filter "/lib/tasks/auto_annotate_models.rake"
   add_filter "/lib/tasks/coverage.rake"

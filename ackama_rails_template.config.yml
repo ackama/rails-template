@@ -11,11 +11,13 @@ staging_hostname: "staging.example.com"
 production_hostname: "www.example.com"
 git_repo_url: ""
 
+# enable this if you would like to use TypeScript for variants that involve Javascript
+use_typescript: false
+
 # use these flags to enable features in the rails app created by this template.
 apply_variant_react: false
 apply_variant_devise: false
 apply_variant_sidekiq: false
-apply_variant_typescript: false
 apply_variant_bootstrap: false
 
 # Generates code to setup a fairly generic Capistrano install
