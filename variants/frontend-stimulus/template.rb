@@ -23,18 +23,20 @@ end
 if TEMPLATE_CONFIG.use_typescript?
   append_to_file "app/frontend/packs/application.js" do
     <<~EO_TS_SETUP
-      // TODO
 
       // Set up stimulus.js https://stimulus.hotwired.dev/
-      // const application = Application.start();
-      // const controllerFilesRegex = /\.js$/u;
-      // const context = require.context('./controllers', true, controllerFilesRegex);
+      const application = Application.start();
+      const context = require.context(
+        '../javascript/controllers',
+        true,
+        /.(js|ts)$/u
+      );
 
-      // application.load(definitionsFromContext(context));
+      application.load(definitionsFromContext(context));
 
-      // // Configure stimulus development experience
-      // application.debug = false;
-      // // window.Stimulus = application;
+      // Configure stimulus development experience
+      application.debug = false;
+      // window.Stimulus = application;
     EO_TS_SETUP
   end
 else
@@ -43,7 +45,11 @@ else
 
       // Set up stimulus.js https://stimulus.hotwired.dev/
       const application = Application.start();
-      const context = require.context('../javascript/controllers', true, /\.js$/u);
+      const context = require.context(
+        '../javascript/controllers',
+        true,
+        /.(js|ts)$/u
+      );
 
       application.load(definitionsFromContext(context));
 
