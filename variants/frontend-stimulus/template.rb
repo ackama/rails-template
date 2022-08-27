@@ -43,8 +43,7 @@ else
 
       // Set up stimulus.js https://stimulus.hotwired.dev/
       const application = Application.start();
-      const controllerFilesRegex = /\.js$/u;
-      const context = require.context('./controllers', true, controllerFilesRegex);
+      const context = require.context('../javascript/controllers', true, /\.js$/u);
 
       application.load(definitionsFromContext(context));
 
@@ -54,17 +53,3 @@ else
     EO_JS_SETUP
   end
 end
-
-# Webpacker does not like const context = require.context('./controllers', true, controllerFilesRegex) - it throws this warning
-# WARNING in ./app/frontend/packs/application.js 56:16-23
-# Critical dependency: require function is used in a way in which dependencies cannot be statically extracted
-#     at CommonJsRequireContextDependency.getWarnings (/Users/eoinkelly/Code/repos/rails-template/tmp/builds/tmpl_eoin_app/node_modules/webpack/lib/dependencies/ContextDependency.js:102:18)
-#     at Compilation.reportDependencyErrorsAndWarnings (/Users/eoinkelly/Code/repos/rails-template/tmp/builds/tmpl_eoin_app/node_modules/webpack/lib/Compilation.js:3132:24)
-#     at /Users/eoinkelly/Code/repos/rails-template/tmp/builds/tmpl_eoin_app/node_modules/webpack/lib/Compilation.js:2729:28
-#     at eval (eval at create (/Users/eoinkelly/Code/repos/rails-template/tmp/builds/tmpl_eoin_app/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:42:1)
-#     at /Users/eoinkelly/Code/repos/rails-template/tmp/builds/tmpl_eoin_app/node_modules/webpack/lib/FlagDependencyExportsPlugin.js:385:11
-#     at /Users/eoinkelly/Code/repos/rails-template/tmp/builds/tmpl_eoin_app/node_modules/neo-async/async.js:2830:7
-#     at Object.each (/Users/eoinkelly/Code/repos/rails-template/tmp/builds/tmpl_eoin_app/node_modules/neo-async/async.js:2850:39)
-#     at /Users/eoinkelly/Code/repos/rails-template/tmp/builds/tmpl_eoin_app/node_modules/webpack/lib/FlagDependencyExportsPlugin.js:361:18
-#     at /Users/eoinkelly/Code/repos/rails-template/tmp/builds/tmpl_eoin_app/node_modules/neo-async/async.js:2830:7
-#     at Object.each (/Users/eoinkelly/Code/repos/rails-template/tmp/builds/tmpl_eoin_app/node_modules/neo-async/async.js:2850:39)
