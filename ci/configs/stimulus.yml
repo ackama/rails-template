@@ -7,4 +7,4 @@ apply_variant_react: false
 apply_variant_devise: false
 apply_variant_sidekiq: false
 apply_variant_bootstrap: false
-apply_variant_stimulus: false
+apply_variant_stimulus: true
