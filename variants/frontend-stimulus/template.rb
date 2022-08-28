@@ -13,15 +13,22 @@ else
   copy_file "variants/frontend-stimulus/hello_controller.js", "app/frontend/javascript/controllers/hello_controller.js"
 end
 
-prepend_to_file "app/frontend/packs/application.js" do
-  <<~EO_JS_IMPORTS
-    import { Application } from '@hotwired/stimulus';
-    import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
-  EO_JS_IMPORTS
+app_js_path = "app/frontend/packs/application.js"
+app_ts_path = "app/frontend/packs/application.ts"
+
+if TEMPLATE_CONFIG.use_typescript? && File.exist?(app_js_path)
+  FileUtils.mv(app_js_path, app_ts_path)
 end
 
 if TEMPLATE_CONFIG.use_typescript?
-  append_to_file "app/frontend/packs/application.js" do
+  prepend_to_file "app/frontend/packs/application.ts" do
+    <<~EO_JS_IMPORTS
+      import { Application } from '@hotwired/stimulus';
+      import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
+    EO_JS_IMPORTS
+  end
+
+  append_to_file "app/frontend/packs/application.ts" do
     <<~EO_TS_SETUP
 
       // Set up stimulus.js https://stimulus.hotwired.dev/
@@ -40,6 +47,13 @@ if TEMPLATE_CONFIG.use_typescript?
     EO_TS_SETUP
   end
 else
+  prepend_to_file "app/frontend/packs/application.js" do
+    <<~EO_JS_IMPORTS
+      import { Application } from '@hotwired/stimulus';
+      import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
+    EO_JS_IMPORTS
+  end
+
   append_to_file "app/frontend/packs/application.js" do
     <<~EO_JS_SETUP
 
