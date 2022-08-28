@@ -8,17 +8,18 @@ yarn_add_dependencies %w[
 ]
 
 if TEMPLATE_CONFIG.use_typescript?
-  copy_file "variants/frontend-stimulus/hello_controller.ts", "app/frontend/javascript/controllers/hello_controller.ts"
+  copy_file "variants/frontend-stimulus/hello_controller.ts", "app/frontend/stimulus/controllers/hello_controller.ts"
 else
-  copy_file "variants/frontend-stimulus/hello_controller.js", "app/frontend/javascript/controllers/hello_controller.js"
+  copy_file "variants/frontend-stimulus/hello_controller.js", "app/frontend/stimulus/controllers/hello_controller.js"
 end
 
+##
+# Rename application.js to applicaiton.ts if it hasn't already been done by some
+# other variant.
+#
 app_js_path = "app/frontend/packs/application.js"
 app_ts_path = "app/frontend/packs/application.ts"
-
-if TEMPLATE_CONFIG.use_typescript? && File.exist?(app_js_path)
-  FileUtils.mv(app_js_path, app_ts_path)
-end
+FileUtils.mv(app_js_path, app_ts_path) if TEMPLATE_CONFIG.use_typescript? && File.exist?(app_js_path)
 
 if TEMPLATE_CONFIG.use_typescript?
   prepend_to_file "app/frontend/packs/application.ts" do
@@ -34,12 +35,22 @@ if TEMPLATE_CONFIG.use_typescript?
       // Set up stimulus.js https://stimulus.hotwired.dev/
       const application = Application.start();
       const context = require.context(
-        '../javascript/controllers',
+        '../stimulus/controllers',
         true,
         /.(js|ts)$/u
       );
 
       application.load(definitionsFromContext(context));
+
+      // If you don't want to load all Stimulus controllers in this pack, you
+      // can either use separate folders for each set of controllers you want to
+      // load or you can remove the `definitionsFromContext` stuff here and
+      // instead import each controller explicitly e.g.
+      //
+      //   import HelloController from "../stimulus/controllers/hello_controller"
+      //   application.register("hello", HelloController)
+      //   import OtherController from "../stimulus/controllers/other_controller"
+      //   application.register("other", OtherController)
 
       // Configure stimulus development experience
       application.debug = false;
@@ -60,12 +71,22 @@ else
       // Set up stimulus.js https://stimulus.hotwired.dev/
       const application = Application.start();
       const context = require.context(
-        '../javascript/controllers',
+        '../stimulus/controllers',
         true,
         /.(js|ts)$/u
       );
 
       application.load(definitionsFromContext(context));
+
+      // If you don't want to load all Stimulus controllers in this pack, you
+      // can either use separate folders for each set of controllers you want to
+      // load or you can remove the `definitionsFromContext` stuff here and
+      // instead import each controller explicitly e.g.
+      //
+      //   import HelloController from "../stimulus/controllers/hello_controller"
+      //   application.register("hello", HelloController)
+      //   import OtherController from "../stimulus/controllers/other_controller"
+      //   application.register("other", OtherController)
 
       // Configure stimulus development experience
       application.debug = false;
