@@ -15,19 +15,23 @@ yarn_add_dependencies %w[
   prop-types
 ]
 
-yarn_add_dev_dependencies %w[
-  @testing-library/react
-  @testing-library/jest-dom
-  @testing-library/user-event
-  eslint-plugin-react
-  eslint-plugin-react-hooks
-  eslint-plugin-jsx-a11y
-  eslint-plugin-jest
-  eslint-plugin-jest-formatting
-  eslint-plugin-jest-dom
-  eslint-plugin-testing-library
-  jest-environment-jsdom
-  jest
+# We need the major version of the 'jest', '@jest/types', 'ts-jest' packages to
+# match so we can only upgrade jest when there are compatible versions available
+jest_major_version = "28"
+
+yarn_add_dev_dependencies [
+  "@testing-library/react",
+  "@testing-library/jest-dom",
+  "@testing-library/user-event",
+  "eslint-plugin-react",
+  "eslint-plugin-react-hooks",
+  "eslint-plugin-jsx-a11y",
+  "eslint-plugin-jest",
+  "eslint-plugin-jest-formatting",
+  "eslint-plugin-jest-dom",
+  "eslint-plugin-testing-library",
+  "jest-environment-jsdom",
+  "jest@#{jest_major_version}"
 ]
 copy_file ".eslintrc.js", force: true
 copy_file "babel.config.js", force: true
