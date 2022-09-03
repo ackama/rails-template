@@ -15,14 +15,16 @@ types_packages = %w[
   react-dom
 ].map { |name| "@types/#{name}" }
 
+installed_jest_major_version = JSON.parse(File.read("node_modules/jest/package.json")).fetch("version").split(".").first
+
 run "yarn remove prop-types"
 yarn_add_dependencies types_packages + %w[@babel/preset-typescript typescript]
-yarn_add_dev_dependencies %w[
-  @typescript-eslint/parser
-  @typescript-eslint/eslint-plugin
-  @jest/types
-  ts-jest
-  ts-node
+yarn_add_dev_dependencies [
+  "@typescript-eslint/parser",
+  "@typescript-eslint/eslint-plugin",
+  "@jest/types@#{installed_jest_major_version}",
+  "ts-jest@#{installed_jest_major_version}",
+  "ts-node"
 ]
 run "yarn install"
 
