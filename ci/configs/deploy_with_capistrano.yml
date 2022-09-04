@@ -8,3 +8,4 @@ apply_variant_sidekiq: false
 apply_variant_typescript: false
 apply_variant_bootstrap: false
 apply_variant_deploy_with_capistrano: true
+apply_variant_deploy_with_ackama_ec2_capistrano: false

@@ -52,12 +52,16 @@ class Config
   def apply_variant_deploy_with_capistrano?
     @yaml_config.fetch("apply_variant_deploy_with_capistrano")
   end
+
+  def apply_variant_deploy_with_ackama_ec2_capistrano?
+    @yaml_config.fetch("apply_variant_deploy_with_ackama_ec2_capistrano")
+  end
 end
 
 # Allow access to our configuration as a global
 TEMPLATE_CONFIG = Config.new
 
-def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity
+def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
   assert_minimum_rails_version
   assert_valid_options
   assert_postgresql
@@ -129,6 +133,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     apply "variants/sidekiq/template.rb" if TEMPLATE_CONFIG.apply_variant_sidekiq?
 
     apply "variants/deploy_with_capistrano/template.rb" if TEMPLATE_CONFIG.apply_variant_deploy_with_capistrano?
+    apply "variants/deploy_with_ackama_ec2_capistrano/template.rb" if TEMPLATE_CONFIG.apply_variant_deploy_with_ackama_ec2_capistrano?
 
     binstubs = %w[
       brakeman bundler bundler-audit rubocop
