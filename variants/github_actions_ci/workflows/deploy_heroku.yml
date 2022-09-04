@@ -1,1 +1,96 @@
-# TODO
+name: Deploy to Heroku
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - production
+
+env:
+  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  SLACK_CHANNEL: TODO
+  # SLACK_ICON: https://github.com/ackama.png?size=48
+  SLACK_USERNAME: TODO_APP_NAME CI
+  SLACK_FOOTER: ""
+
+jobs:
+  deploy_to_staging:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs:
+      - linters
+      - tests
+      - snapshots
+      - eslint-and-prettier
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v2
+
+      - name: Deploy to Heroku Staging
+        uses: akhileshns/heroku-deploy@v3.8.9
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME_STAGING }}
+
+      - name: Report success to Slack
+        if: ${{ success() }}
+        uses: rtCamp/action-slack-notify@master
+        env:
+          # SLACK_COLOR: Can either be one of good (green), warning (yellow),
+          #              danger (red), or any hex color code (eg. #439FE0)
+          SLACK_COLOR: good
+          SLACK_MESSAGE: ${{ format('{0} job succeeded', github.job) }}
+          SLACK_TITLE: Success
+
+      - name: Report failures to Slack
+        if: ${{ failure() || cancelled() }}
+        uses: rtCamp/action-slack-notify@master
+        env:
+          # SLACK_COLOR: Can either be one of good (green), warning (yellow),
+          #              danger (red), or any hex color code (eg. #439FE0)
+          SLACK_COLOR: danger
+          SLACK_MESSAGE: ${{ format('{0} job failed', github.job) }}
+          SLACK_TITLE: Failure
+
+  deploy_to_production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/production'
+    needs:
+      - linters
+      - tests
+      - snapshots
+      - eslint-and-prettier
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v2
+
+      - name: Deploy to Heroku Production
+        uses: akhileshns/heroku-deploy@v3.8.9
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME_PRODUCTION }}
+
+      - name: Report success to Slack
+        if: ${{ success() }}
+        uses: rtCamp/action-slack-notify@master
+        env:
+          # SLACK_COLOR: Can either be one of good (green), warning (yellow),
+          #              danger (red), or any hex color code (eg. #439FE0)
+          SLACK_COLOR: good
+          SLACK_MESSAGE: ${{ format('{0} job succeeded', github.job) }}
+          SLACK_TITLE: Success
+
+      - name: Report failures to Slack
+        if: ${{ failure() || cancelled() }}
+        uses: rtCamp/action-slack-notify@master
+        env:
+          # SLACK_COLOR: Can either be one of good (green), warning (yellow),
+          #              danger (red), or any hex color code (eg. #439FE0)
+          SLACK_COLOR: danger
+          SLACK_MESSAGE: ${{ format('{0} job failed', github.job) }}
+          SLACK_TITLE: Failure
