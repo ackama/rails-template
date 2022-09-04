@@ -73,7 +73,7 @@ jobs:
       - run: bundle exec bundle audit --update
       - run: bin/setup
       - run: bundle exec rspec spec --format progress
-  deploy_cap_ssm_oidc:
+  deploy_to_ec2_via_ssm_and_oidc:
     name: Deploy with Capistrano over AWS SSM, authenticated by Github OIDC
     runs-on: ubuntu-latest
     needs:
