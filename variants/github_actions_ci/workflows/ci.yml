@@ -29,8 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       - name: Set up Ruby (version given by .ruby-version)
         uses: ruby/setup-ruby@v1
         with:
@@ -173,7 +172,7 @@ jobs:
 
       - name: Report success to Slack
         if: ${{ success() }}
-        uses: rtCamp/action-slack-notify@master
+        uses: rtCamp/action-slack-notify@v2
         env:
           # SLACK_COLOR: Can either be one of good (green), warning (yellow),
           #              danger (red), or any hex color code (eg. #439FE0)
@@ -183,7 +182,7 @@ jobs:
 
       - name: Report failures to Slack
         if: ${{ failure() || cancelled() }}
-        uses: rtCamp/action-slack-notify@master
+        uses: rtCamp/action-slack-notify@v2
         env:
           # SLACK_COLOR: Can either be one of good (green), warning (yellow),
           #              danger (red), or any hex color code (eg. #439FE0)
