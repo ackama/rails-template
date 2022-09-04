@@ -1,0 +1,176 @@
+# Run continuous integration tests whenever a commit is pushed into main or production,
+# and whenever a pull request is opened, marked for review, or committed to prior to being merged.
+name: CI tests
+
+on:
+  push:
+    branches:
+      - main
+      - production
+      - "Task/github-ci-tests"
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  brakeman:
+    # Statically analyze the Ruby source code for security vulnerabilities.
+    name: brakeman
+    # We have disabled `brakeman` tests for the interim until we have had a chance to investigate
+    # and quiet the failures.
+    if: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby (version given by .ruby-version)
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Run brakeman
+        run: |
+          bundle exec brakeman -A
+  # Inspect repository Ruby source code for offenses.
+  rubocop:
+    name: rubocop
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby (version given by .ruby-version)
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Run rubocop
+        run: |
+          bundle exec rubocop
+  # Run `prettier` to check the frontend source code for style.
+  prettier:
+    name: prettier
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run prettier
+        run: |
+          npx prettier -c "./app/javascript/**/*.{js,ts,vue}"
+  # Run `eslint` over the full frontend source code for linting purposes.
+  eslint:
+    name: eslint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run eslint
+        run: |
+          yarn run eslint
+  # Run `jest` tests to evaluate the correctness of the TypeScript source code.
+  jest:
+    name: jest
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run jest
+        run: |
+          yarn run test
+  # Run `rspec` tests to evaluate the correctness of the Rails source code.
+  rspec:
+    name: rspec
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    services:
+      postgres:
+        image: postgres:11.13-alpine
+        env:
+          POSTGRES_USER: github_actions
+          POSTGRES_DB: whats_on_test
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      redis:
+        image: redis:5.0.8-alpine
+        ports:
+          - 6379:6379
+
+      elasticsearch:
+        image: elasticsearch:7.10.1
+        env:
+          cluster.name: whats-on-test-cluster
+          discovery.type: single-node
+          ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+        ports:
+          - 9200:9200
+          - 9300:9300
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby (version given by .ruby-version)
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+
+      - name: Setup & run rspec
+        run: |
+          bundle exec rails assets:precompile
+          bundle exec rails db:setup
+          bundle exec rspec
+        env:
+          RAILS_ENV: test
+          ELASTICSEARCH_URL: localhost:9200
+          REDIS_URL: localhost:6379
+          PGHOST: localhost
+          PGUSER: github_actions
