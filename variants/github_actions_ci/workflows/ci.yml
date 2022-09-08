@@ -69,6 +69,8 @@ jobs:
       - run: bundle exec rails db:test:prepare
       - run: bundle exec rspec spec --format progress
 
+  # TODO: I think the deployment blocks should be commented out and devs can uncomment as needed
+
   deploy_to_ec2_staging:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs:
@@ -89,7 +91,7 @@ jobs:
       - js_based_checks
     uses: ".github/workflows/deploy_to_ec2_via_ssm_and_oidc.yml"
     inputs:
-      environment: staging
+      environment: production
       assume_role_arn: TODO
       aws_region: ap-southeast-2
     secrets:
