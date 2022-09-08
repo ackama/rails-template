@@ -1,0 +1,42 @@
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      assume_role_arn:
+        required: true
+        type: string
+      aws_region:
+        required: true
+        type: string
+    secrets:
+      ssh_private_key:
+        required: true
+jobs:
+  deploy_to_ec2_via_ssm_and_oidc:
+    name: Deploy with Capistrano over AWS SSM, authenticated by Github OIDC
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Configure AWS credentials using OpenID Connect to AssumeRole
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-session-name: GitHubActionsDeployment
+          role-to-assume: ${{ inputs.assume_role_arn }}
+          aws-region: ${{ inputs.aws_region }}
+      - name: Install SSH key for production
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.ssh_private_key }}
+          known_hosts: unnecessary
+      - name: Deploy application
+        run: bundle exec cap ${{ inputs.environment }} deploy

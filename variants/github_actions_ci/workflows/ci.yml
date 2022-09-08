@@ -12,11 +12,6 @@ concurrency:
 env:
   RAILS_ENV: test
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
-  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-  SLACK_CHANNEL: TODO
-  SLACK_ICON: https://github.com/ackama.png?size=48
-  SLACK_USERNAME: TODO_APP_NAME CI
-  SLACK_FOOTER: ""
 jobs:
   js_based_checks:
     runs-on: ubuntu-latest
@@ -73,85 +68,53 @@ jobs:
       - run: bundle exec bundle audit --update
       - run: bin/setup
       - run: bundle exec rspec spec --format progress
-  deploy_to_ec2_via_ssm_and_oidc:
-    name: Deploy with Capistrano over AWS SSM, authenticated by Github OIDC
-    runs-on: ubuntu-latest
-    needs:
-      - ruby_based_checks
-      - js_based_checks
-    timeout-minutes: 15
-    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      # Defines the variables needed for future steps, based off of the
-      # github.ref, indicating which environment we are deploying into.
-      - name: Set variables
-        id: variables
-        run: |
-          if [[ ${{ github.ref }} == 'refs/heads/production' ]]; then
-            echo ::set-output name=ENVIRONMENT::production
-            echo ::set-output name=AWS_ROLE_TO_ASSUME::ClientNameProductionGHARole
-          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
-            echo ::set-output name=ENVIRONMENT::staging
-            echo ::set-output name=AWS_ROLE_TO_ASSUME::ClientNameStagingGHARole
-          fi
-      - uses: actions/checkout@v2
-      - name: Set up Ruby (version given by .ruby-version)
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Configure AWS credentials using OpenID Connect to AssumeRole
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-session-name: GitHubActionsDeployment
-          role-to-assume: arn:aws:iam::898811473177:role/${{ steps.variables.outputs.AWS_ROLE_TO_ASSUME }}
-          aws-region: ap-southeast-2
-      - name: Install SSH key for production
-        uses: shimataro/ssh-key-action@v2
-        if: github.ref == 'refs/heads/production'
-        with:
-          key: ${{ secrets.PRODUCTION_SSH_PRIVATE_KEY }}
-          known_hosts: unnecessary
-      - name: Install SSH key for staging
-        uses: shimataro/ssh-key-action@v2
-        if: github.ref == 'refs/heads/main'
-        with:
-          key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
-          known_hosts: unnecessary
-      - name: Deploy application
-        run: bundle exec cap ${{ steps.variables.outputs.ENVIRONMENT }} deploy
-  deploy_to_heroku:
+
+  deploy_to_ec2_staging:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs:
       - ruby_based_checks
       - js_based_checks
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v2
-      - name: Deploy to Heroku Staging
-        uses: akhileshns/heroku-deploy@v3.8.9
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_email: ${{ secrets.HEROKU_EMAIL }}
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME_STAGING }}
-      - name: Report success to Slack
-        if: ${{ success() }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          # SLACK_COLOR: Can either be one of good (green), warning (yellow),
-          #              danger (red), or any hex color code (eg. #439FE0)
-          SLACK_COLOR: good
-          SLACK_MESSAGE: ${{ format('{0} job succeeded', github.job) }}
-          SLACK_TITLE: Success
-      - name: Report failures to Slack
-        if: ${{ failure() || cancelled() }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          # SLACK_COLOR: Can either be one of good (green), warning (yellow),
-          #              danger (red), or any hex color code (eg. #439FE0)
-          SLACK_COLOR: danger
-          SLACK_MESSAGE: ${{ format('{0} job failed', github.job) }}
-          SLACK_TITLE: Failure
+    uses: ".github/workflows/deploy_to_ec2_via_ssm_and_oidc.yml"
+    inputs:
+      environment: staging
+      assume_role_arn: TODO
+      aws_region: ap-southeast-2
+    secrets:
+      ssh_private_key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
+
+  deploy_to_ec2_production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/production'
+    needs:
+      - ruby_based_checks
+      - js_based_checks
+    uses: ".github/workflows/deploy_to_ec2_via_ssm_and_oidc.yml"
+    inputs:
+      environment: staging
+      assume_role_arn: TODO
+      aws_region: ap-southeast-2
+    secrets:
+      ssh_private_key: ${{ secrets.PRODUCTION_SSH_PRIVATE_KEY }}
+
+  deploy_to_heroku_staging:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs:
+      - ruby_based_checks
+      - js_based_checks
+    uses: ".github/workflows/deploy_to_heroku.yml"
+    secrets:
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+      HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_STAGING }}
+
+  deploy_to_heroku_production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/production'
+    needs:
+      - ruby_based_checks
+      - js_based_checks
+    uses: ".github/workflows/deploy_to_heroku.yml"
+    secrets:
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+      HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_PRODUCTION }}
