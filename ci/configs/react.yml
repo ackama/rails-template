@@ -2,8 +2,8 @@
 staging_hostname: "staging.example.com"
 production_hostname: "www.example.com"
 git_repo_url: ""
-apply_variant_github_actions_ci: false
 use_typescript: false
+apply_variant_github_actions_ci: false
 apply_variant_react: true
 apply_variant_devise: false
 apply_variant_sidekiq: false
