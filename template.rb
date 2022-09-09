@@ -301,7 +301,7 @@ def run_with_clean_bundler_env(cmd)
 end
 
 def run_rubocop_autocorrections
-  run_with_clean_bundler_env "bin/rubocop -a --fail-level A > /dev/null || true"
+  run_with_clean_bundler_env "bin/rubocop -c .rubocop.yml -a --fail-level A > /dev/null || true"
 end
 
 def create_initial_migration
