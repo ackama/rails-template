@@ -1,25 +1,31 @@
+name: deploy_to_ec2
 on:
   workflow_call:
     inputs:
       environment:
-        required: true
         type: string
+        required: true
       assume_role_arn:
-        required: true
         type: string
+        required: true
       aws_region:
-        required: true
         type: string
+        required: true
+      timeout_minutes:
+        type: number
+        required: false
+        default: 15
     secrets:
       ssh_private_key:
         required: true
 jobs:
-  deploy_to_ec2_via_ssm_and_oidc:
-    name: Deploy with Capistrano over AWS SSM, authenticated by Github OIDC
+  deploy_to_ec2_via_oidc:
+    name: Deploy to AWS EC2 with Capistrano, authenticated by Github OIDC
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    timeout-minutes: ${{ inputs.timeout_minutes }}
     permissions:
+      # These permissions are needed to interact with GitHub's OIDC Token
+      # endpoint.
       id-token: write
       contents: read
     steps:

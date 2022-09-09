@@ -76,11 +76,11 @@ jobs:
     needs:
       - ruby_based_checks
       - js_based_checks
-    uses: ".github/workflows/deploy_to_ec2_via_ssm_and_oidc.yml"
-    inputs:
+    uses: ./.github/workflows/deploy_to_ec2.yml
+    with:
       environment: staging
-      assume_role_arn: TODO
-      aws_region: ap-southeast-2
+      assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>StagingGHARole"
+      aws_region: ap-southeast-2 # Sydney
     secrets:
       ssh_private_key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
 
@@ -89,11 +89,11 @@ jobs:
     needs:
       - ruby_based_checks
       - js_based_checks
-    uses: ".github/workflows/deploy_to_ec2_via_ssm_and_oidc.yml"
-    inputs:
+    uses: ./.github/workflows/deploy_to_ec2.yml
+    with:
       environment: production
-      assume_role_arn: TODO
-      aws_region: ap-southeast-2
+      assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>ProductionGHARole"
+      aws_region: ap-southeast-2 # Sydney
     secrets:
       ssh_private_key: ${{ secrets.PRODUCTION_SSH_PRIVATE_KEY }}
 
@@ -102,21 +102,21 @@ jobs:
     needs:
       - ruby_based_checks
       - js_based_checks
-    uses: ".github/workflows/deploy_to_heroku.yml"
+    uses: ./.github/workflows/deploy_to_heroku.yml
     secrets:
-      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_STAGING }}
+      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+      heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+      heroku_email: ${{ secrets.HEROKU_EMAIL }}
+      heroku_app_name: ${{ secrets.HEROKU_APP_NAME_STAGING }}
 
   deploy_to_heroku_production:
     if: github.event_name == 'push' && github.ref == 'refs/heads/production'
     needs:
       - ruby_based_checks
       - js_based_checks
-    uses: ".github/workflows/deploy_to_heroku.yml"
+    uses: ./.github/workflows/deploy_to_heroku.yml
     secrets:
-      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME_PRODUCTION }}
+      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+      heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+      heroku_email: ${{ secrets.HEROKU_EMAIL }}
+      heroku_app_name: ${{ secrets.HEROKU_APP_NAME_PRODUCTION }}
