@@ -10,7 +10,7 @@ cd $APP_DIR
 echo "* ******************************************************"
 echo "* Running rubocop"
 echo "* ******************************************************"
-bundle exec rubocop -D --parallel
+bundle exec rubocop -c ./.rubocop.yml -D --parallel
 
 echo "* ******************************************************"
 echo "* Running bundle-audit"
