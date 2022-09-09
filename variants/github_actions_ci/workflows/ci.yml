@@ -82,6 +82,7 @@ jobs:
       assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>StagingGHARole"
       aws_region: ap-southeast-2 # Sydney
     secrets:
+      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
       ssh_private_key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
 
   deploy_to_ec2_production:
@@ -95,6 +96,7 @@ jobs:
       assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>ProductionGHARole"
       aws_region: ap-southeast-2 # Sydney
     secrets:
+      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
       ssh_private_key: ${{ secrets.PRODUCTION_SSH_PRIVATE_KEY }}
 
   deploy_to_heroku_staging:
