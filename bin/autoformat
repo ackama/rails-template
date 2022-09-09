@@ -2,7 +2,7 @@
 
 set -e
 
-rubocop -a -c rubocop.yml
+rubocop -a -c .rubocop.yml
 npm run format-fix
 npm run scss-lint-fix
 npm run js-lint-fix
