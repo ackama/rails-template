@@ -41,6 +41,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      # Uncomment these if you need them for your test suite
       # redis:
       #   image: redis:latest
       #   ports:
@@ -69,56 +70,63 @@ jobs:
       - run: bundle exec rails db:test:prepare
       - run: bundle exec rspec spec --format progress
 
-  # TODO: I think the deployment blocks should be commented out and devs can uncomment as needed
+  # ACTION REQUIRED:
+  #   Uncomment the deployment block which suits your application. You should
+  #   remove all code (in this file and other yaml files in this dir) which
+  #   relate to other kinds of deployment.
+  #
+  # ######################################################################### #
+  # Deploy to EC2 with Capistrano
+  # ######################################################################### #
+  # deploy_to_ec2_staging:
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  #   needs:
+  #     - ruby_based_checks
+  #     - js_based_checks
+  #   uses: ./.github/workflows/deploy_to_ec2.yml
+  #   with:
+  #     environment: staging
+  #     assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>StagingGHARole"
+  #     aws_region: ap-southeast-2 # Sydney
+  #   secrets:
+  #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+  #     ssh_private_key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
+  # deploy_to_ec2_production:
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/production'
+  #   needs:
+  #     - ruby_based_checks
+  #     - js_based_checks
+  #   uses: ./.github/workflows/deploy_to_ec2.yml
+  #   with:
+  #     environment: production
+  #     assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>ProductionGHARole"
+  #     aws_region: ap-southeast-2 # Sydney
+  #   secrets:
+  #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+  #     ssh_private_key: ${{ secrets.PRODUCTION_SSH_PRIVATE_KEY }}
 
-  deploy_to_ec2_staging:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs:
-      - ruby_based_checks
-      - js_based_checks
-    uses: ./.github/workflows/deploy_to_ec2.yml
-    with:
-      environment: staging
-      assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>StagingGHARole"
-      aws_region: ap-southeast-2 # Sydney
-    secrets:
-      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
-      ssh_private_key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
-
-  deploy_to_ec2_production:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/production'
-    needs:
-      - ruby_based_checks
-      - js_based_checks
-    uses: ./.github/workflows/deploy_to_ec2.yml
-    with:
-      environment: production
-      assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>ProductionGHARole"
-      aws_region: ap-southeast-2 # Sydney
-    secrets:
-      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
-      ssh_private_key: ${{ secrets.PRODUCTION_SSH_PRIVATE_KEY }}
-
-  deploy_to_heroku_staging:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs:
-      - ruby_based_checks
-      - js_based_checks
-    uses: ./.github/workflows/deploy_to_heroku.yml
-    secrets:
-      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
-      heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-      heroku_email: ${{ secrets.HEROKU_EMAIL }}
-      heroku_app_name: ${{ secrets.HEROKU_APP_NAME_STAGING }}
-
-  deploy_to_heroku_production:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/production'
-    needs:
-      - ruby_based_checks
-      - js_based_checks
-    uses: ./.github/workflows/deploy_to_heroku.yml
-    secrets:
-      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
-      heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-      heroku_email: ${{ secrets.HEROKU_EMAIL }}
-      heroku_app_name: ${{ secrets.HEROKU_APP_NAME_PRODUCTION }}
+  # ######################################################################### #
+  # Deploy to Heroku
+  # ######################################################################### #
+  # deploy_to_heroku_staging:
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  #   needs:
+  #     - ruby_based_checks
+  #     - js_based_checks
+  #   uses: ./.github/workflows/deploy_to_heroku.yml
+  #   secrets:
+  #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+  #     heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+  #     heroku_email: ${{ secrets.HEROKU_EMAIL }}
+  #     heroku_app_name: ${{ secrets.HEROKU_APP_NAME_STAGING }}
+  # deploy_to_heroku_production:
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/production'
+  #   needs:
+  #     - ruby_based_checks
+  #     - js_based_checks
+  #   uses: ./.github/workflows/deploy_to_heroku.yml
+  #   secrets:
+  #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+  #     heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+  #     heroku_email: ${{ secrets.HEROKU_EMAIL }}
+  #     heroku_app_name: ${{ secrets.HEROKU_APP_NAME_PRODUCTION }}
