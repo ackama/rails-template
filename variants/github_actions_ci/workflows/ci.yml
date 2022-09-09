@@ -67,7 +67,7 @@ jobs:
       - run: bundle exec rubocop
       - run: bundle exec brakeman --run-all-checks --exit-on-warn --format plain .
       - run: bundle exec bundle audit --update
-      - run: bundle exec rails db:test:prepare
+      - run: bundle exec rails db:setup
       - run: bundle exec rspec spec --format progress
 
   # ACTION REQUIRED:
