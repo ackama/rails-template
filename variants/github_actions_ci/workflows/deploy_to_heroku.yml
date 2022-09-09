@@ -1,7 +1,11 @@
 name: deploy_to_heroku
 on:
   workflow_call:
-    # inputs:
+    inputs:
+      timeout_minutes:
+        type: number
+        required: false
+        default: 15
     secrets:
       slack_webhook:
         required: true
@@ -14,7 +18,7 @@ on:
 jobs:
   deploy_to_heroku:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: ${{ inputs.timeout_minutes }}
     steps:
       - uses: actions/checkout@v2
       - name: Deploy to Heroku Staging
