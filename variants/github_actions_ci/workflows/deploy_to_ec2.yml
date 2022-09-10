@@ -31,14 +31,13 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
       - name: Configure AWS credentials using OpenID Connect to AssumeRole
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-session-name: GitHubActionsDeployment
           role-to-assume: ${{ inputs.assume_role_arn }}
           aws-region: ${{ inputs.aws_region }}
       - name: Install SSH key for production
