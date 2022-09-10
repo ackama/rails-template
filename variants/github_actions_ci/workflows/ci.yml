@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version-file: '.node-version'
+          node-version-file: ".node-version"
           cache: "yarn"
       - run: yarn install --frozen-lockfile
       - run: yarn run js-lint
@@ -78,6 +78,7 @@ jobs:
   # ######################################################################### #
   # Deploy to EC2 with Capistrano
   # ######################################################################### #
+
   # deploy_to_ec2_staging:
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
   #   needs:
@@ -102,12 +103,13 @@ jobs:
   #     assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>ProductionGHARole"
   #     aws_region: ap-southeast-2 # Sydney
   #   secrets:
-  #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
   #     ssh_private_key: ${{ secrets.PRODUCTION_SSH_PRIVATE_KEY }}
+  #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
 
   # ######################################################################### #
   # Deploy to Heroku
   # ######################################################################### #
+
   # deploy_to_heroku_staging:
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
   #   needs:
@@ -115,10 +117,10 @@ jobs:
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_heroku.yml
   #   secrets:
-  #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
   #     heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
   #     heroku_email: ${{ secrets.HEROKU_EMAIL }}
   #     heroku_app_name: ${{ secrets.HEROKU_APP_NAME_STAGING }}
+  #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
   # deploy_to_heroku_production:
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/production'
   #   needs:

@@ -6,15 +6,27 @@ on:
         type: number
         required: false
         default: 15
+      slack_icon:
+        type: string
+        required: false
+        default: https://github.com/ackama.png?size=48
+      slack_channel:
+        type: string
+        required: false
+        default:
+      slack_username:
+        type: string
+        required: false
+        default: "Github Actions CI"
     secrets:
-      slack_webhook:
-        required: true
       heroku_api_key:
         required: true
       heroku_app_name:
         required: true
       heroku_email:
         required: true
+      slack_webhook:
+        required: false
 jobs:
   deploy_to_heroku:
     runs-on: ubuntu-latest
@@ -27,31 +39,14 @@ jobs:
           heroku_api_key: ${{ secrets.heroku_api_key }}
           heroku_email: ${{ secrets.heroku_email }}
           heroku_app_name: ${{ secrets.heroku_app_name }}
-      - name: Report success to Slack
-        if: ${{ success() }}
+      - name: Report to Slack
+        if: ${{ secrets.slack_webhook }}
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.slack_webhook }}
-          SLACK_CHANNEL: TODO
-          SLACK_ICON: https://github.com/ackama.png?size=48
-          SLACK_USERNAME: TODO_APP_NAME CI
+          SLACK_CHANNEL: ${{ inputs.slack_channel }}
+          SLACK_ICON: ${{ inputs.slack_icon }}
+          SLACK_USERNAME: ${{ inputs.slack_username }}
           SLACK_FOOTER: ""
-          # SLACK_COLOR: Can either be one of good (green), warning (yellow),
-          #              danger (red), or any hex color code (eg. #439FE0)
-          SLACK_COLOR: good
-          SLACK_MESSAGE: ${{ format('{0} job succeeded', github.job) }}
-          SLACK_TITLE: Success
-      - name: Report failures to Slack
-        if: ${{ failure() || cancelled() }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.slack_webhook }}
-          SLACK_CHANNEL: TODO
-          SLACK_ICON: https://github.com/ackama.png?size=48
-          SLACK_USERNAME: TODO_APP_NAME CI
-          SLACK_FOOTER: ""
-          # SLACK_COLOR: Can either be one of good (green), warning (yellow),
-          #              danger (red), or any hex color code (eg. #439FE0)
-          SLACK_COLOR: danger
-          SLACK_MESSAGE: ${{ format('{0} job failed', github.job) }}
-          SLACK_TITLE: Failure
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MESSAGE: "${{ format('{0} job result: {1}', github.job, job.status) }}"
