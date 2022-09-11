@@ -22,7 +22,7 @@ on:
       slack_channel:
         type: string
         required: false
-        default:
+        default: TODO_CHOOSE_A_REAL_SLACK_CHANNEL
       slack_username:
         type: string
         required: false
