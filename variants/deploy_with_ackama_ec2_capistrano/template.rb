@@ -19,7 +19,7 @@ append_to_file("Gemfile") do
     gem "capistrano-rake", require: false
     gem "ed25519", require: false
     gem "bcrypt_pbkdf", require: false
-    gem 'aws_ec2_environment', git: 'https://github.com/ackama/aws_ec2_environment.git'
+    gem "aws_ec2_environment", github: "ackama/aws_ec2_environment"
 
     # capistrano-locally is required to install the app on to a freshly
     # provisioned EC2 instance
