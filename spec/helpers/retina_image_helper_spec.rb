@@ -5,8 +5,8 @@ describe RetinaImageHelper, type: :helper do
 
   before { allow(helper).to receive(:image_path) { |file| "/images/#{file}" } }
 
-  it { assert_match(%r{\A<img src=".*" srcset=".*" alt=".*"\s*/?>}, tag) }
-  it { assert_match(/alt="example"/, tag) }
-  it { assert_match(%r{src="/images/example.png"}, tag) }
-  it { assert_match(%r{srcset="/images/example.png 1x,/images/example@2x.png 2x"}, tag) }
+  it { expect(tag).to match(%r{\A<img src=".*" srcset=".*" alt=".*"\s*/?>}) }
+  it { expect(tag).to match(/alt="example"/) }
+  it { expect(tag).to match(%r{src="/images/example.png"}) }
+  it { expect(tag).to match(%r{srcset="/images/example.png 1x,/images/example@2x.png 2x"}) }
 end
