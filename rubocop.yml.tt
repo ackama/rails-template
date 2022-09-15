@@ -240,6 +240,11 @@ Style/NumericPredicate:
 Style/TrivialAccessors:
   AllowPredicates: true
 
+RSpec:
+  Language:
+    Expectations:
+      - assert_match
+
 RSpec/MultipleExpectations:
   Max: 10
 
