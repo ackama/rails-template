@@ -4,8 +4,7 @@ import { Controller } from '@hotwired/stimulus';
 //
 //   <div data-controller="hello"></div>
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default class extends Controller {
+export default class HelloController extends Controller {
   connect() {
     this.element.textContent = 'Hello World!';
   }
