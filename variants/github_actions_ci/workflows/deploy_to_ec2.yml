@@ -22,7 +22,6 @@ on:
       slack_channel:
         type: string
         required: false
-        default: TODO_CHOOSE_A_REAL_SLACK_CHANNEL
       slack_username:
         type: string
         required: false
@@ -64,7 +63,7 @@ jobs:
         # if expression. Workaround is to copy to secret to env var. In this
         # case we already need the secret in an env var. Details:
         # https://github.com/actions/runner/issues/520
-        if: "${{ env.SLACK_WEBHOOK != '' }}"
+        if: "${{ env.SLACK_CHANNEL != '' }}"
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.slack_webhook }}
