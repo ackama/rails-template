@@ -114,7 +114,6 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     apply "variants/frontend-base/template.rb"
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
-    apply "variants/frontend-stimulus/template.rb"
 
     if TEMPLATE_CONFIG.apply_variant_bootstrap?
       apply "variants/frontend-bootstrap/template.rb"
@@ -125,6 +124,8 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
       apply "variants/frontend-react/template.rb"
       apply "variants/frontend-react-typescript/template.rb" if TEMPLATE_CONFIG.use_typescript?
     end
+
+    apply "variants/frontend-stimulus/template.rb"
 
     create_initial_migration
 

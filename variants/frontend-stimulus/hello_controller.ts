@@ -12,7 +12,7 @@ import { Controller } from '@hotwired/stimulus';
 // Stimulus: https://stimulus.hotwired.dev/
 // Stimulus & Typescript: https://stimulus.hotwired.dev/reference/using_typescript/
 export default class HelloController extends Controller<Element> {
-  connect() {
+  public connect(): void {
     console.log('Hello from the HelloController');
   }
 }
