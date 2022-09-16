@@ -56,6 +56,10 @@ class Config
   def apply_variant_deploy_with_capistrano?
     @yaml_config.fetch("apply_variant_deploy_with_capistrano")
   end
+
+  def apply_variant_deploy_with_ackama_ec2_capistrano?
+    @yaml_config.fetch("apply_variant_deploy_with_ackama_ec2_capistrano")
+  end
 end
 
 # Allow access to our configuration as a global
@@ -134,6 +138,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
     apply "variants/github_actions_ci/template.rb" if TEMPLATE_CONFIG.apply_variant_github_actions_ci?
     apply "variants/deploy_with_capistrano/template.rb" if TEMPLATE_CONFIG.apply_variant_deploy_with_capistrano?
+    apply "variants/deploy_with_ackama_ec2_capistrano/template.rb" if TEMPLATE_CONFIG.apply_variant_deploy_with_ackama_ec2_capistrano?
 
     binstubs = %w[
       brakeman bundler bundler-audit rubocop
@@ -306,7 +311,7 @@ def run_with_clean_bundler_env(cmd)
 end
 
 def run_rubocop_autocorrections
-  run_with_clean_bundler_env "bin/rubocop -a --fail-level A > /dev/null || true"
+  run_with_clean_bundler_env "bin/rubocop -c .rubocop.yml -A --fail-level A > /dev/null || true"
 end
 
 def create_initial_migration
