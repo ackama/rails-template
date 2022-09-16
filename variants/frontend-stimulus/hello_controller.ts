@@ -9,8 +9,10 @@ import { Controller } from '@hotwired/stimulus';
 //
 //   <div data-controller="hello"></div>
 
-export default class HelloController extends Controller {
+// Stimulus: https://stimulus.hotwired.dev/
+// Stimulus & Typescript: https://stimulus.hotwired.dev/reference/using_typescript/
+export default class HelloController extends Controller<Element> {
   connect() {
-    this.element.textContent = 'Hello World!';
+    console.log('Hello from the HelloController');
   }
 }
