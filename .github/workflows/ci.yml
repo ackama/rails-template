@@ -41,11 +41,8 @@ jobs:
           - name: bootstrap-typescript
             config_path: "ci/configs/bootstrap-typescript.yml"
             skips: --skip-javascript
-          - name: stimulus
-            config_path: "ci/configs/stimulus.yml"
-            skips: --skip-javascript
-          - name: stimulus-typescript
-            config_path: "ci/configs/stimulus-typescript.yml"
+          - name: capistrano
+            config_path: "ci/configs/deploy_with_capistrano.yml"
             skips: --skip-javascript
     services:
       db:

@@ -2,9 +2,9 @@
 staging_hostname: "staging.example.com"
 production_hostname: "www.example.com"
 git_repo_url: ""
-use_typescript: true
+use_typescript: false
 apply_variant_react: false
 apply_variant_devise: false
 apply_variant_sidekiq: false
-apply_variant_bootstrap: true
-apply_variant_deploy_with_capistrano: false
+apply_variant_bootstrap: false
+apply_variant_deploy_with_capistrano: true
