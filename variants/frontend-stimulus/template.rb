@@ -13,7 +13,7 @@ file_ext = if TEMPLATE_CONFIG.use_typescript?
              "js"
            end
 
-copy_file "variants/frontend-stimulus/hello_controller.ts", "app/frontend/stimulus/controllers/hello_controller.#{file_ext}"
+copy_file "variants/frontend-stimulus/hello_controller.#{file_ext}", "app/frontend/stimulus/controllers/hello_controller.#{file_ext}"
 
 ##
 # Rename application.js to applicaiton.ts if it hasn't already been done by some
