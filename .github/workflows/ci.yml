@@ -20,6 +20,9 @@ jobs:
           - name: basic
             config_path: "ci/configs/basic.yml"
             skips: --skip-javascript
+          - name: github_actions
+            config_path: "ci/configs/github_actions.yml"
+            skips: --skip-javascript
           - name: react
             config_path: "ci/configs/react.yml"
             skips: --skip-javascript
@@ -65,7 +68,7 @@ jobs:
 
     steps:
       - name: Checkout this repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install NodeJS
         uses: actions/setup-node@v2

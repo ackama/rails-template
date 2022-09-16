@@ -1,0 +1,51 @@
+name: deploy_to_heroku
+on:
+  workflow_call:
+    inputs:
+      timeout_minutes:
+        type: number
+        required: false
+        default: 15
+      slack_icon:
+        type: string
+        required: false
+        default: https://github.com/ackama.png?size=48
+      slack_channel:
+        type: string
+        required: false
+      slack_username:
+        type: string
+        required: false
+        default: "Github Actions CI"
+    secrets:
+      heroku_api_key:
+        required: true
+      heroku_app_name:
+        required: true
+      heroku_email:
+        required: true
+      slack_webhook:
+        required: false
+jobs:
+  deploy_to_heroku:
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ inputs.timeout_minutes }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy to Heroku Staging
+        uses: akhileshns/heroku-deploy@v3.8.9
+        with:
+          heroku_api_key: ${{ secrets.heroku_api_key }}
+          heroku_email: ${{ secrets.heroku_email }}
+          heroku_app_name: ${{ secrets.heroku_app_name }}
+      - name: Report to Slack
+        if: "${{ inputs.slack_channel != '' }}"
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.slack_webhook }}
+          SLACK_CHANNEL: ${{ inputs.slack_channel }}
+          SLACK_ICON: ${{ inputs.slack_icon }}
+          SLACK_USERNAME: ${{ inputs.slack_username }}
+          SLACK_FOOTER: ""
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MESSAGE: "${{ format('{0} job result: {1}', github.job, job.status) }}"

@@ -1,0 +1,134 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - production
+concurrency:
+  # Pushing new changes to a branch will cancel any in-progress CI runs
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+env:
+  RAILS_ENV: test
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+jobs:
+  js_based_checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".node-version"
+          cache: "yarn"
+      - run: yarn install --frozen-lockfile
+      - run: yarn run js-lint
+      - run: yarn run format-check
+  ruby_based_checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      db:
+        image: postgres:latest
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      # Uncomment these if you need them for your test suite
+      # redis:
+      #   image: redis:latest
+      #   ports:
+      #     - 6379:6379
+      # elasticsearch:
+      #   image: elasticsearch:latest
+      #   env:
+      #     cluster.name: whats-on-test-cluster
+      #     discovery.type: single-node
+      #     ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+      #   ports:
+      #     - 9200:9200
+      #     - 9300:9300
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Install Required OS Packages
+        run: sudo apt-get -yqq install libpq-dev
+      - name: Set up Ruby (version given by .ruby-version)
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - run: bundle exec rubocop
+      - run: bundle exec brakeman --run-all-checks --exit-on-warn --format plain .
+      - run: bundle exec bundle audit --update
+      - run: bundle exec rails db:setup
+      - run: bundle exec rspec spec --format progress
+
+  # ACTION REQUIRED:
+  #   Uncomment the deployment block which suits your application. You should
+  #   remove all code (in this file and other yaml files in this dir) which
+  #   relate to other kinds of deployment.
+  #
+  # ######################################################################### #
+  # Deploy to EC2 with Capistrano
+  # ######################################################################### #
+
+  # deploy_to_ec2_staging:
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  #   needs:
+  #     - ruby_based_checks
+  #     - js_based_checks
+  #   uses: ./.github/workflows/deploy_to_ec2.yml
+  #   with:
+  #     environment: staging
+  #     assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>StagingGHARole"
+  #     aws_region: ap-southeast-2 # Sydney
+  #   secrets:
+  #     ssh_private_key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
+  #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+  # deploy_to_ec2_production:
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/production'
+  #   needs:
+  #     - ruby_based_checks
+  #     - js_based_checks
+  #   uses: ./.github/workflows/deploy_to_ec2.yml
+  #   with:
+  #     environment: production
+  #     assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>ProductionGHARole"
+  #     aws_region: ap-southeast-2 # Sydney
+  #   secrets:
+  #     ssh_private_key: ${{ secrets.PRODUCTION_SSH_PRIVATE_KEY }}
+  #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+
+  # ######################################################################### #
+  # Deploy to Heroku
+  # ######################################################################### #
+
+  # deploy_to_heroku_staging:
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  #   needs:
+  #     - ruby_based_checks
+  #     - js_based_checks
+  #   uses: ./.github/workflows/deploy_to_heroku.yml
+  #   secrets:
+  #     heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+  #     heroku_email: ${{ secrets.HEROKU_EMAIL }}
+  #     heroku_app_name: ${{ secrets.HEROKU_APP_NAME_STAGING }}
+  #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+  # deploy_to_heroku_production:
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/production'
+  #   needs:
+  #     - ruby_based_checks
+  #     - js_based_checks
+  #   uses: ./.github/workflows/deploy_to_heroku.yml
+  #   secrets:
+  #     heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+  #     heroku_email: ${{ secrets.HEROKU_EMAIL }}
+  #     heroku_app_name: ${{ secrets.HEROKU_APP_NAME_PRODUCTION }}
+  #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
