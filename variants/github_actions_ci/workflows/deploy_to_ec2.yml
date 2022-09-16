@@ -60,7 +60,11 @@ jobs:
       - name: Deploy application
         run: bundle exec cap ${{ inputs.environment }} deploy
       - name: Report to Slack
-        if: ${{ secrets.slack_webhook }}
+        # 2022-09-16: Github Actions cannot currently reference `secrets` in an
+        # if expression. Workaround is to copy to secret to env var. In this
+        # case we already need the secret in an env var. Details:
+        # https://github.com/actions/runner/issues/520
+        if: "${{ env.SLACK_WEBHOOK != '' }}"
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.slack_webhook }}
