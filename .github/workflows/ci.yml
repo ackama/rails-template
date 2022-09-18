@@ -20,6 +20,9 @@ jobs:
           - name: basic
             config_path: "ci/configs/basic.yml"
             skips: --skip-javascript
+          - name: github_actions
+            config_path: "ci/configs/github_actions.yml"
+            skips: --skip-javascript
           - name: react
             config_path: "ci/configs/react.yml"
             skips: --skip-javascript
@@ -37,6 +40,15 @@ jobs:
             skips: --skip-spring --skip-javascript
           - name: bootstrap
             config_path: "ci/configs/bootstrap.yml"
+            skips: --skip-javascript
+          - name: bootstrap-typescript
+            config_path: "ci/configs/bootstrap-typescript.yml"
+            skips: --skip-javascript
+          - name: capistrano
+            config_path: "ci/configs/deploy_with_capistrano.yml"
+            skips: --skip-javascript
+          - name: ackama_ec2_capistrano
+            config_path: "ci/configs/deploy_with_ackama_ec2_capistrano.yml"
             skips: --skip-javascript
     services:
       db:
@@ -56,7 +68,7 @@ jobs:
 
     steps:
       - name: Checkout this repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install NodeJS
         uses: actions/setup-node@v2

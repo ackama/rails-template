@@ -1,0 +1,20 @@
+staging:
+  aws_region: ap-southeast-2
+  ssh_user: deploy
+  ssm_host: 'ec2.#{id}.local.ackama.app'
+  use_ssm: true
+  filters:
+    - name: 'instance-state-name'
+      values: ['running']
+    - name: 'tag:Name'
+      values: ['ClientNameStagingAppServerAsg']
+production:
+  aws_region: ap-southeast-2
+  ssh_user: deploy
+  ssm_host: 'ec2.#{id}.local.ackama.app'
+  use_ssm: true
+  filters:
+    - name: 'instance-state-name'
+      values: ['running']
+    - name: 'tag:Name'
+      values: ['ClientNameProductionAppServerAsg']

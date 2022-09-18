@@ -8,7 +8,7 @@ builds_path = File.join(root_path, "tmp/builds")
 app_name = ENV.fetch("APP_NAME", "app")
 app_path = File.join(builds_path, app_name)
 config_path = File.join(root_path, ENV.fetch("CONFIG_PATH", "ci/configs/basic.yml"))
-extra_skip_flags = ENV.fetch("SKIPS", "")
+skip_flags = ENV.fetch("SKIPS", "")
 
 puts "=" * 80
 puts <<~EO_CONFIG_SUMMARY
@@ -40,7 +40,7 @@ end
 
 Dir.chdir(builds_path) do |cwd|
   puts "Working dir is now #{cwd}"
-  cmd = %Q(CONFIG_PATH="#{config_path}" RACK_ENV=development RAILS_ENV=development rails new "#{app_name}" -d postgresql --skip-javascript #{extra_skip_flags} -m "#{template_path}")
+  cmd = %Q(CONFIG_PATH="#{config_path}" RACK_ENV=development RAILS_ENV=development rails new "#{app_name}" -d postgresql #{skip_flags} -m "#{template_path}")
   puts <<~EO_HELP
     Build command:
     #{cmd}

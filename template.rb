@@ -29,6 +29,14 @@ class Config
     @yaml_config.fetch("git_repo_url")
   end
 
+  def use_typescript?
+    @yaml_config.fetch("use_typescript")
+  end
+
+  def apply_variant_github_actions_ci?
+    @yaml_config.fetch("apply_variant_github_actions_ci")
+  end
+
   def apply_variant_react?
     @yaml_config.fetch("apply_variant_react")
   end
@@ -41,19 +49,23 @@ class Config
     @yaml_config.fetch("apply_variant_sidekiq")
   end
 
-  def apply_variant_typescript?
-    @yaml_config.fetch("apply_variant_typescript")
-  end
-
   def apply_variant_bootstrap?
     @yaml_config.fetch("apply_variant_bootstrap")
+  end
+
+  def apply_variant_deploy_with_capistrano?
+    @yaml_config.fetch("apply_variant_deploy_with_capistrano")
+  end
+
+  def apply_variant_deploy_with_ackama_ec2_capistrano?
+    @yaml_config.fetch("apply_variant_deploy_with_ackama_ec2_capistrano")
   end
 end
 
 # Allow access to our configuration as a global
 TEMPLATE_CONFIG = Config.new
 
-def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
   assert_minimum_rails_version
   assert_valid_options
   assert_postgresql
@@ -100,15 +112,20 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
-    apply "variants/frontend-bootstrap/template.rb" if TEMPLATE_CONFIG.apply_variant_bootstrap?
-
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
 
+    if TEMPLATE_CONFIG.apply_variant_bootstrap?
+      apply "variants/frontend-bootstrap/template.rb"
+      apply "variants/frontend-bootstrap-typescript/template.rb" if TEMPLATE_CONFIG.use_typescript?
+    end
+
     if TEMPLATE_CONFIG.apply_variant_react?
       apply "variants/frontend-react/template.rb"
-      apply "variants/frontend-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_typescript?
+      apply "variants/frontend-react-typescript/template.rb" if TEMPLATE_CONFIG.use_typescript?
     end
+
+    apply "variants/frontend-stimulus/template.rb"
 
     create_initial_migration
 
@@ -120,6 +137,10 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     apply "variants/bullet/template.rb"
     apply "variants/pundit/template.rb"
     apply "variants/sidekiq/template.rb" if TEMPLATE_CONFIG.apply_variant_sidekiq?
+
+    apply "variants/github_actions_ci/template.rb" if TEMPLATE_CONFIG.apply_variant_github_actions_ci?
+    apply "variants/deploy_with_capistrano/template.rb" if TEMPLATE_CONFIG.apply_variant_deploy_with_capistrano?
+    apply "variants/deploy_with_ackama_ec2_capistrano/template.rb" if TEMPLATE_CONFIG.apply_variant_deploy_with_ackama_ec2_capistrano?
 
     binstubs = %w[
       brakeman bundler bundler-audit rubocop
@@ -142,7 +163,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     unless any_local_git_commits?
       git add: "-A ."
       git commit: "-n -m 'Initial commit' -m 'Project generated with options:\n\n#{options.pretty_inspect}'"
-      git remote: "add origin #{git_repo_url.shellescape}" if git_repo_specified?
+      git remote: "add origin #{TEMPLATE_CONFIG.git_repo_url.shellescape}" if TEMPLATE_CONFIG.git_repo_url.present?
     end
 
     # we deliberately place this after the initial git commit because it
@@ -158,15 +179,11 @@ end
 #
 # @return [Hash]
 def normalize_dependency_constraints(deps)
-  new = deps.transform_values do |v|
+  deps.transform_values do |v|
     v = "^#{v}" unless v.start_with? "^"
     v = "#{v}.0.0" if v.count(".").zero?
     v
   end
-
-  # shakapacker currently wants to be constrained to an exact version in package.json
-  new["shakapacker"] = deps["shakapacker"] if deps.key? "shakapacker"
-  new
 end
 
 def build_engines_field
@@ -277,10 +294,6 @@ def gemfile_requirement(name)
   req && req.tr("'", '"').strip.sub(/^,\s*"/, ', "')
 end
 
-def git_repo_specified?
-  TEMPLATE_CONFIG.git_repo_url != "skip" && !TEMPLATE_CONFIG.git_repo_url.strip.empty?
-end
-
 def preexisting_git_repo?
   @preexisting_git_repo ||= (File.exist?(".git") || :nope)
   @preexisting_git_repo == true
@@ -300,7 +313,7 @@ def run_with_clean_bundler_env(cmd)
 end
 
 def run_rubocop_autocorrections
-  run_with_clean_bundler_env "bin/rubocop -a --fail-level A > /dev/null || true"
+  run_with_clean_bundler_env "bin/rubocop -c .rubocop.yml -A --fail-level A > /dev/null || true"
 end
 
 def create_initial_migration
