@@ -64,10 +64,10 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - run: bin/setup
       - run: bundle exec rubocop
       - run: bundle exec brakeman --run-all-checks --exit-on-warn --format plain .
       - run: bundle exec bundle audit --update
-      - run: bundle exec rails db:setup
       - run: bundle exec rspec spec --format progress
 
   # ACTION REQUIRED:
