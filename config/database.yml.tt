@@ -7,6 +7,9 @@ default: &default
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%%= ENV["DB_POOL_SIZE"] || ENV["RAILS_MAX_THREADS"] || 5 %>
   min_messages: WARNING # https://thoughtbot.com/blog/global-min-messages
+  host: <%= ENV.fetch("PGHOST", "localhost") %>
+  username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "postgres") %>
 
 development:
   <<: *default
