@@ -9,7 +9,6 @@ copy_file "app/views/application/_header.html.erb"
 copy_file "app/views/home/index.html.erb"
 
 # Configure app/helpers
-copy_file "app/helpers/retina_image_helper.rb"
 directory "app/middleware"
 
 # Configure empty dirs under app/
