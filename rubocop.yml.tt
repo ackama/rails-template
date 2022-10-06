@@ -58,6 +58,7 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
     - 'config/**/*'
+    - 'lib/tasks/**/*'
 
 # We generally don't want methods longer than 15 lines, except in migrations where it's probably okay.
 Metrics/MethodLength:
