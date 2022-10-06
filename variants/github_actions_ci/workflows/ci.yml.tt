@@ -14,10 +14,10 @@ env:
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
   RAILS_SECRET_KEY_BASE: any-value-works-here-in-ci-but-prod-should-be-created-with-bundle-exec-rails-secret
   MAIL_FROM: "changeme@example.com"
-
-  # you can remove these if you are not using sidekiq on this ap
+  <% if TEMPLATE_CONFIG.apply_variant_sidekiq? %>
   SIDEKIQ_WEB_USERNAME: admin
   SIDEKIQ_WEB_PASSWORD: password
+  <% end %>
 jobs:
   js_based_checks:
     runs-on: ubuntu-latest
