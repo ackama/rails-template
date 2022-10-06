@@ -17,6 +17,8 @@ run "bundle install"
 # adds a rake task which causes annotate to auto-run on every migration
 run "bundle exec rails generate annotate:install"
 
+run "bundle exec rubocop -A lib/tasks/auto_annotate_models.rake"
+
 TERMINAL.puts_header "Annotating code"
 
 run "bundle exec chusaku"
