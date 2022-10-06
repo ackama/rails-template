@@ -62,8 +62,17 @@ class Config
   end
 end
 
+class Terminal
+  def puts_header(msg)
+    puts "=" * 80
+    puts msg
+    puts "=" * 80
+  end
+end
+
 # Allow access to our configuration as a global
 TEMPLATE_CONFIG = Config.new
+TERMINAL = Terminal.new
 
 def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
   assert_minimum_rails_version
@@ -169,6 +178,10 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     # we deliberately place this after the initial git commit because it
     # contains a lot of changes and adds its own git commit
     apply "variants/devise/template.rb" if TEMPLATE_CONFIG.apply_variant_devise?
+
+    # We apply code annotation **after** all the other variants which might
+    # generate routes and models
+    apply "variants/code-annotation/template.rb"
   end
 end
 

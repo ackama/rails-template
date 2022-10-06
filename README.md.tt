@@ -165,6 +165,26 @@ HEADFUL=1 bundle exec rspec spec/features
 npm run lighthouse-spec
 ```
 
+### Source code annotations
+
+The [chusaku](https://github.com/nshki/chusaku) and
+[annotate](https://github.com/ctran/annotate_models) gems are installed in
+development. Chusaku annotates controller actions with a comment detailing the
+route. Annotate annotates models and fixtures with a comment detailing the DB
+schema. You can run them manually via:
+
+```bash
+# update controller action annotation comments
+bundle exec chusaku
+
+# update model, fixture, spec annotation comments (not usually required, auto-runs on migrations)
+bundle exec annotate
+```
+
+Annotate runs automatically after migrations. You will have to run Chusaku
+manually after you add controller actions. CI verifies that these annotations
+are up to date.
+
 ### Rake tasks
 
 ```
