@@ -20,11 +20,12 @@ apply_variant_devise: false
 apply_variant_sidekiq: false
 apply_variant_bootstrap: false
 
-# Generates code to setup a fairly generic Capistrano install
-apply_variant_deploy_with_capistrano: false
-
 # Copy in some examples for Github Actions CI
 apply_variant_github_actions_ci: true
+
+# Generates code to set up a fairly generic Capistrano install - this is not required
+# if you're using the Ackama-specific variant
+apply_variant_deploy_with_capistrano: false
 
 # Generates Capistrano code specific to how Ackama likes to deploy
 # and manage EC2 instances.
