@@ -17,7 +17,7 @@ yarn_add_dependencies %w[
 
 # We need the major version of the 'jest', '@jest/types', 'ts-jest' packages to
 # match so we can only upgrade jest when there are compatible versions available
-jest_major_version = "28"
+jest_major_version = "29"
 
 yarn_add_dev_dependencies [
   "@testing-library/react",
