@@ -148,8 +148,12 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     apply "variants/sidekiq/template.rb" if TEMPLATE_CONFIG.apply_variant_sidekiq?
 
     apply "variants/github_actions_ci/template.rb" if TEMPLATE_CONFIG.apply_variant_github_actions_ci?
-    apply "variants/deploy_with_capistrano/template.rb" if TEMPLATE_CONFIG.apply_variant_deploy_with_capistrano?
-    apply "variants/deploy_with_ackama_ec2_capistrano/template.rb" if TEMPLATE_CONFIG.apply_variant_deploy_with_ackama_ec2_capistrano?
+
+    if TEMPLATE_CONFIG.apply_variant_deploy_with_ackama_ec2_capistrano?
+      apply "variants/deploy_with_ackama_ec2_capistrano/template.rb"
+    elsif TEMPLATE_CONFIG.apply_variant_deploy_with_capistrano?
+      apply "variants/deploy_with_capistrano/template.rb"
+    end
 
     binstubs = %w[
       brakeman bundler bundler-audit rubocop
