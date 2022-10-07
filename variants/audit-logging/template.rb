@@ -1,4 +1,3 @@
-
 source_paths.unshift(File.dirname(__FILE__))
 
 copy_file("variants/audit-logging/lib/auditor_log_formatter.rb", "lib/auditor_log_formatter.rb")
