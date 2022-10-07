@@ -5,14 +5,16 @@ class Auditor
       @remote_ip = remote_ip
       @event_info = event_info
 
-      # convert timestamp from the application TZ to UTC for consistency in the event log
+      # convert timestamp from the application TZ to UTC for consistency in the
+      # event log
       @timestamp = timestamp.utc
     end
 
     def to_h
       {
+        event_type: "audit_event",
         event_name: self.class.to_s,
-        user_id: @current_user ? @current_user.id : nil,
+        user_id: @current_user&.id,
         remote_ip: @remote_ip,
         timestamp: @timestamp.iso8601,
         details: @event_info,
