@@ -13,15 +13,15 @@ insert_into_file "app/controllers/application_controller.rb", after: /^  end/ do
 
 
     ##
-    # Example of generating an audit log event for "Thing A"
+    # Example of generating an audit log event for the event type "Example"
     #
     # You can edit the shape of audit log events as your app requires.
     #
-    # def note_thing_a_in_audit_log
-    #   event = Auditor::Events::Example.new(
+    # def note_example_event_in_audit_log
+    #   event = Auditor::Events:Example.new(
     #     current_user: current_user,
     #     remote_ip: request.remote_ip,
-    #     event_info: { anything: "anything" } # event_info is a Hash of whatever else you need to store about the event
+    #     event_info: { anything: "anything" } # event_info is a Hash of whatever else you need to store
     #   )
     #   Auditor.log(event)
     # end
