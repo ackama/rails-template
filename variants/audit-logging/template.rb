@@ -37,6 +37,10 @@ end
 insert_into_file "config/application.rb", before: /^  end/ do
   <<-'RUBY'
 
-    config.audit_logger = Logger.new("log/audit.log", formatter: AuditorLogFormatter.new)
+    if ENV["RAILS_LOG_TO_STDOUT"].present?
+      config.audit_logger = Logger.new($stdout, formatter: AuditorLogFormatter.new)
+    else
+      config.audit_logger = Logger.new("log/audit.log", formatter: AuditorLogFormatter.new)
+    end
   RUBY
 end

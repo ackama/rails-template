@@ -23,7 +23,7 @@ RSpec.describe Auditor do
   let(:event) do
     TestEvent.new(
       current_user: user,
-      remote_ip:,
+      remote_ip: remote_ip,
       event_info: event_specific_details,
       timestamp: timestamp_in_app_tz
     )
@@ -42,7 +42,7 @@ RSpec.describe Auditor do
       expected_json = {
         event_name: "TestEvent",
         user_id: user.id,
-        remote_ip:,
+        remote_ip: remote_ip,
         timestamp: expected_timestamp,
         details: event_specific_details,
         description: "Test event happened"

@@ -18,9 +18,9 @@ RSpec.describe Auditor::Event do
   subject(:event) do
     TestEvent.new(
       current_user: user,
-      remote_ip:,
+      remote_ip: remote_ip,
       event_info: event_specific_details,
-      timestamp:
+      timestamp: timestamp
     )
   end
 
@@ -31,7 +31,7 @@ RSpec.describe Auditor::Event do
   let(:expected_hash_representation) do
     {
       user_id: user.id,
-      remote_ip:,
+      remote_ip: remote_ip,
       timestamp: timestamp.utc.iso8601,
       event_name: "TestEvent",
       description: "Test event happened",

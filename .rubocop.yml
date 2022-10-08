@@ -209,3 +209,6 @@ Rails/LexicallyScopedActionFilter:
 RSpec/RepeatedExample:
   Exclude:
     - 'variants/pundit/spec/policies/**'
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
