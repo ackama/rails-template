@@ -12,7 +12,6 @@ class Auditor
 
     def to_h
       {
-        event_type: "audit_event",
         event_name: self.class.to_s,
         user_id: @current_user&.id,
         remote_ip: @remote_ip,
