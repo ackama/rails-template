@@ -1,0 +1,14 @@
+<% content_for :modal_title, "Example modal title" %>
+<% content_for :modal_body do %>
+  <p>Example modal body content</p>
+<% end %>
+<% content_for :modal_footer do %>
+  <div class="d-flex justify-content-end gap-2">
+    <%= link_to "Sign out", destroy_account_session_path, target: "_top", class: "btn btn-outline-secondary btn-sm"%>
+    <button class="btn btn-secondary btn-sm" type="button" data-bs-dismiss="modal">Close</button>
+  </div>
+<% end %>
+
+<% modal_close_url ||= nil %>
+
+<%= turbo_stream.update "modal", render("application/modal", shown: true, modal_close_url: modal_close_url) %>

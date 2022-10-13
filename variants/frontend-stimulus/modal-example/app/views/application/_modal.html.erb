@@ -1,0 +1,38 @@
+<%
+  id ||= "applicationModal"
+  aria_labelled_by ||= "applicationModalLabel"
+  shown ||= false
+  modal_close_url ||= nil
+  modal_title ||= yield(:modal_title)
+  modal_body ||= yield(:modal_body)
+  modal_size ||= nil
+  modal_footer ||= yield(:modal_footer)
+%>
+
+<div class="modal fade <%= 'show' if shown %>"
+    data-controller="modal"
+    data-modal-close-url="<%= modal_close_url %>"
+    id="<%= id %>"
+    tabindex="-1"
+    aria-labelledby="<%= aria_labelled_by %>"
+    aria-hidden="true">
+  <div class="modal-dialog <%= modal_size ? "modal-#{modal_size}" : "" %>">
+    <div class="modal-content">
+      <div class="modal-header <%= 'pb-0 border-bottom-0' unless modal_title.presence %>">
+        <p class="modal-title fs-4 fw-bold" id="<%= aria_labelled_by %>"><%= modal_title %></p>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body <%= 'pt-0' unless modal_title.presence %>">
+        <%= turbo_frame_tag :modal_body do %>
+          <%= modal_body || yield %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <%= turbo_frame_tag :modal_footer, class: "w-100" do %>
+          <%= modal_footer %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
