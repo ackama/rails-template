@@ -11,6 +11,16 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".node-version"
+          cache: "yarn"
+      - run: yarn run format-check
+
+  test_generated_apps:
+    runs-on: ubuntu-latest
     strategy:
       # don't stop all variants if one of them fails (we usually want to know
       # how many fail)
