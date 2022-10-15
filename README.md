@@ -274,7 +274,8 @@ $ CONFIG_PATH="ci/configs/react.yml" APP_NAME="enterprise" ./ci/bin/build-and-te
 $ rm -rf mydemoapp && CONFIG_PATH="../ci/configs/react.yml" rails new mydemoapp -d postgresql --skip-javascript -m ./template.rb
 ```
 
-Rubocop is configured for this repo and is run as part of CI. Run rubocop locally via the usual method:
+Rubocop is configured for this repo and is run as part of CI. Run rubocop
+locally via the usual method:
 
 ```
 $ bundle install
