@@ -12,8 +12,8 @@ yarn_add_dev_dependencies %w[
   prettier-config-ackama
   prettier-plugin-packagejson
 ]
-copy_file ".eslintrc.js"
-template ".prettierignore.tt"
+copy_file "variants/frontend-base/.eslintrc.js", ".eslintrc.js"
+template "variants/frontend-base/.prettierignore.tt", ".prettierignore"
 
 package_json = JSON.parse(File.read("./package.json"))
 package_json["prettier"] = "prettier-config-ackama"
@@ -60,8 +60,8 @@ yarn_add_dev_dependencies %w[
   stylelint-scss
   stylelint-config-recommended-scss
 ]
-copy_file ".stylelintrc.js"
-template ".stylelintignore.tt"
+copy_file "variants/frontend-base/.stylelintrc.js", ".stylelintrc.js"
+template "variants/frontend-base/.stylelintignore.tt", ".stylelintignore"
 
 append_to_file "bin/ci-run" do
   <<~SASSLINT
