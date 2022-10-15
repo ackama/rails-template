@@ -1,33 +1,39 @@
-require "simplecov"
-
 # Use a consistent test timezone
 ENV["TZ"] = "UTC"
 
-##
-# Configure minimum test coverage levels
-#
-# Details of default values for these configuration options can be seen at
-# https://github.com/colszowka/simplecov/blob/master/lib/simplecov/configuration.rb#L217
-SimpleCov.start("rails") do
-  enable_coverage :branch
+# Only load and start SimpleCov if we are actually running specs. RSpec loads
+# this file when it runs as part of the Rails model generator - we don't want to
+# load coverage in a generator because coverage will fail and prevent the
+# generator from completing.
+if RSpec.configuration.files_to_run.length > 1
+  require "simplecov"
 
-  use_merging false
-  # minimum_coverage_by_file 80
-  # maximum_coverage_drop 5
-  # refuse_coverage_drop
-  minimum_coverage line: 90, branch: 80
+  ##
+  # Configure minimum test coverage levels
+  #
+  # Details of default values for these configuration options can be seen at
+  # https://github.com/colszowka/simplecov/blob/master/lib/simplecov/configuration.rb#L217
+  SimpleCov.start("rails") do
+    enable_coverage :branch
 
-  add_filter "/bin/"
-  add_filter "/lib/tasks/auto_annotate_models.rake"
-  add_filter "/lib/tasks/coverage.rake"
-  add_filter "/spec/support/"
-  add_filter "/spec/factories/"
-  add_filter "/spec/rails_helper.rb"
-  add_filter "/spec/spec_helper.rb"
+    use_merging false
+    # minimum_coverage_by_file 80
+    # maximum_coverage_drop 5
+    # refuse_coverage_drop
+    minimum_coverage line: 90, branch: 80
 
-  # ignore files with fewer than 5 lines
-  add_filter do |source_file|
-    source_file.lines.count < 5
+    add_filter "/bin/"
+    add_filter "/lib/tasks/auto_annotate_models.rake"
+    add_filter "/lib/tasks/coverage.rake"
+    add_filter "/spec/support/"
+    add_filter "/spec/factories/"
+    add_filter "/spec/rails_helper.rb"
+    add_filter "/spec/spec_helper.rb"
+
+    # ignore files with fewer than 5 lines
+    add_filter do |source_file|
+      source_file.lines.count < 5
+    end
   end
 end
 
