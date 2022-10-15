@@ -80,25 +80,25 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   assert_postgresql
   add_template_repository_to_source_path
 
-  template "Gemfile.tt", force: true
+  template "variants/backend-base/Gemfile.tt", "Gemfile", force: true
 
-  template "README.md.tt", force: true
+  template "variants/backend-base/README.md.tt", "README.md", force: true
   remove_file "README.rdoc"
 
-  template "example.env.tt", "example.env"
-  template "example.env", ".env"
-  copy_file "editorconfig", ".editorconfig"
-  copy_file "gitignore", ".gitignore", force: true
-  copy_file "overcommit.yml", ".overcommit.yml"
-  template "ruby-version.tt", ".ruby-version", force: true
+  template "variants/backend-base/example.env.tt", "example.env"
+  template "variants/backend-base/example.env.tt", ".env"
+  copy_file "variants/backend-base/editorconfig", ".editorconfig"
+  copy_file "variants/backend-base/gitignore", ".gitignore", force: true
+  copy_file "variants/backend-base/overcommit.yml", ".overcommit.yml"
+  template "variants/backend-base/ruby-version.tt", ".ruby-version", force: true
 
-  copy_file "Procfile"
+  copy_file "variants/backend-base/Procfile", "Procfile"
 
   copy_file "variants/backend-base/.node-version", ".node-version"
 
-  copy_file "Dockerfile"
-  copy_file "docker-compose.yml"
-  copy_file ".dockerignore"
+  copy_file "variants/backend-base/Dockerfile", "Dockerfile"
+  copy_file "variants/backend-base/docker-compose.yml", "docker-compose.yml"
+  copy_file "variants/backend-base/.dockerignore", ".dockerignore"
 
   apply "Rakefile.rb"
   apply "config.ru.rb"
@@ -160,7 +160,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     ]
     run_with_clean_bundler_env "bundle binstubs #{binstubs.join(" ")} --force"
 
-    template "rubocop.yml.tt", ".rubocop.yml"
+    template "variants/backend-base/rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
 
     apply "variants/frontend-audit-app/template.rb"
