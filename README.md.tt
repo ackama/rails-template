@@ -131,7 +131,7 @@ Before running this app and its tests locally you will need:
     TODO: Include the step by step instructions for setting up a local environment.
     TODO: An Ackama project should not take more than 5 mins for a new developer to setup
 
-1. Clone the project: `git clone git@bitbucket.org:ackama/THIS_REPO.git`
+1. Clone the project: `git clone git@github.com:ackama/THIS_REPO.git`
 2. Run the setup script: `./bin/setup`
 3. Create `.env` file by copying data from 1Password.
 
