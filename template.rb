@@ -104,7 +104,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   apply "variants/backend-base/config.ru.rb"
   apply "app/template.rb"
   apply "bin/template.rb"
-  apply "config/template.rb"
+  apply "variants/backend-base/config/template.rb"
   apply "variants/backend-base/doc/template.rb"
   apply "variants/backend-base/lib/template.rb"
   apply "variants/backend-base/public/template.rb"
