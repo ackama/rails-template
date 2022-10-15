@@ -29,6 +29,9 @@ jobs:
           node-version-file: ".node-version"
           cache: "yarn"
       - run: yarn install --frozen-lockfile
+      <% if TEMPLATE_CONFIG.use_typescript? %>
+      - run: yarn run typecheck
+      <% end %>
       - run: yarn run js-lint
       - run: yarn run format-check
   ruby_based_checks:
