@@ -1,33 +1,16 @@
 {
-  "name": "rails-template",
+  "name": "ackama-rails-template",
   "version": "1.0.0",
   "private": true,
   "repository": "git@github.com:ackama/rails-template.git",
   "scripts": {
     "format-check": "prettier --check './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
-    "format-fix": "prettier --write './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
-    "js-lint": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
-    "js-lint-fix": "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
-    "scss-lint": "stylelint '**/*.{css,scss}'",
-    "scss-lint-fix": "stylelint '**/*.{css,scss}' --fix"
+    "format-fix": "prettier --write './**/*.{css,scss,json,md,js,ts,tsx,jsx}'"
   },
   "prettier": "prettier-config-ackama",
   "devDependencies": {
-    "audit-app": "^0.5.2",
-    "eslint": "^7.6.0",
-    "eslint-config-ackama": "^2.0.0",
-    "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.5",
-    "eslint-plugin-react-hooks": "^4.0.8",
     "prettier": "^2.7.1",
     "prettier-config-ackama": "^1.1.0",
-    "prettier-plugin-packagejson": "^2.3.0",
-    "stylelint": "^14.0.0",
-    "stylelint-config-recommended-scss": "^7.0.0",
-    "stylelint-scss": "^4.0.0"
+    "prettier-plugin-packagejson": "^2.3.0"
   }
 }
