@@ -100,8 +100,8 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   copy_file "variants/backend-base/docker-compose.yml", "docker-compose.yml"
   copy_file "variants/backend-base/.dockerignore", ".dockerignore"
 
-  apply "Rakefile.rb"
-  apply "config.ru.rb"
+  apply "variants/backend-base/Rakefile.rb"
+  apply "variants/backend-base/config.ru.rb"
   apply "app/template.rb"
   apply "bin/template.rb"
   apply "config/template.rb"
