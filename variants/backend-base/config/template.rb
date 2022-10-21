@@ -8,7 +8,6 @@ remove_file "config/secrets.yml"
 copy_file "variants/backend-base/config/puma.rb", "config/puma.rb", force: true
 
 copy_file "variants/backend-base/config/initializers/generators.rb", "config/initializers/generators.rb"
-copy_file "variants/backend-base/config/initializers/rotate_log.rb", "config/initializers/rotate_log.rb"
 copy_file "variants/backend-base/config/initializers/version.rb", "config/initializers/version.rb"
 copy_file "variants/backend-base/config/initializers/lograge.rb", "config/initializers/lograge.rb"
 copy_file "variants/backend-base/config/initializers/content_security_policy.rb", "config/initializers/content_security_policy.rb", force: true
