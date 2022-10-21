@@ -187,8 +187,12 @@ are up to date.
 
 ### Rake tasks
 
-```
-bundle exec rake developer:do_stuff
+```bash
+# App tasks (useful in local development and deployed environments)
+<%= `./bin/rails -T |grep 'app:'` %>
+
+# Dev tasks (useful in local development only)
+<%= `./bin/rails -T |grep 'dev:'` %>
 ```
 
     TODO: Are there rake tasks new developers should know about? Document them here

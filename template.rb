@@ -82,7 +82,6 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
   template "variants/backend-base/Gemfile.tt", "Gemfile", force: true
 
-  template "variants/backend-base/README.md.tt", "README.md", force: true
   remove_file "README.rdoc"
 
   template "variants/backend-base/example.env.tt", "example.env"
@@ -186,6 +185,10 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     # We apply code annotation **after** all the other variants which might
     # generate routes and models
     apply "variants/code-annotation/template.rb"
+
+    # Run the README template at the end because it introspects the app to
+    # discover rake tasks etc.
+    template "variants/backend-base/README.md.tt", "README.md", force: true
   end
 end
 
