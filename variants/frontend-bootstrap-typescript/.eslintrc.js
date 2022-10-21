@@ -14,11 +14,7 @@ const config = {
   ignorePatterns: ['tmp/'],
   overrides: [
     {
-      files: [
-        'config/webpack/*',
-        'babel.config.js',
-        '.eslintrc.js'
-      ],
+      files: ['config/webpack/*', 'babel.config.js', '.eslintrc.js'],
       parserOptions: { sourceType: 'script' },
       rules: {
         '@typescript-eslint/prefer-nullish-coalescing': 'off',

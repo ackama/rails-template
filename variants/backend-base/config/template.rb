@@ -1,29 +1,28 @@
-apply "config/application.rb"
+apply "variants/backend-base/config/application.rb"
 
-template "config/database.yml.tt", force: true
+template "variants/backend-base/config/database.yml.tt", "config/database.yml", force: true
 
-template "config/secrets.example.yml"
+template "variants/backend-base/config/secrets.example.yml.tt", "config/secrets.example.yml"
 remove_file "config/secrets.yml"
 
-copy_file "config/puma.rb", force: true
+copy_file "variants/backend-base/config/puma.rb", "config/puma.rb", force: true
 
-copy_file "config/initializers/generators.rb"
-copy_file "config/initializers/rotate_log.rb"
-copy_file "config/initializers/version.rb"
-copy_file "config/initializers/lograge.rb"
-copy_file "config/initializers/content_security_policy.rb", force: true
-copy_file "config/initializers/health_checks.rb"
-copy_file "config/initializers/check_env.rb"
-copy_file "config/initializers/sentry.rb"
+copy_file "variants/backend-base/config/initializers/generators.rb", "config/initializers/generators.rb"
+copy_file "variants/backend-base/config/initializers/version.rb", "config/initializers/version.rb"
+copy_file "variants/backend-base/config/initializers/lograge.rb", "config/initializers/lograge.rb"
+copy_file "variants/backend-base/config/initializers/content_security_policy.rb", "config/initializers/content_security_policy.rb", force: true
+copy_file "variants/backend-base/config/initializers/health_checks.rb", "config/initializers/health_checks.rb"
+copy_file "variants/backend-base/config/initializers/check_env.rb", "config/initializers/check_env.rb"
+copy_file "variants/backend-base/config/initializers/sentry.rb", "config/initializers/sentry.rb"
 
 gsub_file "config/initializers/filter_parameter_logging.rb", /\[:password\]/ do
   "%w[password secret session cookie csrf]"
 end
 
-apply "config/environments/development.rb"
-apply "config/environments/production.rb"
-apply "config/environments/test.rb"
-template "config/environments/staging.rb.tt"
+apply "variants/backend-base/config/environments/development.rb"
+apply "variants/backend-base/config/environments/production.rb"
+apply "variants/backend-base/config/environments/test.rb"
+template "variants/backend-base/config/environments/staging.rb.tt", "config/environments/staging.rb"
 
 route <<~HEALTH_CHECK_ROUTES
   mount OkComputer::Engine, at: "/healthchecks"

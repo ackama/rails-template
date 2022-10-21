@@ -6,7 +6,7 @@
 # all js packages have been installed; otherwise we risk not ignoring a vulnerability
 # which will result in CI breaking out of the box, which is a bad experience
 
-copy_file ".auditapprc.json"
+copy_file "variants/frontend-audit-app/.auditapprc.json", ".auditapprc.json"
 
 audit_app_config = JSON.parse(File.read("./.auditapprc.json"))
 audit_app_config["ignore"] = `CI=true npx audit-app --no-config --output paths`.split("\n")

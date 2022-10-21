@@ -38,13 +38,11 @@ describe('HelloWorld', () => {
         'Hello from the other side'
       );
 
-      expect(container).not.toHaveTextContent("Hello Ackama");
+      expect(container).not.toHaveTextContent('Hello Ackama');
 
-      await userEvent.click(
-        screen.getByText('Reset')
-      )
+      await userEvent.click(screen.getByText('Reset'));
 
-      expect(container).toHaveTextContent("Hello Ackama");
+      expect(container).toHaveTextContent('Hello Ackama');
     });
   });
 });

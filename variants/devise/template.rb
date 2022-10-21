@@ -77,7 +77,7 @@ gsub_file "config/initializers/devise.rb",
 
 gsub_file "config/initializers/devise.rb",
           /  # config.unlock_strategy = .+/,
-          "  config.lock_strategy = :email"
+          "  config.unlock_strategy = :email"
 
 gsub_file "config/initializers/devise.rb",
           /  # config.maximum_attempts = .+/,

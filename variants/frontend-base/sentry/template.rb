@@ -49,4 +49,4 @@ end
 
 gsub_file "config/initializers/content_security_policy.rb",
           /# policy.report_uri ".+"/,
-          'policy.report_uri ENV["SENTRY_CSP_HEADER_REPORT_ENDPOINT"]'
+          'policy.report_uri(ENV["SENTRY_CSP_HEADER_REPORT_ENDPOINT"]) if ENV["SENTRY_CSP_HEADER_REPORT_ENDPOINT"]'
