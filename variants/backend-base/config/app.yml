@@ -1,0 +1,24 @@
+# Be sure to restart your server when you modify this file.
+#
+# Use this file to load non-sensitive app config from ENV. Config values here
+# will be loaded into `Rails.application.config.app`.
+#
+# Sensitive config should be put in `config/secrets.yml` (which will load it
+# into `Rails.application.secrets`)
+
+default: &default
+  # The default `From:` address to use for email sent by this application
+  # obviously isn't a secret per se, but configuring it here is convenient
+  mail_from: "<%= ENV['MAIL_FROM'] %>"
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+staging:
+  <<: *default
+
+production:
+  <<: *default

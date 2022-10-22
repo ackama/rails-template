@@ -14,6 +14,9 @@ insert_into_file "config/application.rb", before: /^  end/ do
   # the empty line at the beginning of this string is required
   <<-'RUBY'
 
+    # load config/app.yml into Rails.application.config.app.*
+    config.app = config_for(:app)
+
     config.middleware.insert_before Rack::Sendfile, HttpBasicAuth
     config.action_dispatch.default_headers["Permissions-Policy"] = "interest-cohort=()"
 
