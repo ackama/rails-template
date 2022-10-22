@@ -2,8 +2,7 @@ apply "variants/backend-base/config/application.rb"
 
 template "variants/backend-base/config/database.yml.tt", "config/database.yml", force: true
 
-template "variants/backend-base/config/secrets.example.yml.tt", "config/secrets.example.yml"
-remove_file "config/secrets.yml"
+copy_file "variants/backend-base/config/secrets.yml", "config/secrets.yml", force: true
 
 copy_file "variants/backend-base/config/puma.rb", "config/puma.rb", force: true
 
