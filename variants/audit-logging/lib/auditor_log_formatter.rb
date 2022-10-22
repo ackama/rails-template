@@ -6,7 +6,7 @@ require "logger"
 # formatter - see `config/application.rb` for where Rails is instructed to use
 # it.
 #
-class AuditorLogFormatter < Logger::Formatter
+class AuditLogLogFormatter < Logger::Formatter
   ##
   # The public API of this function is defined by `Logger::Formatter`
   #
