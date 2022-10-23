@@ -7,7 +7,7 @@ db_secrets = begin
   unparsed_yaml = raw.sub(/Add.+\n/, "")
   puts "DB_ENCRYPTION_INIT: Unparsed YAML: '#{unparsed_yaml}'"
 
-  parsed = YAML.load(unparsed_yaml)
+  parsed = YAML.safe_load(unparsed_yaml)
   puts "DB_ENCRYPTION_INIT: Parsed YAML: '#{parsed.inspect}'"
 
   parsed.fetch("active_record_encryption")
