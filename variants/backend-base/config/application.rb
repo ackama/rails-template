@@ -16,6 +16,6 @@ insert_into_file "config/application.rb", before: /^  end/ do
 
     config.middleware.insert_before Rack::Sendfile, HttpBasicAuth
     config.action_dispatch.default_headers["Permissions-Policy"] = "interest-cohort=()"
-    config.action_dispatch.default_headers["X-Frame-Options"] = "deny"
+    config.action_dispatch.default_headers["X-Frame-Options"] = "DENY"
   RUBY
 end
