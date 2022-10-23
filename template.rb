@@ -119,6 +119,8 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
     run_with_clean_bundler_env "bin/setup"
 
+    apply "variants/backend-base/set_active_record_encryption_secrets.rb"
+
     apply "variants/frontend-base/template.rb"
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
