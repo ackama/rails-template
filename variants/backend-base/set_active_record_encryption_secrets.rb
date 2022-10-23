@@ -1,18 +1,12 @@
 db_secrets = begin
-  puts "DB_ENCRYPTION_INIT: Running rails db:encryption:init"
+  puts "DB_ENCRYPTION_INIT: Running rails db:encryption:init to set realistic values in ENV variables"
 
   raw = `bin/rails db:encryption:init`
-  puts "DB_ENCRYPTION_INIT: Raw output: '#{raw}'"
-
   unparsed_yaml = raw.sub(/Add.+\n/, "")
-  puts "DB_ENCRYPTION_INIT: Unparsed YAML: '#{unparsed_yaml}'"
-
   parsed = YAML.safe_load(unparsed_yaml)
-  puts "DB_ENCRYPTION_INIT: Parsed YAML: '#{parsed.inspect}'"
-
   parsed.fetch("active_record_encryption")
 rescue StandardError => e
-  puts "DB_ENCRYPTION_INIT:  Recovering from error: #{e.inspect}"
+  puts "DB_ENCRYPTION_INIT: Recovering from error: #{e.inspect}"
   {
     "primary_key" => "FAILED_TO_GENERATE_DEFAULT_PRIMARY_KEY",
     "deterministic_key" => "FAILED_TO_GENERATE_DEFAULT_DETERMINISTIC_KEY",
