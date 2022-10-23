@@ -119,4 +119,8 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
+          RAILS_SECRET_KEY_BASE: "placeholder"
+          ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: "placeholder"
+          ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: "placeholder"
+          ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: "placeholder"
         run: ./ci/bin/build-and-test
