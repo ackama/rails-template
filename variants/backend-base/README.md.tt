@@ -43,17 +43,15 @@ This project follows [Ackama standard branch and environment naming](https://git
 
 | **Browser**            | **Supported Versions** |
 | ---------------------- | ---------------------- |
-| Internet Explorer      | 11+                    |
-| Edge                   | 17+                    |
-| Safari                 | Latest -2              |
-| Chrome                 | Latest -2              |
-| Firefox                | Latest -2              |
-| iOS Safari             | Latest -2              |
-| Chrome for Android     | Latest -2              |
-| UC Browser for Android | Latest -2              |
-| Samsung Internet       | Latest -2              |
+| Chrome                 | Latest two versions    |
+| Firefox                | Latest two versions    |
+| iOS Safari             | Latest two versions    |
+| Safari                 | Latest two versions    |
+| Chrome for Android     | Latest two versions    |
 
-    TODO: Confirm browser requirements with client/product owner. The above are all based on current NZ wide (and largely world wide) browser usage statistics and are set as our defaults.
+    TODO: Confirm browser requirements with client/product owner. The above are
+          all based on current NZ wide (and largely world wide) browser usage
+          statistics and are set as our defaults.
 
 ## Secrets
 
