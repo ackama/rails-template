@@ -22,9 +22,6 @@ AllCops:
   DisplayStyleGuide: true
   Exclude:
     - 'bin/*'
-    - Capfile
-    - config/boot.rb
-    - config/environment.rb
     - config/initializers/version.rb
     - db/schema.rb
     - 'node_modules/**/*'
@@ -33,9 +30,6 @@ AllCops:
     - 'vendor/**/*'
     - 'bin/**/*'
     - 'doc/**/*'
-    - Gemfile
-    - Guardfile
-    - Rakefile
 
 Layout/LineLength:
   Max: 120
