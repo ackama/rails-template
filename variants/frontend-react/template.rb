@@ -1,6 +1,6 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-puts "Adding react-rails to Gemfile"
+TERMINAL.puts_header "Adding react-rails to Gemfile"
 
 gem "react-rails"
 run "bundle install"
