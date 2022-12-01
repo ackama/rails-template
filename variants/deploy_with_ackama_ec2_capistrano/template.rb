@@ -1,6 +1,4 @@
-puts "=" * 80
-puts "Starting variant: deploy_with_ackama_ec2_capistrano"
-puts "=" * 80
+TERMINAL.puts_header "Starting variant: deploy_with_ackama_ec2_capistrano"
 
 copy_file "variants/deploy_with_ackama_ec2_capistrano/aws_ec2_environment.yml", "config/aws_ec2_environment.yml"
 

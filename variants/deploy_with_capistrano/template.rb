@@ -1,6 +1,4 @@
-puts "=" * 80
-puts "Starting variant: deploy_with_capistrano"
-puts "=" * 80
+TERMINAL.puts_header "Starting variant: deploy_with_capistrano"
 
 append_to_file("Gemfile") do
   <<~'EO_RUBY'
