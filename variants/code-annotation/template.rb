@@ -17,14 +17,15 @@ run "bundle install"
 # adds a rake task which causes annotate to auto-run on every migration
 run "bundle exec rails generate annotate:install"
 
-run "bundle exec rubocop -A lib/tasks/auto_annotate_models.rake"
-
 TERMINAL.puts_header "Annotating code"
 
 run "bundle exec chusaku"
 run "bundle exec annotate"
 
-TERMINAL.puts_header "Commiting code annotations to git"
+TERMINAL.puts_header "Running rubocop -A to fix formatting in files related to annotations"
+run "bundle exec rubocop -A -c ./.rubocop.yml"
+
+TERMINAL.puts_header "Committing code annotations to git"
 
 git add: "-A ."
 git commit: "-n -m 'Set up Ruby code annotation'"
