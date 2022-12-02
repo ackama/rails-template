@@ -8,15 +8,15 @@ builds_path = File.join(root_path, "tmp/builds")
 app_name = ENV.fetch("APP_NAME", "app")
 app_path = File.join(builds_path, app_name)
 
-config_path = if ENV["CONFIG_PATH"]&.present?
-                File.join(root_path, ENV.fetch("CONFIG_PATH"))
-              else
+config_path = if ENV["CONFIG_PATH"]&.empty?
                 FileUtils.cp(
                   File.join(root_path, "ackama_rails_template.config.yml"),
                   File.join(builds_path, "ackama_rails_template.config.yml")
                 )
 
                 nil
+              else
+                File.join(root_path, ENV.fetch("CONFIG_PATH"))
               end
 
 config_env_var = %Q(CONFIG_PATH="#{config_path}") if config_path
