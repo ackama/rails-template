@@ -195,8 +195,8 @@ $ rails new my_app --no-rc --database=postgresql --skip-javascript --template=ht
 
 # Create a custom config YAML file, saving as ./my_custom_config.yml
 
-# Template options will be taken from ./my_custom_config.yml
-$ CONFIG_PATH=./my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip-javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
+# Template options will be taken from ../my_custom_config.yml (relative to the new app directory)
+$ CONFIG_PATH=../my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip-javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
 Here are some additional options you can add to this command. We don't
