@@ -104,7 +104,9 @@ Rails.application.config.content_security_policy do |policy|
   # https://docs.sentry.io/error-reporting/security-policy-reporting/ for
   # details
   #
-  # policy.report_uri ENV.fetch("SENTRY_CSP_HEADER_REPORT_ENDPOINT")
+  if ENV.has_key("SENTRY_CSP_HEADER_REPORT_ENDPOINT")
+    policy.report_uri ENV.fetch("SENTRY_CSP_HEADER_REPORT_ENDPOINT")
+  end
 end
 
 # ###############
