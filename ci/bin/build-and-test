@@ -7,7 +7,19 @@ template_path = File.join(root_path, "template.rb")
 builds_path = File.join(root_path, "tmp/builds")
 app_name = ENV.fetch("APP_NAME", "app")
 app_path = File.join(builds_path, app_name)
-config_path = File.join(root_path, ENV.fetch("CONFIG_PATH", "ci/configs/basic.yml"))
+
+config_path = if ENV["CONFIG_PATH"]&.present?
+                File.join(root_path, ENV.fetch("CONFIG_PATH"))
+              else
+                FileUtils.cp(
+                  File.join(root_path, "ackama_rails_template.config.yml"),
+                  File.join(builds_path, "ackama_rails_template.config.yml")
+                )
+
+                nil
+              end
+
+config_env_var = %Q(CONFIG_PATH="#{config_path}") if config_path
 skip_flags = ENV.fetch("SKIPS", "")
 
 puts "=" * 80
@@ -19,11 +31,11 @@ puts <<~EO_CONFIG_SUMMARY
     app_name = #{app_name}
     app_path = #{app_path}
     template_path = #{template_path}
-    config_path = #{config_path}
+    config_path = #{config_path || "None"}
 EO_CONFIG_SUMMARY
 puts "=" * 80
 
-fail "Missing config YML file" unless File.exist?(config_path) & File.file?(config_path)
+fail "Missing config YML file" if config_path && !(File.exist?(config_path) && File.file?(config_path))
 
 puts "Installing latest rails gem"
 system "gem install rails --no-document"
@@ -40,7 +52,7 @@ end
 
 Dir.chdir(builds_path) do |cwd|
   puts "Working dir is now #{cwd}"
-  cmd = %Q(CONFIG_PATH="#{config_path}" RACK_ENV=development RAILS_ENV=development rails new "#{app_name}" -d postgresql #{skip_flags} -m "#{template_path}")
+  cmd = %Q(#{config_env_var} RACK_ENV=development RAILS_ENV=development rails new "#{app_name}" -d postgresql #{skip_flags} -m "#{template_path}")
   puts <<~EO_HELP
     Build command:
     #{cmd}

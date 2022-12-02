@@ -28,6 +28,8 @@ jobs:
       fail-fast: false
       matrix:
         variant:
+          - name: default
+            skips: --skip-javascript
           - name: basic
             config_path: "ci/configs/basic.yml"
             skips: --skip-javascript
