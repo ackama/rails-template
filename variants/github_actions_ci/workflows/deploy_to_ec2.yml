@@ -31,18 +31,23 @@ on:
         required: true
       slack_webhook:
         required: false
+
+# These are the permissions required by this nested workflow to function.
+#
+# You should include a copy of this block next to any `uses:` of this workflow
+permissions:
+  id-token: write # to use OIDC (aws-actions/configure-aws-credentials)
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
   deploy_to_ec2_via_oidc:
     name: Deploy to AWS EC2 with Capistrano, authenticated by Github OIDC
     runs-on: ubuntu-latest
     timeout-minutes: ${{ inputs.timeout_minutes }}
-    permissions:
-      # These permissions are needed to interact with GitHub's OIDC Token
-      # endpoint.
-      id-token: write
-      contents: read
     steps:
       - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
