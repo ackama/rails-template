@@ -10,7 +10,7 @@ RAILS_REQUIREMENT = "~> 7.0.3".freeze
 # this repo.
 #
 class Config
-  DEFAULT_CONFIG_FILE_PATH = "./ackama_rails_template.config.yml".freeze
+  DEFAULT_CONFIG_FILE_PATH = "../ackama_rails_template.config.yml".freeze
 
   def initialize
     config_file_path = File.absolute_path(ENV.fetch("CONFIG_PATH", DEFAULT_CONFIG_FILE_PATH))
