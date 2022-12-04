@@ -8,7 +8,7 @@ builds_path = File.join(root_path, "tmp/builds")
 app_name = ENV.fetch("APP_NAME", "app")
 app_path = File.join(builds_path, app_name)
 
-config_path = if !ENV.key?("CONFIG_PATH") || ENV["CONFIG_PATH"] == ""
+config_path = if ENV.fetch("CONFIG_PATH", "") == ""
                 FileUtils.cp(
                   File.join(root_path, "ackama_rails_template.config.yml"),
                   File.join(builds_path, "ackama_rails_template.config.yml")
