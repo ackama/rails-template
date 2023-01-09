@@ -9,4 +9,9 @@ Sentry.init do |config|
 
   # Set Sentry environment to be current environment if SENTRY_ENV is not set
   config.environment = ENV.fetch("SENTRY_ENV", Rails.env)
+
+  config.breadcrumbs_logger = %i[active_support_logger http_logger]
+
+  # To activate performance monitoring, use the environment variable
+  config.traces_sample_rate = ENV.fetch("SENTRY_TRACES_SAMPLE_RATE", 0)
 end
