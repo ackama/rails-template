@@ -205,7 +205,10 @@ end
 
 def build_engines_field
   node_version = File.read("./.node-version").strip
-  { node: "^#{node_version}" }
+  {
+    node: "^#{node_version}",
+    yarn: "^1.0.0"
+  }
 end
 
 def cleanup_package_json
