@@ -97,7 +97,8 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v3
         with:
-          node-version: '16.15.0'
+          cache: "yarn"
+          node-version-file: ".node-version"
 
       # We don't cache gems or JS packages because we are actually testing how
       # installation and setup works in this project so, while caching would
