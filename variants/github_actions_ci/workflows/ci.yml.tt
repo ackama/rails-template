@@ -95,6 +95,13 @@ jobs:
       - run: bundle exec bundle audit --update
       - run: bundle exec rails db:setup
       - run: bundle exec rspec spec --format progress
+      - name: Archive spec outputs
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+          name: rspec-output-screenshots
+          path: tmp/screenshots
+          retention-days: 5
 
   # ACTION REQUIRED:
   #   Uncomment the deployment block which suits your application. You should
