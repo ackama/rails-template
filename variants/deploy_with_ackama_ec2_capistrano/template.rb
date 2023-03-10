@@ -78,7 +78,6 @@ new_ackama_cap_config_snippet = <<~EO_RUBY
   set :rbenv_type, :fullstaq
 
   set :rbenv_ruby, File.read(".ruby-version").strip
-  set :rbenv_prefix, "$HOME/.rbenv/bin/rbenv exec"
   set :rbenv_map_bins, %w[rake gem bundle ruby rails]
 
   namespace :deploy do
