@@ -38,9 +38,12 @@ new_ackama_cap_config_snippet = <<~EO_RUBY
   require "dotenv/load"
   require "aws_ec2_environment"
 
+  set :user, "deploy"
   set :application, "TODO_set_app_name"
   set :repo_url, "#{TEMPLATE_CONFIG.git_repo_url.presence || "TODO_set_git_repo_url"}"
   set :git_shallow_clone, 1
+
+  set :deploy_to, "/home/\#{fetch(:user)}/\#{fetch(:application)}"
 
   set :bundle_config, {
     deployment: true,
