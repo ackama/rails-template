@@ -74,8 +74,6 @@ new_ackama_cap_config_snippet = <<~EO_RUBY
   # Default value for default_env is {}
   set :default_env, path: "$HOME/.rbenv/shims:$HOME/bin:/snap/bin:$PATH"
 
-  set :rbenv_path, "$HOME/.rbenv"
-
   # Ackama deployments use Fullstaq. Other possible values: :system, :user
   set :rbenv_type, :fullstaq
 
