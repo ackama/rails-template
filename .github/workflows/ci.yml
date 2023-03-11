@@ -42,6 +42,9 @@ jobs:
           - name: basic
             config_path: "ci/configs/basic.yml"
             skips: --skip-javascript
+          - name: basic-typescript
+            config_path: "ci/configs/basic-typescript.yml"
+            skips: --skip-javascript
           - name: github_actions
             config_path: "ci/configs/github_actions.yml"
             skips: --skip-javascript
