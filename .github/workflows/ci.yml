@@ -39,6 +39,12 @@ jobs:
       fail-fast: false
       matrix:
         variant:
+          - name: all
+            config_path: "ci/configs/all.yml"
+            skips: --skip-javascript
+          - name: all-typescript
+            config_path: "ci/configs/all-typescript.yml"
+            skips: --skip-javascript
           - name: basic
             config_path: "ci/configs/basic.yml"
             skips: --skip-javascript
