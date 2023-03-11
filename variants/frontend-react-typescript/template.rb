@@ -11,12 +11,7 @@ yarn_add_dev_dependencies [
 ]
 run "yarn install"
 
-%w[
-  app/frontend/packs/server_rendering
-].each do |file|
-  copy_file "#{destination_root}/#{file}.js", "#{file}.ts"
-  remove_file "#{file}.js"
-end
+rename_js_file_to_ts "app/frontend/packs/server_rendering"
 
 copy_file "tsconfig.json", force: true
 copy_file ".eslintrc.js", force: true

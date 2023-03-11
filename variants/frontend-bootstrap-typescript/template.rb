@@ -5,9 +5,4 @@ yarn_add_dev_dependencies %w[@typescript-eslint/parser @typescript-eslint/eslint
 
 run "yarn install"
 
-%w[
-  app/frontend/js/bootstrap
-].each do |file|
-  copy_file "#{destination_root}/#{file}.js", "#{file}.ts"
-  remove_file "#{file}.js"
-end
+rename_js_file_to_ts "app/frontend/js/bootstrap"

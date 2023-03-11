@@ -1,5 +1,13 @@
 source_paths.unshift(File.dirname(__FILE__))
 
+# Renames a JavaScript file that ends with ".js" to ".ts"
+#
+# @param [String] file
+def rename_js_file_to_ts(file)
+  copy_file "#{destination_root}/#{file}.js", "#{file}.ts"
+  remove_file "#{file}.js"
+end
+
 remove_file "app/frontend/packs/hello_typescript.ts"
 
 types_packages = %w[
@@ -18,12 +26,7 @@ yarn_add_dev_dependencies %w[@typescript-eslint/parser @typescript-eslint/eslint
 
 run "yarn install"
 
-%w[
-  app/frontend/packs/application
-].each do |file|
-  copy_file "#{destination_root}/#{file}.js", "#{file}.ts"
-  remove_file "#{file}.js"
-end
+rename_js_file_to_ts "app/frontend/packs/application"
 
 copy_file "tsconfig.json", force: true
 copy_file ".eslintrc.js", force: true
