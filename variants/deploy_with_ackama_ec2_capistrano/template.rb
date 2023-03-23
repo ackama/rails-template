@@ -1,6 +1,4 @@
-puts "=" * 80
-puts "Starting variant: deploy_with_ackama_ec2_capistrano"
-puts "=" * 80
+TERMINAL.puts_header "Starting variant: deploy_with_ackama_ec2_capistrano"
 
 copy_file "variants/deploy_with_ackama_ec2_capistrano/aws_ec2_environment.yml", "config/aws_ec2_environment.yml"
 
@@ -42,6 +40,7 @@ new_ackama_cap_config_snippet = <<~EO_RUBY
 
   set :application, "TODO_set_app_name"
   set :repo_url, "#{TEMPLATE_CONFIG.git_repo_url.presence || "TODO_set_git_repo_url"}"
+  set :git_shallow_clone, 1
 
   set :bundle_config, {
     deployment: true,

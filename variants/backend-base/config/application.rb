@@ -28,5 +28,7 @@ insert_into_file "config/application.rb", before: /^  end/ do
     config.active_record.encryption.primary_key = Rails.application.secrets.active_record_encryption_primary_key
     config.active_record.encryption.deterministic_key = Rails.application.secrets.active_record_encryption_deterministic_key
     config.active_record.encryption.key_derivation_salt = Rails.application.secrets.active_record_encryption_key_derivation_salt
+
+    config.action_dispatch.default_headers["X-Frame-Options"] = "DENY"
   RUBY
 end

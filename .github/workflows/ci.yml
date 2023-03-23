@@ -8,11 +8,22 @@ on:
     # * is a special character in YAML so you have to quote this string
     # * At 05:00 UTC every Monday, run the latest commit on the default or base branch
     - cron:  '0 5 * * MON'
+
+# Restrict jobs in this workflow to only be allowed to read this repo by default.
+#
+# If you are wanting to introduce a job/tool that requires more permissions (such
+# as posting comments or commits to the repository), then you should grant just
+# that job the necessarily permissions by giving it a dedicated `permissions` block.
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".node-version"
@@ -80,11 +91,14 @@ jobs:
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false
 
       - name: Install NodeJS
         uses: actions/setup-node@v3
         with:
-          node-version: '16.15.0'
+          cache: "yarn"
+          node-version-file: ".node-version"
 
       # We don't cache gems or JS packages because we are actually testing how
       # installation and setup works in this project so, while caching would
