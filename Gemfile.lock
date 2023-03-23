@@ -1,17 +1,17 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.0.4.1)
+    activesupport (7.0.4.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
     ast (2.4.2)
-    concurrent-ruby (1.1.10)
+    concurrent-ruby (1.2.2)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     json (2.6.2)
-    minitest (5.17.0)
+    minitest (5.18.0)
     parallel (1.22.1)
     parser (3.1.2.0)
       ast (~> 2.4.1)
@@ -41,7 +41,7 @@ GEM
     rubocop-rspec (2.12.1)
       rubocop (~> 1.31)
     ruby-progressbar (1.11.0)
-    tzinfo (2.0.5)
+    tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.2.0)
 
