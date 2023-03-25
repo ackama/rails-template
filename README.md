@@ -41,7 +41,7 @@ Where possible we stick to Rails defaults.
     variables. We use this regularly for pre-production envs.
   - Use [okcomputer](https://github.com/sportngin/okcomputer) for health check
     endpoints. Configured in
-    [./config/initializers/health_checks.rb](./config/initializers/health_checks.rb)
+    [./variants/backend-base/config/initializers/health_checks.rb](./variants/backend-base/config/initializers/health_checks.rb)
   - Install [lograge](https://github.com/roidrage/lograge) for better logs in
     production.
   - Create `app/services` as the place to hold our plain ol' Ruby objects
@@ -55,7 +55,7 @@ Where possible we stick to Rails defaults.
     [bundler-audit](https://github.com/rubysec/bundler-audit)
   - Create `.well-known/security.txt`
   - Add a well documented
-    [Content Security Policy initializer](./config/initializers/content_security_policy.rb)
+    [Content Security Policy initializer](./variants/backend-base/config/initializers/content_security_policy.rb)
     with secure defaults.
   - Install [pundit](https://github.com/varvet/pundit) as our preferred
     authorization gem

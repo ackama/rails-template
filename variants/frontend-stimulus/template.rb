@@ -1,6 +1,6 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-puts "Setting up stimulus.js"
+TERMINAL.puts_header "Setting up stimulus.js"
 
 yarn_add_dependencies %w[
   @hotwired/stimulus

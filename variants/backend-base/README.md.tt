@@ -41,19 +41,19 @@ This project follows [Ackama standard branch and environment naming](https://git
 
 ### Browser Support
 
-| **Browser**            | **Supported Versions** |
-| ---------------------- | ---------------------- |
-| Internet Explorer      | 11+                    |
-| Edge                   | 17+                    |
-| Safari                 | Latest -2              |
-| Chrome                 | Latest -2              |
-| Firefox                | Latest -2              |
-| iOS Safari             | Latest -2              |
-| Chrome for Android     | Latest -2              |
-| UC Browser for Android | Latest -2              |
-| Samsung Internet       | Latest -2              |
+| **Browser** | **Supported Versions** |
+| ----------- | ---------------------- |
+| TODO        | TODO                   |
 
-    TODO: Confirm browser requirements with client/product owner. The above are all based on current NZ wide (and largely world wide) browser usage statistics and are set as our defaults.
+    TODO:
+    Confirm browser requirements with client/product owner. If you are working
+    at Ackama, see the wiki page about choosing browser support with a client.
+
+    Use existing site analytics if you can. Otherwise these may be useful to
+    decide which browsers to support:
+
+    * https://browserslist.dev/
+    * https://radar.cloudflare.com/
 
 ## Secrets
 
