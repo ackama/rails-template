@@ -3,7 +3,7 @@ copy_file "variants/backend-base/spec/spec_helper.rb", "spec/spec_helper.rb", fo
 copy_file "variants/backend-base/.rspec", ".rspec"
 directory "variants/backend-base/spec/system", "spec/system"
 directory "variants/backend-base/spec/requests", "spec/requests"
+directory "variants/backend-base/spec/support", "spec/support"
 empty_directory_with_keep_file "spec/helpers"
 empty_directory_with_keep_file "spec/models"
 empty_directory_with_keep_file "spec/factories"
-empty_directory_with_keep_file "spec/support"

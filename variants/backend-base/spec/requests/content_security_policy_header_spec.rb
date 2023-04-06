@@ -3,6 +3,8 @@ require "rails_helper"
 RSpec.describe "Content-Security-Policy HTTP Header", type: :request do
   context "when the application receives a request" do
     before do
+      log_in_with_basicauth
+
       get root_path
     end
 

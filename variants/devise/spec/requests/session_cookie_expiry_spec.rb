@@ -6,6 +6,8 @@ RSpec.describe "Session cookies are expired immediately after logout", type: :re
   let(:user) { FactoryBot.create(:user, password: password) }
 
   it "session cookies are invalidated by logging out" do
+    log_in_with_basicauth
+
     # Sign in
     post new_user_session_path, params: { "user[email]" => user.email, "user[password]" => password }
 

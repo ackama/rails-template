@@ -1,7 +1,11 @@
 require "rails_helper"
 
-RSpec.describe "Homepage", type: :system do
-  before { visit root_path }
+RSpec.describe "Homepage" do
+  before do
+    log_in_with_basicauth
+
+    visit root_path
+  end
 
   it "rendered page contains both base and application layouts" do
     assert_selector("html>head+body")

@@ -42,6 +42,11 @@ jobs:
           - name: basic
             config_path: "ci/configs/basic.yml"
             skips: --skip-javascript
+          - name: basicauth
+            config_path: "ci/configs/basicauth.yml"
+            skips: --skip-javascript
+            http_basic_auth_username: basic_username
+            http_basic_auth_password: basic_password
           - name: github_actions
             config_path: "ci/configs/github_actions.yml"
             skips: --skip-javascript
@@ -130,6 +135,8 @@ jobs:
           APP_NAME: ${{ matrix.variant.name }}demo
           CONFIG_PATH:  ${{ matrix.variant.config_path }}
           SKIPS: ${{ matrix.variant.skips }}
+          HTTP_BASIC_AUTH_USERNAME: ${{ matrix.variant.http_basic_auth_username }}
+          HTTP_BASIC_AUTH_PASSWORD: ${{ matrix.variant.http_basic_auth_password }}
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost

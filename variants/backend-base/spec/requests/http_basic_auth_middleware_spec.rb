@@ -11,11 +11,13 @@ RSpec.describe "HTTP Basic Auth Middleware", type: :request do
     end
 
     around do |example|
+      original_basic_auth_username = ENV.fetch("HTTP_BASIC_AUTH_USERNAME", nil)
+      original_basic_auth_password = ENV.fetch("HTTP_BASIC_AUTH_PASSWORD", nil)
       ENV["HTTP_BASIC_AUTH_USERNAME"] = username
       ENV["HTTP_BASIC_AUTH_PASSWORD"] = password
       example.run
-      ENV["HTTP_BASIC_AUTH_USERNAME"] = nil
-      ENV["HTTP_BASIC_AUTH_PASSWORD"] = nil
+      ENV["HTTP_BASIC_AUTH_USERNAME"] = original_basic_auth_username
+      ENV["HTTP_BASIC_AUTH_PASSWORD"] = original_basic_auth_password
     end
 
     context "when the request provides valid HTTP basic auth credentials" do

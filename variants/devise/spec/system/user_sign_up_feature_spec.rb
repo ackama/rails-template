@@ -6,11 +6,13 @@ RSpec.describe "User sign-up", type: :system do
   let(:invalid_email) { "miles.obrien@" }
   let(:valid_email) { "miles.obrien@transporterrm3.enterprise.uss" }
 
-  before { visit new_user_registration_path }
+  before do
+    log_in_with_basicauth
+
+    visit new_user_registration_path
+  end
 
   describe "accessibility" do
-    before { visit new_user_registration_path }
-
     it_behaves_like "an accessible page"
   end
 

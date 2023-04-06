@@ -6,13 +6,13 @@ RSpec.describe "User sign-in", type: :system do
   let(:email) { "miles.obrien@transporterrm3.enterprise.uss" }
 
   before do
+    log_in_with_basicauth
+
     user # create the user
     visit new_user_session_path
   end
 
   describe "accessibility" do
-    before { visit new_user_session_path }
-
     it_behaves_like "an accessible page"
   end
 
