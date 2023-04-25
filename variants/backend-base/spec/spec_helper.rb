@@ -8,11 +8,10 @@ ENV["TZ"] = "UTC"
 if RSpec.configuration.files_to_run.length > 1
   require "simplecov"
 
-  ##
   # Configure minimum test coverage levels
   #
   # Details of default values for these configuration options can be seen at
-  # https://github.com/colszowka/simplecov/blob/master/lib/simplecov/configuration.rb#L217
+  # https://github.com/simplecov-ruby/simplecov/blob/master/lib/simplecov/profiles/rails.rb
   SimpleCov.start("rails") do
     enable_coverage :branch
 
