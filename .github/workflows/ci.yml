@@ -39,6 +39,9 @@ jobs:
       fail-fast: false
       matrix:
         variant:
+          - name: defaults
+            config_path: "ackama_rails_template.config.yml"
+            skips: --skip-javascript
           - name: all
             config_path: "ci/configs/all.yml"
             skips: --skip-javascript
