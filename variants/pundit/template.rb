@@ -1,6 +1,6 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-puts "Adding pundit to Gemfile"
+TERMINAL.puts_header "Adding pundit to Gemfile"
 
 gem "pundit"
 

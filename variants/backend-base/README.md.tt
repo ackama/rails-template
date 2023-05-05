@@ -11,7 +11,8 @@
 
 ## Operations:
 
-This project follows [Ackama standard branch and environment naming](https://github.com/ackama/wiki/wiki/Branch-naming-conventions-and-deployment-process)
+This project follows the
+[Ackama standard branch naming, environment naming, and deployment conventions](https://ackama.atlassian.net/wiki/spaces/DEV/pages/26560463128/Branch+naming+conventions+and+deployment+process).
 
     TODO: If this project cannot follow our standard naming conventions you must document why here.
 
@@ -41,19 +42,19 @@ This project follows [Ackama standard branch and environment naming](https://git
 
 ### Browser Support
 
-| **Browser**            | **Supported Versions** |
-| ---------------------- | ---------------------- |
-| Internet Explorer      | 11+                    |
-| Edge                   | 17+                    |
-| Safari                 | Latest -2              |
-| Chrome                 | Latest -2              |
-| Firefox                | Latest -2              |
-| iOS Safari             | Latest -2              |
-| Chrome for Android     | Latest -2              |
-| UC Browser for Android | Latest -2              |
-| Samsung Internet       | Latest -2              |
+| **Browser** | **Supported Versions** |
+| ----------- | ---------------------- |
+| TODO        | TODO                   |
 
-    TODO: Confirm browser requirements with client/product owner. The above are all based on current NZ wide (and largely world wide) browser usage statistics and are set as our defaults.
+    TODO:
+    Confirm browser requirements with client/product owner. If you are working
+    at Ackama, see the wiki page about choosing browser support with a client.
+
+    Use existing site analytics if you can. Otherwise these may be useful to
+    decide which browsers to support:
+
+    * https://browserslist.dev/
+    * https://radar.cloudflare.com/
 
 ## Secrets
 
@@ -187,8 +188,12 @@ are up to date.
 
 ### Rake tasks
 
-```
-bundle exec rake developer:do_stuff
+```bash
+# App tasks (useful in local development and deployed environments)
+<%= `./bin/rails -T |grep 'app:'` %>
+
+# Dev tasks (useful in local development only)
+<%= `./bin/rails -T |grep 'dev:'` %>
 ```
 
     TODO: Are there rake tasks new developers should know about? Document them here
