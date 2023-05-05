@@ -266,3 +266,6 @@ Rails/LexicallyScopedActionFilter:
 RSpec/RepeatedExample:
   Exclude:
     - 'spec/policies/**'
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10

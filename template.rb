@@ -145,6 +145,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     apply "variants/performance/template.rb"
     apply "variants/bullet/template.rb"
     apply "variants/pundit/template.rb"
+    apply "variants/audit-logging/template.rb"
     apply "variants/sidekiq/template.rb" if TEMPLATE_CONFIG.apply_variant_sidekiq?
 
     apply "variants/github_actions_ci/template.rb" if TEMPLATE_CONFIG.apply_variant_github_actions_ci?
