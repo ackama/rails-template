@@ -1,37 +1,23 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-puts "Setting up stimulus.js"
+TERMINAL.puts_header "Setting up stimulus.js"
 
 yarn_add_dependencies %w[
   @hotwired/stimulus
   @hotwired/stimulus-webpack-helpers
 ]
 
-file_ext = if TEMPLATE_CONFIG.use_typescript?
-             "ts"
-           else
-             "js"
-           end
+copy_file "app/frontend/stimulus/controllers/hello_controller.js"
 
-copy_file "variants/frontend-stimulus/hello_controller.#{file_ext}", "app/frontend/stimulus/controllers/hello_controller.#{file_ext}"
-
-##
-# Rename application.js to applicaiton.ts if it hasn't already been done by some
-# other variant.
-#
-app_js_path = "app/frontend/packs/application.js"
-app_ts_path = "app/frontend/packs/application.ts"
-FileUtils.mv(app_js_path, app_ts_path) if TEMPLATE_CONFIG.use_typescript? && File.exist?(app_js_path)
-
-prepend_to_file "app/frontend/packs/application.#{file_ext}" do
+prepend_to_file "app/frontend/packs/application.js" do
   <<~EO_JS_IMPORTS
     import { Application } from '@hotwired/stimulus';
     import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
   EO_JS_IMPORTS
 end
 
-append_to_file "app/frontend/packs/application.#{file_ext}" do
-  <<~EO_TS_SETUP
+append_to_file "app/frontend/packs/application.js" do
+  <<~EO_JS_SETUP
 
     // Set up stimulus.js https://stimulus.hotwired.dev/
     const application = Application.start();
@@ -56,5 +42,5 @@ append_to_file "app/frontend/packs/application.#{file_ext}" do
     // Configure stimulus development experience
     application.debug = false;
     // window.Stimulus = application;
-  EO_TS_SETUP
+  EO_JS_SETUP
 end
