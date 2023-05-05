@@ -39,8 +39,20 @@ jobs:
       fail-fast: false
       matrix:
         variant:
+          - name: defaults
+            config_path: "ackama_rails_template.config.yml"
+            skips: --skip-javascript
+          - name: all
+            config_path: "ci/configs/all.yml"
+            skips: --skip-javascript
+          - name: all-typescript
+            config_path: "ci/configs/all-typescript.yml"
+            skips: --skip-javascript
           - name: basic
             config_path: "ci/configs/basic.yml"
+            skips: --skip-javascript
+          - name: basic-typescript
+            config_path: "ci/configs/basic-typescript.yml"
             skips: --skip-javascript
           - name: github_actions
             config_path: "ci/configs/github_actions.yml"
@@ -93,6 +105,10 @@ jobs:
         uses: actions/checkout@v3
         with:
           persist-credentials: false
+
+      # this ensures that osv-detector is available for running bin/ci-run
+      - name: Check dependencies for security vulnerabilities (and setup osv-detector)
+        uses: g-rath/check-with-osv-detector@main
 
       - name: Install NodeJS
         uses: actions/setup-node@v3

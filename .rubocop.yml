@@ -51,6 +51,23 @@ Style/SignalException:
   EnforcedStyle: semantic
 
 # We think that:
+#   hash = {
+#     key: :value
+#   }
+#   and_in_a_method_call({
+#     no: :difference
+#   })
+# Looks better than:
+#   hash = {
+#     key: :value
+#   }
+#   but_in_a_method_call({
+#                          its_like: :this
+#                         })
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+# We think that:
 #     {
 #       foo: :bar
 #       baz: :bip
@@ -209,3 +226,6 @@ Rails/LexicallyScopedActionFilter:
 RSpec/RepeatedExample:
   Exclude:
     - 'variants/pundit/spec/policies/**'
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10

@@ -82,9 +82,6 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
   template "variants/backend-base/Gemfile.tt", "Gemfile", force: true
 
-  template "variants/backend-base/README.md.tt", "README.md", force: true
-  remove_file "README.rdoc"
-
   template "variants/backend-base/example.env.tt", "example.env"
   copy_file "variants/backend-base/editorconfig", ".editorconfig"
   copy_file "variants/backend-base/gitignore", ".gitignore", force: true
@@ -97,6 +94,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
   copy_file "variants/backend-base/Dockerfile", "Dockerfile"
   copy_file "variants/backend-base/docker-compose.yml", "docker-compose.yml"
+  copy_file "variants/backend-base/.osv-detector.yml", ".osv-detector.yml"
   copy_file "variants/backend-base/.dockerignore", ".dockerignore"
 
   apply "variants/backend-base/Rakefile.rb"
@@ -125,17 +123,19 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     apply "variants/frontend-base/sentry/template.rb"
     apply "variants/frontend-base/js-lint/template.rb"
 
-    if TEMPLATE_CONFIG.apply_variant_bootstrap?
-      apply "variants/frontend-bootstrap/template.rb"
-      apply "variants/frontend-bootstrap-typescript/template.rb" if TEMPLATE_CONFIG.use_typescript?
-    end
-
-    if TEMPLATE_CONFIG.apply_variant_react?
-      apply "variants/frontend-react/template.rb"
-      apply "variants/frontend-react-typescript/template.rb" if TEMPLATE_CONFIG.use_typescript?
-    end
-
     apply "variants/frontend-stimulus/template.rb"
+    apply "variants/frontend-bootstrap/template.rb" if TEMPLATE_CONFIG.apply_variant_bootstrap?
+    apply "variants/frontend-react/template.rb" if TEMPLATE_CONFIG.apply_variant_react?
+
+    if TEMPLATE_CONFIG.use_typescript?
+      apply "variants/frontend-base-typescript/template.rb"
+
+      apply "variants/frontend-stimulus-typescript/template.rb"
+      apply "variants/frontend-bootstrap-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_bootstrap?
+      apply "variants/frontend-react-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_react?
+
+      run "yarn run typecheck"
+    end
 
     create_initial_migration
 
@@ -146,6 +146,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     apply "variants/performance/template.rb"
     apply "variants/bullet/template.rb"
     apply "variants/pundit/template.rb"
+    apply "variants/audit-logging/template.rb"
     apply "variants/sidekiq/template.rb" if TEMPLATE_CONFIG.apply_variant_sidekiq?
 
     apply "variants/github_actions_ci/template.rb" if TEMPLATE_CONFIG.apply_variant_github_actions_ci?
@@ -157,14 +158,13 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     end
 
     binstubs = %w[
-      brakeman bundler bundler-audit rubocop
+      brakeman bundler rubocop
     ]
     run_with_clean_bundler_env "bundle binstubs #{binstubs.join(" ")} --force"
 
     template "variants/backend-base/rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
 
-    apply "variants/frontend-audit-app/template.rb"
     apply "variants/frontend-base/js-lint/fixes.rb"
 
     cleanup_package_json
@@ -187,6 +187,11 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     # We apply code annotation **after** all the other variants which might
     # generate routes and models
     apply "variants/code-annotation/template.rb"
+
+    # Run the README template at the end because it introspects the app to
+    # discover rake tasks etc.
+    template "variants/backend-base/README.md.tt", "README.md", force: true
+    run "yarn run prettier --write ./README.md"
   end
 end
 
