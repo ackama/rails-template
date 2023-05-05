@@ -50,9 +50,9 @@ Where possible we stick to Rails defaults.
     a decision about whether ActiveStorage files must be behind authentication
     or not. The default Rails behaviour here can be a security gotcha.
 - Security
+  - Configure [`osv-detector`](https://github.com/G-Rath/osv-detector) to run in
+    CI
   - Install and configure [brakeman](https://github.com/presidentbeef/brakeman)
-  - Install and configure
-    [bundler-audit](https://github.com/rubysec/bundler-audit)
   - Create `.well-known/security.txt`
   - Add a well documented
     [Content Security Policy initializer](./variants/backend-base/config/initializers/content_security_policy.rb)
