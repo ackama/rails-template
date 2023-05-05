@@ -154,7 +154,7 @@ our other templates:
 Before running this template, you must have the following installed on your
 machine:
 
-- Yarn v1.21.0 or later
+- Yarn v1
 - Rails 7.1.x
 
 The following are not strictly required to run the template but you will need it
@@ -241,51 +241,13 @@ $ rails new my-awesome-app
 
 ## Contributing
 
-This project works by hooking into the standard Rails
-[application templates](https://guides.rubyonrails.org/rails_application_templates.html)
-system, with some caveats. The entry point is the
-[template.rb](https://github.com/ackama/rails-template/blob/main/template.rb)
-file in the root of this repository.
+If this is your first time contributing, please read the [Code of Conduct] and
+the [Contributing guide].
 
-Normally, Rails only allows a single file to be specified as an application
-template (i.e. using the `-m <URL>` option). To work around this limitation, the
-first step this template performs is a `git clone` of the
-`ackama/rails-template` repository to a local temporary directory.
-
-This temporary directory is then added to the `source_paths` of the Rails
-generator system, allowing all of its ERb templates and files to be referenced
-when the application template script is evaluated.
-
-Rails generators are very lightly documented; what you'll find is that most of
-the heavy lifting is done by [Thor](http://whatisthor.com/). Thor is a tool that
-allows you to easily perform command line utilities. The most common methods
-used by this template are Thor's `copy_file`, `template`, and `gsub_file`. You
-can dig into the well-organized and well-documented
-[Thor source code](https://github.com/erikhuda/thor) to learn more. If any file
-finishes with `.tt`, Thor considers it to be a template and places it in the
-destination without the extension `.tt`.
-
-```bash
-# create new rails app in tmp/builds/enterprise using ci/configs/react.yml as
-# configuration
-$ CONFIG_PATH="ci/configs/react.yml" APP_NAME="enterprise" ./ci/bin/build-and-test
-
-# or do it manually:
-#
-# CONFIG_PATH must be relative to the dir that the rails app is created in
-# because the template is run by `rails new` which uses the rails app dir as
-# it's working dir, hence the `../` at the start.
-#
-$ rm -rf mydemoapp && CONFIG_PATH="../ci/configs/react.yml" rails new mydemoapp -d postgresql --skip-javascript --skip-docker -m ./template.rb
-```
-
-Rubocop is configured for this repo and is run as part of CI. Run rubocop
-locally via the usual method:
-
-```
-$ bundle install
-$ bundle exec rubocop # optionally adding -A for autofixes
-```
+[code of conduct]:
+  https://github.com/ackama/rails-template/blob/main/CODE_OF_CONDUCT.md
+[contributing guide]:
+  https://github.com/ackama/rails-template/blob/main/CONTRIBUTING.md
 
 ## Credits
 
