@@ -3,6 +3,7 @@ require:
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-capybara
 
 # Built-in config:
 # https://github.com/bbatsov/rubocop/blob/master/config/default.yml
