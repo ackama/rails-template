@@ -6,7 +6,14 @@ RSpec.describe AuditLog do
   let(:timestamp_in_app_tz) { Time.zone.now }
   let(:expected_timestamp) { timestamp_in_app_tz.utc.iso8601 }
   let(:rails_log_output) { "" }
-  let(:phase_of_moon) { "first-quarter" }
+  let(:phase_of_moon) do
+    <<~EO_DATA
+      multiline
+      value
+      first
+      quarter
+    EO_DATA
+  end
 
   describe ".log_example_event" do
     around do |example|
@@ -17,23 +24,16 @@ RSpec.describe AuditLog do
     end
 
     it "logs the expected line to the Rails log" do
-      expected_json = {
-        event_type: AuditLog::EXAMPLE_LABEL,
-        event_context: {
-          remote_ip: remote_ip,
-          user_id: user.id,
-          phase_of_moon: phase_of_moon
-        },
-        event_created_at: expected_timestamp
-      }.to_json
-      expected_output = "#{expected_json}\n"
-
       described_class.log_example_event(
         current_user: user,
         remote_ip: remote_ip,
         phase_of_moon: phase_of_moon,
         timestamp: timestamp_in_app_tz
       )
+
+      # newlines within JSON values are encoded as the two characters `\n`. A
+      # real newline character is appended to the end of the log line.
+      expected_output = "{\"event_type\":\"you_should_delete_this_event_type_when_you_have_real_events\",\"event_context\":{\"remote_ip\":\"::1\",\"user_id\":123,\"phase_of_moon\":\"multiline\\nvalue\\nfirst\\nquarter\\n\"},\"event_created_at\":\"#{expected_timestamp}\"}\n" # rubocop:disable Layout/LineLength
 
       expect(rails_log_output).to eq(expected_output)
     end
