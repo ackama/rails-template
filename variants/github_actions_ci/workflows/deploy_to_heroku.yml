@@ -26,12 +26,21 @@ on:
         required: true
       slack_webhook:
         required: false
+
+# These are the permissions required by this nested workflow to function.
+#
+# You should include a copy of this block next to any `uses:` of this workflow
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
   deploy_to_heroku:
     runs-on: ubuntu-latest
     timeout-minutes: ${{ inputs.timeout_minutes }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          persist-credentials: true # required to push to heroku
       - name: Deploy to Heroku Staging
         uses: akhileshns/heroku-deploy@v3.8.9
         with:

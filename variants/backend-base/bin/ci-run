@@ -13,9 +13,10 @@ echo "* ******************************************************"
 bundle exec rubocop -c ./.rubocop.yml
 
 echo "* ******************************************************"
-echo "* Running bundle-audit"
+echo "* Running osv-detector"
 echo "* ******************************************************"
-bundle exec bundle-audit check --update
+# See https://github.com/G-Rath/osv-detector#installation for install details
+osv-detector .
 
 echo "* ******************************************************"
 echo "* Running brakeman"

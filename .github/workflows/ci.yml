@@ -8,11 +8,22 @@ on:
     # * is a special character in YAML so you have to quote this string
     # * At 05:00 UTC every Monday, run the latest commit on the default or base branch
     - cron:  '0 5 * * MON'
+
+# Restrict jobs in this workflow to only be allowed to read this repo by default.
+#
+# If you are wanting to introduce a job/tool that requires more permissions (such
+# as posting comments or commits to the repository), then you should grant just
+# that job the necessarily permissions by giving it a dedicated `permissions` block.
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".node-version"
@@ -28,10 +39,20 @@ jobs:
       fail-fast: false
       matrix:
         variant:
-          - name: default
+          - name: defaults
+            config_path: "ackama_rails_template.config.yml"
+            skips: --skip-javascript
+          - name: all
+            config_path: "ci/configs/all.yml"
+            skips: --skip-javascript
+          - name: all-typescript
+            config_path: "ci/configs/all-typescript.yml"
             skips: --skip-javascript
           - name: basic
             config_path: "ci/configs/basic.yml"
+            skips: --skip-javascript
+          - name: basic-typescript
+            config_path: "ci/configs/basic-typescript.yml"
             skips: --skip-javascript
           - name: github_actions
             config_path: "ci/configs/github_actions.yml"
@@ -82,11 +103,18 @@ jobs:
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      # this ensures that osv-detector is available for running bin/ci-run
+      - name: Check dependencies for security vulnerabilities (and setup osv-detector)
+        uses: g-rath/check-with-osv-detector@main
 
       - name: Install NodeJS
         uses: actions/setup-node@v3
         with:
-          node-version: '16.15.0'
+          cache: "yarn"
+          node-version-file: ".node-version"
 
       # We don't cache gems or JS packages because we are actually testing how
       # installation and setup works in this project so, while caching would

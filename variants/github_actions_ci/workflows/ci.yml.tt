@@ -18,12 +18,31 @@ env:
   SIDEKIQ_WEB_USERNAME: admin
   SIDEKIQ_WEB_PASSWORD: password
   <% end %>
+
+# Restrict jobs in this workflow to only be allowed to read this repo by default.
+#
+# If you are wanting to introduce a job/tool that requires more permissions (such
+# as posting comments or commits to the repository), then you should grant just
+# that job the necessarily permissions by giving it a dedicated `permissions` block.
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
+  audit_dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - name: Audit dependencies for security vulnerabilities
+        uses: g-rath/check-with-osv-detector@main
   js_based_checks:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".node-version"
@@ -67,6 +86,8 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false
       - name: Install Required OS Packages
         run: sudo apt-get -yqq install libpq-dev
       - name: Set up Ruby (version given by .ruby-version)
@@ -79,9 +100,15 @@ jobs:
         run: bundle exec chusaku --exit-with-error-on-annotation
       - run: bundle exec rubocop
       - run: bundle exec brakeman --run-all-checks --exit-on-warn --format plain .
-      - run: bundle exec bundle audit --update
       - run: bundle exec rails db:setup
       - run: bundle exec rspec spec --format progress
+      - name: Archive spec outputs
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+          name: rspec-output-screenshots
+          path: tmp/screenshots
+          retention-days: 5
 
   # ACTION REQUIRED:
   #   Uncomment the deployment block which suits your application. You should
@@ -95,9 +122,13 @@ jobs:
   # deploy_to_ec2_staging:
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
   #   needs:
+  #     - audit_dependencies
   #     - ruby_based_checks
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_ec2.yml
+  #   permissions:
+  #     id-token: write # to use OIDC (aws-actions/configure-aws-credentials)
+  #     contents: read # to fetch code (actions/checkout)
   #   with:
   #     environment: staging
   #     assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>StagingGHARole"
@@ -108,9 +139,13 @@ jobs:
   # deploy_to_ec2_production:
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/production'
   #   needs:
+  #     - audit_dependencies
   #     - ruby_based_checks
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_ec2.yml
+  #   permissions:
+  #     id-token: write # to use OIDC (aws-actions/configure-aws-credentials)
+  #     contents: read # to fetch code (actions/checkout)
   #   with:
   #     environment: production
   #     assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>ProductionGHARole"
@@ -126,9 +161,12 @@ jobs:
   # deploy_to_heroku_staging:
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
   #   needs:
+  #     - audit_dependencies
   #     - ruby_based_checks
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_heroku.yml
+  #   permissions:
+  #     contents: read # to fetch code (actions/checkout)
   #   secrets:
   #     heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
   #     heroku_email: ${{ secrets.HEROKU_EMAIL }}
@@ -137,9 +175,12 @@ jobs:
   # deploy_to_heroku_production:
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/production'
   #   needs:
+  #     - audit_dependencies
   #     - ruby_based_checks
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_heroku.yml
+  #   permissions:
+  #     contents: read # to fetch code (actions/checkout)
   #   secrets:
   #     heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
   #     heroku_email: ${{ secrets.HEROKU_EMAIL }}

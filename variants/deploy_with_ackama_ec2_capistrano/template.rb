@@ -38,9 +38,12 @@ new_ackama_cap_config_snippet = <<~EO_RUBY
   require "dotenv/load"
   require "aws_ec2_environment"
 
+  set :user, "deploy"
   set :application, "TODO_set_app_name"
   set :repo_url, "#{TEMPLATE_CONFIG.git_repo_url.presence || "TODO_set_git_repo_url"}"
   set :git_shallow_clone, 1
+
+  set :deploy_to, "/home/\#{fetch(:user)}/\#{fetch(:application)}"
 
   set :bundle_config, {
     deployment: true,
@@ -71,13 +74,10 @@ new_ackama_cap_config_snippet = <<~EO_RUBY
   # Default value for default_env is {}
   set :default_env, path: "$HOME/.rbenv/shims:$HOME/bin:/snap/bin:$PATH"
 
-  set :rbenv_path, "$HOME/.rbenv"
-
   # Ackama deployments use Fullstaq. Other possible values: :system, :user
   set :rbenv_type, :fullstaq
 
   set :rbenv_ruby, File.read(".ruby-version").strip
-  set :rbenv_prefix, "$HOME/.rbenv/bin/rbenv exec"
   set :rbenv_map_bins, %w[rake gem bundle ruby rails]
 
   namespace :deploy do

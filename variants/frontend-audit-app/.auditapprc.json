@@ -1,4 +1,0 @@
-{
-  "$schema": "node_modules/audit-app/config.schema.json",
-  "ignore": []
-}

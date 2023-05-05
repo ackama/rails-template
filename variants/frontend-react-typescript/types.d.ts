@@ -20,18 +20,6 @@ declare module 'shakapacker/package/babel/preset.js' {
   export = defaultConfigFunc;
 }
 
-declare module 'react_ujs' {
-  import RequireContext = __WebpackModuleApi.RequireContext;
-
-  interface ReactRailsUJS {
-    useContext(context: RequireContext): void;
-  }
-
-  const ReactRailsUJS: ReactRailsUJS;
-
-  export default ReactRailsUJS;
-}
-
 declare module '*.svg' {
   const content: string;
   export default content;

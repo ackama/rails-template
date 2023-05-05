@@ -41,7 +41,7 @@ Where possible we stick to Rails defaults.
     variables. We use this regularly for pre-production envs.
   - Use [okcomputer](https://github.com/sportngin/okcomputer) for health check
     endpoints. Configured in
-    [./config/initializers/health_checks.rb](./config/initializers/health_checks.rb)
+    [./variants/backend-base/config/initializers/health_checks.rb](./variants/backend-base/config/initializers/health_checks.rb)
   - Install [lograge](https://github.com/roidrage/lograge) for better logs in
     production.
   - Create `app/services` as the place to hold our plain ol' Ruby objects
@@ -50,12 +50,12 @@ Where possible we stick to Rails defaults.
     a decision about whether ActiveStorage files must be behind authentication
     or not. The default Rails behaviour here can be a security gotcha.
 - Security
+  - Configure [`osv-detector`](https://github.com/G-Rath/osv-detector) to run in
+    CI
   - Install and configure [brakeman](https://github.com/presidentbeef/brakeman)
-  - Install and configure
-    [bundler-audit](https://github.com/rubysec/bundler-audit)
   - Create `.well-known/security.txt`
   - Add a well documented
-    [Content Security Policy initializer](./config/initializers/content_security_policy.rb)
+    [Content Security Policy initializer](./variants/backend-base/config/initializers/content_security_policy.rb)
     with secure defaults.
   - Install [pundit](https://github.com/varvet/pundit) as our preferred
     authorization gem
