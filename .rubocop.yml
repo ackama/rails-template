@@ -1,0 +1,231 @@
+# This configures Rubocop for this template repo - see
+# [rubocop.yml.tt](./rubocop.yml.tt) if you want to change the Rubocop
+# configuration which is copied into generated applications.
+---
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
+# Built-in config:
+# https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+
+Rails:
+  Enabled: true
+
+AllCops:
+  # Target the oldest version of Ruby that Rails 7 supports
+  TargetRubyVersion: 2.7
+  NewCops: enable
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  Exclude:
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+    - 'node_modules/**/*'
+
+Style/Documentation:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 200
+
+Metrics/BlockLength:
+  Max: 50
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/MethodLength:
+  Max: 50
+
+# This cop complains when you have variables named things like:
+#     address_line_1
+#     address_line_2
+# etc.
+Naming/VariableNumber:
+  Enabled: false
+
+# We prefer that you use `fail` unless you're explicitly re-raising an exception.
+Style/SignalException:
+  EnforcedStyle: semantic
+
+# We think that:
+#   hash = {
+#     key: :value
+#   }
+#   and_in_a_method_call({
+#     no: :difference
+#   })
+# Looks better than:
+#   hash = {
+#     key: :value
+#   }
+#   but_in_a_method_call({
+#                          its_like: :this
+#                         })
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+# We think that:
+#     {
+#       foo: :bar
+#       baz: :bip
+#     }
+# Looks better than:
+#     { foo: :bar
+#       baz: :bip }
+Layout/MultilineHashBraceLayout:
+  Enabled: false
+
+# We think that:
+#    foo(
+#      bar: :baz,
+#      bip: :whizz
+#    )
+# Looks better than:
+#    foo(bar: baz,
+#        bip: :whizz)
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: false
+
+# Just always use double quotes and stop thinking about it.
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
+# Ruby 2.4+ has a magic comment that makes all strings frozen and Rubocop wants to put it
+# at the top of every. single. file. We decided we didn't want that - for now.
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Single line method definitions are totally fine, and often more readable, consider:
+#    class WidgetsPolicy
+#      def create?; false; end
+#      def index?;  true;  end
+#      def show?;   true;  end
+#      def update?; false; end
+#      def delete?; false; end
+#    end
+Style/SingleLineMethods:
+  Enabled: false
+
+# We want you to put a blank line between method definitions, the only exception being
+# if you're defining a bunch of single-line methods as above.
+Layout/EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
+Naming/FileName:
+  Exclude:
+    - '**/Gemfile.rb'
+    - '**/Rakefile.rb'
+
+# Disable preference for Ruby's new safe navigation operator `&.` because it
+# usually comes at the cost of expressiveness in the simple case:
+#
+#     -      coupon_usage.destroy if coupon_usage
+#     +      coupon_usage&.destroy
+#
+# And guides you towards Law of Demeter violations in the extreme case:
+#
+#     result&.data&.attributes&.payments&.first&.payment_token
+#
+# Disabling this cop doesn't stop you from using it, but be prepared to defend
+# it in code review if you do.
+Style/SafeNavigation:
+  Enabled: false
+
+# Ruby supports two styles of string template formatting.
+# "annotated" - format("%<greeting>s", greeting: "Hello")
+# "template"  - format("%{greeting}", greeting: "Hello")
+#
+# While the annotated format is more descriptive, it also comes in a style that is
+# significantly harder for a developer to parse. The template style is easy to read, understand,
+# and is consistent with formatting with (for example), interpolation (#{}).
+Style/FormatStringToken:
+  EnforcedStyle: template
+
+# This syntax is a deliberate idiom in rspec
+# bbatsov endorses disabling it for rspec
+# https://github.com/bbatsov/rubocop/issues/4222#issuecomment-290722962
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*'
+
+# https://rubocop.readthedocs.io/en/latest/cops_style/
+Style/HashTransformKeys:
+  Enabled: false
+
+# https://rubocop.readthedocs.io/en/latest/cops_style/
+Style/HashTransformValues:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 18
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/ClassLength:
+  Exclude:
+    - 'spec/**/*'
+
+Naming/MemoizedInstanceVariableName:
+  EnforcedStyleForLeadingUnderscores: optional
+
+Performance/Casecmp:
+  Enabled: false
+
+Rails/ApplicationRecord:
+  Exclude:
+    - 'db/migrate/**'
+
+# we don't require using Rails.logger in lib, as it often doesn't go where
+# we'd want for the code that lives there, or otherwise isn't even available
+Rails/Output:
+  Exclude:
+    - 'lib/**/*'
+
+Style/BarePercentLiterals:
+  EnforcedStyle: percent_q
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/EmptyMethod:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/TrivialAccessors:
+  AllowPredicates: true
+
+RSpec:
+  Language:
+    Expectations:
+      - assert_match
+
+RSpec/MultipleExpectations:
+  Max: 10
+
+RSpec/ExampleLength:
+  Max: 30
+
+RSpec/FactoryBot/SyntaxMethods:
+  Enabled: false
+
+Rails/LexicallyScopedActionFilter:
+  Exclude:
+    - 'app/controllers/application_controller.rb'
+
+RSpec/RepeatedExample:
+  Exclude:
+    - 'variants/pundit/spec/policies/**'
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10

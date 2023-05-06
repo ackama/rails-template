@@ -8,8 +8,30 @@ on:
     # * is a special character in YAML so you have to quote this string
     # * At 05:00 UTC every Monday, run the latest commit on the default or base branch
     - cron:  '0 5 * * MON'
+
+# Restrict jobs in this workflow to only be allowed to read this repo by default.
+#
+# If you are wanting to introduce a job/tool that requires more permissions (such
+# as posting comments or commits to the repository), then you should grant just
+# that job the necessarily permissions by giving it a dedicated `permissions` block.
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
   test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".node-version"
+          cache: "yarn"
+      - run: yarn install
+      - run: yarn run format-check
+
+  test_generated_apps:
     runs-on: ubuntu-latest
     strategy:
       # don't stop all variants if one of them fails (we usually want to know
@@ -17,14 +39,29 @@ jobs:
       fail-fast: false
       matrix:
         variant:
+          - name: defaults
+            config_path: "ackama_rails_template.config.yml"
+            skips: --skip-javascript
+          - name: all
+            config_path: "ci/configs/all.yml"
+            skips: --skip-javascript
+          - name: all-typescript
+            config_path: "ci/configs/all-typescript.yml"
+            skips: --skip-javascript
           - name: basic
             config_path: "ci/configs/basic.yml"
+            skips: --skip-javascript
+          - name: basic-typescript
+            config_path: "ci/configs/basic-typescript.yml"
+            skips: --skip-javascript
+          - name: github_actions
+            config_path: "ci/configs/github_actions.yml"
             skips: --skip-javascript
           - name: react
             config_path: "ci/configs/react.yml"
             skips: --skip-javascript
-          - name: typescript
-            config_path: "ci/configs/typescript.yml"
+          - name: react-typescript
+            config_path: "ci/configs/react-typescript.yml"
             skips: --skip-javascript
           - name: sidekiq
             config_path: "ci/configs/sidekiq.yml"
@@ -37,7 +74,19 @@ jobs:
             skips: --skip-javascript
           - name: basic_with_skips
             config_path: "ci/configs/basic.yml"
-            skips: --skip-active-storage --skip-spring --skip-javascript
+            skips: --skip-spring --skip-javascript
+          - name: bootstrap
+            config_path: "ci/configs/bootstrap.yml"
+            skips: --skip-javascript
+          - name: bootstrap-typescript
+            config_path: "ci/configs/bootstrap-typescript.yml"
+            skips: --skip-javascript
+          - name: capistrano
+            config_path: "ci/configs/deploy_with_capistrano.yml"
+            skips: --skip-javascript
+          - name: ackama_ec2_capistrano
+            config_path: "ci/configs/deploy_with_ackama_ec2_capistrano.yml"
+            skips: --skip-javascript
     services:
       db:
         image: postgres
@@ -56,12 +105,19 @@ jobs:
 
     steps:
       - name: Checkout this repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      # this ensures that osv-detector is available for running bin/ci-run
+      - name: Check dependencies for security vulnerabilities (and setup osv-detector)
+        uses: g-rath/check-with-osv-detector@main
 
       - name: Install NodeJS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          cache: "yarn"
+          node-version-file: ".node-version"
 
       # We don't cache gems or JS packages because we are actually testing how
       # installation and setup works in this project so, while caching would
@@ -78,6 +134,11 @@ jobs:
           # We do some git commits during our testing so these need to be set
           git config --global user.email "you@example.com"
           git config --global user.name "Your Name"
+
+      - name: Run Rubocop
+        run: |
+          bundle install
+          bundle exec rubocop
 
       - name: Run CI script
         env:

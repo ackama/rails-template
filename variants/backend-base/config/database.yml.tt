@@ -1,0 +1,41 @@
+# Docs: https://edgeguides.rubyonrails.org/configuring.html#configuring-a-database
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%%= ENV["DB_POOL_SIZE"] || ENV["RAILS_MAX_THREADS"] || 5 %>
+  min_messages: WARNING # https://thoughtbot.com/blog/global-min-messages
+
+development:
+  <<: *default
+  database: <%= app_name %>_development
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: <%= app_name %>_test
+
+staging:
+  <<: *default
+  database: <%= app_name %>_staging
+
+production:
+  <<: *default
+  database: <%= app_name %>_production
+  # > If you have both config/database.yml and ENV['DATABASE_URL'] set then
+  # > Rails will merge the configuration together ...
+  # >
+  # > When duplicate connection information is provided the environment variable
+  # > will take precedence.
+  # >
+  # > ... Since it is possible to embed ERB in your config/database.yml it is
+  # > best practice to explicitly show you are using the ENV['DATABASE_URL'] to
+  # > connect to your database.
+  # >
+  # > From https://edgeguides.rubyonrails.org/configuring.html#connection-preference
+  #
+  # url: <%%= ENV["DATABASE_URL"] %>

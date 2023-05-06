@@ -11,9 +11,23 @@ staging_hostname: "staging.example.com"
 production_hostname: "www.example.com"
 git_repo_url: ""
 
-# use these flags to enable features in the rails app created by this template.
+# Use TypeScript for any JavaScript-based code
+use_typescript: true
+
+# Use these flags to enable features in the rails app created by this template.
 apply_variant_react: false
 apply_variant_devise: false
 apply_variant_devise_2fa: false
 apply_variant_sidekiq: false
-apply_variant_typescript: false
+apply_variant_bootstrap: false
+
+# Copy in some examples for Github Actions CI
+apply_variant_github_actions_ci: true
+
+# Generates code to set up a fairly generic Capistrano install - this is not required
+# if you're using the Ackama-specific variant
+apply_variant_deploy_with_capistrano: false
+
+# Generates Capistrano code specific to how Ackama likes to deploy
+# and manage EC2 instances.
+apply_variant_deploy_with_ackama_ec2_capistrano: false

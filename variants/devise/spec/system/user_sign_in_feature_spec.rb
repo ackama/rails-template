@@ -58,7 +58,7 @@ RSpec.describe "User sign-in", type: :system do
         # has the name "remember_user_token"
         response_cookies = Capybara.current_session.driver.request.cookies
         expect(response_cookies.keys.length).to eq(2)
-        expect(response_cookies["remember_user_token"]).not_to eq(nil)
+        expect(response_cookies["remember_user_token"]).not_to be_nil
 
         # We expect the "remember me" cookie to have a 14 day expiry
         remember_me_cookie = response_cookies.fetch("remember_user_token")
@@ -72,7 +72,7 @@ RSpec.describe "User sign-in", type: :system do
                                          .dig("_rails", "exp")
                                          .to_date
 
-        # The remember_me cookie expriy is in UTC timezone so we need to
+        # The remember_me cookie expiry is in UTC timezone so we need to
         # compare it with the date as it is right now in UTC (not in NZ)
         today_in_utc = Time.current.utc.to_date
 

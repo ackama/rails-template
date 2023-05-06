@@ -1,2 +1,0 @@
-inherit_from:
-  - https://bitbucket.org/rabidtech/rabid-dotfiles/raw/master/.rubocop.yml
