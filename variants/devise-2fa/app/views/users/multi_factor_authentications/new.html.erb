@@ -1,0 +1,84 @@
+<div class="col-xl-6 col-lg-8 col-12">
+  <% if current_user.otp_required_for_login? %>
+    <h1 class="h2 text-primary fw-normal mb-6">Manage two-factor authentication</h2>
+
+    <p class="mb-6">Use this page if you need to link your user to a new device or
+    authentication app.</p>
+  <% else %>
+    <h1 class="h2 text-primary fw-normal mb-6">Welcome to APP_NAME_HERE</h1>
+    <p class="mb-6 lead text-primary">
+      As this is the first time you’re signing in, you’ll need to set up
+      two-factor authentication (2FA) before using APP_NAME_HERE. This helps keep data within this application secure.
+    </p>
+  <% end %>
+
+  <%= render "application/mfa_help" %>
+
+  <hr class="border-secondary my-6" />
+
+  <h2 class="h5 text-primary fw-500">Step 1</h2>
+
+  <p>
+  First, download a free app to generate One Time Passwords.
+  We recommend the Google Authenticator app for
+  <%= link_to "Apple iOS", "https://itunes.apple.com/au/app/google-authenticator/id388497605?mt=8", target: "_blank", class: "link-primary" %>
+  if you’re on an iPhone, or for
+  <%= link_to "Android", "https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en", target: "_blank", class: "link-primary" %>
+  if you have an Android phone.
+  </p>
+
+  <div class="mt-6">
+    <%= link_to "https://itunes.apple.com/au/app/google-authenticator/id388497605?mt=8", class: "me-4" do %>
+      <%= image_pack_tag "static/mfa/apple-app-store-badge.svg", alt: "Download Google Authenticator on the Apple App Store", size: "180x60" %>
+    <% end %>
+    <%= link_to "https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en" do %>
+      <%= image_pack_tag "static/mfa/google-play-badge.svg", alt: "Download Google Authenticator at Google Play", size: "180x60" %>
+    <% end %>
+  </div>
+
+  <hr class="border-secondary my-6" />
+
+  <h2 class="h5 text-primary fw-500">Step 2</h2>
+
+  <p>
+    Next, using this app, scan the below code. This will allow the app to generate
+    One Time Passwords, which you’ll need each time you sign in.</p>
+
+  <%
+    url = current_user.otp_provisioning_uri(current_user.email, issuer: issuer, otp_secret: @otp_secret)
+    qr = RQRCode::QRCode.new(url)
+  %>
+  <figure class="my-6 mx-4">
+    <%= raw qr.as_svg(module_size: 3, shape_rendering: 'crispEdges', level: :h) %>
+  </figure>
+
+  <p>
+    If you’re using an app that does not support scanning a QR code, or if your camera doesn’t work, you can use the following URL:
+  </p>
+
+  <pre class="border bg-light p-3 text-break text-wrap font-monospace user-select-all"><%= url %></pre>
+
+  <hr class="border-secondary my-6" />
+
+  <h2 class="h5 text-primary fw-500">Step 3</h2>
+
+  <p>
+    Next enter the code the app shows on screen below. This will confirm that the
+    app has been set up correctly.
+  </p>
+
+  <%= form_tag(users_multi_factor_authentication_path, method: :post, class: "my-6") do %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <%= hidden_field_tag :otp_secret, @otp_secret %>
+    <div class="col-auto mb-3">
+      <%= text_field_tag :otp_attempt, nil, size: 10, required: true, maxlength: 6, placeholder: "123 456", class: "form-control w-auto" %>
+    </div>
+    <div class="my-6">
+      <%= button_tag "Confirm code", class: "btn btn-primary w-100", data: { turbo: false } %>
+    </div>
+  <% end %>
+
+  <%= link_to users_multi_factor_authentication_path, class: "link-primary" do %>
+    Cancel update
+  <% end %>
+</div>

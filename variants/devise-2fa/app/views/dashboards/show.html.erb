@@ -1,0 +1,10 @@
+<% provide(:title, "Signed-in user Home") %>
+
+<h1>Welcome</h1>
+
+<%= image_pack_tag "ernie.jpg" %>
+
+<p>
+This is the signed in user dashboard. Only signed in users can see this. You are signed in as <%= current_user.email %>
+</p>
+

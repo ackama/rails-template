@@ -1,0 +1,15 @@
+<div class="container mt-3">
+  <div class="row">
+    <div class="col">
+      <div data-flash-target="container">
+        <% if flash[:notice].present? %>
+          <div role="alert" class="alert alert-success"><%= flash[:notice] %></div>
+        <% end %>
+
+        <% if flash[:alert].present? %>
+          <div role="alert" class="alert alert-danger"><%= flash[:alert] %></div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

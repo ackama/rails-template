@@ -1,0 +1,24 @@
+<div class="col-12 col-lg-6 text-primary">
+  <h1 class="h2 fw-normal mb-6">Generate backup codes</h1>
+
+  <p>
+    If you lose access to your authentication app, you can use these codes instead
+    of the 6-digit One Time Passwords from your device.
+  </p>
+
+  <p>
+    Each code can only be used <strong>once</strong>, and we recommend you keep them in a safe,
+    secure place.
+  </p>
+
+  <div class="mt-6 mb-5">
+    <h2 class="h5 mb-6">Your backup codes</h5>
+
+    <%= content_tag(:pre, @backup_codes.join("\n"), class: "border rounded p-2 user-select-all text-black") %>
+  </div>
+
+
+  <%= link_to users_multi_factor_authentication_path, class: "link-primary" do %>
+    Return to two-factor authentication setup
+  <% end %>
+</div>

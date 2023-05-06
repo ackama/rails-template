@@ -1,0 +1,29 @@
+<%# header and navigation menu %>
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container">
+      <%= link_to "👻 Two-factor authentication demo", root_path, class: "navbar-brand" %>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav w-100 justify-content-evenly">
+          <% if current_user %>
+            <li class="nav-item">
+              <%= link_to "Your Dashboard", dashboards_path, class: "nav-link " %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Edit user", edit_user_registration_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-link btn", data: { turbo: false } %>
+            </li>
+          <% else %>
+            <li class="nav-item"><%= link_to "Sign in", new_user_session_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Sign up", new_user_registration_path, class: "nav-link" %></li>
+          <% end %>
+        </ul>
+      </div>
+  </div>
+</nav>
