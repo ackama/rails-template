@@ -1,8 +1,15 @@
-# Renders the home page.
+##
+# This is an example controller which you should remove from your application.
+# It demonstrates how to create a controller which requires users to be
+# authenticated before running any of its actions.
+#
 class DashboardsController < ApplicationController
   before_action :authenticate_user!
 
-  # TODO: is adding this public/dashboard too much for the template?
+  # TODO
+  # without this controller there is no example of how to create an
+  # authenticated controller - the Homecontroller is not authenticated. is that
+  # a problem?
   def show
   end
 end

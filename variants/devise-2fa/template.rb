@@ -17,6 +17,7 @@ run "bundle add rqrcode-rails3"
 # don't run it's generator. Instead we install it manually.
 TERMINAL.puts_header "Adding devise-two-factor manually"
 run "bundle exec rails g migration AddOtpSecretsToUser otp_secret:string consumed_timestep:integer otp_required_for_login:boolean"
+run "bundle exec rails db:migrate"
 
 ######################################
 # User model
@@ -81,21 +82,32 @@ copy_file "variants/devise-2fa/app/controllers/users/devise_controller.rb", "app
 copy_file "variants/devise-2fa/app/controllers/users/sessions_controller.rb", "app/controllers/users/sessions_controller.rb", force: true
 copy_file "variants/devise-2fa/app/controllers/users/multi_factor_authentications_controller.rb", "app/controllers/users/multi_factor_authentications_controller.rb"
 copy_file "variants/devise-2fa/app/controllers/dashboards_controller.rb", "app/controllers/dashboards_controller.rb"
-copy_file "variants/devise-2fa/app/controllers/publics_controller.rb", "app/controllers/publics_controller.rb"
 
 insert_into_file("app/controllers/application_controller.rb", after: /^  after_action :verify_policy_scoped.*?\n/) do
   <<-EO_RUBY
+
+  # Controller actions which inherit from this controller default to requiring
+  # the user to have MFA enabled. Note that this does not also check they are
+  # authenticated - that check is performed by the usual devise
+  #
+  #     before_action :authenticate_user!
+  #
   before_action :require_multi_factor_authentication!
 
   protected
 
   # TODO: Check whether these need to be protected or private
+
+  ##
+  # When this method is run as a before_action, it will prevent the user from
+  # running controller actions until they have set up MFA.
+  #
   def require_multi_factor_authentication!
     return unless user_signed_in?
     return if devise_controller?
     return if current_user.otp_required_for_login?
 
-    redirect_to new_users_multi_factor_authentication_path, alert: "MFA required" # TODO: use i18n
+    redirect_to new_users_multi_factor_authentication_path, alert: t("application.multi_factor_authentication_required")
   end
 
   def after_sign_in_path_for(resource)
@@ -126,14 +138,25 @@ end
 # Views
 ######################################
 
-# insert_into_file("app/views/users/sessions/new.html.erb", before: /^.*<div class="actions">/) do
-#   <<~EO_FIELD
-#     <div class="form__field">
-#       <%= f.label :otp_attempt, "2FA (Two Factor Auth) code", class: "form__label" %><br />
-#       <%= f.text_field :otp_attempt, class: "form__input" %>
-#     </div>
-#   EO_FIELD
-# end
+TERMINAL.puts_header "Copying views"
+copy_file "variants/devise-2fa/app/views/users/sessions/mfa_prompt.html.erb", "app/views/users/sessions/mfa_prompt.html.erb"
+
+# TODO: remove bootstrap styles
+copy_file "variants/devise-2fa/app/views/application/_mfa_help.html.erb", "app/views/application/_mfa_help.html.erb"
+
+copy_file "variants/devise-2fa/app/views/application/_header.html.erb", "app/views/application/_header.html.erb", force: true
+directory "variants/devise-2fa/app/views/users/multi_factor_authentications", "app/views/users/multi_factor_authentications"
+
+insert_into_file("app/views/users/registrations/edit.html.erb", before: %r{^<h3>Cancel my account</h3>}) do
+  <<~EO_FIELD
+
+    <h2 class="">Two-factor authentication</h2>
+    <p class="">Manage the device and codes you’ll use to sign in to this application.</p>
+    <%= link_to "Manage my two-factor authentication", users_multi_factor_authentication_path %>
+    <%= render "application/mfa_help" %>
+
+  EO_FIELD
+end
 
 ######################################
 # Config
@@ -192,11 +215,14 @@ insert_into_file("config/routes.rb", before: /^end/) do
   end
 
   resource :dashboards, only: [:show]
-  resource :publics, only: [] do
-    get :home
-  end
   EO_ROUTES
 end
+
+######################################
+# Pundit
+######################################
+
+# TODO
 
 ######################################
 # Locales
@@ -221,4 +247,7 @@ remove_file "doc/.keep"
 TERMINAL.puts_header "Running rubocop to clean up generated files"
 run "bundle exec rubocop -A"
 
+# TODO: git commit
+
+# TODO: remove this before merge!
 exit
