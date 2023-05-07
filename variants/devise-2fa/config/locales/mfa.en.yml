@@ -1,0 +1,9 @@
+en:
+  multi_factor_authentications:
+    show:
+      new_multi_factor_authentication: Manage two-factor authentication
+      create_backup_codes: Generate backup codes
+      destroy_backup_codes: Delete my current backup codes
+    destroy_backup_codes:
+      success: Backup codes successfully deleted
+      delete_backup_codes: Delete my current backup codes

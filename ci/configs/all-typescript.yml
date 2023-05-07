@@ -6,6 +6,7 @@ use_typescript: true
 apply_variant_github_actions_ci: true
 apply_variant_react: true
 apply_variant_devise: true
+apply_variant_devise_2fa: true
 apply_variant_sidekiq: true
 apply_variant_bootstrap: true
 apply_variant_deploy_with_capistrano: true

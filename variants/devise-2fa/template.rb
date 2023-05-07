@@ -1,96 +1,224 @@
 # Allow us to copy file with root at the directory this file is in
 source_paths.unshift(File.dirname(__FILE__))
 
-def print_header(msg)
-  puts "=" * 80
-  puts msg
-  puts "=" * 80
-end
-
 ######################################
 # Gemfile
 ######################################
 
-print_header "Adding devise-two-factor, rqrcode-rails3 to Gemfile"
+TERMINAL.puts_header "Adding devise-two-factor, rqrcode-rails3 to Gemfile"
 run "bundle add devise-two-factor"
 run "bundle add rqrcode-rails3"
+
+######################################
+# Migration
+######################################
+
+# We need devise-two-factor but we aren't using it in the standard way so we
+# don't run it's generator. Instead we install it manually.
+TERMINAL.puts_header "Adding devise-two-factor manually"
+run "bundle exec rails g migration AddOtpSecretsToUser otp_secret:string consumed_timestep:integer otp_required_for_login:boolean"
 
 ######################################
 # User model
 ######################################
 
-print_header "Adding OTP info to user model"
-run "bundle exec rails generate devise_two_factor User DEVISE_TWO_FACTOR_SECRET_ENCRYPTION_KEY"
+TERMINAL.puts_header "Configuring user model"
+insert_into_file("app/models/user.rb", after: /^class User.*?\n/) do
+  <<-EO_RUBY
+  # NOTE: devise-two-factor requests that database_authenticatable is replaced
+  # with two_factor_authenticatable. We do NOT do this, because we have a
+  # two-step authentication process. We use DatabaseAuthenticatable to validate
+  # the email and password, and then validate the OTP code or backup code in a
+  # second step. The same is true of two_factor_backupable. Including this
+  # strategy means that a failed auth attempt is flagged as a failed attempt,
+  # even when rendering the MFA validation page. We DO include the model
+  # methods, because we still use them
+  #
+  include Devise::Models::TwoFactorAuthenticatable
+  include Devise::Models::TwoFactorBackupable
 
-gsub_file("app/models/user.rb", "ENV['DEVISE_TWO_FACTOR_SECRET_ENCRYPTION_KEY']", "Rails.application.secrets.devise_two_factor_secret_encryption_key")
+  EO_RUBY
+end
+
+insert_into_file("app/models/user.rb", before: /^end/) do
+  <<-EO_RUBY
+
+  def enable_otp!
+    update!(otp_secret: User.generate_otp_secret)
+  end
+
+  # this resets the secret but deliberately does not touch the
+  # `otp_required_for_login` flag
+  def reset_otp_secret!
+    update!(otp_secret: User.generate_otp_secret)
+  end
+
+  def require_otp!
+    update!(otp_required_for_login: true)
+  end
+
+  def otp_enabled_and_required?
+    otp_secret.present? && otp_required_for_login
+  end
+
+  def disable_otp!
+    update!(otp_secret: nil, otp_required_for_login: false, otp_backup_codes: nil)
+  end
+
+  def discard_otp_secret!
+    update!(otp_secret: nil)
+  end
+  EO_RUBY
+end
 
 ######################################
 # Controllers
 ######################################
 
+TERMINAL.puts_header "Configuring MFA controllers"
+
+copy_file "variants/devise-2fa/app/controllers/users/devise_controller.rb", "app/controllers/users/devise_controller.rb"
+copy_file "variants/devise-2fa/app/controllers/users/sessions_controller.rb", "app/controllers/users/sessions_controller.rb", force: true
+copy_file "variants/devise-2fa/app/controllers/users/multi_factor_authentications_controller.rb", "app/controllers/users/multi_factor_authentications_controller.rb"
+copy_file "variants/devise-2fa/app/controllers/dashboards_controller.rb", "app/controllers/dashboards_controller.rb"
+copy_file "variants/devise-2fa/app/controllers/publics_controller.rb", "app/controllers/publics_controller.rb"
+
+insert_into_file("app/controllers/application_controller.rb", after: /^  after_action :verify_policy_scoped.*?\n/) do
+  <<-EO_RUBY
+  before_action :require_multi_factor_authentication!
+
+  protected
+
+  # TODO: Check whether these need to be protected or private
+  def require_multi_factor_authentication!
+    return unless user_signed_in?
+    return if devise_controller?
+    return if current_user.otp_required_for_login?
+
+    redirect_to new_users_multi_factor_authentication_path, alert: "MFA required" # TODO: use i18n
+  end
+
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource) || dashboards_path
+  end
+  EO_RUBY
+end
+
 ######################################
 # Secrets
 ######################################
 
-insert_into_file("config/secrets.yml", after: /\A.+secret_key_base.+\z/) do
-  <<-EO_LINE
-    devise_two_factor_secret_encryption_key: "<%= ENV['DEVISE_TWO_FACTOR_SECRET_ENCRYPTION_KEY'] %>"
-  EO_LINE
-end
+# insert_into_file("config/secrets.yml", after: /\A.+secret_key_base.+\z/) doVjjjjjjjjj
+#   <<-EO_LINE
+#     devise_two_factor_secret_encryption_key: "<%= ENV['DEVISE_TWO_FACTOR_SECRET_ENCRYPTION_KEY'] %>"
+#   EO_LINE
+# end
 
-append_to_file ".env" do
-  <<~EO_LINE
+# append_to_file ".env" do
+#   <<~EO_LINE
 
-    # Use 'bundle exec rails secret' to generate a real value here
-    DEVISE_TWO_FACTOR_SECRET_ENCRYPTION_KEY=fortheloveofallyouholddeardonotusethissecretinproduction
-  EO_LINE
-end
+#     # Use 'bundle exec rails secret' to generate a real value here
+#     DEVISE_TWO_FACTOR_SECRET_ENCRYPTION_KEY=fortheloveofallyouholddeardonotusethissecretinproduction
+#   EO_LINE
+# end
 
 ######################################
 # Views
 ######################################
 
-insert_into_file("app/views/users/sessions/new.html.erb", before: /^.*<div class="actions">/) do
-  <<~EO_FIELD
-    <div class="form__field">
-      <%= f.label :otp_attempt, "2FA (Two Factor Auth) code", class: "form__label" %><br />
-      <%= f.text_field :otp_attempt, class: "form__input" %>
-    </div>
-  EO_FIELD
-end
+# insert_into_file("app/views/users/sessions/new.html.erb", before: /^.*<div class="actions">/) do
+#   <<~EO_FIELD
+#     <div class="form__field">
+#       <%= f.label :otp_attempt, "2FA (Two Factor Auth) code", class: "form__label" %><br />
+#       <%= f.text_field :otp_attempt, class: "form__input" %>
+#     </div>
+#   EO_FIELD
+# end
 
 ######################################
 # Config
 ######################################
 
+TERMINAL.puts_header "Adding otp_attempt to filtered params in logs"
 append_to_file("config/initializers/filter_parameter_logging.rb") do
   <<~EO_CONTENT
     Rails.application.config.filter_parameters += %i[otp_attempt]
   EO_CONTENT
 end
 
-# TODO: devise initializer
-#  # This must be set to false when using devise-two-factor - see
-#   # https://github.com/tinfoil/devise-two-factor#disabling-automatic-login-after-password-resets
-#   config.sign_in_after_reset_password = false
-# # ==> Controller configuration
-# # Configure the parent class to the devise controllers.
-# config.parent_controller = "Users::DeviseController"
-# TODO:
+TERMINAL.puts_header "Tweaking config/initializers/devise.rb"
+
+gsub_file "config/initializers/devise.rb",
+          "  # config.sign_in_after_reset_password = true",
+          <<-EO_CONFIG
+  #
+  # This must be set to false when using devise-two-factor - see
+  # https://github.com/tinfoil/devise-two-factor#disabling-automatic-login-after-password-resets
+  config.sign_in_after_reset_password = false
+          EO_CONFIG
+
+gsub_file "config/initializers/devise.rb",
+          "  # config.parent_controller = 'DeviseController'",
+          "  config.parent_controller = 'Users::DeviseController'"
+
+# TODO: Do I still need this
 # this is a fix for https://github.com/heartcombo/devise/issues/5439 but I'm not sure it is the best fix
 # config.navigational_formats = ["*/*", :html, :turbo_stream]
 
-# TODO: migrations
+######################################
+# Images
+######################################
+
+TERMINAL.puts_header "Copying MFA logos"
+directory "variants/devise-2fa/app/frontend/images/mfa", "app/frontend/images/mfa"
+
+######################################
+# Routes
+######################################
+
+TERMINAL.puts_header "Setting up routes.rb"
+insert_into_file("config/routes.rb", before: /^end/) do
+  <<-EO_ROUTES
+
+  namespace :users do
+    devise_scope :user do
+      post :validate_otp, to: "sessions#validate_otp"
+    end
+
+    resource :multi_factor_authentication, only: %i[new show create] do
+      post :backup_codes, action: :create_backup_codes
+      delete :backup_codes, action: :destroy_backup_codes
+    end
+  end
+
+  resource :dashboards, only: [:show]
+  resource :publics, only: [] do
+    get :home
+  end
+  EO_ROUTES
+end
+
+######################################
+# Locales
+######################################
+
+TERMINAL.puts_header "Setting up locales"
+copy_file "variants/devise-2fa/config/locales/mfa.en.yml", "config/locales/mfa.en.yml"
 
 ######################################
 # Documentation
 ######################################
 
-# TODO: documentation
+TERMINAL.puts_header "Copying MFA docs"
+copy_file "variants/devise-2fa/doc/multi_factor_authentication_sequence.png", "doc/multi_factor_authentication_sequence.png"
+copy_file "variants/devise-2fa/doc/multi_factor_authentication.md", "doc/multi_factor_authentication.md"
+remove_file "doc/.keep"
 
 ######################################
 # Clean up
 ######################################
 
-print_header "Running rubocop to clean up generated files"
+TERMINAL.puts_header "Running rubocop to clean up generated files"
 run "bundle exec rubocop -A"
+
+exit
