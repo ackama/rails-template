@@ -297,16 +297,16 @@ def assert_valid_options
     next unless options.key?(key)
 
     actual = options[key]
-    fail Rails::Generators::Error, "Unsupported option: #{key}=#{actual}" unless actual == expected
+    raise Rails::Generators::Error, "Unsupported option: #{key}=#{actual}" unless actual == expected
   end
 end
 
 def assert_postgresql
   return if /^\s*gem ['"]pg['"]/.match?(File.read("Gemfile"))
 
-  fail Rails::Generators::Error,
-       "This template requires PostgreSQL, " \
-       "but the pg gem isn't present in your Gemfile."
+  raise Rails::Generators::Error,
+        "This template requires PostgreSQL, " \
+        "but the pg gem isn't present in your Gemfile."
 end
 
 def any_local_git_commits?
