@@ -109,7 +109,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   apply "variants/backend-base/spec/template.rb"
 
   # The block passed to "after_bundle" seems to run after `bundle install`
-  # but also after `webpacker:install` and after Rails has initialized the git
+  # but also after `shakapacker:install` and after Rails has initialized the git
   # repo
   after_bundle do
     # Remove the `test/` directory because we always use RSpec which creates

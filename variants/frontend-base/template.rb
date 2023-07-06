@@ -14,9 +14,9 @@ remove_dir "app/assets/stylesheets"
 remove_dir "app/assets/images"
 
 # this will create a package.json for us
-run "rails webpacker:install"
+run "rails shakapacker:install"
 
-# this is added by webpacker:install, but we've already got one (with some extra tags)
+# this is added by shakapacker:install, but we've already got one (with some extra tags)
 # in our template, so remove theirs otherwise the app will error when rendering this
 gsub_file "app/views/layouts/application.html.erb",
           "    <%= javascript_pack_tag \"application\" %>\n",
@@ -30,17 +30,10 @@ run "mv app/frontend/application.js app/frontend/packs/application.js"
 
 copy_file "config/webpack/webpack.config.js", force: true
 
-gsub_file "config/webpacker.yml", "source_entry_path: /", "source_entry_path: packs", force: true
-gsub_file "config/webpacker.yml", "cache_path: tmp/webpacker", "cache_path: tmp/cache/webpacker", force: true
-gsub_file "config/webpacker.yml", "source_path: app/javascript", "source_path: app/frontend", force: true
-gsub_file "config/webpacker.yml", "ensure_consistent_versioning: false", "ensure_consistent_versioning: true", force: true
-
-# Yarn's integrity check command is quite buggy, to the point that yarn v2 removed it
-#
-# The integrity check option itself has been removed in webpacker v5.1 but we
-# currently pull in v4, so we just set it to false to be safe
-#
-gsub_file "config/webpacker.yml", "check_yarn_integrity: true", "check_yarn_integrity: false", force: true
+gsub_file "config/shakapacker.yml", "source_entry_path: /", "source_entry_path: packs", force: true
+gsub_file "config/shakapacker.yml", "cache_path: tmp/shakapacker", "cache_path: tmp/cache/shakapacker", force: true
+gsub_file "config/shakapacker.yml", "source_path: app/javascript", "source_path: app/frontend", force: true
+gsub_file "config/shakapacker.yml", "ensure_consistent_versioning: false", "ensure_consistent_versioning: true", force: true
 
 empty_directory_with_keep_file "app/frontend/images"
 copy_file "app/frontend/stylesheets/application.scss"
