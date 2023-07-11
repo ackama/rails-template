@@ -8,7 +8,7 @@ yarn_add_dev_dependencies %w[
   eslint-plugin-import
   eslint-plugin-prettier
   eslint-plugin-eslint-comments
-  prettier
+  prettier@^2.7.0
   prettier-config-ackama
   prettier-plugin-packagejson
 ]
