@@ -71,7 +71,7 @@ body_open_tag_with_img_example = <<~EO_IMG_EXAMPLE
         # An example of how to load an image via Webpacker. This image is in
         # app/frontend/images/example.png
       %>
-      <%= image_pack_tag "example.png", alt: "Example Image" %>
+      <%= image_pack_tag "images/example.png", alt: "Example Image" %>
 EO_IMG_EXAMPLE
 gsub_file "app/views/layouts/application.html.erb", "<body>", body_open_tag_with_img_example, force: true
 
