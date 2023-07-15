@@ -120,11 +120,10 @@ jobs:
       # installation and setup works in this project so, while caching would
       # make CI faster, it might hide problems.
 
-      - name: Install Ruby and Bundler
+      - name: Set up Ruby (version given by .ruby-version)
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: '3.0'
 
       - name: Setup git for committing
         run: |
