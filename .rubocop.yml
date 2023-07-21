@@ -51,6 +51,23 @@ Style/SignalException:
   EnforcedStyle: only_raise
 
 # We think that:
+#   array = [
+#     :value
+#   ]
+#   and_in_a_method_call([
+#     :value
+#   ])
+# Looks better than:
+#   value = [
+#     :value
+#   ]
+#   but_in_a_method_call([
+#                          :its_like_this
+#                         ])
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+# We think that:
 #   hash = {
 #     key: :value
 #   }
