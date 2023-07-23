@@ -29,7 +29,7 @@ class VerifyPlaceholderSecretsNotUsedForReal
       ]
 
       secrets.each do |secret|
-        fail "Insecure ENV: ActiveRecored encrypted credentials env contain in insecure placeholder value." if secret.match?(PLACEHOLDER_PREFIX_REGEX)
+        fail "Insecure ENV: ActiveRecored encrypted credentials env contain an insecure placeholder value. Generate new ones with `bundle exec rails db:encryption:init`" if secret.match?(PLACEHOLDER_PREFIX_REGEX)
       end
     end
 
