@@ -8,7 +8,6 @@
 
 default: &default
   # The default `From:` address to use for email sent by this application
-  # obviously isn't a secret per se, but configuring it here is convenient
   mail_from: "<%= ENV['MAIL_FROM'] %>"
 
 development:
