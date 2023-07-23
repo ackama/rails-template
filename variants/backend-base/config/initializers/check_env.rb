@@ -17,10 +17,8 @@ class VerifyPlaceholderSecretsNotUsedForReal
       fail "RAILS_SECRET_KEY_BASE is unchanged from example.env. Generate a new one with `bundle exec rails secret`"
     end
 
-    ##
     # Verify that placeholder values created by the Ackama rails template are
     # not being used for real.
-    #
     def verify_activerecord_encryption_secrets # rubocop:disable Metrics/AbcSize
       secrets = [
         Rails.application.config.active_record.encryption.primary_key,
