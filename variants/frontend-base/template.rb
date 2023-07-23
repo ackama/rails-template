@@ -68,7 +68,7 @@ copy_file "app/frontend/images/example.png"
 body_open_tag_with_img_example = <<~EO_IMG_EXAMPLE
   <body>
       <%
-        # An example of how to load an image via Webpacker. This image is in
+        # An example of how to load an image via shakapacker. This image is in
         # app/frontend/images/example.png
       %>
       <%= image_pack_tag "images/example.png", alt: "Example Image" %>
