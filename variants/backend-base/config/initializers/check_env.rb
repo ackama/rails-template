@@ -37,6 +37,5 @@ class VerifyPlaceholderSecretsNotUsedForReal
       Rails.env.development? || Rails.env.test?
     end
   end
-end
 
 VerifyPlaceholderSecretsNotUsedForReal.run

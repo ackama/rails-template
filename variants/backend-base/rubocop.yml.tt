@@ -3,6 +3,7 @@ require:
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-capybara
 
 # Built-in config:
 # https://github.com/bbatsov/rubocop/blob/master/config/default.yml
@@ -79,9 +80,9 @@ Rails/SkipsModelValidations:
 Naming/VariableNumber:
   Enabled: false
 
-# We prefer that you use `fail` unless you're explicitly re-raising an exception.
+# Just always use `raise` and stop thinking about it.
 Style/SignalException:
-  EnforcedStyle: semantic
+  EnforcedStyle: only_raise
 
 # We think that:
 #   hash = {
