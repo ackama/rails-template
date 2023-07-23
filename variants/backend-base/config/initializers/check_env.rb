@@ -1,6 +1,10 @@
 class VerifyPlaceholderSecretsNotUsedForReal
   class << self
-    PLACEHOLDER_PREFIX_REGEX = /(PLACEHOLDER|FAILED_TO_GENERATE)/.freeze
+    DB_ENCRYPTION_ENV_VAR_NAMES = %w[
+      ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+      ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY
+      ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT
+    ].freeze
 
     def run
       return if local?
@@ -14,20 +18,16 @@ class VerifyPlaceholderSecretsNotUsedForReal
     def verify_secret_key_base
       return unless Rails.root.join("example.env").read.include?(ENV.fetch("RAILS_SECRET_KEY_BASE"))
 
-      fail "RAILS_SECRET_KEY_BASE is unchanged from example.env. Generate a new one with `bundle exec rails secret`"
+      raise "RAILS_SECRET_KEY_BASE is unchanged from example.env. Generate a new one with `bundle exec rails secret`"
     end
 
     # Verify that placeholder values created by the Ackama rails template are
     # not being used for real.
-    def verify_activerecord_encryption_secrets # rubocop:disable Metrics/AbcSize
-      secrets = [
-        Rails.application.config.active_record.encryption.primary_key,
-        Rails.application.config.active_record.encryption.deterministic_key,
-        Rails.application.config.active_record.encryption.key_derivation_salt
-      ]
+    def verify_activerecord_encryption_secrets
+      example_env_contents = Rails.root.join("example.env").read
 
-      secrets.each do |secret|
-        fail "Insecure ENV: ActiveRecored encrypted credentials env contain an insecure placeholder value. Generate new ones with `bundle exec rails db:encryption:init`" if secret.match?(PLACEHOLDER_PREFIX_REGEX)
+      DB_ENCRYPTION_ENV_VAR_NAMES.each do |env_var_name|
+        raise "#{env_var_name} is unchanged from example.env. Generate a new one with `bundle exec rails db:encryption:init`" if example_env_contents.include?(ENV.fetch(env_var_name))
       end
     end
 
