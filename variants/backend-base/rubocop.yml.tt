@@ -48,7 +48,7 @@ Metrics/BlockLength:
     - 'config/**/*'
     - 'lib/tasks/**/*'
 
-# We generally don't want methods longer than 15 lines, except in migrations where it's probably okay.
+# We generally don't want methods longer than 20 lines, except in migrations where it's probably okay.
 Metrics/MethodLength:
   Max: 20
   Exclude:
