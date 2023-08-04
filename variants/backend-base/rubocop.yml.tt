@@ -1,9 +1,10 @@
 ---
 require:
+  - rubocop-capybara
+  - rubocop-factory_bot
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
-  - rubocop-capybara
 
 # Built-in config:
 # https://github.com/bbatsov/rubocop/blob/master/config/default.yml
@@ -274,9 +275,6 @@ RSpec/MultipleExpectations:
 RSpec/ExampleLength:
   Max: 30
 
-RSpec/FactoryBot/SyntaxMethods:
-  Enabled: false
-
 Rails/LexicallyScopedActionFilter:
   Exclude:
     - 'app/controllers/application_controller.rb'
@@ -287,3 +285,6 @@ RSpec/RepeatedExample:
 
 RSpec/MultipleMemoizedHelpers:
   Max: 10
+
+FactoryBot/SyntaxMethods:
+  Enabled: false
