@@ -15,23 +15,12 @@ yarn_add_dependencies %w[
   prop-types
 ]
 
-# We need the major version of the 'jest', '@jest/types', 'ts-jest' packages to
-# match so we can only upgrade jest when there are compatible versions available
-jest_major_version = "29"
-
-yarn_add_dev_dependencies [
-  "@testing-library/react",
-  "@testing-library/jest-dom",
-  "@testing-library/user-event",
-  "eslint-plugin-react",
-  "eslint-plugin-react-hooks",
-  "eslint-plugin-jsx-a11y",
-  "eslint-plugin-jest",
-  "eslint-plugin-jest-formatting",
-  "eslint-plugin-jest-dom",
-  "eslint-plugin-testing-library",
-  "jest-environment-jsdom",
-  "jest@#{jest_major_version}"
+yarn_add_dev_dependencies %w[
+  @testing-library/react
+  @testing-library/user-event
+  eslint-plugin-react
+  eslint-plugin-react-hooks
+  eslint-plugin-jsx-a11y
 ]
 copy_file ".eslintrc.js", force: true
 copy_file "babel.config.js", force: true
@@ -76,9 +65,7 @@ copy_file "jest.config.js"
 
 # example file
 copy_file "app/frontend/components/HelloWorld.jsx", force: true
-
-# test files
-directory "app/frontend/test"
+copy_file "app/frontend/test/components/HelloWorld.spec.jsx", force: true
 
 append_to_file "app/views/home/index.html.erb" do
   <<~ERB
@@ -87,23 +74,8 @@ append_to_file "app/views/home/index.html.erb" do
 end
 
 package_json = JSON.parse(File.read("./package.json"))
-package_json["scripts"] = package_json["scripts"].merge(
-  {
-    "test" => "jest",
-    "watch-tests" => "jest --watch"
-  }
-)
 
 # we've replaced this with a babel.config.js
 package_json.delete "babel"
 
 File.write("./package.json", JSON.generate(package_json))
-
-append_to_file "bin/ci-run" do
-  <<~JEST
-    echo "* ******************************************************"
-    echo "* Running JS tests"
-    echo "* ******************************************************"
-    yarn run test --coverage
-  JEST
-end
