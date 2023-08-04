@@ -1,4 +1,4 @@
-# frozen-string-literal: true
+# frozen_string_literal: true
 
 # RAILS_SECRET_KEY_BASE should be set to something other than its value in example.env
 
