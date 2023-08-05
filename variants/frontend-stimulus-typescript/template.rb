@@ -15,7 +15,7 @@ copy_file ".eslintrc.js", force: true
 remove_file "jest.config.js", force: true
 copy_file "jest.config.ts"
 
-copy_file "babel.config.js"
+copy_file "babel.config.js", force: true
 
 package_json = JSON.parse(File.read("./package.json"))
 

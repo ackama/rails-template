@@ -5,7 +5,7 @@ const config = {
   env: { commonjs: true, node: true, browser: true },
   extends: ['ackama', 'ackama/react'],
   ignorePatterns: ['tmp/'],
-  parserOptions: { sourceType: 'module' },
+  parserOptions: { sourceType: 'module', ecmaVersion: 2022 },
   overrides: [
     {
       files: [
