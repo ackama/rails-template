@@ -7,6 +7,14 @@ run "bundle install"
 
 run "rails generate react:install"
 
+# @testing-library/react brings in @testing-library/dom as a direct dependency,
+# and so should be favored when importing as it is the more specific package
+run "yarn remove @testing-library/dom"
+
+gsub_file "app/frontend/test/stimulus/controllers/add_class_controller.test.js",
+          "'@testing-library/dom'",
+          "'@testing-library/react'"
+
 yarn_add_dependencies %w[
   @babel/preset-react
   babel-plugin-transform-react-remove-prop-types
@@ -17,7 +25,6 @@ yarn_add_dependencies %w[
 
 yarn_add_dev_dependencies %w[
   @testing-library/react
-  @testing-library/user-event
   eslint-plugin-react
   eslint-plugin-react-hooks
   eslint-plugin-jsx-a11y

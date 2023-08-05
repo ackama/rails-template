@@ -55,9 +55,11 @@ jest_major_version = "29"
 yarn_add_dev_dependencies %W[
   @testing-library/dom
   @testing-library/jest-dom
+  @testing-library/user-event
   eslint-plugin-jest
   eslint-plugin-jest-formatting
   eslint-plugin-jest-dom
+  eslint-plugin-testing-library
   jest-environment-jsdom
   jest@#{jest_major_version}
 ]

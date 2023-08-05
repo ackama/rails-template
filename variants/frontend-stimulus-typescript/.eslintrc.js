@@ -24,8 +24,12 @@ const config = {
     },
     {
       files: ['app/frontend/test/**'],
-      extends: ['ackama/jest', 'plugin:jest-dom/recommended'],
-      plugins: ['jest-dom'],
+      extends: [
+        'ackama/jest',
+        'plugin:jest-dom/recommended',
+        'plugin:testing-library/dom'
+      ],
+      plugins: ['testing-library', 'jest-dom'],
       rules: {
         'jest/prefer-expect-assertions': 'off'
       }
