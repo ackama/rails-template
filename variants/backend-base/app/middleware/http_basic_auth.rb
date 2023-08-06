@@ -4,7 +4,7 @@ class HttpBasicAuth
   end
 
   def call(env)
-    if username && password
+    if username.present? && password.present?
       auth = Rack::Auth::Basic.new(@app) do |u, p|
         u == username && p == password
       end
