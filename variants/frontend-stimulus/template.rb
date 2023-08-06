@@ -7,10 +7,8 @@ yarn_add_dependencies %w[
   @hotwired/stimulus-webpack-helpers
 ]
 
-copy_file "app/frontend/stimulus/controllers/hello_controller.js"
-copy_file "app/frontend/stimulus/controllers/add_class_controller.js"
-copy_file "app/frontend/test/stimulus/controllers/add_class_controller.test.js"
-copy_file "app/frontend/test/setupExpectEachTestHasAssertions.js"
+directory "app/frontend/stimulus/controllers"
+directory "app/frontend/test"
 
 prepend_to_file "app/frontend/packs/application.js" do
   <<~EO_JS_IMPORTS
