@@ -101,6 +101,11 @@ jobs:
       - run: bundle exec rubocop
       - run: bundle exec brakeman --run-all-checks --exit-on-warn --format plain .
       - run: bundle exec rails db:setup
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".node-version"
+          cache: "yarn"
+      - run: yarn install --frozen-lockfile
       - run: bundle exec rspec spec --format progress
       - name: Archive spec outputs
         uses: actions/upload-artifact@v3
