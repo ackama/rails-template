@@ -62,6 +62,8 @@ PLATFORMS
 
 DEPENDENCIES
   rubocop (~> 1.31)
+  rubocop-capybara (~> 2.18)
+  rubocop-factory_bot (~> 2.23)
   rubocop-performance (~> 1.14)
   rubocop-rails (~> 2.15)
   rubocop-rspec (~> 2.12)
