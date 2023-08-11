@@ -14,10 +14,10 @@ env:
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
   RAILS_SECRET_KEY_BASE: any-value-works-here-in-ci-but-prod-should-be-created-with-bundle-exec-rails-secret
   MAIL_FROM: "changeme@example.com"
-  <% if TEMPLATE_CONFIG.apply_variant_sidekiq? %>
+  <%- if TEMPLATE_CONFIG.apply_variant_sidekiq? -%>
   SIDEKIQ_WEB_USERNAME: admin
   SIDEKIQ_WEB_PASSWORD: password
-  <% end %>
+  <%- end -%>
 
 # Restrict jobs in this workflow to only be allowed to read this repo by default.
 #
@@ -48,9 +48,9 @@ jobs:
           node-version-file: ".node-version"
           cache: "yarn"
       - run: yarn install --frozen-lockfile
-      <% if TEMPLATE_CONFIG.use_typescript? %>
+      <%- if TEMPLATE_CONFIG.use_typescript? -%>
       - run: yarn run typecheck
-      <% end %>
+      <%- end -%>
       - run: yarn run js-lint
       - run: yarn run format-check
   ruby_based_checks:
