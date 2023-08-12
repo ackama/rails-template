@@ -49,8 +49,19 @@ Dir.chdir(builds_path) do |cwd|
   system(cmd, exception: true)
 end
 
-puts "Running test suite"
+def ensure_everything_is_committed
+  out = `git status -s`
+
+  raise StandardError, "there are uncommitted changes or un-staged files: #{out}" unless out.empty?
+end
+
+puts "Running post-generator checks"
 Dir.chdir(app_path) do |cwd|
   puts "Working dir is now #{cwd}"
+
+  puts "Checking everything is committed and there are no un-staged files"
+  ensure_everything_is_committed
+
+  puts "Running test suite"
   system("./bin/ci-run", exception: true)
 end
