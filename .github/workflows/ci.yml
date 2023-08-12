@@ -70,6 +70,13 @@ jobs:
       # how many fail)
       fail-fast: false
       matrix:
+        js_package_manager:
+          - name: npm
+            installer: npm
+          - name: yarn_classic
+            installer: yarn
+          - name: pnpm
+            installer: pnpm
         variant:
           - name: defaults
             config_path: 'ackama_rails_template.config.yml'
@@ -142,8 +149,11 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v4
         with:
-          cache: 'yarn'
+          cache: '${{ matrix.js_package_manager.installer }}'
           node-version-file: '.node-version'
+
+      - name: install package manager
+        run: npm i -g ${{ matrix.js_package_manager.installer }}
 
       # We don't cache gems or JS packages because we are actually testing how
       # installation and setup works in this project so, while caching would
@@ -173,4 +183,5 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
+          PACKAGE_JSON_FALLBACK_MANAGER: ${{ matrix.js_package_manager.name }}
         run: ./ci/bin/build-and-test
