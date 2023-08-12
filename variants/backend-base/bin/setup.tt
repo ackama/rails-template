@@ -5,7 +5,7 @@ def setup!
     test "ruby -v" => ruby_version
     run  "gem install bundler --no-document --conservative"
     run  "bundle install"
-    run  "yarn install" if File.exist?("yarn.lock")
+    run  "<%= package_json.manager.native_install_command.join(" ") %>" if File.exist?("package.json")
     run  "bundle exec overcommit --install" unless ENV["SKIP_OVERCOMMIT"] || ENV["CI"]
     copy "example.env"
     test_local_env_contains_required_keys
