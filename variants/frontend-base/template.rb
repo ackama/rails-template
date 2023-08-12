@@ -13,7 +13,9 @@ end
 remove_dir "app/assets/stylesheets"
 remove_dir "app/assets/images"
 
-# this will create a package.json for us
+# shakapacker will create a more complete package.json
+remove_file "package.json"
+
 run "rails shakapacker:install"
 
 # explicitly set our preferred package manager for external tooling

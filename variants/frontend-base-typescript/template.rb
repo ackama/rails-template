@@ -67,6 +67,6 @@ append_to_file "bin/ci-run" do
     echo "* ******************************************************"
     echo "* Running Typechecking"
     echo "* ******************************************************"
-    yarn run typecheck
+    #{package_json.manager.native_run_command("typecheck").join(" ")}
   TYPECHECK
 end

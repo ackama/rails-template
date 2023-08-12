@@ -79,6 +79,6 @@ append_to_file "bin/ci-run" do
     echo "* ******************************************************"
     echo "* Running JS tests"
     echo "* ******************************************************"
-    yarn run test --coverage
+    #{package_json.manager.native_run_command("test", ["--coverage"]).join(" ")}
   JEST
 end
