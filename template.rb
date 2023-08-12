@@ -189,9 +189,15 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
     # Run the README template at the end because it introspects the app to
     # discover rake tasks etc.
-    template "variants/backend-base/README.md.tt", "README.md", force: true
-    run "yarn run prettier --write ./README.md"
+    apply_readme_template
   end
+end
+
+def apply_readme_template
+  template "variants/backend-base/README.md.tt", "README.md", force: true
+  run "yarn run prettier --write ./README.md"
+
+  git commit: "README.md -n -m 'Update README'"
 end
 
 # Normalizes the constraints of the given hash of dependencies so that they
