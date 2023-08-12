@@ -50,13 +50,13 @@ jobs:
         with:
           node-version-file: '.node-version'
           cache: 'yarn'
-      - run: yarn install --frozen-lockfile
+      - run: <%= package_json.manager.native_install_command(frozen: true).join(" ") %>
       <%- if TEMPLATE_CONFIG.use_typescript? -%>
-      - run: yarn run typecheck
+      - run: <%= package_json.manager.native_run_command("typecheck").join(" ") %>
       <%- end -%>
-      - run: yarn run js-lint
-      - run: yarn run format-check
-      - run: yarn run test --coverage
+      - run: <%= package_json.manager.native_run_command("js-lint").join(" ") %>
+      - run: <%= package_json.manager.native_run_command("format-check").join(" ") %>
+      - run: <%= package_json.manager.native_run_command("test", ["--coverage"]).join(" ") %>
   ruby_based_checks:
     permissions:
       contents: read
@@ -110,7 +110,7 @@ jobs:
         with:
           node-version-file: '.node-version'
           cache: 'yarn'
-      - run: yarn install --frozen-lockfile
+      - run: <%= package_json.manager.native_install_command(frozen: true).join(" ") %>
       - run: bundle exec rspec spec --format progress
       - name: Archive spec outputs
         uses: actions/upload-artifact@v3

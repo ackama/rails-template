@@ -132,7 +132,6 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   apply "variants/backend-base/bin/template.rb"
   apply "variants/backend-base/config/template.rb"
   apply "variants/backend-base/doc/template.rb"
-  apply "variants/backend-base/lib/template.rb"
   apply "variants/backend-base/public/template.rb"
   apply "variants/backend-base/spec/template.rb"
 
@@ -141,6 +140,10 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   # repo
   after_bundle do # rubocop:disable Metrics/BlockLength
     require_package_json_gem
+
+    apply "variants/backend-base/lib/template.rb"
+
+    template "variants/backend-base/bin/setup.tt", "bin/setup", force: true
 
     # Remove the `test/` directory because we always use RSpec which creates
     # its own `spec/` directory

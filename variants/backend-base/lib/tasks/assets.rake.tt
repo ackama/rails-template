@@ -1,7 +1,7 @@
 namespace :assets do
   desc "Ensures that dependencies required to compile assets are installed"
   task install_dependencies: :environment do
-    raise if File.exist?("yarn.lock") && !(system "yarn install --frozen-lockfile")
+    raise if File.exist?("package.json") && !(system "<%= package_json.manager.native_install_command(frozen: true).join(" ") %>")
   end
 end
 

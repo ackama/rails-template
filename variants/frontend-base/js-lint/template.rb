@@ -36,7 +36,7 @@ append_to_file "bin/ci-run" do
     echo "* ******************************************************"
     echo "* Running JS linting"
     echo "* ******************************************************"
-    yarn run js-lint
+    #{package_json.manager.native_run_command("js-lint").join(" ")}
   ESLINT
 end
 
@@ -46,7 +46,7 @@ append_to_file "bin/ci-run" do
     echo "* ******************************************************"
     echo "* Running JS linting"
     echo "* ******************************************************"
-    yarn run format-check
+    #{package_json.manager.native_run_command("format-check").join(" ")}
   PRETTIER
 end
 
@@ -66,6 +66,6 @@ append_to_file "bin/ci-run" do
     echo "* ******************************************************"
     echo "* Running SCSS linting"
     echo "* ******************************************************"
-    yarn run scss-lint
+    #{package_json.manager.native_run_command("scss-lint").join(" ")}
   SASSLINT
 end
