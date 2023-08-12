@@ -293,7 +293,8 @@ def cleanup_package_json
     }
   end
 
-  run "npx -y sort-package-json"
+  # TODO: this doesn't work when using pnpm even though it shouldn't matter? anyway, replace with 'exec' support
+  # run "npx -y sort-package-json"
 
   # ensure the lockfile is up to date with any changes we've made to package.json
   package_json.manager.install
