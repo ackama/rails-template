@@ -2,7 +2,6 @@ source_paths.unshift(File.dirname(__FILE__))
 
 installed_jest_major_version = JSON.parse(File.read("node_modules/jest/package.json")).fetch("version").split(".").first
 
-yarn_add_dependencies %w[@types/react @types/react-dom]
 yarn_add_dev_dependencies [
   "@types/jest@#{installed_jest_major_version}",
   "@jest/types@#{installed_jest_major_version}",
