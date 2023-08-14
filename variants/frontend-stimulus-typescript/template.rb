@@ -29,5 +29,6 @@ copy_file "app/frontend/stimulus/controllers/hello_controller.ts"
 remove_file "app/frontend/stimulus/controllers/add_class_controller.js", force: true
 copy_file "app/frontend/stimulus/controllers/add_class_controller.ts"
 
+rename_js_file_to_ts "app/frontend/test/setupJestDomMatchers"
 rename_js_file_to_ts "app/frontend/test/setupExpectEachTestHasAssertions"
 rename_js_file_to_ts "app/frontend/test/stimulus/controllers/add_class_controller.test"
