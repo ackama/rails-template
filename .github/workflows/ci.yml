@@ -31,6 +31,21 @@ jobs:
       - run: yarn install
       - run: yarn run format-check
 
+  rubocop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - name: Install Ruby and Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: 'ruby'
+
+      - name: Run Rubocop
+        run: bundle exec rubocop
+
   test_generated_apps:
     runs-on: ubuntu-latest
     strategy:
@@ -131,11 +146,6 @@ jobs:
           # We do some git commits during our testing so these need to be set
           git config --global user.email "you@example.com"
           git config --global user.name "Your Name"
-
-      - name: Run Rubocop
-        run: |
-          bundle install
-          bundle exec rubocop
 
       - name: Run CI script
         env:
