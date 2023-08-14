@@ -82,6 +82,7 @@ end
 
 package_json = JSON.parse(File.read("./package.json"))
 
+raise "oh noes!" if package_json.key? "babel"
 # we've replaced this with a babel.config.js
 package_json.delete "babel"
 
