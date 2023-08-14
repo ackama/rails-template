@@ -1,16 +1,7 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-installed_jest_major_version = JSON.parse(File.read("node_modules/jest/package.json")).fetch("version").split(".").first
-
 run "yarn remove prop-types"
 yarn_add_dependencies %w[@types/react @types/react-dom]
-yarn_add_dev_dependencies [
-  "@types/jest@#{installed_jest_major_version}",
-  "@jest/types@#{installed_jest_major_version}",
-  "ts-jest@#{installed_jest_major_version}",
-  "ts-node"
-]
-run "yarn install"
 
 rename_js_file_to_ts "app/frontend/packs/server_rendering"
 
@@ -50,5 +41,5 @@ append_to_file "types.d.ts" do
   TYPES
 end
 
-remove_dir "app/frontend/test"
-directory "app/frontend/test"
+remove_dir "app/frontend/test/components"
+directory "app/frontend/test/components"
