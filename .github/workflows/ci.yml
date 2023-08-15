@@ -170,6 +170,9 @@ jobs:
           git config --global user.email "you@example.com"
           git config --global user.name "Your Name"
 
+      # prettier-ignore
+      - run: ./ci/bin/create-fake-js-package-managers ${{ matrix.js_package_manager.installer }}
+
       - name: Run CI script
         env:
           # Remember that your app name becomes a top-level constant in the
