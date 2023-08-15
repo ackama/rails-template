@@ -149,7 +149,6 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v4
         with:
-          cache: '${{ matrix.js_package_manager.installer }}'
           node-version-file: '.node-version'
 
       - name: install package manager
