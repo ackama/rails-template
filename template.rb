@@ -166,11 +166,11 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
       apply "variants/frontend-bootstrap-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_bootstrap?
       apply "variants/frontend-react-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_react?
 
-      package_json.manager.run("typecheck")
+      package_json.manager.run!("typecheck")
     end
 
     # apply any js linting fixes after all frontend variants have run
-    package_json.manager.run("js-lint-fix")
+    package_json.manager.run!("js-lint-fix")
 
     create_initial_migration
 
@@ -251,7 +251,7 @@ def apply_readme_template
 end
 
 def apply_prettier_all_over
-  package_json.manager.run("format-fix")
+  package_json.manager.run!("format-fix")
 
   git commit: ". -m 'Run prettier one last time'"
 end
@@ -297,7 +297,7 @@ def cleanup_package_json
   # run "npx -y sort-package-json"
 
   # ensure the lockfile is up to date with any changes we've made to package.json
-  package_json.manager.install
+  package_json.manager.install!
 end
 
 # Adds the given <code>packages</code> as dependencies using <code>yarn add</code>
@@ -306,7 +306,7 @@ end
 def yarn_add_dependencies(packages)
   puts "adding #{packages.join(" ")} as dependencies"
 
-  package_json.manager.add(packages)
+  package_json.manager.add!(packages)
 end
 
 # Adds the given <code>packages</code> as devDependencies using <code>yarn add --dev</code>
@@ -315,7 +315,7 @@ end
 def yarn_add_dev_dependencies(packages)
   puts "adding #{packages.join(" ")} as dev dependencies"
 
-  package_json.manager.add(packages, type: :dev)
+  package_json.manager.add!(packages, type: :dev)
 end
 
 # Add this template directory to source_paths so that Thor actions like
