@@ -27,7 +27,7 @@ yarn_add_dev_dependencies %w[
   @typescript-eslint/eslint-plugin
 ]
 
-package_json.manager.install
+package_json.manager.install!
 
 rename_js_file_to_ts "app/frontend/packs/application"
 

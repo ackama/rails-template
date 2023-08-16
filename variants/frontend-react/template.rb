@@ -9,7 +9,7 @@ run "rails generate react:install"
 
 # @testing-library/react brings in @testing-library/dom as a direct dependency,
 # and so should be favored when importing as it is the more specific package
-package_json.manager.remove(["@testing-library/dom"])
+package_json.manager.remove!(["@testing-library/dom"])
 
 gsub_file! "app/frontend/test/stimulus/controllers/add_class_controller.test.js",
            "'@testing-library/dom'",
