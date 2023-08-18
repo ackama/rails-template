@@ -13,9 +13,8 @@ end
 remove_dir "app/assets/stylesheets"
 remove_dir "app/assets/images"
 
-# create a basic package.json which explicitly sets our preferred package manager
-# for external tooling; shakapacker:install will add a _lot_ more for us later
-File.write("./package.json", JSON.generate({ "packageManager" => "yarn@1.22.21" }))
+# ensure our preferred js package manager is specified before running external tooling
+package_json.record_package_manager!
 
 run "rails shakapacker:install"
 

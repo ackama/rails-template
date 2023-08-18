@@ -257,7 +257,7 @@ def apply_prettier_all_over
 end
 
 def package_json
-  @package_json ||= PackageJson.new(:yarn_classic)
+  @package_json ||= PackageJson.new
 end
 
 # Normalizes the constraints of the given hash of dependencies so that they
