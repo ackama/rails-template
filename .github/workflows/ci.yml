@@ -187,4 +187,5 @@ jobs:
           PGPASSWORD: postgres
           PGHOST: localhost
           PACKAGE_JSON_FALLBACK_MANAGER: ${{ matrix.js_package_manager.name }}
+          SHAKAPACKER_USE_PACKAGE_JSON_GEM: 'true'
         run: ./ci/bin/build-and-test
