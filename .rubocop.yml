@@ -3,6 +3,8 @@
 # configuration which is copied into generated applications.
 ---
 require:
+  - rubocop-capybara
+  - rubocop-factory_bot
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
@@ -46,9 +48,26 @@ Metrics/MethodLength:
 Naming/VariableNumber:
   Enabled: false
 
-# We prefer that you use `fail` unless you're explicitly re-raising an exception.
+# Just always use `raise` and stop thinking about it.
 Style/SignalException:
-  EnforcedStyle: semantic
+  EnforcedStyle: only_raise
+
+# We think that:
+#   array = [
+#     :value
+#   ]
+#   and_in_a_method_call([
+#     :value
+#   ])
+# Looks better than:
+#   value = [
+#     :value
+#   ]
+#   but_in_a_method_call([
+#                          :its_like_this
+#                         ])
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
 
 # We think that:
 #   hash = {
@@ -216,9 +235,6 @@ RSpec/MultipleExpectations:
 RSpec/ExampleLength:
   Max: 30
 
-RSpec/FactoryBot/SyntaxMethods:
-  Enabled: false
-
 Rails/LexicallyScopedActionFilter:
   Exclude:
     - 'app/controllers/application_controller.rb'
@@ -229,3 +245,6 @@ RSpec/RepeatedExample:
 
 RSpec/MultipleMemoizedHelpers:
   Max: 10
+
+FactoryBot/SyntaxMethods:
+  Enabled: false

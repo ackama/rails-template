@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Content-Security-Policy HTTP Header", type: :request do
+RSpec.describe "Content-Security-Policy HTTP Header" do
   context "when the application receives a request" do
     before do
       get root_path

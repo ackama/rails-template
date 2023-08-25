@@ -22,7 +22,7 @@ template "config/initializers/sidekiq.rb"
 copy_file "config/sidekiq.yml"
 
 insert_into_file "config/application.rb", before: /^  end/ do
-  <<-'RUBY'
+  <<-RUBY
 
     # Use sidekiq to process Active Jobs (e.g. ActionMailer's deliver_later)
     config.active_job.queue_adapter = :sidekiq

@@ -144,7 +144,7 @@ copy_file "app/controllers/users/sessions_controller.rb"
 
 gsub_file "config/routes.rb",
           "devise_for :users",
-          <<~'EO_DEVISE'
+          <<~EO_DEVISE
             devise_for :users, controllers: {
               sessions: "users/sessions"
             }

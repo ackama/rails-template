@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "User sign-up", type: :system do
+RSpec.describe "User sign-up" do
   let(:too_short_password) { "aabbcc" }
   let(:valid_password) { "aaaabbbbccccdddd" }
   let(:invalid_email) { "miles.obrien@" }

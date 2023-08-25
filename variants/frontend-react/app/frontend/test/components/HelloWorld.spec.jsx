@@ -13,6 +13,7 @@ describe('HelloWorld', () => {
   describe('when the user types in a new greeting', () => {
     it('changes to render that one', async () => {
       const user = userEvent.setup();
+
       const { container } = render(
         <HelloWorld initialGreeting="Hello Ackama" />
       );

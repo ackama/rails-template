@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "HTTP Basic Auth Middleware", type: :request do
+RSpec.describe "HTTP Basic Auth Middleware" do
   context "with HTTP Basic Auth enabled" do
     let(:username) { "Miles O'Brien" }
     let(:password) { "Ow me shoulder again!" }
