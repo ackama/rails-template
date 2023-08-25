@@ -83,7 +83,6 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   template "variants/backend-base/Gemfile.tt", "Gemfile", force: true
 
   template "variants/backend-base/example.env.tt", "example.env"
-  template "variants/backend-base/example.env.tt", ".env"
   copy_file "variants/backend-base/editorconfig", ".editorconfig"
   copy_file "variants/backend-base/gitignore", ".gitignore", force: true
   copy_file "variants/backend-base/overcommit.yml", ".overcommit.yml"
