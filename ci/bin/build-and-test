@@ -30,7 +30,7 @@ puts <<~EO_CONFIG_SUMMARY
 EO_CONFIG_SUMMARY
 puts "=" * 80
 
-fail "Missing config YML file" if config_path && !(File.exist?(config_path) && File.file?(config_path))
+raise "Missing config YML file" if config_path && !(File.exist?(config_path) && File.file?(config_path))
 
 puts "Installing latest rails gem"
 system "gem install rails --no-document"
