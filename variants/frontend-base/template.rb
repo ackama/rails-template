@@ -35,6 +35,21 @@ gsub_file "config/shakapacker.yml", "cache_path: tmp/shakapacker", "cache_path: 
 gsub_file "config/shakapacker.yml", "source_path: app/javascript", "source_path: app/frontend", force: true
 gsub_file "config/shakapacker.yml", "ensure_consistent_versioning: false", "ensure_consistent_versioning: true", force: true
 
+old_shakapacker_test_compile_snippet = <<~EO_OLD
+  test:
+    <<: *default
+    compile: true
+EO_OLD
+new_shakapacker_test_compile_snippet = <<~EO_NEW
+  test:
+    <<: *default
+
+    # We pre-compile assets before running system tests so we do not want
+    # Shakapacker to automatically compile in the test env
+    compile: false
+EO_NEW
+gsub_file("config/shakapacker.yml", old_shakapacker_test_compile_snippet, new_shakapacker_test_compile_snippet, force: true)
+
 empty_directory_with_keep_file "app/frontend/images"
 copy_file "app/frontend/stylesheets/application.scss"
 copy_file "app/frontend/stylesheets/_elements.scss"
