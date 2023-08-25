@@ -47,7 +47,7 @@ TERMINAL.puts_header "Tweaking config/initializers/devise.rb"
 
 gsub_file "config/initializers/devise.rb",
           "  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'",
-          "  config.mailer_sender = Rails.application.secrets.mail_from"
+          "  config.mailer_sender = Rails.application.config.app.mail_from"
 
 gsub_file "config/initializers/devise.rb",
           "  # config.scoped_views = false",
