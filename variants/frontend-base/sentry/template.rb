@@ -6,7 +6,7 @@ yarn_add_dependencies %w[@sentry/browser dotenv-webpack]
 prepend_to_file "app/frontend/packs/application.js", "import * as Sentry from '@sentry/browser';"
 
 append_to_file "app/frontend/packs/application.js" do
-  <<~'EO_JS'
+  <<~EO_JS
 
     // Initialize Sentry Error Reporting
     //
@@ -33,7 +33,7 @@ append_to_file "app/frontend/packs/application.js" do
 end
 
 prepend_to_file "app/frontend/packs/application.js" do
-  <<~'EO_JS'
+  <<~EO_JS
     // The application.js pack is deferred by default which means that nothing imported
     // in this file will begin executing until after the page has loaded. This helps to
     // speed up page loading times, especially in apps that have large amounts of js.

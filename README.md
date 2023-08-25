@@ -171,6 +171,8 @@ working directory if it exists. Otherwise you can specify a path using the
 [ackama_rails_template.config.yml](./ackama_rails_template.config.yml) is a
 documented configuration example that you can copy.
 
+You must also have Postgres running on port 5432.
+
 To generate a Rails application using this template, pass the `--template`
 option to `rails new`, like this:
 

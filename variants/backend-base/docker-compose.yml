@@ -22,13 +22,13 @@ services:
     <<: *rails
     links:
       - db
-      - webpacker
+      - shakapacker
     environment:
-      WEBPACKER_DEV_SERVER_HOST: webpacker
+      WEBPACKER_DEV_SERVER_HOST: shakapacker
     ports:
       - "3000:3000"
     command: "bash -c 'rm -rf tmp/pid/server.pid && rails s --binding 0.0.0.0'"
-  webpacker:
+  shakapacker:
     <<: *rails
     command: "./bin/webpack-dev-server"
 volumes:

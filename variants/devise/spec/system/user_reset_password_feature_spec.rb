@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Users can reset passwords", type: :system do
+RSpec.describe "Users can reset passwords" do
   describe "accessibility" do
     before { visit new_user_password_path }
 

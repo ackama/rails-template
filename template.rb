@@ -109,7 +109,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   apply "variants/backend-base/spec/template.rb"
 
   # The block passed to "after_bundle" seems to run after `bundle install`
-  # but also after `webpacker:install` and after Rails has initialized the git
+  # but also after `shakapacker:install` and after Rails has initialized the git
   # repo
   after_bundle do
     # Remove the `test/` directory because we always use RSpec which creates
@@ -297,16 +297,16 @@ def assert_valid_options
     next unless options.key?(key)
 
     actual = options[key]
-    fail Rails::Generators::Error, "Unsupported option: #{key}=#{actual}" unless actual == expected
+    raise Rails::Generators::Error, "Unsupported option: #{key}=#{actual}" unless actual == expected
   end
 end
 
 def assert_postgresql
   return if /^\s*gem ['"]pg['"]/.match?(File.read("Gemfile"))
 
-  fail Rails::Generators::Error,
-       "This template requires PostgreSQL, " \
-       "but the pg gem isn't present in your Gemfile."
+  raise Rails::Generators::Error,
+        "This template requires PostgreSQL, " \
+        "but the pg gem isn't present in your Gemfile."
 end
 
 def any_local_git_commits?

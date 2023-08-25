@@ -31,6 +31,7 @@ const config = api => {
       ]
     ].filter(notFalseGuard),
     plugins: [
+      ['@babel/plugin-transform-typescript', { allowDeclareFields: true }],
       isProductionEnv && [
         'babel-plugin-transform-react-remove-prop-types',
         {

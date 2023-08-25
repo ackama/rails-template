@@ -9,7 +9,7 @@ const config: Config.InitialOptions = {
 
   testPathIgnorePatterns: ['config/'],
   setupFilesAfterEnv: [
-    '@testing-library/jest-dom/extend-expect',
+    './app/frontend/test/setupJestDomMatchers.ts',
     './app/frontend/test/setupExpectEachTestHasAssertions.ts'
   ],
 

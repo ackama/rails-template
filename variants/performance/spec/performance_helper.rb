@@ -15,7 +15,7 @@ require "fileutils"
 RSpec.configure do |config|
   # Precompiling assets before running specs with js set to true not only helps
   # to speed things up slightly but also creates an environment that we can run
-  # performance specs against.  Without this webpacker doesn't zip the js packs
+  # performance specs against.  Without this shakapacker doesn't zip the js packs
   # and the performance specs show vastly different results to a live
   # environment.
   config.before(:suite) do

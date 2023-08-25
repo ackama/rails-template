@@ -46,6 +46,8 @@ group :development do
 
   gem "brakeman", require: false
   gem "rubocop", require: false
+  gem "rubocop-factory_bot", require: false
+  gem "rubocop-capybara", require: false
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-rspec", require: false
@@ -64,6 +66,5 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
-  gem "webdrivers"
   gem "simplecov", require: false
 end

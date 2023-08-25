@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "Automated health checks", type: :request do
+RSpec.describe "Automated health checks" do
   subject { response.body }
 
   before { get "/healthchecks/all" }

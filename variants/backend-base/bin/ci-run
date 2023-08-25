@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
-bundle exec rails webpacker:compile
+bundle exec rails shakapacker:compile
 
 SCRIPT_DIR=`dirname "$0"`
 APP_DIR="${SCRIPT_DIR}/.."

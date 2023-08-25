@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Session cookies are expired immediately after logout", type: :request do
+RSpec.describe "Session cookies are expired immediately after logout" do
   let(:password) { SecureRandom.hex(16) }
 
   let(:user) { FactoryBot.create(:user, password: password) }
