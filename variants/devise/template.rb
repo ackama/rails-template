@@ -74,6 +74,10 @@ gsub_file "config/initializers/devise.rb",
           "  config.unlock_strategy = :email"
 
 gsub_file "config/initializers/devise.rb",
+          "  # config.parent_mailer = 'ActionMailer::Base'",
+          "  config.parent_mailer = 'ApplicationMailer'"
+
+gsub_file "config/initializers/devise.rb",
           /  # config.maximum_attempts = .+/,
           <<-EO_CHUNK
   #
