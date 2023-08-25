@@ -132,5 +132,5 @@ code.
 Ensure any changes to features documented in the README.md or this
 CONTRIBUTING.md have their documentation updated as necessary.
 
-If you're ackama staff, ensure any linked ackama-internal documentation is also
+If you're Ackama staff, ensure any linked Ackama-internal documentation is also
 up-to-date.
