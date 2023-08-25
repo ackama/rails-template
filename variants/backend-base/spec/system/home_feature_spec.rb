@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Homepage", type: :system do
+RSpec.describe "Homepage" do
   before { visit root_path }
 
   it "rendered page contains both base and application layouts" do

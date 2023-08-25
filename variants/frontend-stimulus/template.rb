@@ -7,7 +7,8 @@ yarn_add_dependencies %w[
   @hotwired/stimulus-webpack-helpers
 ]
 
-copy_file "app/frontend/stimulus/controllers/hello_controller.js"
+directory "app/frontend/stimulus/controllers"
+directory "app/frontend/test"
 
 prepend_to_file "app/frontend/packs/application.js" do
   <<~EO_JS_IMPORTS
@@ -43,4 +44,42 @@ append_to_file "app/frontend/packs/application.js" do
     application.debug = false;
     // window.Stimulus = application;
   EO_JS_SETUP
+end
+
+# We need the major version of the 'jest', '@jest/types', 'ts-jest' packages to
+# match so we can only upgrade jest when there are compatible versions available
+jest_major_version = "29"
+
+yarn_add_dev_dependencies %W[
+  @testing-library/dom
+  @testing-library/jest-dom
+  @testing-library/user-event
+  eslint-plugin-jest
+  eslint-plugin-jest-formatting
+  eslint-plugin-jest-dom
+  eslint-plugin-testing-library
+  jest-environment-jsdom
+  jest@#{jest_major_version}
+]
+
+copy_file ".eslintrc.js", force: true
+copy_file "jest.config.js"
+
+package_json = JSON.parse(File.read("./package.json"))
+package_json["scripts"] = package_json["scripts"].merge(
+  {
+    "test" => "jest",
+    "watch-tests" => "jest --watch"
+  }
+)
+
+File.write("./package.json", JSON.generate(package_json))
+
+append_to_file "bin/ci-run" do
+  <<~JEST
+    echo "* ******************************************************"
+    echo "* Running JS tests"
+    echo "* ******************************************************"
+    yarn run test --coverage
+  JEST
 end

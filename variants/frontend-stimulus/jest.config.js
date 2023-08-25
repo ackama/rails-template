@@ -9,7 +9,7 @@ const config = {
 
   testPathIgnorePatterns: ['config/'],
   setupFilesAfterEnv: [
-    '@testing-library/jest-dom/extend-expect',
+    './app/frontend/test/setupJestDomMatchers.js',
     './app/frontend/test/setupExpectEachTestHasAssertions.js'
   ]
 };

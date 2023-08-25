@@ -5,7 +5,7 @@ copy_file("variants/audit-logging/services/audit_log.rb", "app/services/audit_lo
 copy_file("variants/audit-logging/spec/services/audit_log_spec.rb", "spec/services/audit_log_spec.rb")
 
 insert_into_file "app/controllers/application_controller.rb", after: /^  end/ do
-  <<-'RUBY'
+  <<-RUBY
 
 
     ##
@@ -24,7 +24,7 @@ prepend_to_file "config/application.rb" do
 end
 
 insert_into_file "config/application.rb", before: /^  end/ do
-  <<-'RUBY'
+  <<-RUBY
 
     if ENV["RAILS_LOG_TO_STDOUT"].present?
       config.audit_logger = Logger.new($stdout, formatter: AuditLogLogFormatter.new)

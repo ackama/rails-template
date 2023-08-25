@@ -4,7 +4,7 @@ gsub_file "config/application.rb",
 
 insert_into_file "config/application.rb", after: /^require_relative ['"]boot['"]/ do
   # the empty line at the beginning of this string is required
-  <<~'RUBY'
+  <<~RUBY
 
     require_relative '../app/middleware/http_basic_auth'
   RUBY
@@ -12,7 +12,7 @@ end
 
 insert_into_file "config/application.rb", before: /^  end/ do
   # the empty line at the beginning of this string is required
-  <<-'RUBY'
+  <<-RUBY
 
     # load config/app.yml into Rails.application.config.app.*
     config.app = config_for(:app)
