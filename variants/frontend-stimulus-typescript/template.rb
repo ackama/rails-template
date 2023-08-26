@@ -3,6 +3,7 @@ source_paths.unshift(File.dirname(__FILE__))
 add_yarn_package_extension_dependency("@testing-library/jest-dom", "@types/aria-query")
 add_yarn_package_extension_dependency("ts-jest", "@jest/transform")
 
+yarn_add_dependencies ["@babel/plugin-transform-typescript"]
 yarn_add_dev_dependencies [
   "@types/jest@#{JEST_MAJOR_VERSION}",
   "ts-jest@#{JEST_MAJOR_VERSION}",
