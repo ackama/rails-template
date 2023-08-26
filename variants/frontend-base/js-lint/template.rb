@@ -1,6 +1,8 @@
 # Javascript code linting and formatting
 # ######################################
 
+add_yarn_package_extension_dependency("eslint-plugin-prettier", "eslint-config-prettier")
+
 yarn_add_dev_dependencies %w[
   eslint@8
   eslint-config-ackama
@@ -12,6 +14,7 @@ yarn_add_dev_dependencies %w[
   prettier-config-ackama
   prettier-plugin-packagejson
 ]
+
 copy_file "variants/frontend-base/.eslintrc.js", ".eslintrc.js"
 template "variants/frontend-base/.prettierignore.tt", ".prettierignore"
 
