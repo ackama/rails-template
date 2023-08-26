@@ -19,6 +19,7 @@ types_packages = %w[
   webpack-env
   eslint
   babel__core
+  node@18
 ].map { |name| "@types/#{name}" }
 
 yarn_add_dependencies types_packages + %w[@babel/preset-typescript typescript]
