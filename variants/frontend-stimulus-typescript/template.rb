@@ -2,6 +2,9 @@ source_paths.unshift(File.dirname(__FILE__))
 
 installed_jest_major_version = PackageJson.read("node_modules/jest").fetch("version").split(".").first
 
+add_yarn_package_extension_dependency("@testing-library/jest-dom", "@types/aria-query")
+add_yarn_package_extension_dependency("ts-jest", "@jest/transform")
+
 yarn_add_dev_dependencies [
   "@types/jest@#{installed_jest_major_version}",
   "@jest/types@#{installed_jest_major_version}",

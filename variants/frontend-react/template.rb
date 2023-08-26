@@ -7,6 +7,8 @@ run "bundle install"
 
 run "rails generate react:install"
 
+add_yarn_package_extension_dependency("@testing-library/user-event", "@testing-library/dom")
+
 # @testing-library/react brings in @testing-library/dom as a direct dependency,
 # and so should be favored when importing as it is the more specific package
 package_json.manager.remove!(["@testing-library/dom"])
