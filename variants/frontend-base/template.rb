@@ -27,6 +27,12 @@ gsub_file! "app/views/layouts/application.html.erb",
 # Configure app/frontend
 
 run "mv app/javascript app/frontend"
+
+copy_file "babel.config.js", force: true
+
+# we've replaced this with a babel.config.js
+package_json.delete!("babel")
+
 copy_file "config/webpack/webpack.config.js", force: true
 
 gsub_file! "config/shakapacker.yml", "cache_path: tmp/shakapacker", "cache_path: tmp/cache/shakapacker"
