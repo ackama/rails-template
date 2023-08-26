@@ -41,7 +41,7 @@ Capybara.register_driver :chrome do |app|
   options.add_argument("--window-size=1920,1080")
 
   # Add other Chrome arguments here
-  options.add_argument("--headless") unless ENV["HEADFUL"]
+  options.add_argument("--headless=new") unless ENV["HEADFUL"]
 
   # Docker compatibility
   options.add_argument("--no-sandbox")
