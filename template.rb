@@ -92,6 +92,10 @@ end
 TEMPLATE_CONFIG = Config.new
 TERMINAL = Terminal.new
 
+# We need the major version of 'jest', '@types/jest', and 'ts-jest' to match
+# so we can only upgrade jest when there are compatible versions available
+JEST_MAJOR_VERSION = "29".freeze
+
 def require_package_json_gem
   require "bundler/inline"
 
