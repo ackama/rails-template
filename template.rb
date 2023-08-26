@@ -256,7 +256,54 @@ def apply_prettier_all_over
   git commit: ". -m 'Run prettier one last time'"
 end
 
+# Sets Yarn Berry up in the project directory by initializing it with what is probably Yarn Classic.
+#
+# This is required as the Berry binary is actually downloaded and committed to the codebase, and
+# the global yarn command passes through to it when detected (even if its Yarn Classic).
+#
+# This also requires us to temporarily create a package.json as otherwise Yarn Berry will
+# look up the file tree and initialize itself in every directory that has a yarn.lock
+def setup_yarn_berry
+  # safeguard against parent directories having a yarn.lock
+  File.write("package.json", "{}") unless File.exist?("package.json")
+
+  run "yarn init -2"
+  run "yarn config set enableGlobalCache true"
+  run "yarn config set nodeLinker #{ENV.fetch("PACKAGE_JSON_YARN_BERRY_LINKER", "node-modules")}"
+
+  ignores = <<~YARN
+    .pnp.*
+    .yarn/*
+    !.yarn/patches
+    !.yarn/plugins
+    !.yarn/releases
+    !.yarn/sdks
+    !.yarn/versions
+  YARN
+  File.write(".gitignore", ignores, mode: "a")
+
+  # this will be properly (re)created later
+  File.unlink("package.json")
+end
+
+def add_yarn_package_extension_dependency(name, dependency)
+  return unless File.exist?(".yarnrc.yml")
+
+  require "yaml"
+
+  yarnrc = YAML.load_file(".yarnrc.yml")
+
+  yarnrc["packageExtensions"] ||= {}
+  yarnrc["packageExtensions"]["#{name}@*"] ||= {}
+  yarnrc["packageExtensions"]["#{name}@*"]["dependencies"] ||= {}
+  yarnrc["packageExtensions"]["#{name}@*"]["dependencies"][dependency] = "*"
+
+  File.write(".yarnrc.yml", yarnrc.to_yaml)
+end
+
 def package_json
+  setup_yarn_berry if @package_json.nil? && ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", nil) == "yarn_berry"
+
   @package_json ||= PackageJson.new
 end
 

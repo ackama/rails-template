@@ -73,6 +73,15 @@ jobs:
         js_package_manager:
           - name: npm
             installer: npm
+          - name: yarn_berry
+            installer: yarn
+            linker: pnp
+          - name: yarn_berry
+            installer: yarn
+            linker: node-modules
+          - name: yarn_berry
+            installer: yarn
+            linker: pnpm
           - name: yarn_classic
             installer: yarn
           - name: pnpm
@@ -186,4 +195,6 @@ jobs:
           PGPASSWORD: postgres
           PGHOST: localhost
           PACKAGE_JSON_FALLBACK_MANAGER: ${{ matrix.js_package_manager.name }}
+          PACKAGE_JSON_YARN_BERRY_LINKER:
+            ${{ matrix.js_package_manager.linker }}
         run: ./ci/bin/build-and-test
