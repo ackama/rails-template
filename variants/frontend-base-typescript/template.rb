@@ -23,8 +23,8 @@ types_packages = %w[
 
 yarn_add_dependencies types_packages + %w[@babel/preset-typescript typescript]
 yarn_add_dev_dependencies %w[
-  @typescript-eslint/parser@5
-  @typescript-eslint/eslint-plugin@5
+  @typescript-eslint/parser
+  @typescript-eslint/eslint-plugin
 ]
 
 run "yarn install"
