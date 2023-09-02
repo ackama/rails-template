@@ -31,6 +31,21 @@ jobs:
       - run: yarn install
       - run: yarn run format-check
 
+  rubocop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - name: Install Ruby and Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: 'ruby'
+
+      - name: Run Rubocop
+        run: bundle exec rubocop
+
   test_generated_apps:
     runs-on: ubuntu-latest
     strategy:
@@ -127,7 +142,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: '3.0'
+          ruby-version: 'ruby'
 
       - name: Setup git for committing
         run: |
@@ -135,21 +150,20 @@ jobs:
           git config --global user.email "you@example.com"
           git config --global user.name "Your Name"
 
-      - name: Run Rubocop
-        run: |
-          bundle install
-          bundle exec rubocop
-
       - name: Run CI script
         env:
           # Remember that your app name becomes a top-level constant in the
           # Rails app so you'll run into issues if that constant shares a name
           # with a class provided by a gem. Basically, don't name your app
           # "react", "sidekiq" etc.
-          APP_NAME: ${{ matrix.variant.name }}demo
+          APP_NAME: ${{ matrix.variant.name }}-demo
           CONFIG_PATH:  ${{ matrix.variant.config_path }}
           SKIPS: ${{ matrix.variant.skips }}
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
+          RAILS_SECRET_KEY_BASE: "placeholder"
+          ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: "placeholder"
+          ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: "placeholder"
+          ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: "placeholder"
         run: ./ci/bin/build-and-test

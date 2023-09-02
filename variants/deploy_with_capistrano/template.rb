@@ -1,7 +1,7 @@
 TERMINAL.puts_header "Starting variant: deploy_with_capistrano"
 
 append_to_file("Gemfile") do
-  <<~'EO_RUBY'
+  <<~EO_RUBY
 
     # Deployment
     #
@@ -116,7 +116,7 @@ EO_RUBY
 gsub_file("config/deploy.rb", old_generated_cap_config_snippet, new_ackama_cap_config_snippet)
 
 insert_into_file "Capfile", after: /install_plugin Capistrano::SCM::Git/ do
-  <<~'EO_RUBY'
+  <<~EO_RUBY
     # Include tasks from other gems included in your Gemfile
     #
     # For documentation on these, see for example:

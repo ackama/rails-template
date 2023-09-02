@@ -20,7 +20,7 @@ class ActiveStorage::BaseController < ActionController::Base # rubocop:disable R
   # removed. If not then code should be added to only serve files appropriately.
   # https://edgeguides.rubyonrails.org/active_storage_overview.html#proxy-mode
   def authenticated?
-    fail StandardError, "No authentication is configured for ActiveStorage"
+    raise StandardError, "No authentication is configured for ActiveStorage"
   end
 end
 # :nocov:

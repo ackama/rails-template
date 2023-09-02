@@ -47,7 +47,7 @@ TERMINAL.puts_header "Tweaking config/initializers/devise.rb"
 
 gsub_file "config/initializers/devise.rb",
           "  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'",
-          "  config.mailer_sender = Rails.application.secrets.mail_from"
+          "  config.mailer_sender = Rails.application.config.app.mail_from"
 
 gsub_file "config/initializers/devise.rb",
           "  # config.scoped_views = false",
@@ -72,6 +72,10 @@ gsub_file "config/initializers/devise.rb",
 gsub_file "config/initializers/devise.rb",
           /  # config.unlock_strategy = .+/,
           "  config.unlock_strategy = :email"
+
+gsub_file "config/initializers/devise.rb",
+          "  # config.parent_mailer = 'ActionMailer::Base'",
+          "  config.parent_mailer = 'ApplicationMailer'"
 
 gsub_file "config/initializers/devise.rb",
           /  # config.maximum_attempts = .+/,
@@ -140,7 +144,7 @@ copy_file "app/controllers/users/sessions_controller.rb"
 
 gsub_file "config/routes.rb",
           "devise_for :users",
-          <<~'EO_DEVISE'
+          <<~EO_DEVISE
             devise_for :users, controllers: {
               sessions: "users/sessions"
             }

@@ -12,11 +12,13 @@ describe('HelloWorld', () => {
 
   describe('when the user types in a new greeting', () => {
     it('changes to render that one', async () => {
+      const user = userEvent.setup();
+
       const { container } = render(
         <HelloWorld initialGreeting="Hello Ackama" />
       );
 
-      await userEvent.type(
+      await user.type(
         screen.getByRole('textbox', {
           name: /change the greeting/iu
         }),
@@ -27,11 +29,13 @@ describe('HelloWorld', () => {
     });
 
     it('can be reset back to the initial greeting', async () => {
+      const user = userEvent.setup();
+
       const { container } = render(
         <HelloWorld initialGreeting="Hello Ackama" />
       );
 
-      await userEvent.type(
+      await user.type(
         screen.getByRole('textbox', {
           name: /change the greeting/iu
         }),
@@ -40,7 +44,7 @@ describe('HelloWorld', () => {
 
       expect(container).not.toHaveTextContent('Hello Ackama');
 
-      await userEvent.click(screen.getByText('Reset'));
+      await user.click(screen.getByText('Reset'));
 
       expect(container).toHaveTextContent('Hello Ackama');
     });

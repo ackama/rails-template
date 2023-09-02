@@ -171,6 +171,8 @@ working directory if it exists. Otherwise you can specify a path using the
 [ackama_rails_template.config.yml](./ackama_rails_template.config.yml) is a
 documented configuration example that you can copy.
 
+You must also have Postgres running on port 5432.
+
 To generate a Rails application using this template, pass the `--template`
 option to `rails new`, like this:
 
@@ -195,8 +197,8 @@ $ rails new my_app --no-rc --database=postgresql --skip-javascript --template=ht
 
 # Create a custom config YAML file, saving as ./my_custom_config.yml
 
-# Template options will be taken from ./my_custom_config.yml
-$ CONFIG_PATH=./my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip-javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
+# Template options will be taken from ../my_custom_config.yml (relative to the new app directory)
+$ CONFIG_PATH=../my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip-javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
 Here are some additional options you can add to this command. We don't

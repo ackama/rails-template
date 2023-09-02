@@ -10,7 +10,7 @@ RAILS_REQUIREMENT = "~> 7.0.3".freeze
 # this repo.
 #
 class Config
-  DEFAULT_CONFIG_FILE_PATH = "./ackama_rails_template.config.yml".freeze
+  DEFAULT_CONFIG_FILE_PATH = "../ackama_rails_template.config.yml".freeze
 
   def initialize
     config_file_path = File.absolute_path(ENV.fetch("CONFIG_PATH", DEFAULT_CONFIG_FILE_PATH))
@@ -87,7 +87,6 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   template "variants/backend-base/Gemfile.tt", "Gemfile", force: true
 
   template "variants/backend-base/example.env.tt", "example.env"
-  template "variants/backend-base/example.env.tt", ".env"
   copy_file "variants/backend-base/editorconfig", ".editorconfig"
   copy_file "variants/backend-base/gitignore", ".gitignore", force: true
   copy_file "variants/backend-base/overcommit.yml", ".overcommit.yml"
@@ -113,7 +112,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   apply "variants/backend-base/spec/template.rb"
 
   # The block passed to "after_bundle" seems to run after `bundle install`
-  # but also after `webpacker:install` and after Rails has initialized the git
+  # but also after `shakapacker:install` and after Rails has initialized the git
   # repo
   after_bundle do
     # Remove the `test/` directory because we always use RSpec which creates
@@ -196,9 +195,15 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
     # Run the README template at the end because it introspects the app to
     # discover rake tasks etc.
-    template "variants/backend-base/README.md.tt", "README.md", force: true
-    run "yarn run prettier --write ./README.md"
+    apply_readme_template
   end
+end
+
+def apply_readme_template
+  template "variants/backend-base/README.md.tt", "README.md", force: true
+  run "yarn run prettier --write ./README.md"
+
+  git commit: "README.md -n -m 'Update README'"
 end
 
 # Normalizes the constraints of the given hash of dependencies so that they
@@ -304,16 +309,16 @@ def assert_valid_options
     next unless options.key?(key)
 
     actual = options[key]
-    fail Rails::Generators::Error, "Unsupported option: #{key}=#{actual}" unless actual == expected
+    raise Rails::Generators::Error, "Unsupported option: #{key}=#{actual}" unless actual == expected
   end
 end
 
 def assert_postgresql
   return if /^\s*gem ['"]pg['"]/.match?(File.read("Gemfile"))
 
-  fail Rails::Generators::Error,
-       "This template requires PostgreSQL, " \
-       "but the pg gem isn't present in your Gemfile."
+  raise Rails::Generators::Error,
+        "This template requires PostgreSQL, " \
+        "but the pg gem isn't present in your Gemfile."
 end
 
 def any_local_git_commits?
