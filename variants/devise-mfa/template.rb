@@ -234,7 +234,7 @@ end
 # Pundit
 ######################################
 
-# TODO
+copy_file "variants/devise-mfa/app/policies/dashboard_policy.rb", "app/policies/dashboard_policy.rb"
 
 ######################################
 # Locales
