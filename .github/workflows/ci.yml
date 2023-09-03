@@ -84,8 +84,8 @@ jobs:
           - name: devise
             config_path: "ci/configs/devise.yml"
             skips: --skip-javascript
-          - name: devise_2fa
-            config_path: "ci/configs/devise_2fa.yml"
+          - name: devise_mfa
+            config_path: "ci/configs/devise_mfa.yml"
             skips: --skip-javascript
           - name: basic_with_skips
             config_path: "ci/configs/basic.yml"

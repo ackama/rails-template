@@ -45,7 +45,7 @@ class Config
     @yaml_config.fetch("apply_variant_devise")
   end
 
-  def apply_variant_devise_2fa?
+  def apply_variant_devise_mfa?
     @yaml_config.fetch("apply_variant_devise")
   end
 
@@ -186,7 +186,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     # contains a lot of changes and adds its own git commit
     if TEMPLATE_CONFIG.apply_variant_devise?
       apply "variants/devise/template.rb"
-      apply "variants/devise-2fa/template.rb" if TEMPLATE_CONFIG.apply_variant_devise_2fa?
+      apply "variants/devise-2fa/template.rb" if TEMPLATE_CONFIG.apply_variant_devise_mfa?
     end
 
     # We apply code annotation **after** all the other variants which might
