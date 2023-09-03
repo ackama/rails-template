@@ -1,62 +1,68 @@
 # Multi-factor authentication
 
-This application uses MFA to help to protect access to accounts. At the moment,
-the only supported MFA mechanism is time-based one-time-passwords (TOTP). In the
-future, this may expand to other mechanisms, or (more likely), we will integrate
-with organisations' own authentication platforms that will implement their own
-MFA.
+This application uses MFA to help to protect access to accounts. The only
+currently supported MFA mechanism is time-based one-time-passwords (TOTP).
 
 Supported MFA functions are:
 
 1. Sign in without MFA if it is not enabled
 2. Require MFA with sign in if it is enabled
-3. Configure a single device with TOTP to use for sign in (multiple devices are
-   not supported right not)
+3. Configure a single device with a TOTP code to use for sign in. Multiple
+   devices are not supported right not.
 4. Generate 5 backup codes that can be used instead of/in place of device-based
    TOTP.
 5. Reset backup codes to invalidate lost or consumed codes.
 
-Once enabled, MFA can be switched to another device, but cannot be disabled. MFA
-is required to use the app, but this may change based on user feedback.
+Once enabled, MFA can be switched to another device, but cannot be disabled.
 
-### How sign-in MFA works
+## How sign-in MFA works
 
-The library we are using `devise-two-factor-authentication` provides a custom
-strategy called `:two_factor_authenticatable` that expects the OTP code attempt
-to be provided along with the authentication keys (email) and password of the
-user. Unfortunately, this is incompatible with our user workflow, which requests
-the email and password of the user, and then the MFA code if it is required.
+The library we are using
+[devise-two-factor-authentication](https://github.com/devise-two-factor/devise-two-factor)
+provides a custom strategy called `:two_factor_authenticatable` that expects the
+OTP code attempt to be provided at the same time as email and password.
 
-To support this flow, we have split the authentication into two steps:
+This works fine if MFA is **required** for **all** users. We can add MFA to more
+applications if we default to MFA being an opt-in security upgrade for users so
+that is our default configuration.
 
-#### Step 1: Authentication
+The `otp_required_for_login` attribute on `User` (accessible through
+`User#otp_required_for_login?`) decides whether a user **must** use MFA to sign
+in. If the application needs to force some categories of users to use MFA (e.g.
+admins) then this flag should be set on those users during sign-up and all
+functionality allowing users to unset the flag should be removed from the app.
+
+To support our default "MFA as opt-in security upgrade" flow, we have split the
+authentication into two steps:
+
+### Step 1: Authentication
 
 - The user is presented with a form allowing them to provide their email and
-  password (Devise-stock `accounts/sessions#new`).
+  password (Devise's stock `accounts/sessions#new`).
 - The user enters an email and password, which is validated by the standard
   Devise `:database_authenticatable` strategy. This strategy also runs any
   pre-screens on the user to check that they can sign in the first place (for
   example, if they are locked, unconfirmed or inactive, they cannot sign in).
 - If the user has provided an invalid email or password, Warden's failure mode
   activates, redirecting back to the sign in page with a flash error message.
-- If the user has provided a valid email and password, but has not yet activated
-  MFA, they are signed in. Additional checks within the application require them
-  to have MFA enabled to do anything.
+- If the user has provided a valid email and password, but their account does
+  not **require** MFA (`#User.otp_required_for_login?` returns false) then they
+  are signed in. Additional checks within the application forcibly redirect all
+  signed-in routes to the "enable MFA" screen if MFA is required
 - If the user has provided a valid email and password, and have activated MFA,
   `accounts/sessions#create` signs the account out (`warden.authenticate!` has
   signed the account in), and generates a
-  [signed global ID](https://github.com/rails/globalid) representing the
-  account, and stores it in the session. The controller also renders the OTP
-  validation form.
+  [**signed** Global ID](https://github.com/rails/globalid) representing the
+  account, and stores it in the session. `accounts/sessions#create` then renders
+  the OTP validation form to being step 2.
 
-#### Step 2: OTP validation
+### Step 2: OTP validation
 
-- The controller has presented a form to the user after they have entered their
-  valid email and password. This form requests their OTP code (labelled
-  "Two-factor authentication code") as a single text field.
+- The OTP validation form requests their OTP code (labelled "Two-factor
+  authentication code") as a single text field.
 - The user enters an OTP code, either from their device, or using one of their
   backup codes, and submits the form.
-- The signed ID of the account is retrieved from the session and resolved to the
+- The signed Global ID of the account is retrieved from the session and resolved to the
   account, so long as it has not been tampered with or expired.
 - The resolved account validates and consumes the OTP code provided by the user
   via form params.
@@ -67,7 +73,7 @@ To support this flow, we have split the authentication into two steps:
   if the entire authentication attempt failed, redirecting back to the initial
   sign in page with a flash error message.
 
-#### Failure modes:
+### Failure modes:
 
 - Invalid email (account not found)
 - Locked account
@@ -80,27 +86,65 @@ To support this flow, we have split the authentication into two steps:
 In all these failure modes, the application returns the user to the sign in page
 with a generic failure message (in paranoid mode).
 
-This sequence description is represented by the following sequence diagram:
+### Example flows
+
+#### Sign in a user who does not have MFA enabled
+
+This flow applies to users whose `otp_required_for_login` is `false`. This is the default devise sign-in flow.
 
 ```mermaid
 sequenceDiagram
-    User->>UI: Clicks 'sign in' or visits sign in URL directly
-    UI->>SessionsController: GET new
-    SessionsController->>UI: Renders accounts/sessions/new
-    User->>UI: Provides email and password
-    UI->>SessionsController: POST create (email, password)
-    SessionsController->>+Warden: Authenticates account
-    Warden->>-SessionsController: Returns authenticated account
-    SessionsController->>SessionsController: Signs out account (OTP required)
-    SessionsController->>SessionsController: Generates signed ID for account
-    SessionsController->>session: Stores otp_identifier
-    SessionsController->>UI: Renders accounts/sessions/mfa_prompt
-    User->>UI: Provides OTP code attempt
-    UI->>SessionsController: POST validate_mfa
-    SessionsController->>+session: Requests otp_identifier
-    session->>-SessionsController: Returns otp_identifier
-    SessionsController->>Account: Locates Account using signed ID
-    SessionsController->>Account: Validates the provided OTP code attempt
-    SessionsController->>Warden: Signs in the account
-    SessionsController->>UI: Redirects to after_sign_in_path_for and presents flash message
+  autonumber
+  participant H as Human
+  participant B as Browser
+  participant SC as SessionsController
+  participant W as Warden
+
+  H->>B: Clicks 'Sign in' or visits sign-in URL directly
+  B->>SC: GET /users/sign_in -> users/sessions#35;new
+  SC->>B: Renders users/sessions/new.html.erb
+
+  H->>B: Provides email and password
+  B->>SC: POST /users/sign_in(email, password) -> users/sessions#35;create
+  SC->>+W: Attempt to authenticate user
+  W->>-SC: Returns authenticated user
+  SC->>W: Signs in the user
+  SC->>B: Redirects to after_sign_in_path_for and presents flash message
+```
+
+#### Sign in a user who has MFA enabled
+
+This flow applies to users whose `otp_required_for_login` is `true`.
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant H as Human
+  participant B as Browser
+  participant SC as SessionsController
+  participant W as Warden
+  participant U as User Model
+  participant RS as Rails Session
+
+  H->>B: Clicks 'Sign in' or visits sign-in URL directly
+  B->>SC: GET /users/sign_in -> users/sessions#35;new
+  SC->>B: Renders users/sessions/new.html.erb
+
+  H->>B: Provides email and password
+  B->>SC: POST /users/sign_in(email, password) -> users/sessions#35;create
+  SC->>+W: Attempt to authenticate user
+  W->>-SC: Returns authenticated user
+  SC->>SC: User#otp_required_for_login? is true so sign out user
+  SC->>SC: Generates signed Global ID for user record
+  SC->>RS: Store signed Global ID as otp_identifier
+  SC->>B: Renders users/sessions/mfa_prompt.html.erb
+
+  H->>B: Provides OTP code attempt
+  B->>SC: POST /users/validate_otp -> users/sessions#35;validate_otp
+  SC->>+RS: Requests otp_identifier (the signed Global ID)
+  RS->>-SC: Returns otp_identifier (the signed Global ID)
+  SC->>U: Locates user if signed Global ID is valid
+  SC->>U: Validates the provided OTP code attempt
+  SC->>W: Signs in the user
+  SC->>B: Redirects to after_sign_in_path_for and presents flash message
 ```

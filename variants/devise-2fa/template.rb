@@ -247,7 +247,6 @@ remove_file "doc/.keep"
 TERMINAL.puts_header "Running rubocop to clean up generated files"
 run "bundle exec rubocop -A"
 
-# TODO: git commit
-
-# TODO: remove this before merge!
-exit
+TERMINAL.puts_header "Commiting changes to git"
+git add: "-A ."
+git commit: "-n -m 'Install and configure devise with MFA enabled'"
