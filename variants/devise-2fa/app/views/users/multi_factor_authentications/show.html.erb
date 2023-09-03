@@ -1,33 +1,33 @@
-<h1 class='h2 fw-normal text-primary mb-6'>Manage my two-factor authentication</h1>
+<h1>Manage my two-factor authentication</h1>
 
-<div class="col-12 col-md-9 col-lg-6">
-  <div class="d-flex mb-6">
-    <div class="flex-shrink-0">
+<div>
+  <div>
+    <div>
       <% if current_user.otp_enabled_and_required? %>
         ✅
       <% else %>
         🚫
       <% end %>
     </div>
-    <div class="flex-grow-1 ms-3">
+    <div>
       Two-factor authentication is currently <strong><%= current_user.otp_enabled_and_required? ? "enabled" : "disabled" %></strong> for your user.
     </div>
   </div>
 
-  <div class="d-flex">
-    <div class="flex-shrink-0">
+  <div>
+    <div>
       <% if current_user.otp_backup_codes.present? %>
         ✅
       <% else %>
         🚫
       <% end %>
     </div>
-    <div class="flex-grow-1 ms-3">
+    <div>
       <% if current_user.otp_backup_codes.present? %>
         <p>
           You currently have backup codes generated.
         </p>
-        <p class="mb-0">
+        <p>
           If you lose access to your authentication app you will require these to
           regain access to APP_NAME_HERE. Please keep them safe and
           secure.
@@ -38,10 +38,10 @@
     </div>
   </div>
 
-  <hr class="border-secondary my-6" />
+  <hr />
 
   <% if current_user.otp_enabled_and_required? %>
-    <h2 class="h4 fw-bold text-primary mb-6">Generate backup codes</h2>
+    <h2>Generate backup codes</h2>
     <p>
       If you lose access to your authentication app, you can use these codes instead of the 6-digit One Time Passwords from your device.
     </p>
@@ -55,11 +55,11 @@
       <%= t(".destroy_backup_codes") %>
     <% end if current_user.otp_backup_codes.present? %>
 
-    <hr class="border-secondary my-6" />
+    <hr />
   <% end %>
 
 
-  <h2 class="h4 fw-bold text-primary mb-6">Manage two-factor authentication</h2>
+  <h2>Manage two-factor authentication</h2>
   <p>
     If you need to set up a new device or authentication app, you can do that on this page.
   </p>

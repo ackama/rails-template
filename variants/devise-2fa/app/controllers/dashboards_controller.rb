@@ -6,10 +6,8 @@
 class DashboardsController < ApplicationController
   before_action :authenticate_user!
 
-  # TODO
-  # without this controller there is no example of how to create an
-  # authenticated controller - the Homecontroller is not authenticated. is that
-  # a problem?
+  # Only authenticated users can see the dashboard
   def show
+    authorize :dashboard
   end
 end

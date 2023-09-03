@@ -16,7 +16,23 @@ run "bundle add rqrcode-rails3"
 # We need devise-two-factor but we aren't using it in the standard way so we
 # don't run it's generator. Instead we install it manually.
 TERMINAL.puts_header "Adding devise-two-factor manually"
-run "bundle exec rails g migration AddOtpSecretsToUser otp_secret:string consumed_timestep:integer otp_required_for_login:boolean"
+
+raw_output = `bundle exec rails g migration AddOtpSecretsToUser --pretend`
+migration_path = raw_output.lines.find { |line| line.match?(%r{create\s+db/migrate}) }.split.last
+create_file(migration_path) do
+  <<~EO_RUBY
+    class AddOtpSecretsToUser < ActiveRecord::Migration[7.0]
+      def change
+        change_table :users, bulk: true do |t|
+          t.string :otp_secret
+          t.integer :consumed_timestep
+          t.boolean :otp_required_for_login, default: false, null: false
+        end
+      end
+    end
+  EO_RUBY
+end
+
 run "bundle exec rails db:migrate"
 
 ######################################
@@ -83,7 +99,8 @@ copy_file "variants/devise-2fa/app/controllers/users/sessions_controller.rb", "a
 copy_file "variants/devise-2fa/app/controllers/users/multi_factor_authentications_controller.rb", "app/controllers/users/multi_factor_authentications_controller.rb"
 copy_file "variants/devise-2fa/app/controllers/dashboards_controller.rb", "app/controllers/dashboards_controller.rb"
 
-insert_into_file("app/controllers/application_controller.rb", after: /^  after_action :verify_policy_scoped.*?\n/) do
+# TODO: include this "force MFA" code or not? if we include it, readme doc needs to be updated
+gsub_file("app/controllers/application_controller.rb", /^\s*private$/) do
   <<-EO_RUBY
 
   # Controller actions which inherit from this controller default to requiring
@@ -92,23 +109,22 @@ insert_into_file("app/controllers/application_controller.rb", after: /^  after_a
   #
   #     before_action :authenticate_user!
   #
-  before_action :require_multi_factor_authentication!
+  # before_action :require_multi_factor_authentication!
 
-  protected
-
-  # TODO: Check whether these need to be protected or private
+  private
 
   ##
   # When this method is run as a before_action, it will prevent the user from
   # running controller actions until they have set up MFA.
   #
-  def require_multi_factor_authentication!
-    return unless user_signed_in?
-    return if devise_controller?
-    return if current_user.otp_required_for_login?
-
-    redirect_to new_users_multi_factor_authentication_path, alert: t("application.multi_factor_authentication_required")
-  end
+  # def require_multi_factor_authentication!
+  #   return unless user_signed_in?
+  #   return if devise_controller?
+  #   return if current_user.otp_required_for_login?
+  #
+  #   redirect_to new_users_multi_factor_authentication_path,
+  #     alert: t("application.multi_factor_authentication_required")
+  # end
 
   def after_sign_in_path_for(resource)
     stored_location_for(resource) || dashboards_path
@@ -119,6 +135,8 @@ end
 ######################################
 # Secrets
 ######################################
+
+# TODO: figure out whatl if anything I need to change in our current way of managing secrets
 
 # insert_into_file("config/secrets.yml", after: /\A.+secret_key_base.+\z/) doVjjjjjjjjj
 #   <<-EO_LINE
@@ -140,10 +158,8 @@ end
 
 TERMINAL.puts_header "Copying views"
 copy_file "variants/devise-2fa/app/views/users/sessions/mfa_prompt.html.erb", "app/views/users/sessions/mfa_prompt.html.erb"
-
-# TODO: remove bootstrap styles
+copy_file "variants/devise-2fa/app/views/dashboards/show.html.erb", "app/views/dashboards/show.html.erb"
 copy_file "variants/devise-2fa/app/views/application/_mfa_help.html.erb", "app/views/application/_mfa_help.html.erb"
-
 copy_file "variants/devise-2fa/app/views/application/_header.html.erb", "app/views/application/_header.html.erb", force: true
 directory "variants/devise-2fa/app/views/users/multi_factor_authentications", "app/views/users/multi_factor_authentications"
 
@@ -182,11 +198,7 @@ gsub_file "config/initializers/devise.rb",
 
 gsub_file "config/initializers/devise.rb",
           "  # config.parent_controller = 'DeviseController'",
-          "  config.parent_controller = 'Users::DeviseController'"
-
-# TODO: Do I still need this
-# this is a fix for https://github.com/heartcombo/devise/issues/5439 but I'm not sure it is the best fix
-# config.navigational_formats = ["*/*", :html, :turbo_stream]
+          '  config.parent_controller = "Users::DeviseController"'
 
 ######################################
 # Images

@@ -1,5 +1,5 @@
-<div class="col-12 col-lg-6 text-primary">
-  <h1 class="h2 fw-normal mb-6">Generate backup codes</h1>
+<div>
+  <h1>Generate backup codes</h1>
 
   <p>
     If you lose access to your authentication app, you can use these codes instead
@@ -11,8 +11,8 @@
     secure place.
   </p>
 
-  <div class="mt-6 mb-5">
-    <h2 class="h5 mb-6">Your backup codes</h5>
+  <div>
+    <h2>Your backup codes</h5>
 
     <%= content_tag(:pre, @backup_codes.join("\n"), class: "border rounded p-2 user-select-all text-black") %>
   </div>
