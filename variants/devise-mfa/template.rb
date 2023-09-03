@@ -262,3 +262,7 @@ run "bundle exec rubocop -A"
 TERMINAL.puts_header "Commiting changes to git"
 git add: "-A ."
 git commit: "-n -m 'Install and configure devise with MFA enabled'"
+
+# TODO: remove this before merge!
+# TERMINAL.puts_header "AAAAAAAAAAAAAAAAAAAAAAAAA early exit for testing"
+# exit
