@@ -45,6 +45,10 @@ class Config
     @yaml_config.fetch("apply_variant_devise")
   end
 
+  def apply_variant_devise_mfa?
+    @yaml_config.fetch("apply_variant_devise")
+  end
+
   def apply_variant_sidekiq?
     @yaml_config.fetch("apply_variant_sidekiq")
   end
@@ -180,7 +184,10 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
     # we deliberately place this after the initial git commit because it
     # contains a lot of changes and adds its own git commit
-    apply "variants/devise/template.rb" if TEMPLATE_CONFIG.apply_variant_devise?
+    if TEMPLATE_CONFIG.apply_variant_devise?
+      apply "variants/devise/template.rb"
+      apply "variants/devise-mfa/template.rb" if TEMPLATE_CONFIG.apply_variant_devise_mfa?
+    end
 
     # We apply code annotation **after** all the other variants which might
     # generate routes and models

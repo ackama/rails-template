@@ -1,0 +1,16 @@
+<h2>Log in</h2>
+
+<%= form_with(scope: resource_name, url: users_validate_otp_path) do |f| %>
+  <legend>Please enter your two-factor authentication (2FA) code to sign in.</legend>
+
+  <div class="field">
+    <%= f.text_field :otp_attempt, autocomplete: "one-time-code", placeholder: "123 456", label: t("users.sessions.mfa_field_label") %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Submit", class: "btn btn-primary" %>
+  </div>
+
+  <%= render "application/mfa_help" %>
+<% end %>
+
