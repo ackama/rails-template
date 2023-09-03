@@ -5,7 +5,7 @@ en:
       You will need to set it up before you can use this application.
   users:
     sessions:
-      2fa_field_label: "Two-factor authentication code (or backup code)"
+      mfa_field_label: "Two-factor authentication code (or backup code)"
   multi_factor_authentications:
     show:
       new_multi_factor_authentication: Manage two-factor authentication

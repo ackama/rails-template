@@ -3,7 +3,7 @@
 # controller is not involved in signing in or out.
 #
 # Conceptually each user has one MFA resource which they can
-# manage because devise-two-factor only supports one 2fa code per user
+# manage because devise-two-factor only supports one mfa code per user
 #
 module Users
   class MultiFactorAuthenticationsController < ApplicationController
@@ -19,9 +19,9 @@ module Users
 
     # before_action { authorize :multi_factor_authentication } # TODO: fix this
 
-    # Add the environment name to the two-factor authentication (2FA) string so that
-    # you can more easily tell the 2FA codes for different environments
-    # apart in your 2FA app.
+    # Add the environment name to the two-factor authentication string so that
+    # you can more easily tell the MFA codes for different environments
+    # apart in your MFA app.
     #
     # Keep this name short. Some TOTP management applications (e.g. Google
     # Authenticator) do not let users edit this name and do not show many
@@ -38,15 +38,15 @@ module Users
 
     ##
     # #show is the entry point for a user managing their two-factor
-    # authentication (2FA). It displays a summary of the current state of their
-    # two-factor authentication (2FA) setup and buttons/links to take actions on
+    # authentication. It displays a summary of the current state of their
+    # two-factor authentication setup and buttons/links to take actions on
     # it.
     #
     def show
     end
 
     ##
-    # #new starts the process of setting up two-factor authentication (2FA) for
+    # #new starts the process of setting up two-factor authentication for
     # the user
     #
     def new

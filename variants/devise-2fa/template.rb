@@ -94,10 +94,10 @@ end
 
 TERMINAL.puts_header "Configuring MFA controllers"
 
-copy_file "variants/devise-2fa/app/controllers/users/devise_controller.rb", "app/controllers/users/devise_controller.rb"
-copy_file "variants/devise-2fa/app/controllers/users/sessions_controller.rb", "app/controllers/users/sessions_controller.rb", force: true
-copy_file "variants/devise-2fa/app/controllers/users/multi_factor_authentications_controller.rb", "app/controllers/users/multi_factor_authentications_controller.rb"
-copy_file "variants/devise-2fa/app/controllers/dashboards_controller.rb", "app/controllers/dashboards_controller.rb"
+copy_file "variants/devise-mfa/app/controllers/users/devise_controller.rb", "app/controllers/users/devise_controller.rb"
+copy_file "variants/devise-mfa/app/controllers/users/sessions_controller.rb", "app/controllers/users/sessions_controller.rb", force: true
+copy_file "variants/devise-mfa/app/controllers/users/multi_factor_authentications_controller.rb", "app/controllers/users/multi_factor_authentications_controller.rb"
+copy_file "variants/devise-mfa/app/controllers/dashboards_controller.rb", "app/controllers/dashboards_controller.rb"
 
 # TODO: include this "force MFA" code or not? if we include it, readme doc needs to be updated
 gsub_file("app/controllers/application_controller.rb", /^\s*private$/) do
@@ -157,11 +157,11 @@ end
 ######################################
 
 TERMINAL.puts_header "Copying views"
-copy_file "variants/devise-2fa/app/views/users/sessions/mfa_prompt.html.erb", "app/views/users/sessions/mfa_prompt.html.erb"
-copy_file "variants/devise-2fa/app/views/dashboards/show.html.erb", "app/views/dashboards/show.html.erb"
-copy_file "variants/devise-2fa/app/views/application/_mfa_help.html.erb", "app/views/application/_mfa_help.html.erb"
-copy_file "variants/devise-2fa/app/views/application/_header.html.erb", "app/views/application/_header.html.erb", force: true
-directory "variants/devise-2fa/app/views/users/multi_factor_authentications", "app/views/users/multi_factor_authentications"
+copy_file "variants/devise-mfa/app/views/users/sessions/mfa_prompt.html.erb", "app/views/users/sessions/mfa_prompt.html.erb"
+copy_file "variants/devise-mfa/app/views/dashboards/show.html.erb", "app/views/dashboards/show.html.erb"
+copy_file "variants/devise-mfa/app/views/application/_mfa_help.html.erb", "app/views/application/_mfa_help.html.erb"
+copy_file "variants/devise-mfa/app/views/application/_header.html.erb", "app/views/application/_header.html.erb", force: true
+directory "variants/devise-mfa/app/views/users/multi_factor_authentications", "app/views/users/multi_factor_authentications"
 
 insert_into_file("app/views/users/registrations/edit.html.erb", before: %r{^<h3>Cancel my account</h3>}) do
   <<~EO_FIELD
@@ -205,7 +205,7 @@ gsub_file "config/initializers/devise.rb",
 ######################################
 
 TERMINAL.puts_header "Copying MFA logos"
-directory "variants/devise-2fa/app/frontend/images/mfa", "app/frontend/images/mfa"
+directory "variants/devise-mfa/app/frontend/images/mfa", "app/frontend/images/mfa"
 
 ######################################
 # Routes
@@ -241,15 +241,15 @@ end
 ######################################
 
 TERMINAL.puts_header "Setting up locales"
-copy_file "variants/devise-2fa/config/locales/mfa.en.yml", "config/locales/mfa.en.yml"
+copy_file "variants/devise-mfa/config/locales/mfa.en.yml", "config/locales/mfa.en.yml"
 
 ######################################
 # Documentation
 ######################################
 
 TERMINAL.puts_header "Copying MFA docs"
-copy_file "variants/devise-2fa/doc/multi_factor_authentication_sequence.png", "doc/multi_factor_authentication_sequence.png"
-copy_file "variants/devise-2fa/doc/multi_factor_authentication.md", "doc/multi_factor_authentication.md"
+copy_file "variants/devise-mfa/doc/multi_factor_authentication_sequence.png", "doc/multi_factor_authentication_sequence.png"
+copy_file "variants/devise-mfa/doc/multi_factor_authentication.md", "doc/multi_factor_authentication.md"
 remove_file "doc/.keep"
 
 ######################################
