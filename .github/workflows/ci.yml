@@ -56,49 +56,35 @@ jobs:
         variant:
           - name: defaults
             config_path: "ackama_rails_template.config.yml"
-            skips: --skip-javascript
           - name: all
             config_path: "ci/configs/all.yml"
-            skips: --skip-javascript
           - name: all-typescript
             config_path: "ci/configs/all-typescript.yml"
-            skips: --skip-javascript
           - name: basic
             config_path: "ci/configs/basic.yml"
-            skips: --skip-javascript
           - name: basic-typescript
             config_path: "ci/configs/basic-typescript.yml"
-            skips: --skip-javascript
           - name: github_actions
             config_path: "ci/configs/github_actions.yml"
-            skips: --skip-javascript
           - name: react
             config_path: "ci/configs/react.yml"
-            skips: --skip-javascript
           - name: react-typescript
             config_path: "ci/configs/react-typescript.yml"
-            skips: --skip-javascript
           - name: sidekiq
             config_path: "ci/configs/sidekiq.yml"
-            skips: --skip-javascript
           - name: devise
             config_path: "ci/configs/devise.yml"
-            skips: --skip-javascript
           - name: basic_with_skips
             config_path: "ci/configs/basic.yml"
             skips: --skip-spring --skip-javascript
           - name: bootstrap
             config_path: "ci/configs/bootstrap.yml"
-            skips: --skip-javascript
           - name: bootstrap-typescript
             config_path: "ci/configs/bootstrap-typescript.yml"
-            skips: --skip-javascript
           - name: capistrano
             config_path: "ci/configs/deploy_with_capistrano.yml"
-            skips: --skip-javascript
           - name: ackama_ec2_capistrano
             config_path: "ci/configs/deploy_with_ackama_ec2_capistrano.yml"
-            skips: --skip-javascript
     services:
       db:
         image: postgres
@@ -155,7 +141,7 @@ jobs:
           # "react", "sidekiq" etc.
           APP_NAME: ${{ matrix.variant.name }}-demo
           CONFIG_PATH:  ${{ matrix.variant.config_path }}
-          SKIPS: ${{ matrix.variant.skips }}
+          SKIPS: "--skip-javascript ${{ matrix.variant.skips }}"
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
