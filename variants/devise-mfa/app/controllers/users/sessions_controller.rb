@@ -108,7 +108,6 @@ module Users
       respond_with resource, location: after_sign_in_path_for(resource)
     end
 
-    # TODO: how does this work?
     def resource_to_otp_identifier
       resource.to_signed_global_id(expires_in: RESOURCE_OTP_TOKEN_EXPIRY, for: RESOURCE_OTP_TOKEN_PURPOSE)
     end

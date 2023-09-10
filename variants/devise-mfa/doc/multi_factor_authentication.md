@@ -5,13 +5,12 @@ currently supported MFA mechanism is time-based one-time-passwords (TOTP).
 
 Supported MFA functions are:
 
-1. Sign in without MFA if it is not enabled
-2. Require MFA with sign in if it is enabled
-3. Configure a single device with a TOTP code to use for sign in. Multiple
-   devices are not supported right not.
-4. Generate 5 backup codes that can be used instead of/in place of device-based
-   TOTP.
-5. Reset backup codes to invalidate lost or consumed codes.
+* Sign in without MFA if it is not enabled
+* Require MFA with sign in if it is enabled
+* Configure a single device with a TOTP code to use for sign in. Multiple
+* devices are not supported right not.
+* Generate 5 backup codes that can be used instead of/in place of device-based TOTP.
+* Reset backup codes to invalidate lost or consumed codes.
 
 Once enabled, MFA can be switched to another device, but cannot be disabled.
 
@@ -24,7 +23,7 @@ OTP code attempt to be provided at the same time as email and password.
 
 This works fine if MFA is **required** for **all** users. We can add MFA to more
 applications if we default to MFA being an opt-in security upgrade for users so
-that is our default configuration.
+opt-in MFA is our default configuration.
 
 The `otp_required_for_login` attribute on `User` (accessible through
 `User#otp_required_for_login?`) decides whether a user **must** use MFA to sign
@@ -34,6 +33,10 @@ functionality allowing users to unset the flag should be removed from the app.
 
 To support our default "MFA as opt-in security upgrade" flow, we have split the
 authentication into two steps:
+
+## Can I force some/all users to use MFA?
+
+Yes. There is a commented out code in [ApplicationController](../app/controllers/application_controller.rb) that demonstrates how to require MFA for some or all users.
 
 ### Step 1: Authentication
 

@@ -99,58 +99,44 @@ copy_file "variants/devise-mfa/app/controllers/users/sessions_controller.rb", "a
 copy_file "variants/devise-mfa/app/controllers/users/multi_factor_authentications_controller.rb", "app/controllers/users/multi_factor_authentications_controller.rb"
 copy_file "variants/devise-mfa/app/controllers/dashboards_controller.rb", "app/controllers/dashboards_controller.rb"
 
-# TODO: include this "force MFA" code or not? if we include it, readme doc needs to be updated
 gsub_file("app/controllers/application_controller.rb", /^\s*private$/) do
   <<-EO_RUBY
 
-  # Controller actions which inherit from this controller default to requiring
-  # the user to have MFA enabled. Note that this does not also check they are
-  # authenticated - that check is performed by the usual devise
-  #
-  #     before_action :authenticate_user!
-  #
-  # before_action :require_multi_factor_authentication!
+  before_action :authenticate_user!, unless: :skip_authentication_for_this_action?
+  before_action :redirect_to_mfa_setup_page, if: :current_user_must_setup_mfa_immediately?
 
   private
 
-  ##
-  # When this method is run as a before_action, it will prevent the user from
-  # running controller actions until they have set up MFA.
-  #
-  # def require_multi_factor_authentication!
-  #   return unless user_signed_in?
-  #   return if devise_controller?
-  #   return if current_user.otp_required_for_login?
-  #
-  #   redirect_to new_users_multi_factor_authentication_path,
-  #     alert: t("application.multi_factor_authentication_required")
-  # end
+  def skip_authentication_for_this_action?
+    return true if devise_controller? # Devise controllers do not need authentication
+    # TODO: what about editing user registraiton? taht shouldn't be public?
+    return true if controller_name == "home" # Home controller is public
+
+    false
+  end
+
+  def current_user_must_setup_mfa_immediately?
+    # Anonymous users do not need MFA (must be first check becaus it implicitly
+    # checks whether `current_user` exists)
+    return false unless user_signed_in?
+    return false if current_user.otp_required_for_login? # User already has MFA enabled
+    return false if devise_controller? # Devise controllers do not need MFA TODO: what about user registration edits?
+
+    # The MFA setup page itself does not require MFA to be enabled
+    return false if controller_name == "multi_factor_authentications" && %w[new show create].include?(action_name)
+
+    true
+  end
+
+  def redirect_to_mfa_setup_page
+    redirect_to new_users_multi_factor_authentication_path, alert: t("application.multi_factor_authentication_required")
+  end
 
   def after_sign_in_path_for(resource)
     stored_location_for(resource) || dashboards_path
   end
   EO_RUBY
 end
-
-######################################
-# Secrets
-######################################
-
-# TODO: figure out whatl if anything I need to change in our current way of managing secrets
-
-# insert_into_file("config/secrets.yml", after: /\A.+secret_key_base.+\z/) doVjjjjjjjjj
-#   <<-EO_LINE
-#     devise_two_factor_secret_encryption_key: "<%= ENV['DEVISE_TWO_FACTOR_SECRET_ENCRYPTION_KEY'] %>"
-#   EO_LINE
-# end
-
-# append_to_file ".env" do
-#   <<~EO_LINE
-
-#     # Use 'bundle exec rails secret' to generate a real value here
-#     DEVISE_TWO_FACTOR_SECRET_ENCRYPTION_KEY=fortheloveofallyouholddeardonotusethissecretinproduction
-#   EO_LINE
-# end
 
 ######################################
 # Views
@@ -167,7 +153,7 @@ insert_into_file("app/views/users/registrations/edit.html.erb", before: %r{^<h3>
   <<~EO_FIELD
 
     <h2 class="">Two-factor authentication</h2>
-    <p class="">Manage the device and codes you’ll use to sign in to this application.</p>
+    <p class="">Manage the device and codes you'll use to sign in to this application.</p>
     <%= link_to "Manage my two-factor authentication", users_multi_factor_authentication_path %>
     <%= render "application/mfa_help" %>
 
@@ -262,7 +248,3 @@ run "bundle exec rubocop -A"
 TERMINAL.puts_header "Commiting changes to git"
 git add: "-A ."
 git commit: "-n -m 'Install and configure devise with MFA enabled'"
-
-# TODO: remove this before merge!
-# TERMINAL.puts_header "AAAAAAAAAAAAAAAAAAAAAAAAA early exit for testing"
-# exit

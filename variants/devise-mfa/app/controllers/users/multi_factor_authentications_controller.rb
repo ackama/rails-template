@@ -7,17 +7,7 @@
 #
 module Users
   class MultiFactorAuthenticationsController < ApplicationController
-    before_action :authenticate_user!
-
-    # We want users who don't already have MFA set up to be able to set it up so
-    # we don't check their MFA status before controller actions which are on the
-    # path to set MFA up.
-    # skip_before_action :require_multi_factor_authentication!, only: %i[new show create]
-    # TODO: remove this code if we are not including the "force MFA" code
-
-    skip_after_action :verify_authorized # TODO: this should a real authorize instead
-
-    # before_action { authorize :multi_factor_authentication } # TODO: fix this
+    before_action { authorize :mfa }
 
     # Add the environment name to the two-factor authentication string so that
     # you can more easily tell the MFA codes for different environments
