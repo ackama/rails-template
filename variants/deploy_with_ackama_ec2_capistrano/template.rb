@@ -157,11 +157,20 @@ new_ackama_cap_config_snippet = <<~EO_RUBY
   end
 
   namespace :debug do
-    desc "Check Capistrano's SSM connection to the servers"
+    desc "Check Capistrano's connection to the servers"
     task :check_connection do
       on roles(:app) do
         execute "whoami"
         execute "hostname"
+      end
+    end
+
+    desc "Check the current revision hash and commit time being run on each server"
+    task check_revision: ["git:set_current_revision", "git:set_current_revision_time"] do
+      on roles(:app) do
+        hash = fetch(:current_revision)
+        time = Time.at(fetch(:current_revision_time).to_i).utc
+        info "#\{host}: running revision #\{hash}, committed at #\{time}"
       end
     end
   end
