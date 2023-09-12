@@ -9,7 +9,7 @@
     <%%= csrf_meta_tags %>
     <%%= csp_meta_tag %>
 
-    <!-- <%= app_const_base.titleize %> <%%= Rails.application.config.version %> (<%%= Rails.application.config.version_time.iso8601 %>) -->
+    <!-- <%= app_const_base.titleize %> <%%= Rails.application.config.version %> (<%%= Rails.application.config.version_time&.iso8601 || "Unknown" %>) -->
 
     <%%# CSS should go closest to the top of the document as possible. %>
     <%%= stylesheet_link_tag("application", media: "all", "data-turbolinks-track": "reload") %>

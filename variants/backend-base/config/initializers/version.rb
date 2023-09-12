@@ -16,5 +16,5 @@ Rails.application.config.version_time = begin
   end
   Time.utc.at(value.to_i)
 rescue StandardError
-  Time.zone.at(0)
+  nil
 end
