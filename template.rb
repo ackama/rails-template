@@ -290,6 +290,16 @@ def setup_yarn_berry
   File.unlink("package.json")
 end
 
+# Bun uses a binary-based lockfile which cannot be parsed by shakapacker or
+# osv-detector, so we want to configure bun to always write a yarn.lock
+# in addition so that such tools can check it
+def setup_bun
+  File.write("bunfig.toml", <<~TOML)
+    [install.lockfile]
+    print = "yarn"
+  TOML
+end
+
 def add_yarn_package_extension_dependency(name, dependency)
   return unless File.exist?(".yarnrc.yml")
 
@@ -306,7 +316,10 @@ def add_yarn_package_extension_dependency(name, dependency)
 end
 
 def package_json
-  setup_yarn_berry if @package_json.nil? && ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", nil) == "yarn_berry"
+  if @package_json.nil?
+    setup_yarn_berry if ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", nil) == "yarn_berry"
+    setup_bun if ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", nil) == "bun"
+  end
 
   @package_json ||= PackageJson.new
 end
