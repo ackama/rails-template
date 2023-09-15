@@ -51,8 +51,9 @@ EO_NEW
 gsub_file("config/shakapacker.yml", old_shakapacker_test_compile_snippet, new_shakapacker_test_compile_snippet, force: true)
 
 empty_directory_with_keep_file "app/frontend/images"
-copy_file "app/frontend/stylesheets/application.scss"
 copy_file "app/frontend/stylesheets/_elements.scss"
+copy_file "app/frontend/stylesheets/_reset.scss"
+copy_file "app/frontend/stylesheets/application.scss"
 prepend_to_file "app/frontend/packs/application.js" do
   <<~EO_CONTENT
 
