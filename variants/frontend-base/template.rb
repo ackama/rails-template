@@ -98,7 +98,6 @@ yarn_add_dependencies %w[
   mini-css-extract-plugin
   sass
   sass-loader
-  @hotwired/turbo-rails
 ]
 
 # Setup Turbo
