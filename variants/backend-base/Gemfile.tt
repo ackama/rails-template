@@ -60,6 +60,9 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "pry-rails"
   gem "pry-byebug"
+
+  # ERB linting. Run via `bundle exec erblint .`
+  gem "erb_lint", require: false
 end
 
 group :test do

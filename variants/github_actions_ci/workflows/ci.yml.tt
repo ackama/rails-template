@@ -99,6 +99,8 @@ jobs:
       - name: Check Ruby controller annotations
         run: bundle exec chusaku --exit-with-error-on-annotation
       - run: bundle exec rubocop
+      - name: Run erb-lint to check HTML formatting and run Rubocop on Ruby within ERB
+        run: bundle exec erblint .
       - run: bundle exec brakeman --run-all-checks --exit-on-warn --format plain .
       - run: bundle exec rails db:setup
       - uses: actions/setup-node@v3
