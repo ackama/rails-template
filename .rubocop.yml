@@ -248,3 +248,6 @@ RSpec/MultipleMemoizedHelpers:
 
 FactoryBot/SyntaxMethods:
   Enabled: false
+
+Rails/SquishedSQLHeredocs:
+  Enabled: false

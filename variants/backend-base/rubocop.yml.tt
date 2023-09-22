@@ -236,6 +236,9 @@ Naming/MemoizedInstanceVariableName:
 Performance/Casecmp:
   Enabled: false
 
+Rails/SquishedSQLHeredocs:
+  Enabled: false
+
 Rails/ApplicationRecord:
   Exclude:
     - 'db/migrate/**'
