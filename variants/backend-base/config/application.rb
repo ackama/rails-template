@@ -30,5 +30,8 @@ insert_into_file "config/application.rb", before: /^  end/ do
     config.active_record.encryption.key_derivation_salt = Rails.application.secrets.active_record_encryption_key_derivation_salt
 
     config.action_dispatch.default_headers["X-Frame-Options"] = "DENY"
+
+    # gzip Rails responses to help browsers on slow network connections.
+    config.middleware.use Rack::Deflater
   RUBY
 end
