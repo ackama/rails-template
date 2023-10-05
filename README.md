@@ -155,7 +155,7 @@ Before running this template, you must have the following installed on your
 machine:
 
 - Yarn v1.21.0 or later
-- Rails 7.0.x
+- Rails 7.1.x
 
 The following are not strictly required to run the template but you will need it
 to start the Rails app that this template creates:
