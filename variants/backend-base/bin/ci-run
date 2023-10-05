@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+set -e
+bundle exec rails shakapacker:compile
+
+SCRIPT_DIR=`dirname "$0"`
+APP_DIR="${SCRIPT_DIR}/.."
+
+cd $APP_DIR
+
+echo "* ******************************************************"
+echo "* Running rubocop"
+echo "* ******************************************************"
+bundle exec rubocop -c ./.rubocop.yml
+
+echo "* ******************************************************"
+echo "* Running osv-detector"
+echo "* ******************************************************"
+# See https://github.com/G-Rath/osv-detector#installation for install details
+osv-detector .
+
+echo "* ******************************************************"
+echo "* Running brakeman"
+echo "* ******************************************************"
+bundle exec brakeman --exit-on-warn --quiet --no-pager
+
+echo "* ******************************************************"
+echo "* Running all rspec specs"
+echo "* ******************************************************"
+bundle exec rspec --format=progress
+
+# If/when your test suite gets slow, we often run "system" tests in parallel to
+# the other kinds of tests. The exact details of how to do this depends on your
+# CI server.
+#
+# Remember that you will will have to merge the test coverage information from
+# all runs together - see
+# https://github.com/colszowka/simplecov#merging-test-runs-under-the-same-execution-environment
+# for info on how to do this.
+#
+# The commented out sections show the commands you can use to split the tests
+# by type. It may be more appropriate to tag tests and use those tags to split
+# them - see the docs for rspec tagging for info on this.
+#
+# echo "* ******************************************************"
+# echo "* Running rspec unit specs"
+# echo "* ******************************************************"
+# bundle exec rspec --format=progress --exclude-pattern "spec/system/**/*_spec.rb"
+#
+# echo "* ******************************************************"
+# echo "* Running rspec feature specs"
+# echo "* ******************************************************"
+# bundle exec rake spec:system

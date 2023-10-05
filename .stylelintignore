@@ -1,4 +1,0 @@
-# This is the stylelintignore for this repo.
-# stylelintignore.tt is the one that is copied into the Rails app we build
-node_modules/
-template-test/dummy/

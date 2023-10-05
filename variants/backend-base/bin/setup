@@ -1,0 +1,92 @@
+#!/usr/bin/env ruby
+
+def setup!
+  within_project_root do
+    test "ruby -v" => ruby_version
+    run  "gem install bundler --no-document --conservative"
+    run  "bundle install"
+    run  "yarn install" if File.exist?("yarn.lock")
+    run  "bundle exec overcommit --install"
+    copy "example.env"
+    test_local_env_contains_required_keys
+    run  "bundle exec rails generate strong_migrations:install"
+    run  "bin/rake tmp:create"
+    run  "bin/rake db:prepare"
+  end
+end
+
+require "fileutils"
+begin
+  require "highline"
+rescue LoadError
+  # If highline is missing, we'll gracefully omit ansi color output
+end
+
+def within_project_root(&block)
+  Dir.chdir(File.expand_path("..", __dir__), &block)
+end
+
+def test(opts)
+  command, output = opts.first
+
+  log(:yellow, "test #{command}") do
+    die("#{command} does not include #{output}") unless `#{command}`.include?(output)
+  end
+end
+
+def ruby_version
+  @ruby_version ||= File.read(".ruby-version").strip
+end
+
+def run(command)
+  log(:blue, "run  #{command}") do
+    shell = "#{command} > /dev/null"
+    with_clean_bundler_env do
+      system(shell) or die("#{command} exited with non-zero status")
+    end
+  end
+end
+
+def with_clean_bundler_env(&block)
+  return yield unless defined?(Bundler)
+
+  Bundler.with_original_env(&block)
+end
+
+def copy(example_path)
+  copy_path = example_path.sub(/\.?example/, "")
+  return if File.exist?(copy_path)
+
+  log(:magenta, "copy #{example_path} → #{copy_path}") do
+    FileUtils.cp(example_path, copy_path)
+  end
+end
+
+def test_local_env_contains_required_keys
+  keys = ->(f) { File.readlines(f).filter_map { |l| l[/^([^#\s][^=\s]*)/, 1] } }
+
+  log(:yellow, "test .env contents") do
+    missing = keys["example.env"] - keys[".env"]
+    die("Your .env file is missing #{missing.join(", ")}") if missing.any?
+  end
+end
+
+def log(color, message, out = $stdout)
+  message.sub!(/^(\S*)/) { HighLine::String.new(Regexp.last_match(1)).public_send(color) } if defined?(HighLine::String)
+
+  if block_given?
+    out.print("#{message}… ")
+    yield
+    log(:green, "✔︎")
+  else
+    out.puts(message)
+  end
+end
+
+def die(message)
+  puts
+  log(:red, "FAIL #{message}", $stderr)
+  exit(1)
+end
+
+setup!

@@ -1,5 +1,6 @@
 name: Rails Template CI
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
@@ -8,8 +9,53 @@ on:
     # * is a special character in YAML so you have to quote this string
     # * At 05:00 UTC every Monday, run the latest commit on the default or base branch
     - cron:  '0 5 * * MON'
+
+# Restrict jobs in this workflow to only be allowed to read this repo by default.
+#
+# If you are wanting to introduce a job/tool that requires more permissions (such
+# as posting comments or commits to the repository), then you should grant just
+# that job the necessarily permissions by giving it a dedicated `permissions` block.
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
+  audit_dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - name: Audit dependencies for security vulnerabilities
+        uses: g-rath/check-with-osv-detector@main
   test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".node-version"
+          cache: "yarn"
+      - run: yarn install
+      - run: yarn run format-check
+
+  rubocop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - name: Install Ruby and Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: 'ruby'
+
+      - name: Run Rubocop
+        run: bundle exec rubocop
+
+  test_generated_apps:
     runs-on: ubuntu-latest
     strategy:
       # don't stop all variants if one of them fails (we usually want to know
@@ -17,24 +63,37 @@ jobs:
       fail-fast: false
       matrix:
         variant:
+          - name: defaults
+            config_path: "ackama_rails_template.config.yml"
+          - name: all
+            config_path: "ci/configs/all.yml"
+          - name: all-typescript
+            config_path: "ci/configs/all-typescript.yml"
           - name: basic
-            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nNo\n\nNo\n
-            skips: --skip-javascript
+            config_path: "ci/configs/basic.yml"
+          - name: basic-typescript
+            config_path: "ci/configs/basic-typescript.yml"
+          - name: github_actions
+            config_path: "ci/configs/github_actions.yml"
           - name: react
-            generator_input: example.com\nstaging.example.com\nY\nN\nNo\nNo\n\nNo\n
-            skips: --skip-javascript
-          - name: typescript
-            generator_input: example.com\nstaging.example.com\nN\nY\nNo\nNo\n\nNo\n
-            skips: --skip-javascript
+            config_path: "ci/configs/react.yml"
+          - name: react-typescript
+            config_path: "ci/configs/react-typescript.yml"
           - name: sidekiq
-            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nYes\n\nNo\n
-            skips: --skip-javascript
+            config_path: "ci/configs/sidekiq.yml"
           - name: devise
-            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nNo\n\nYes\nYes\n
-            skips: --skip-javascript
+            config_path: "ci/configs/devise.yml"
           - name: basic_with_skips
-            generator_input: example.com\nstaging.example.com\nN\nN\nNo\nNo\n\nNo\n
-            skips: --skip-active-storage --skip-spring --skip-javascript
+            config_path: "ci/configs/basic.yml"
+            skips: --skip-spring --skip-javascript
+          - name: bootstrap
+            config_path: "ci/configs/bootstrap.yml"
+          - name: bootstrap-typescript
+            config_path: "ci/configs/bootstrap-typescript.yml"
+          - name: capistrano
+            config_path: "ci/configs/deploy_with_capistrano.yml"
+          - name: ackama_ec2_capistrano
+            config_path: "ci/configs/deploy_with_ackama_ec2_capistrano.yml"
     services:
       db:
         image: postgres
@@ -53,12 +112,19 @@ jobs:
 
     steps:
       - name: Checkout this repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      # this ensures that osv-detector is available for running bin/ci-run
+      - name: Check dependencies for security vulnerabilities (and setup osv-detector)
+        uses: g-rath/check-with-osv-detector@main
 
       - name: Install NodeJS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          cache: "yarn"
+          node-version-file: ".node-version"
 
       # We don't cache gems or JS packages because we are actually testing how
       # installation and setup works in this project so, while caching would
@@ -68,9 +134,9 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: '3.0'
+          ruby-version: 'ruby'
 
-      - name: Setup git for commiting
+      - name: Setup git for committing
         run: |
           # We do some git commits during our testing so these need to be set
           git config --global user.email "you@example.com"
@@ -78,10 +144,18 @@ jobs:
 
       - name: Run CI script
         env:
-          VARIANT: ${{ matrix.variant.name }}
-          GENERATOR_INPUT: ${{ matrix.variant.generator_input }}
-          SKIPS: ${{ matrix.variant.skips }}
+          # Remember that your app name becomes a top-level constant in the
+          # Rails app so you'll run into issues if that constant shares a name
+          # with a class provided by a gem. Basically, don't name your app
+          # "react", "sidekiq" etc.
+          APP_NAME: ${{ matrix.variant.name }}-demo
+          CONFIG_PATH:  ${{ matrix.variant.config_path }}
+          SKIPS: "--skip-javascript ${{ matrix.variant.skips }}"
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
-        run: ./template-test/ci-run.sh
+          RAILS_SECRET_KEY_BASE: "placeholder"
+          ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: "placeholder"
+          ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: "placeholder"
+          ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: "placeholder"
+        run: ./ci/bin/build-and-test

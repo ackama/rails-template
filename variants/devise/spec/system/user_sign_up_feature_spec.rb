@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "User sign-up", type: :system do
+RSpec.describe "User sign-up" do
   let(:too_short_password) { "aabbcc" }
   let(:valid_password) { "aaaabbbbccccdddd" }
   let(:invalid_email) { "miles.obrien@" }
@@ -46,7 +46,7 @@ RSpec.describe "User sign-up", type: :system do
 
   describe "password validation" do
     it "users are informed about the password length requirements" do
-      # we expect the sign-in page to dispaly a message about password requirements
+      # we expect the sign-in page to display a message about password requirements
       expect(page).to have_text("Password (16 characters minimum)")
     end
 

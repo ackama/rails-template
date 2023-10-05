@@ -1,50 +1,23 @@
 # Allow us to copy file with root at the directory this file is in
 source_paths.unshift(File.dirname(__FILE__))
 
-##
-# This template can be used either as part of starting a new Rails project or
-# by running:
-#
-#     bundle exec rails app:template LOCATION=http://path/to/this/template.rb
-#
-def fetch_answer(question, color, env_variable)
-  env_answer = ENV.fetch(env_variable, nil).to_s.strip
-
-  return ask(question, color) if env_answer.empty?
-
-  say "#{question}: #{env_answer}", color
-  env_answer
-end
-
-def ask_with_default(question, color, default, env_variable)
-  question = (question.split("?") << " [#{default}]?").join
-  answer = fetch_answer(question, color, env_variable)
-  answer.to_s.strip.empty? ? default : answer
-end
-
-def print_header(msg)
-  puts "=" * 80
-  puts msg
-  puts "=" * 80
-end
-
-print_header "Adding devise to Gemfile"
+TERMINAL.puts_header "Adding devise to Gemfile"
 run "bundle add devise"
 
-print_header "Running devise generator"
+TERMINAL.puts_header "Running devise generator"
 run "bundle exec rails generate devise:install"
 
-print_header "Generating User model with devise"
+TERMINAL.puts_header "Generating User model with devise"
 run "bundle exec rails generate devise User"
 
 gsub_file "app/models/user.rb",
           ":validatable",
           ":validatable, :lockable"
 
-devise_migration_filename = Dir.children("db/migrate").find { |filename| filename.match?(/_devise_create_users\.rb\z/) }
+devise_migration_filename = Dir.children("db/migrate").find { |filename| filename.end_with?("_devise_create_users.rb") }
 devise_migration_path = "db/migrate/#{devise_migration_filename}"
 
-print_header "Tweaking auto-generated devise migration '#{devise_migration_path}'"
+TERMINAL.puts_header "Tweaking auto-generated devise migration '#{devise_migration_path}'"
 gsub_file devise_migration_path,
           "      # t.integer  :failed_attempts",
           "      t.integer  :failed_attempts"
@@ -57,21 +30,24 @@ gsub_file devise_migration_path,
 gsub_file devise_migration_path,
           "      # add_index :users, :unlock_token",
           "      add_index :users, :unlock_token"
+gsub_file devise_migration_path,
+          /  # add_index :users, :unlock_token.+/,
+          "  add_index :users, :unlock_token, unique: true"
 
-print_header "Running db migration"
+TERMINAL.puts_header "Running db migration"
 run "bundle exec rails db:migrate"
 
-print_header "Copying devise views into the application"
+TERMINAL.puts_header "Copying devise views into the application"
 run "bundle exec rails generate devise:views users"
 
 ##
 # Tweak the generated devise config file
 #
-print_header "Tweaking config/initializers/devise.rb"
+TERMINAL.puts_header "Tweaking config/initializers/devise.rb"
 
 gsub_file "config/initializers/devise.rb",
           "  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'",
-          "  config.mailer_sender = Rails.application.secrets.mail_from"
+          "  config.mailer_sender = Rails.application.config.app.mail_from"
 
 gsub_file "config/initializers/devise.rb",
           "  # config.scoped_views = false",
@@ -86,14 +62,40 @@ gsub_file "config/initializers/devise.rb",
           "  config.paranoid = true"
 
 gsub_file "config/initializers/devise.rb",
-  /  # config.secret_key = '.+'/,
-  "  # config.secret_key = 'do_not_put_secrets_in_source_control_please'"
+          /  # config.secret_key = '.+'/,
+          "  # config.secret_key = 'do_not_put_secrets_in_source_control_please'"
+
+gsub_file "config/initializers/devise.rb",
+          /  # config.lock_strategy = .+/,
+          "  config.lock_strategy = :failed_attempts"
+
+gsub_file "config/initializers/devise.rb",
+          /  # config.unlock_strategy = .+/,
+          "  config.unlock_strategy = :email"
+
+gsub_file "config/initializers/devise.rb",
+          "  # config.parent_mailer = 'ActionMailer::Base'",
+          "  config.parent_mailer = 'ApplicationMailer'"
+
+gsub_file "config/initializers/devise.rb",
+          /  # config.maximum_attempts = .+/,
+          <<-EO_CHUNK
+  #
+  # https://www.nzism.gcsb.govt.nz/ism-document/#1887 recommends 3 as a default. FYI to
+  # be fully compliant with https://www.nzism.gcsb.govt.nz/ism-document/#1887 then only
+  # Administrators should be able to unlock.
+  config.maximum_attempts = 3
+          EO_CHUNK
+
+gsub_file "config/initializers/devise.rb",
+          /  # config.last_attempt_warning = .+/,
+          "  config.last_attempt_warning = true"
 
 ##
 # Add a block to config/routes.rb demonstrating how to create authenticated
 # routes
 #
-print_header "Adding exemplar authenticated routes"
+TERMINAL.puts_header "Adding exemplar authenticated routes"
 route <<-EO_ROUTES
 
   authenticate :user do
@@ -108,7 +110,7 @@ EO_ROUTES
 # Add links to user sign-in and sign-up to the homepage to help ensure that
 # devs know they have both things enabled in the application now.
 #
-print_header "Adding example devise links to the homepage"
+TERMINAL.puts_header "Adding example devise links to the homepage"
 
 append_to_file "app/views/application/_header.html.erb" do
   <<~ERB
@@ -133,7 +135,7 @@ append_to_file "app/views/application/_header.html.erb" do
   ERB
 end
 
-print_header "Fixing session cookie expiry"
+TERMINAL.puts_header "Fixing session cookie expiry"
 
 run "bundle exec rails g migration AddSessionTokenToUser session_token:string"
 run "bundle exec rails db:migrate"
@@ -142,7 +144,7 @@ copy_file "app/controllers/users/sessions_controller.rb"
 
 gsub_file "config/routes.rb",
           "devise_for :users",
-          <<~'EO_DEVISE'
+          <<~EO_DEVISE
             devise_for :users, controllers: {
               sessions: "users/sessions"
             }
@@ -190,7 +192,7 @@ insert_into_file "app/models/user.rb", before: /^end/ do
   RUBY
 end
 
-print_header "Writing tests for you - you're welcome!"
+TERMINAL.puts_header "Writing tests for you - you're welcome!"
 
 copy_file "spec/models/user_spec.rb", force: true
 
@@ -201,15 +203,18 @@ copy_file "spec/system/user_sign_up_feature_spec.rb"
 copy_file "spec/system/user_reset_password_feature_spec.rb"
 copy_file "spec/requests/session_cookie_expiry_spec.rb"
 
-print_header "Running rubocop -a to fix formatting in files generated by devise"
-run "bundle exec rubocop -aD"
+# tell pundit not to check that authorization was called on devise controllers
+gsub_file("app/controllers/application_controller.rb",
+          "after_action :verify_authorized, except: :index",
+          "after_action :verify_authorized, except: :index, unless: :devise_controller?"
+         )
+gsub_file("app/controllers/application_controller.rb",
+          "after_action :verify_policy_scoped, only: :index",
+          "after_action :verify_policy_scoped, only: :index, unless: :devise_controller?"
+         )
 
-if ask_with_default(
-  "Do you want to create a git commit with these changes?",
-  :yellow,
-  "N",
-  "RT_CREATE_GIT_COMMIT_FOR_DEVISE"
-).downcase.start_with?("y")
-  git add: "-A ."
-  git commit: "-n -m 'Install and configure devise with default Ackama settings'"
-end
+TERMINAL.puts_header "Running rubocop -A to fix formatting in files generated by devise"
+run "bundle exec rubocop -A -c ./.rubocop.yml"
+
+git add: "-A ."
+git commit: "-n -m 'Install and configure devise with default Ackama settings'"

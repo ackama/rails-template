@@ -1,7 +1,6 @@
 # Javascript code linting and formatting
 # ######################################
 
-run "rm .browserslistrc"
 yarn_add_dev_dependencies %w[
   eslint
   eslint-config-ackama
@@ -13,16 +12,12 @@ yarn_add_dev_dependencies %w[
   prettier-config-ackama
   prettier-plugin-packagejson
 ]
-copy_file ".eslintrc.js"
-template ".prettierignore.tt"
+copy_file "variants/frontend-base/.eslintrc.js", ".eslintrc.js"
+template "variants/frontend-base/.prettierignore.tt", ".prettierignore"
 
 package_json = JSON.parse(File.read("./package.json"))
 package_json["prettier"] = "prettier-config-ackama"
-package_json["browserslist"] = [
-  "defaults",
-  "not IE 11",
-  "not IE_Mob 11"
-]
+package_json["browserslist"] = ["defaults"]
 package_json["scripts"] = {
   "js-lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
   "js-lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
@@ -37,20 +32,20 @@ File.write("./package.json", JSON.generate(package_json))
 append_to_file "bin/ci-run" do
   <<~ESLINT
 
-  echo "* ******************************************************"
-  echo "* Running JS linting"
-  echo "* ******************************************************"
-  yarn run js-lint
+    echo "* ******************************************************"
+    echo "* Running JS linting"
+    echo "* ******************************************************"
+    yarn run js-lint
   ESLINT
 end
 
 append_to_file "bin/ci-run" do
   <<~PRETTIER
 
-  echo "* ******************************************************"
-  echo "* Running JS linting"
-  echo "* ******************************************************"
-  yarn run format-check
+    echo "* ******************************************************"
+    echo "* Running JS linting"
+    echo "* ******************************************************"
+    yarn run format-check
   PRETTIER
 end
 
@@ -61,15 +56,15 @@ yarn_add_dev_dependencies %w[
   stylelint-scss
   stylelint-config-recommended-scss
 ]
-copy_file ".stylelintrc.js"
-template ".stylelintignore.tt"
+copy_file "variants/frontend-base/.stylelintrc.js", ".stylelintrc.js"
+template "variants/frontend-base/.stylelintignore.tt", ".stylelintignore"
 
 append_to_file "bin/ci-run" do
   <<~SASSLINT
 
-  echo "* ******************************************************"
-  echo "* Running SCSS linting"
-  echo "* ******************************************************"
-  yarn run scss-lint
+    echo "* ******************************************************"
+    echo "* Running SCSS linting"
+    echo "* ******************************************************"
+    yarn run scss-lint
   SASSLINT
 end

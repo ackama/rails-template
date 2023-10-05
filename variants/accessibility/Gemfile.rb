@@ -1,4 +1,4 @@
-insert_into_file "Gemfile", after: /gem "webdrivers"\n/ do
+insert_into_file "Gemfile", after: /gem "selenium-webdriver"\n/ do
   <<~GEMS
 
     gem "lighthouse-matchers"

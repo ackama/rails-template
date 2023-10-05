@@ -1,0 +1,32 @@
+---
+# This template assumes you will store your project in a remote git repository
+# (e.g. Bitbucket or GitHub) and that you will deploy to a production environment.
+#
+# 1. The git URL of your (freshly created and empty) Bitbucket/GitHub repository
+# 2. The hostname of your production server and staging servers
+#
+# Set these to "" if you don't know the values.
+#
+staging_hostname: "staging.example.com"
+production_hostname: "www.example.com"
+git_repo_url: ""
+
+# Use TypeScript for any JavaScript-based code
+use_typescript: true
+
+# Use these flags to enable features in the rails app created by this template.
+apply_variant_react: false
+apply_variant_devise: false
+apply_variant_sidekiq: false
+apply_variant_bootstrap: false
+
+# Copy in some examples for Github Actions CI
+apply_variant_github_actions_ci: true
+
+# Generates code to set up a fairly generic Capistrano install - this is not required
+# if you're using the Ackama-specific variant
+apply_variant_deploy_with_capistrano: false
+
+# Generates Capistrano code specific to how Ackama likes to deploy
+# and manage EC2 instances.
+apply_variant_deploy_with_ackama_ec2_capistrano: false

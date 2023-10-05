@@ -1,0 +1,74 @@
+#!/usr/bin/env ruby
+
+require "fileutils"
+
+root_path = File.absolute_path(File.join(__dir__, "../.."))
+template_path = File.join(root_path, "template.rb")
+builds_path = File.join(root_path, "tmp/builds")
+app_name = ENV.fetch("APP_NAME", "app")
+app_path = File.join(builds_path, app_name)
+
+config_path = if ENV.fetch("CONFIG_PATH", "") == ""
+                File.join(root_path, "ackama_rails_template.config.yml")
+              else
+                File.join(root_path, ENV.fetch("CONFIG_PATH"))
+              end
+
+config_env_var = %Q(CONFIG_PATH="#{config_path}") if config_path
+skip_flags = ENV.fetch("SKIPS", "--skip-javascript")
+
+puts "=" * 80
+puts <<~EO_CONFIG_SUMMARY
+  Config summary:
+
+    template_path = #{template_path}
+    builds_path = #{builds_path}
+    app_name = #{app_name}
+    app_path = #{app_path}
+    template_path = #{template_path}
+    config_path = #{config_path || "None"}
+EO_CONFIG_SUMMARY
+puts "=" * 80
+
+raise "Missing config YML file" if config_path && !(File.exist?(config_path) && File.file?(config_path))
+
+puts "Installing latest rails gem"
+system "gem install rails --no-document"
+
+unless Dir.exist?(builds_path)
+  puts "Creating #{builds_path}"
+  FileUtils.mkdir_p(builds_path)
+end
+
+if Dir.exist?(app_path)
+  puts "Removing old build from #{app_path}"
+  FileUtils.rm_rf(app_path)
+end
+
+Dir.chdir(builds_path) do |cwd|
+  puts "Working dir is now #{cwd}"
+  cmd = %Q(#{config_env_var} RACK_ENV=development RAILS_ENV=development rails new "#{app_name}" -d postgresql #{skip_flags} -m "#{template_path}")
+  puts <<~EO_HELP
+    Build command:
+    #{cmd}
+  EO_HELP
+
+  system(cmd, exception: true)
+end
+
+def ensure_everything_is_committed
+  out = `git status -s`
+
+  raise StandardError, "there are uncommitted changes or un-staged files: #{out}" unless out.empty?
+end
+
+puts "Running post-generator checks"
+Dir.chdir(app_path) do |cwd|
+  puts "Working dir is now #{cwd}"
+
+  puts "Checking everything is committed and there are no un-staged files"
+  ensure_everything_is_committed
+
+  puts "Running test suite"
+  system("./bin/ci-run", exception: true)
+end

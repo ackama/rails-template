@@ -1,0 +1,37 @@
+version: "2"
+x-services:
+  rails: &rails
+    build: .
+    environment:
+      PGHOST: "db"
+      PGUSER: "postgres"
+    env_file:
+      - .env
+    volumes:
+      - bundle:/usr/local/bundle
+      - node_modules:/usr/src/app/node_modules
+      - .:/usr/src/app
+    tty: true
+    stdin_open: true
+services:
+  db:
+    image: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql
+  app:
+    <<: *rails
+    links:
+      - db
+      - shakapacker
+    environment:
+      WEBPACKER_DEV_SERVER_HOST: shakapacker
+    ports:
+      - "3000:3000"
+    command: "bash -c 'rm -rf tmp/pid/server.pid && rails s --binding 0.0.0.0'"
+  shakapacker:
+    <<: *rails
+    command: "./bin/webpack-dev-server"
+volumes:
+  pgdata:
+  bundle:
+  node_modules:

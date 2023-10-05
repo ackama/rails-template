@@ -1,13 +1,13 @@
 insert_into_file "Gemfile", after: /^group :development, :test do\n/ do
-<<-GEMS
-  gem "bullet"
-GEMS
+  <<~GEMS
+    gem "bullet"
+  GEMS
 end
 
 run "bundle install"
 
 insert_into_file "config/environments/development.rb", before: /^end/ do
-<<-RUBY
+  <<-RUBY
 
   # Bullet makes inline javascript, so there is warning in console in browse until content security policy change
   config.after_initialize do
@@ -26,16 +26,16 @@ insert_into_file "config/environments/development.rb", before: /^end/ do
     # Bullet.console       = true
     # Bullet.add_footer    = true
   end
-RUBY
+  RUBY
 end
 
 insert_into_file "config/environments/test.rb", before: /^end/ do
-<<-RUBY
+  <<-RUBY
 
   config.after_initialize do
     Bullet.enable        = true
     Bullet.bullet_logger = true
     Bullet.raise         = true # raise an error if n+1 query occurs
   end
-RUBY
+  RUBY
 end

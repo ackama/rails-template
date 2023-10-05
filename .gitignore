@@ -1,2 +1,6 @@
-template-test/dummy/*
+.idea/
+.vscode/
 node_modules/
+tmp/*
+.envrc
+.env

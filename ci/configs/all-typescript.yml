@@ -1,0 +1,12 @@
+---
+staging_hostname: "staging.example.com"
+production_hostname: "www.example.com"
+git_repo_url: ""
+use_typescript: true
+apply_variant_github_actions_ci: true
+apply_variant_react: true
+apply_variant_devise: true
+apply_variant_sidekiq: true
+apply_variant_bootstrap: true
+apply_variant_deploy_with_capistrano: true
+apply_variant_deploy_with_ackama_ec2_capistrano: true
