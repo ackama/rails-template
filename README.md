@@ -76,6 +76,8 @@ Where possible we stick to Rails defaults.
   - Install [Overcommit](https://github.com/sds/overcommit) for managing custom
     git hooks. Configure it with our default settings:
     [overcommit.yml](./overcommit.yml)
+  - Use [erb_lint](https://github.com/Shopify/erb-lint) to lint HTML in ERB and
+    run Rubocop on Ruby snippets within ERB
 - General testing
   - RSpec for tests
   - Install [webdrivers](https://github.com/titusfortner/webdrivers)

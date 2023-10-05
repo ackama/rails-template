@@ -186,6 +186,13 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     # generate routes and models
     apply "variants/code-annotation/template.rb"
 
+    # erblint does not like some of Rails auto-generated ERB code e.g.
+    # `app/views/layouts/mailer.html.erb` so we auto-correct it.
+    copy_file "variants/backend-base/.erb-lint.yml", ".erb-lint.yml"
+    run_with_clean_bundler_env "bundle exec erblint --autocorrect ."
+    git add: "-A ."
+    git commit: "-n -m 'Set up erblint'"
+
     # Run the README template at the end because it introspects the app to
     # discover rake tasks etc.
     apply_readme_template
