@@ -304,6 +304,7 @@ def assert_valid_options
     skip_test_unit: true,
     skip_active_storage: false,
     skip_javascript: true,
+    skip_docker: true,
     edge: false
   }
   valid_options.each do |key, expected|

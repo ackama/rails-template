@@ -150,7 +150,7 @@ jobs:
           # "react", "sidekiq" etc.
           APP_NAME: ${{ matrix.variant.name }}-demo
           CONFIG_PATH:  ${{ matrix.variant.config_path }}
-          SKIPS: "--skip-javascript ${{ matrix.variant.skips }}"
+          SKIPS: "--skip-javascript --skip-docker ${{ matrix.variant.skips }}"
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
