@@ -99,3 +99,14 @@ yarn_add_dependencies %w[
   sass
   sass-loader
 ]
+
+# Setup Turbo
+yarn_add_dependencies %w[
+  @hotwired/turbo-rails
+]
+prepend_to_file "app/frontend/packs/application.js" do
+  <<~EO_CONTENT
+
+    import "@hotwired/turbo-rails"
+  EO_CONTENT
+end
