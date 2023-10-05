@@ -33,7 +33,7 @@ puts "=" * 80
 raise "Missing config YML file" if config_path && !(File.exist?(config_path) && File.file?(config_path))
 
 puts "Installing latest rails gem"
-system "gem install rails --no-document"
+system "gem install rails -v '~> 7.0.3' --no-document"
 
 unless Dir.exist?(builds_path)
   puts "Creating #{builds_path}"
