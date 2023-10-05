@@ -18,6 +18,14 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 
 jobs:
+  audit_dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - name: Audit dependencies for security vulnerabilities
+        uses: g-rath/check-with-osv-detector@main
   test:
     runs-on: ubuntu-latest
     steps:
