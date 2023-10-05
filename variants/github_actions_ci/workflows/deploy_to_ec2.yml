@@ -52,7 +52,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Configure AWS credentials using OpenID Connect to AssumeRole
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ inputs.assume_role_arn }}
           aws-region: ${{ inputs.aws_region }}
