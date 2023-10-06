@@ -196,7 +196,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     # Run strong_migrations generator near the end so that it doesn't block
     # other parts of the template from creating migrations.
     run_with_clean_bundler_env "bundle exec rails g strong_migrations:install"
-    run_with_clean_bundler_env "bundle exec rubocop -A"
+    run_with_clean_bundler_env "bundle exec rubocop -A -c ./.rubocop.yml"
     git add: "-A ."
     git commit: "-n -m 'Set up strong_migrations'"
 
