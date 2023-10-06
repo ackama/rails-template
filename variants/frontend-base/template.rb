@@ -25,9 +25,6 @@ gsub_file "app/views/layouts/application.html.erb",
 # Configure app/frontend
 
 run "mv app/javascript app/frontend"
-run "mkdir app/frontend/packs"
-run "mv app/frontend/application.js app/frontend/packs/application.js"
-
 copy_file "config/webpack/webpack.config.js", force: true
 
 gsub_file "config/shakapacker.yml", "source_entry_path: /", "source_entry_path: packs", force: true
