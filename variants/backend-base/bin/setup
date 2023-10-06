@@ -9,7 +9,6 @@ def setup!
     run  "bundle exec overcommit --install"
     copy "example.env"
     test_local_env_contains_required_keys
-    run  "bundle exec rails generate strong_migrations:install"
     run  "bin/rake tmp:create"
     run  "bin/rake db:prepare"
   end
