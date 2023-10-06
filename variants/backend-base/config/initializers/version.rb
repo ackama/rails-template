@@ -14,7 +14,7 @@ Rails.application.config.version_time = begin
 
     File.read(path).chomp
   end
-  Time.utc.at(value.to_i)
+  Time.zone.at(value.to_i).utc
 rescue StandardError
   nil
 end
