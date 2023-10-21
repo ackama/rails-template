@@ -142,7 +142,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     # The accessibility template brings in the lighthouse and
     # lighthouse matcher parts we need to run performance specs
     apply "variants/performance/template.rb"
-    # apply "variants/bullet/template.rb" # TODO: does not support Rails 7.1 yet
+    apply "variants/bullet/template.rb"
     apply "variants/pundit/template.rb"
     apply "variants/audit-logging/template.rb"
     apply "variants/sidekiq/template.rb" if TEMPLATE_CONFIG.apply_variant_sidekiq?
