@@ -13,8 +13,13 @@ Rails.application.config.version_time = begin
     raise StandardError unless File.exist?(path)
 
     File.read(path).chomp
+  end.to_i
+
+  if value.zero?
+    nil
+  else
+    Time.zone.at(value).utc
   end
-  Time.utc.at(value.to_i)
 rescue StandardError
   nil
 end
