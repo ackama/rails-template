@@ -155,7 +155,7 @@ Before running this template, you must have the following installed on your
 machine:
 
 - Yarn v1.21.0 or later
-- Rails 7.0.x
+- Rails 7.1.x
 
 The following are not strictly required to run the template but you will need it
 to start the Rails app that this template creates:
@@ -192,7 +192,7 @@ $ wget https://raw.githubusercontent.com/ackama/rails-template/main/ackama_rails
 
 # Create a new app using the template. Template options will be taken from
 # ./ackama_rails_template.config.yml
-$ rails new my_app --no-rc --database=postgresql --skip-javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
+$ rails new my_app --no-rc --database=postgresql --skip-javascript --skip-docker --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 
 # Example 2
 # #########
@@ -200,7 +200,7 @@ $ rails new my_app --no-rc --database=postgresql --skip-javascript --template=ht
 # Create a custom config YAML file, saving as ./my_custom_config.yml
 
 # Template options will be taken from ../my_custom_config.yml (relative to the new app directory)
-$ CONFIG_PATH=../my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip-javascript --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
+$ CONFIG_PATH=../my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip-javascript --skip-docker --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
 Here are some additional options you can add to this command. We don't
@@ -228,6 +228,7 @@ To make this the default Rails application template on your system, create a
 # ~/.railsrc
 -d postgresql
 --skip-javascript
+--skip-docker
 -m https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
@@ -275,7 +276,7 @@ $ CONFIG_PATH="ci/configs/react.yml" APP_NAME="enterprise" ./ci/bin/build-and-te
 # because the template is run by `rails new` which uses the rails app dir as
 # it's working dir, hence the `../` at the start.
 #
-$ rm -rf mydemoapp && CONFIG_PATH="../ci/configs/react.yml" rails new mydemoapp -d postgresql --skip-javascript -m ./template.rb
+$ rm -rf mydemoapp && CONFIG_PATH="../ci/configs/react.yml" rails new mydemoapp -d postgresql --skip-javascript --skip-docker -m ./template.rb
 ```
 
 Rubocop is configured for this repo and is run as part of CI. Run rubocop

@@ -150,12 +150,8 @@ jobs:
           # "react", "sidekiq" etc.
           APP_NAME: ${{ matrix.variant.name }}-demo
           CONFIG_PATH:  ${{ matrix.variant.config_path }}
-          SKIPS: "--skip-javascript ${{ matrix.variant.skips }}"
+          SKIPS: "--skip-javascript --skip-docker ${{ matrix.variant.skips }}"
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
-          RAILS_SECRET_KEY_BASE: "placeholder"
-          ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: "placeholder"
-          ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: "placeholder"
-          ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: "placeholder"
         run: ./ci/bin/build-and-test
