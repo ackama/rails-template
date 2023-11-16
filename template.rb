@@ -110,7 +110,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   # The block passed to "after_bundle" seems to run after `bundle install`
   # but also after `shakapacker:install` and after Rails has initialized the git
   # repo
-  after_bundle do
+  after_bundle do # rubocop:disable Metrics/BlockLength
     # Remove the `test/` directory because we always use RSpec which creates
     # its own `spec/` directory
     remove_dir "test"
@@ -192,6 +192,13 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     run_with_clean_bundler_env "bundle exec erblint --autocorrect ."
     git add: "-A ."
     git commit: "-n -m 'Set up erblint'"
+
+    # Run strong_migrations generator near the end so that it doesn't block
+    # other parts of the template from creating migrations.
+    run_with_clean_bundler_env "bundle exec rails g strong_migrations:install"
+    run_with_clean_bundler_env "bundle exec rubocop -A -c ./.rubocop.yml"
+    git add: "-A ."
+    git commit: "-n -m 'Set up strong_migrations'"
 
     # Run the README template at the end because it introspects the app to
     # discover rake tasks etc.
