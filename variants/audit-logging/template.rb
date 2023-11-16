@@ -1,6 +1,6 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-copy_file("variants/audit-logging/lib/auditor_log_formatter.rb", "lib/auditor_log_formatter.rb")
+copy_file("variants/audit-logging/lib/audit_log_log_formatter.rb", "lib/audit_log_log_formatter.rb")
 copy_file("variants/audit-logging/services/audit_log.rb", "app/services/audit_log.rb")
 copy_file("variants/audit-logging/spec/services/audit_log_spec.rb", "spec/services/audit_log_spec.rb")
 
@@ -19,7 +19,7 @@ end
 
 prepend_to_file "config/application.rb" do
   <<~RUBY
-    require_relative "../lib/auditor_log_formatter"
+    require_relative "../lib/audit_log_log_formatter"
   RUBY
 end
 

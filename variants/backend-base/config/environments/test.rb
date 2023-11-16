@@ -16,3 +16,7 @@ insert_into_file \
   config.i18n.raise_on_missing_translations = true
   RUBY
 end
+
+gsub_file "config/environments/test.rb",
+          "config.action_controller.raise_on_missing_callback_actions = true",
+          "# config.action_controller.raise_on_missing_callback_actions = true"

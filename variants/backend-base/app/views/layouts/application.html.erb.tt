@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title>
-      <%%= strip_tags(yield(:title)) + " – " if content_for?(:title) %>
+      <%%= strip_tags(yield(:title)) + " - " if content_for?(:title) %>
       <%= app_const_base.titleize %>
     </title>
 
@@ -15,7 +15,7 @@
     <%%= stylesheet_link_tag("application", media: "all", "data-turbolinks-track": "reload") %>
 
     <%%# JavaScript must be in head for Turbolinks to work. %>
-    <%%= javascript_pack_tag "application", "data-turbolinks-track": "reload", defer: true %>
+    <%%= javascript_pack_tag "application", "data-turbolinks-track": "reload", defer: true, nonce: true %>
 
     <%%= yield(:head) %>
 

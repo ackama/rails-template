@@ -2,7 +2,7 @@ require "fileutils"
 require "shellwords"
 require "pp"
 
-RAILS_REQUIREMENT = "~> 7.0.3".freeze
+RAILS_REQUIREMENT = "~> 7.1.1".freeze
 
 ##
 # This single template file will be downloaded and run by the `rails new`
@@ -92,10 +92,10 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
   copy_file "variants/backend-base/.node-version", ".node-version"
 
-  copy_file "variants/backend-base/Dockerfile", "Dockerfile"
+  copy_file "variants/backend-base/Dockerfile", "Dockerfile", force: true
   copy_file "variants/backend-base/docker-compose.yml", "docker-compose.yml"
   copy_file "variants/backend-base/.osv-detector.yml", ".osv-detector.yml"
-  copy_file "variants/backend-base/.dockerignore", ".dockerignore"
+  copy_file "variants/backend-base/.dockerignore", ".dockerignore", force: true
 
   apply "variants/backend-base/Rakefile.rb"
   apply "variants/backend-base/config.ru.rb"
@@ -304,6 +304,7 @@ def assert_valid_options
     skip_test_unit: true,
     skip_active_storage: false,
     skip_javascript: true,
+    skip_docker: true,
     edge: false
   }
   valid_options.each do |key, expected|
