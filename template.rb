@@ -135,6 +135,9 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
       run "yarn run typecheck"
     end
 
+    # apply any js linting fixes after all frontend variants have run
+    run "yarn run js-lint-fix"
+
     create_initial_migration
 
     # Apply variants after setup and initial install, but before commit
@@ -162,8 +165,6 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
     template "variants/backend-base/rubocop.yml.tt", ".rubocop.yml"
     run_rubocop_autocorrections
-
-    apply "variants/frontend-base/js-lint/fixes.rb"
 
     cleanup_package_json
 
@@ -203,14 +204,22 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     # Run the README template at the end because it introspects the app to
     # discover rake tasks etc.
     apply_readme_template
+
+    # Run prettier one last time to ensure that everything is formatted
+    apply_prettier_all_over
   end
 end
 
 def apply_readme_template
   template "variants/backend-base/README.md.tt", "README.md", force: true
-  run "yarn run prettier --write ./README.md"
 
   git commit: "README.md -n -m 'Update README'"
+end
+
+def apply_prettier_all_over
+  run "yarn run format-fix"
+
+  git commit: ". -m 'Run prettier one last time'"
 end
 
 # Normalizes the constraints of the given hash of dependencies so that they
@@ -250,7 +259,6 @@ def cleanup_package_json
   File.write("./package.json", JSON.pretty_generate(package_json))
 
   run "npx -y sort-package-json"
-  run "yarn run prettier --write ./package.json"
 
   # ensure the yarn.lock is up to date with any changes we've made to package.json
   run "yarn install"
