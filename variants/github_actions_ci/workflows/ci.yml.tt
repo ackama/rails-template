@@ -6,8 +6,8 @@ on:
       - main
       - production
 concurrency:
-  # Pushing new changes to a branch will cancel any in-progress CI runs
-  group: ${{ github.ref }}
+  # Pushing new changes to a branch will cancel any in-progress CI runs of this workflow
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 env:
   RAILS_ENV: test
