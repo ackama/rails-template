@@ -51,7 +51,7 @@ jobs:
       name: ${{ inputs.environment }}
       url: ${{ inputs.environment_url }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
       - uses: ruby/setup-ruby@v1
