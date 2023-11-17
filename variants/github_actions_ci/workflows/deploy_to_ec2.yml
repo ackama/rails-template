@@ -62,7 +62,7 @@ jobs:
         with:
           role-to-assume: ${{ inputs.assume_role_arn }}
           aws-region: ${{ inputs.aws_region }}
-      - name: Install SSH key for production
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.ssh_private_key }}
