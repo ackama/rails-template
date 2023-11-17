@@ -29,6 +29,8 @@ jobs:
           persist-credentials: false
       - name: Audit dependencies for security vulnerabilities
         uses: g-rath/check-with-osv-detector@main
+        with:
+          osv-detector-version: 0.13.0
   test:
     permissions:
       contents: read
@@ -149,6 +151,8 @@ jobs:
       # this ensures that osv-detector is available for running bin/ci-run
       - name: Check dependencies for vulnerabilities (and setup osv-detector)
         uses: g-rath/check-with-osv-detector@main
+        with:
+          osv-detector-version: 0.13.0
 
       # this ensures that actionlint is available for running bin/ci-run
       - name: Setup ActionLint
