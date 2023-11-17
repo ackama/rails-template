@@ -1,10 +1,10 @@
-version: "2"
+version: '2'
 x-services:
   rails: &rails
     build: .
     environment:
-      PGHOST: "db"
-      PGUSER: "postgres"
+      PGHOST: 'db'
+      PGUSER: 'postgres'
     env_file:
       - .env
     volumes:
@@ -26,11 +26,11 @@ services:
     environment:
       WEBPACKER_DEV_SERVER_HOST: shakapacker
     ports:
-      - "3000:3000"
+      - '3000:3000'
     command: "bash -c 'rm -rf tmp/pid/server.pid && rails s --binding 0.0.0.0'"
   shakapacker:
     <<: *rails
-    command: "./bin/webpack-dev-server"
+    command: './bin/webpack-dev-server'
 volumes:
   pgdata:
   bundle:

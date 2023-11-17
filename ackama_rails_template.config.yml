@@ -7,9 +7,9 @@
 #
 # Set these to "" if you don't know the values.
 #
-staging_hostname: "staging.example.com"
-production_hostname: "www.example.com"
-git_repo_url: ""
+staging_hostname: 'staging.example.com'
+production_hostname: 'www.example.com'
+git_repo_url: ''
 
 # Use TypeScript for any JavaScript-based code
 use_typescript: true

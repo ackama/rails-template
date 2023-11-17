@@ -1,7 +1,7 @@
 ---
-staging_hostname: "staging.example.com"
-production_hostname: "www.example.com"
-git_repo_url: ""
+staging_hostname: 'staging.example.com'
+production_hostname: 'www.example.com'
+git_repo_url: ''
 use_typescript: false
 apply_variant_github_actions_ci: true
 apply_variant_react: true
