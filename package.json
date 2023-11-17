@@ -4,8 +4,8 @@
   "private": true,
   "repository": "git@github.com:ackama/rails-template.git",
   "scripts": {
-    "format-check": "prettier --check './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
-    "format-fix": "prettier --write './**/*.{css,scss,json,md,js,ts,tsx,jsx}'"
+    "format-check": "prettier --check .",
+    "format-fix": "prettier --write ."
   },
   "prettier": "prettier-config-ackama",
   "devDependencies": {
