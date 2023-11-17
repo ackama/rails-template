@@ -51,7 +51,7 @@ jobs:
         with:
           persist-credentials: true # required to push to heroku
       - name: Deploy to Heroku
-        uses: akhileshns/heroku-deploy@v3.8.9
+        uses: akhileshns/heroku-deploy@v3.12.14
         with:
           heroku_api_key: ${{ secrets.heroku_api_key }}
           heroku_email: ${{ secrets.heroku_email }}
