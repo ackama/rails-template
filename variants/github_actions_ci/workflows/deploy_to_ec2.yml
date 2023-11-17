@@ -5,6 +5,9 @@ on:
       environment:
         type: string
         required: true
+      environment_url:
+        type: string
+        required: false
       assume_role_arn:
         type: string
         required: true
@@ -44,6 +47,9 @@ jobs:
     name: Deploy to AWS EC2 with Capistrano, authenticated by Github OIDC
     runs-on: ubuntu-latest
     timeout-minutes: ${{ inputs.timeout_minutes }}
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ inputs.environment_url }}
     steps:
       - uses: actions/checkout@v3
         with:

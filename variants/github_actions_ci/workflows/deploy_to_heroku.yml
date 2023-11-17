@@ -2,6 +2,12 @@ name: deploy_to_heroku
 on:
   workflow_call:
     inputs:
+      environment:
+        type: string
+        required: true
+      environment_url:
+        type: string
+        required: false
       timeout_minutes:
         type: number
         required: false
@@ -37,6 +43,9 @@ jobs:
   deploy_to_heroku:
     runs-on: ubuntu-latest
     timeout-minutes: ${{ inputs.timeout_minutes }}
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ inputs.environment_url }}
     steps:
       - uses: actions/checkout@v3
         with:
