@@ -21,8 +21,8 @@ package_json["browserslist"] = ["defaults"]
 package_json["scripts"] = {
   "js-lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
   "js-lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
-  "format-check" => "prettier --check './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
-  "format-fix" => "prettier --write './**/*.{css,scss,json,md,js,ts,tsx,jsx}'",
+  "format-check" => "prettier --check .",
+  "format-fix" => "prettier --write .",
   "scss-lint" => "stylelint '**/*.{css,scss}'",
   "scss-lint-fix" => "stylelint '**/*.{css,scss}' --fix"
 }

@@ -24,7 +24,7 @@ PreCommit:
 
   FixMe:
     enabled: true
-    keywords: ["FIXME"]
+    keywords: ['FIXME']
     exclude:
       - .overcommit.yml
 
@@ -41,7 +41,7 @@ PreCommit:
   TrailingWhitespace:
     enabled: true
     exclude:
-      - "**/db/structure.sql"
+      - '**/db/structure.sql'
 
   YamlSyntax:
     enabled: true

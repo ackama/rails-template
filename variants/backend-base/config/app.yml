@@ -6,8 +6,8 @@
 # Sensitive config should be put in `config/secrets.yml` (which will load it
 # into `Rails.application.secrets`)
 
-default: &default
-  # The default `From:` address to use for email sent by this application
+default:
+  &default # The default `From:` address to use for email sent by this application
   mail_from: "<%= ENV['MAIL_FROM'] %>"
 
 development:

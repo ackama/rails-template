@@ -1,7 +1,7 @@
 files:
-  include: "**/*.s+(a|c)ss"
+  include: '**/*.s+(a|c)ss'
   ignore:
-    - "node_modules/**/*"
+    - 'node_modules/**/*'
 options:
   formatter: stylish
   # Default rules are visible at

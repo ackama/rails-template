@@ -16,7 +16,7 @@ on:
       slack_username:
         type: string
         required: false
-        default: "Github Actions CI"
+        default: 'Github Actions CI'
     secrets:
       heroku_api_key:
         required: true
@@ -55,6 +55,7 @@ jobs:
           SLACK_CHANNEL: ${{ inputs.slack_channel }}
           SLACK_ICON: ${{ inputs.slack_icon }}
           SLACK_USERNAME: ${{ inputs.slack_username }}
-          SLACK_FOOTER: ""
+          SLACK_FOOTER: ''
           SLACK_COLOR: ${{ job.status }}
-          SLACK_MESSAGE: "${{ format('{0} job result: {1}', github.job, job.status) }}"
+          SLACK_MESSAGE:
+            "${{ format('{0} job result: {1}', github.job, job.status) }}"

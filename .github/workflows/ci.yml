@@ -8,7 +8,7 @@ on:
   schedule:
     # * is a special character in YAML so you have to quote this string
     # * At 05:00 UTC every Monday, run the latest commit on the default or base branch
-    - cron:  '0 5 * * MON'
+    - cron: '0 5 * * MON'
 
 # Restrict jobs in this workflow to only be allowed to read this repo by default.
 #
@@ -35,8 +35,8 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v3
         with:
-          node-version-file: ".node-version"
-          cache: "yarn"
+          node-version-file: '.node-version'
+          cache: 'yarn'
       - run: yarn install
       - run: yarn run format-check
 
@@ -64,36 +64,36 @@ jobs:
       matrix:
         variant:
           - name: defaults
-            config_path: "ackama_rails_template.config.yml"
+            config_path: 'ackama_rails_template.config.yml'
           - name: all
-            config_path: "ci/configs/all.yml"
+            config_path: 'ci/configs/all.yml'
           - name: all-typescript
-            config_path: "ci/configs/all-typescript.yml"
+            config_path: 'ci/configs/all-typescript.yml'
           - name: basic
-            config_path: "ci/configs/basic.yml"
+            config_path: 'ci/configs/basic.yml'
           - name: basic-typescript
-            config_path: "ci/configs/basic-typescript.yml"
+            config_path: 'ci/configs/basic-typescript.yml'
           - name: github_actions
-            config_path: "ci/configs/github_actions.yml"
+            config_path: 'ci/configs/github_actions.yml'
           - name: react
-            config_path: "ci/configs/react.yml"
+            config_path: 'ci/configs/react.yml'
           - name: react-typescript
-            config_path: "ci/configs/react-typescript.yml"
+            config_path: 'ci/configs/react-typescript.yml'
           - name: sidekiq
-            config_path: "ci/configs/sidekiq.yml"
+            config_path: 'ci/configs/sidekiq.yml'
           - name: devise
-            config_path: "ci/configs/devise.yml"
+            config_path: 'ci/configs/devise.yml'
           - name: basic_with_skips
-            config_path: "ci/configs/basic.yml"
+            config_path: 'ci/configs/basic.yml'
             skips: --skip-spring --skip-javascript
           - name: bootstrap
-            config_path: "ci/configs/bootstrap.yml"
+            config_path: 'ci/configs/bootstrap.yml'
           - name: bootstrap-typescript
-            config_path: "ci/configs/bootstrap-typescript.yml"
+            config_path: 'ci/configs/bootstrap-typescript.yml'
           - name: capistrano
-            config_path: "ci/configs/deploy_with_capistrano.yml"
+            config_path: 'ci/configs/deploy_with_capistrano.yml'
           - name: ackama_ec2_capistrano
-            config_path: "ci/configs/deploy_with_ackama_ec2_capistrano.yml"
+            config_path: 'ci/configs/deploy_with_ackama_ec2_capistrano.yml'
     services:
       db:
         image: postgres
@@ -104,6 +104,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: anything # can be anything, is ignored by the tests
         ports: ['5432:5432']
+        # prettier-ignore
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -117,14 +118,14 @@ jobs:
           persist-credentials: false
 
       # this ensures that osv-detector is available for running bin/ci-run
-      - name: Check dependencies for security vulnerabilities (and setup osv-detector)
+      - name: Check dependencies for vulnerabilities (and setup osv-detector)
         uses: g-rath/check-with-osv-detector@main
 
       - name: Install NodeJS
         uses: actions/setup-node@v3
         with:
-          cache: "yarn"
-          node-version-file: ".node-version"
+          cache: 'yarn'
+          node-version-file: '.node-version'
 
       # We don't cache gems or JS packages because we are actually testing how
       # installation and setup works in this project so, while caching would
@@ -149,8 +150,8 @@ jobs:
           # with a class provided by a gem. Basically, don't name your app
           # "react", "sidekiq" etc.
           APP_NAME: ${{ matrix.variant.name }}-demo
-          CONFIG_PATH:  ${{ matrix.variant.config_path }}
-          SKIPS: "--skip-javascript --skip-docker ${{ matrix.variant.skips }}"
+          CONFIG_PATH: ${{ matrix.variant.config_path }}
+          SKIPS: '--skip-javascript --skip-docker ${{ matrix.variant.skips }}'
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
