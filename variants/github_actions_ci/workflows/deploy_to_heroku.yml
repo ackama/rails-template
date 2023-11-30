@@ -2,6 +2,12 @@ name: deploy_to_heroku
 on:
   workflow_call:
     inputs:
+      environment:
+        type: string
+        required: true
+      environment_url:
+        type: string
+        required: false
       timeout_minutes:
         type: number
         required: false
@@ -37,11 +43,14 @@ jobs:
   deploy_to_heroku:
     runs-on: ubuntu-latest
     timeout-minutes: ${{ inputs.timeout_minutes }}
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ inputs.environment_url }}
     steps:
       - uses: actions/checkout@v3
         with:
           persist-credentials: true # required to push to heroku
-      - name: Deploy to Heroku Staging
+      - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.8.9
         with:
           heroku_api_key: ${{ secrets.heroku_api_key }}
