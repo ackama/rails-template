@@ -10,16 +10,14 @@ on:
     # * At 05:00 UTC every Monday, run the latest commit on the default or base branch
     - cron: '0 5 * * MON'
 
-# Restrict jobs in this workflow to only be allowed to read this repo by default.
-#
-# If you are wanting to introduce a job/tool that requires more permissions (such
-# as posting comments or commits to the repository), then you should grant just
-# that job the necessarily permissions by giving it a dedicated `permissions` block.
-permissions:
-  contents: read # to fetch code (actions/checkout)
+# Restrict jobs in this workflow to have no permissions by default; permissions
+# should be granted per job as needed using a dedicated `permissions` block
+permissions: {}
 
 jobs:
   audit_dependencies:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -28,6 +26,8 @@ jobs:
       - name: Audit dependencies for security vulnerabilities
         uses: g-rath/check-with-osv-detector@main
   test:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -41,6 +41,8 @@ jobs:
       - run: yarn run format-check
 
   rubocop:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -56,6 +58,8 @@ jobs:
         run: bundle exec rubocop
 
   test_generated_apps:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     strategy:
       # don't stop all variants if one of them fails (we usually want to know

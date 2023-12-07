@@ -14,14 +14,19 @@ on:
   schedule:
     - cron: '0 0 * * 0'
 
+# Restrict jobs in this workflow to have no permissions by default; permissions
+# should be granted per job as needed using a dedicated `permissions` block
+permissions: {}
+
 jobs:
   analyze:
-    name: Analyze
-    runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: read
       security-events: write
+
+    name: Analyze
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false

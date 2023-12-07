@@ -19,16 +19,14 @@ env:
   SIDEKIQ_WEB_PASSWORD: password
   <%- end -%>
 
-# Restrict jobs in this workflow to only be allowed to read this repo by default.
-#
-# If you are wanting to introduce a job/tool that requires more permissions (such
-# as posting comments or commits to the repository), then you should grant just
-# that job the necessarily permissions by giving it a dedicated `permissions` block.
-permissions:
-  contents: read # to fetch code (actions/checkout)
+# Restrict jobs in this workflow to have no permissions by default; permissions
+# should be granted per job as needed using a dedicated `permissions` block
+permissions: {}
 
 jobs:
   audit_dependencies:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -37,6 +35,8 @@ jobs:
       - name: Audit dependencies for security vulnerabilities
         uses: g-rath/check-with-osv-detector@main
   js_based_checks:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -54,6 +54,8 @@ jobs:
       - run: yarn run js-lint
       - run: yarn run format-check
   ruby_based_checks:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     timeout-minutes: 20
     services:
@@ -127,15 +129,15 @@ jobs:
   # ######################################################################### #
 
   # deploy_to_ec2_staging:
+  #   permissions:
+  #     id-token: write # to use OIDC (aws-actions/configure-aws-credentials)
+  #     contents: read # to fetch code (actions/checkout)
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
   #   needs:
   #     - audit_dependencies
   #     - ruby_based_checks
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_ec2.yml
-  #   permissions:
-  #     id-token: write # to use OIDC (aws-actions/configure-aws-credentials)
-  #     contents: read # to fetch code (actions/checkout)
   #   with:
   #     environment: staging
   #     environment_url: '<%= "https://#{TEMPLATE_CONFIG.staging_hostname}" %>'
@@ -145,15 +147,15 @@ jobs:
   #     ssh_private_key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
   #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
   # deploy_to_ec2_production:
+  #   permissions:
+  #     id-token: write # to use OIDC (aws-actions/configure-aws-credentials)
+  #     contents: read # to fetch code (actions/checkout)
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/production'
   #   needs:
   #     - audit_dependencies
   #     - ruby_based_checks
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_ec2.yml
-  #   permissions:
-  #     id-token: write # to use OIDC (aws-actions/configure-aws-credentials)
-  #     contents: read # to fetch code (actions/checkout)
   #   with:
   #     environment: production
   #     environment_url: '<%= "https://#{TEMPLATE_CONFIG.production_hostname}" %>'
@@ -168,14 +170,14 @@ jobs:
   # ######################################################################### #
 
   # deploy_to_heroku_staging:
+  #   permissions:
+  #     contents: read # to fetch code (actions/checkout)
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
   #   needs:
   #     - audit_dependencies
   #     - ruby_based_checks
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_heroku.yml
-  #   permissions:
-  #     contents: read # to fetch code (actions/checkout)
   #   with:
   #     environment: staging
   #     environment_url: '<%= "https://#{TEMPLATE_CONFIG.staging_hostname}" %>'
@@ -185,14 +187,14 @@ jobs:
   #     heroku_app_name: ${{ secrets.HEROKU_APP_NAME_STAGING }}
   #     slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
   # deploy_to_heroku_production:
+  #   permissions:
+  #     contents: read # to fetch code (actions/checkout)
   #   if: github.event_name == 'push' && github.ref == 'refs/heads/production'
   #   needs:
   #     - audit_dependencies
   #     - ruby_based_checks
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_heroku.yml
-  #   permissions:
-  #     contents: read # to fetch code (actions/checkout)
   #   with:
   #     environment: production
   #     environment_url: '<%= "https://#{TEMPLATE_CONFIG.production_hostname}" %>'
