@@ -73,16 +73,20 @@ jobs:
         variant:
           - name: defaults
             config_path: 'ackama_rails_template.config.yml'
+            install_actionlint: 'yes'
           - name: all
             config_path: 'ci/configs/all.yml'
+            install_actionlint: 'yes'
           - name: all-typescript
             config_path: 'ci/configs/all-typescript.yml'
+            install_actionlint: 'yes'
           - name: basic
             config_path: 'ci/configs/basic.yml'
           - name: basic-typescript
             config_path: 'ci/configs/basic-typescript.yml'
           - name: github_actions
             config_path: 'ci/configs/github_actions.yml'
+            install_actionlint: 'yes'
           - name: react
             config_path: 'ci/configs/react.yml'
           - name: react-typescript
@@ -128,6 +132,13 @@ jobs:
       # this ensures that osv-detector is available for running bin/ci-run
       - name: Check dependencies for vulnerabilities (and setup osv-detector)
         uses: g-rath/check-with-osv-detector@main
+
+      # this ensures that actionlint is available for running bin/ci-run
+      - name: Setup ActionLint
+        if: matrix.variant.install_actionlint == 'yes'
+        run: |
+          bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+          sudo ln -s "$PWD/actionlint" /usr/local/bin/actionlint
 
       - name: Install NodeJS
         uses: actions/setup-node@v3
