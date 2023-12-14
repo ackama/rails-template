@@ -21,7 +21,7 @@ osv-detector .
 echo "* ******************************************************"
 echo "* Running brakeman"
 echo "* ******************************************************"
-bundle exec brakeman --exit-on-warn --quiet --no-pager
+bundle exec brakeman --quiet --no-pager
 
 echo "* ******************************************************"
 echo "* Running all rspec specs"
