@@ -114,23 +114,21 @@ TERMINAL.puts_header "Adding example devise links to the homepage"
 
 append_to_file "app/views/application/_header.html.erb" do
   <<~ERB
-    <nav>
-      <h1>Example devise nav</h1>
-      <ul>
-        <li><%= link_to "Home", root_path %></li>
-      </ul>
-    <% if current_user %>
-      <p>You are <strong>Signed in</strong></p>
-      <ul>
-        <li><%= link_to "Sign out", destroy_user_session_path, method: :delete %></li>
-      </ul>
-    <% else %>
-      <p>You are <strong>Not signed in</strong></p>
-      <ul>
-        <li><%= link_to "Sign in", new_user_session_path %></li>
-        <li><%= link_to "Sign up", new_user_registration_path %></li>
-      </ul>
-    <% end %>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+      <div class="container-fluid">
+        <h1>Example devise nav</h1>
+        <ul class="navbar-nav">
+          <li class="nav-item"><%= link_to "Home", root_path, class: "nav-link" %></li>
+          <% if current_user %>
+            <li class="navbar-text">You are <strong>Signed in</strong></li>
+            <li class="nav-item"><%= link_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-link" %></li>
+          <% else %>
+            <li class="navbar-text">You are <strong>Not signed in</strong></li>
+            <li class="nav-item"><%= link_to "Sign in", new_user_session_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Sign up", new_user_registration_path, class: "nav-link" %></li>
+          <% end %>
+        </ul>
+      </div>
     </nav>
   ERB
 end
