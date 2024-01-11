@@ -3,7 +3,7 @@ require "spec_helper"
 ENV["RAILS_ENV"] ||= "test"
 ENV["HTTP_BASIC_AUTH_USERNAME"] = nil
 ENV["HTTP_BASIC_AUTH_PASSWORD"] = nil
-require File.expand_path("../config/environment", __dir__)
+require_relative "../config/environment"
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require "rspec/rails"
@@ -32,8 +32,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
-  puts e.to_s.strip
-  exit 1
+  abort e.to_s.strip
 end
 
 Capybara.register_driver :chrome do |app|
@@ -60,6 +59,9 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 
+  # You can uncomment this line to turn off ActiveRecord support entirely.
+  # config.use_active_record = false
+
   # Run system tests in rack_test by default
   config.before(:each, type: :system) do
     driven_by :rack_test
@@ -72,17 +74,17 @@ RSpec.configure do |config|
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
-  # `post` in specs under `spec/models`.
+  # `post` in specs under `spec/controllers`.
   #
   # You can disable this behaviour by removing the line below, and instead
   # explicitly tag your specs with their type, e.g.:
   #
-  #     RSpec.describe MyModel, :type => :model do
+  #     RSpec.describe UsersController, type: :controller do
   #       # ...
   #     end
   #
   # The different available types are documented in the features, such as in
-  # https://relishapp.com/rspec/rspec-rails/docs
+  # https://rspec.info/features/6-0/rspec-rails
   config.infer_spec_type_from_file_location!
 
   # Filter lines from Rails gems in backtraces.
