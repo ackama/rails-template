@@ -14,7 +14,16 @@ threads min_threads_count, max_threads_count
 worker_timeout 3600 if ENV.fetch("RAILS_ENV", "development") == "development"
 
 port ENV.fetch("PORT", 3000)
-environment ENV.fetch("RAILS_ENV", "development")
+
+rails_env = ENV.fetch("RAILS_ENV", "development")
+
+environment rails_env
+
+if rails_env == "development"
+  # set a generous worker timeout so that the worker isn't killed by puma when
+  # suspended by a debugger
+  worker_timeout(3600)
+end
 
 # Specifies the `pidfile` that Puma will use.
 pidfile ENV.fetch("PIDFILE", "tmp/pids/server.pid")
