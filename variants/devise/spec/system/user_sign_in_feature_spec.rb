@@ -21,7 +21,7 @@ RSpec.describe "User sign-in" do
       # when we fill in the sign-in form
       fill_in "Email", with: email
       fill_in "Password", with: password
-      click_button "Log in"
+      click_on "Log in"
 
       # we expect to be redirected to the home page with a helpful flash message
       expect(page).to have_current_path(root_path, ignore_query: true)
@@ -34,7 +34,7 @@ RSpec.describe "User sign-in" do
       expect(response_cookies.keys.first).to match(/_session\z/)
 
       # when we click on the sign out link
-      click_link "Sign out"
+      click_on "Sign out"
 
       # we expect to still be on the home page with a flash message
       # telling us we have signed out.
@@ -48,7 +48,7 @@ RSpec.describe "User sign-in" do
         fill_in "Email", with: email
         fill_in "Password", with: password
         check "Remember me"
-        click_button "Log in"
+        click_on "Log in"
 
         # we expect to be redirected to the home page with a helpful flash message
         expect(page).to have_current_path(root_path, ignore_query: true)
@@ -79,7 +79,7 @@ RSpec.describe "User sign-in" do
         expect(Integer(remember_me_cookie_expiry_date - today_in_utc)).to eq(14)
 
         # when we click on the sign out link
-        click_link "Sign out"
+        click_on "Sign out"
 
         # we expect the "remember_user_token" cookie to have been removed i.e.
         # there will be exactly one cookie now (the session cookie)
@@ -96,7 +96,7 @@ RSpec.describe "User sign-in" do
         # when we fill in the sign-in form with a bad password
         fill_in "Email", with: email
         fill_in "Password", with: "wrong password"
-        click_button "Log in"
+        click_on "Log in"
 
         # we expect to still be on the sign-in page with a helpful flash message
         # telling us something went wrong

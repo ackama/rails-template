@@ -16,10 +16,12 @@ RSpec.describe "User sign-up" do
 
   it "Users can sign-up" do
     # when we sign up with valid credentials
-    fill_in "Email", with: valid_email
-    fill_in "Password", with: valid_password
-    fill_in "Password confirmation", with: valid_password
-    click_button "Sign up"
+    within "form" do
+      fill_in "Email", with: valid_email
+      fill_in "Password", with: valid_password
+      fill_in "Password confirmation", with: valid_password
+      click_on "Sign up"
+    end
 
     # we expect to be redirected to the home page ...
     expect(page).to have_current_path(root_path, ignore_query: true)
@@ -32,10 +34,12 @@ RSpec.describe "User sign-up" do
   describe "email address validation" do
     it "email addresses are validated" do
       # when we sign up with an invalid email address
-      fill_in "Email", with: invalid_email
-      fill_in "Password", with: valid_password
-      fill_in "Password confirmation", with: valid_password
-      click_button "Sign up"
+      within "form" do
+        fill_in "Email", with: invalid_email
+        fill_in "Password", with: valid_password
+        fill_in "Password confirmation", with: valid_password
+        click_on "Sign up"
+      end
 
       # we expect to now be on the user registration page ...
       expect(page).to have_current_path(user_registration_path, ignore_query: true)
@@ -52,10 +56,12 @@ RSpec.describe "User sign-up" do
 
     it "passwords are validated for length" do
       # when we sign up with a password that is too short
-      fill_in "Email", with: valid_email
-      fill_in "Password", with: too_short_password
-      fill_in "Password confirmation", with: too_short_password
-      click_button "Sign up"
+      within "form" do
+        fill_in "Email", with: valid_email
+        fill_in "Password", with: too_short_password
+        fill_in "Password confirmation", with: too_short_password
+        click_on "Sign up"
+      end
 
       # we expect to now be on the user registration page ...
       expect(page).to have_current_path(user_registration_path, ignore_query: true)
