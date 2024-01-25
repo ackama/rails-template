@@ -54,7 +54,7 @@ copy_file "app/frontend/stylesheets/application.scss"
 prepend_to_file "app/frontend/packs/application.js" do
   <<~EO_CONTENT
 
-    import '../stylesheets/application.scss';
+    import "../stylesheets/application.scss";
   EO_CONTENT
 end
 
