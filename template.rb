@@ -349,7 +349,7 @@ def gemfile_requirement(name)
 end
 
 def preexisting_git_repo?
-  @preexisting_git_repo ||= (File.exist?(".git") || :nope)
+  @preexisting_git_repo ||= File.exist?(".git") || :nope
   @preexisting_git_repo == true
 end
 
