@@ -13,7 +13,7 @@ env:
   RAILS_ENV: test
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
   RAILS_SECRET_KEY_BASE: any-value-works-here-in-ci-but-prod-should-be-created-with-bundle-exec-rails-secret
-  MAIL_FROM: "changeme@example.com"
+  MAIL_FROM: 'changeme@example.com'
   <%- if TEMPLATE_CONFIG.apply_variant_sidekiq? -%>
   SIDEKIQ_WEB_USERNAME: admin
   SIDEKIQ_WEB_PASSWORD: password
@@ -45,8 +45,8 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v3
         with:
-          node-version-file: ".node-version"
-          cache: "yarn"
+          node-version-file: '.node-version'
+          cache: 'yarn'
       - run: yarn install --frozen-lockfile
       <%- if TEMPLATE_CONFIG.use_typescript? -%>
       - run: yarn run typecheck
@@ -61,15 +61,13 @@ jobs:
     services:
       db:
         image: postgres:latest
-        ports: ["5432:5432"]
+        ports: ['5432:5432']
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
         options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s
           --health-retries 5
       # Uncomment these if you need them for your test suite
       # redis:
@@ -81,7 +79,7 @@ jobs:
       #   env:
       #     cluster.name: whats-on-test-cluster
       #     discovery.type: single-node
-      #     ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+      #     ES_JAVA_OPTS: '-Xms1g -Xmx1g'
       #   ports:
       #     - 9200:9200
       #     - 9300:9300
@@ -101,14 +99,13 @@ jobs:
       - name: Check Ruby controller annotations
         run: bundle exec chusaku --exit-with-error-on-annotation
       - run: bundle exec rubocop
-      - name: Run erb-lint to check HTML formatting and run Rubocop on Ruby within ERB
-        run: bundle exec erblint .
+      - run: bundle exec erblint .
       - run: bundle exec brakeman --run-all-checks .
       - run: bundle exec rails db:setup
       - uses: actions/setup-node@v3
         with:
-          node-version-file: ".node-version"
-          cache: "yarn"
+          node-version-file: '.node-version'
+          cache: 'yarn'
       - run: yarn install --frozen-lockfile
       - run: bundle exec rspec spec --format progress
       - name: Archive spec outputs
@@ -141,7 +138,7 @@ jobs:
   #   with:
   #     environment: staging
   #     environment_url: '<%= "https://#{TEMPLATE_CONFIG.staging_hostname}" %>'
-  #     assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>StagingGHARole"
+  #     assume_role_arn: TODO # e.g. 'arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>StagingGHARole'
   #     aws_region: ap-southeast-2 # Sydney
   #   secrets:
   #     ssh_private_key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
@@ -159,7 +156,7 @@ jobs:
   #   with:
   #     environment: production
   #     environment_url: '<%= "https://#{TEMPLATE_CONFIG.production_hostname}" %>'
-  #     assume_role_arn: TODO # e.g. "arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>ProductionGHARole"
+  #     assume_role_arn: TODO # e.g. 'arn:aws:iam::<ACCOUNT_ID>:role/<CLIENT_NAME>ProductionGHARole'
   #     aws_region: ap-southeast-2 # Sydney
   #   secrets:
   #     ssh_private_key: ${{ secrets.PRODUCTION_SSH_PRIVATE_KEY }}

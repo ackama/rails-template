@@ -1,13 +1,13 @@
 # Staging configuration is identical to production, with some overrides
 # for hostname, etc.
 
-require_relative "./production"
+require_relative "production"
 
 Rails.application.configure do
 
   config.action_mailer.default_url_options = {
-    :host => "<%= TEMPLATE_CONFIG.staging_hostname %>",
-    :protocol => "https"
+    host: "<%= TEMPLATE_CONFIG.staging_hostname %>",
+    protocol: "https"
   }
   config.action_mailer.asset_host = "https://<%= TEMPLATE_CONFIG.staging_hostname %>"
   config.action_mailer.smtp_settings[:domain] = "<%= TEMPLATE_CONFIG.staging_hostname %>"
