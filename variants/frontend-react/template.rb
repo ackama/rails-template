@@ -80,9 +80,7 @@ append_to_file "app/views/home/index.html.erb" do
   ERB
 end
 
-package_json = JSON.parse(File.read("./package.json"))
-
-# we've replaced this with a babel.config.js
-package_json.delete "babel"
-
-File.write("./package.json", JSON.generate(package_json))
+update_package_json do |package_json|
+  # we've replaced this with a babel.config.js
+  package_json.delete "babel"
+end

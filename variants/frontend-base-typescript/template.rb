@@ -55,9 +55,9 @@ ts_load_images_chunk = <<~EO_TS_ENABLE_IMAGES
 EO_TS_ENABLE_IMAGES
 gsub_file("app/frontend/packs/application.ts", js_load_images_chunk, ts_load_images_chunk, force: true)
 
-package_json = JSON.parse(File.read("./package.json"))
-package_json["scripts"]["typecheck"] = "tsc -p . --noEmit"
-File.write("./package.json", JSON.generate(package_json))
+update_package_json do |package_json|
+  package_json["scripts"]["typecheck"] = "tsc -p . --noEmit"
+end
 
 append_to_file "bin/ci-run" do
   <<~TYPECHECK
