@@ -7,7 +7,7 @@ class VerifyPlaceholderSecretsNotUsedForReal
     ].freeze
 
     def run
-      return if local?
+      return if Rails.env.local?
 
       verify_secret_key_base
       verify_activerecord_encryption_secrets
@@ -29,10 +29,6 @@ class VerifyPlaceholderSecretsNotUsedForReal
       DB_ENCRYPTION_ENV_VAR_NAMES.each do |env_var_name|
         raise "#{env_var_name} is unchanged from example.env. Generate a new one with `bundle exec rails db:encryption:init`" if example_env_contents.include?(ENV.fetch(env_var_name))
       end
-    end
-
-    def local?
-      Rails.env.development? || Rails.env.test?
     end
   end
 end

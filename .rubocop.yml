@@ -18,6 +18,7 @@ Rails:
 AllCops:
   # Target the oldest version of Ruby that Rails 7 supports
   TargetRubyVersion: 2.7
+  TargetRailsVersion: 7.1
   NewCops: enable
   DisplayCopNames: true
   DisplayStyleGuide: true
