@@ -68,7 +68,7 @@ RSpec.configure do |config|
   end
 
   # System tests indicating that they use Javascript should be run with headless Chrome
-  config.before(:each, type: :system, uses_javascript: true) do
+  config.before(:each, :uses_javascript, type: :system) do
     driven_by :chrome
   end
 

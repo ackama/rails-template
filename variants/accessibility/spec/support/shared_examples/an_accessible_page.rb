@@ -1,4 +1,4 @@
-shared_examples "an accessible page", uses_javascript: true do
+shared_examples "an accessible page", :uses_javascript do
   it "with no errors" do
     expect(page).to be_accessible.according_to(:wcag2a, :wcag2aa)
   end
