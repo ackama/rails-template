@@ -92,6 +92,17 @@ end
 TEMPLATE_CONFIG = Config.new
 TERMINAL = Terminal.new
 
+def require_package_json_gem
+  require "bundler/inline"
+
+  gemfile(true) do
+    source "https://rubygems.org"
+    gem "package_json"
+  end
+
+  puts "using package_json v#{PackageJson::VERSION}"
+end
+
 def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
   assert_minimum_rails_version
   assert_valid_options
@@ -129,6 +140,8 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   # but also after `shakapacker:install` and after Rails has initialized the git
   # repo
   after_bundle do # rubocop:disable Metrics/BlockLength
+    require_package_json_gem
+
     # Remove the `test/` directory because we always use RSpec which creates
     # its own `spec/` directory
     remove_dir "test"
@@ -150,11 +163,11 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
       apply "variants/frontend-bootstrap-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_bootstrap?
       apply "variants/frontend-react-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_react?
 
-      run "yarn run typecheck"
+      package_json.manager.run("typecheck")
     end
 
     # apply any js linting fixes after all frontend variants have run
-    run "yarn run js-lint-fix"
+    package_json.manager.run("js-lint-fix")
 
     create_initial_migration
 
@@ -235,9 +248,13 @@ def apply_readme_template
 end
 
 def apply_prettier_all_over
-  run "yarn run format-fix"
+  package_json.manager.run("format-fix")
 
   git commit: ". -m 'Run prettier one last time'"
+end
+
+def package_json
+  @package_json ||= PackageJson.new(:yarn_classic)
 end
 
 # Normalizes the constraints of the given hash of dependencies so that they
@@ -263,9 +280,7 @@ def build_engines_field
 end
 
 def update_package_json(&)
-  package_json = JSON.load_file("./package.json").tap(&)
-
-  File.write("./package.json", "#{JSON.pretty_generate(package_json)}\n")
+  package_json.merge!(&)
 end
 
 def cleanup_package_json
@@ -282,22 +297,26 @@ def cleanup_package_json
 
   run "npx -y sort-package-json"
 
-  # ensure the yarn.lock is up to date with any changes we've made to package.json
-  run "yarn install"
+  # ensure the lockfile is up to date with any changes we've made to package.json
+  package_json.manager.install
 end
 
 # Adds the given <code>packages</code> as dependencies using <code>yarn add</code>
 #
 # @param [Array<String>] packages
 def yarn_add_dependencies(packages)
-  run "yarn add #{packages.join " "}"
+  puts "adding #{packages.join(" ")} as dependencies"
+
+  package_json.manager.add(packages)
 end
 
 # Adds the given <code>packages</code> as devDependencies using <code>yarn add --dev</code>
 #
 # @param [Array<String>] packages
 def yarn_add_dev_dependencies(packages)
-  run "yarn add --dev #{packages.join " "}"
+  puts "adding #{packages.join(" ")} as dev dependencies"
+
+  package_json.manager.add(packages, type: :dev)
 end
 
 # Add this template directory to source_paths so that Thor actions like
