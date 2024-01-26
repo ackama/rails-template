@@ -16,6 +16,11 @@ remove_dir "app/assets/images"
 # this will create a package.json for us
 run "rails shakapacker:install"
 
+# explicitly set our preferred package manager for external tooling
+update_package_json do |package_json|
+  package_json["packageManager"] = "yarn@1.22.21"
+end
+
 # this is added by shakapacker:install, but we've already got one (with some extra tags)
 # in our template, so remove theirs otherwise the app will error when rendering this
 gsub_file "app/views/layouts/application.html.erb",
