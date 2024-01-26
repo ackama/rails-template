@@ -1,7 +1,7 @@
 source_paths.unshift(File.dirname(__FILE__))
 
 yarn_add_dependencies(["bootstrap", "@popperjs/core"])
-run "yarn install"
+package_json.manager.install
 
 copy_file "app/frontend/js/bootstrap.js", force: true
 insert_into_file "app/frontend/packs/application.js", "import '../js/bootstrap';", before: 'import "../stylesheets/application.scss";'
