@@ -65,13 +65,13 @@ yarn_add_dev_dependencies %W[
 copy_file ".eslintrc.js", force: true
 copy_file "jest.config.js"
 
-update_package_json do |package_json|
-  package_json["scripts"] = package_json["scripts"].merge(
-    {
+package_json.merge! do |pj|
+  {
+    "scripts" => pj.fetch("scripts", {}).merge({
       "test" => "jest",
       "watch-tests" => "jest --watch"
-    }
-  )
+    })
+  }
 end
 
 append_to_file "bin/ci-run" do

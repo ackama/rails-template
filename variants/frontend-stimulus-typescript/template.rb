@@ -1,6 +1,6 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-installed_jest_major_version = JSON.parse(File.read("node_modules/jest/package.json")).fetch("version").split(".").first
+installed_jest_major_version = PackageJson.read("node_modules/jest").fetch("version").split(".").first
 
 yarn_add_dev_dependencies [
   "@types/jest@#{installed_jest_major_version}",
@@ -15,10 +15,8 @@ copy_file "jest.config.ts"
 
 copy_file "babel.config.js", force: true
 
-update_package_json do |package_json|
-  # we've replaced this with a babel.config.js
-  package_json.delete "babel"
-end
+# we've replaced this with a babel.config.js
+package_json.delete!("babel")
 
 remove_file "app/frontend/stimulus/controllers/hello_controller.js", force: true
 copy_file "app/frontend/stimulus/controllers/hello_controller.ts"
