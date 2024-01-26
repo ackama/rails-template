@@ -16,12 +16,10 @@ copy_file "jest.config.ts"
 
 copy_file "babel.config.js", force: true
 
-package_json = JSON.parse(File.read("./package.json"))
-
-# we've replaced this with a babel.config.js
-package_json.delete "babel"
-
-File.write("./package.json", JSON.generate(package_json))
+update_package_json do |package_json|
+  # we've replaced this with a babel.config.js
+  package_json.delete "babel"
+end
 
 remove_file "app/frontend/stimulus/controllers/hello_controller.js", force: true
 copy_file "app/frontend/stimulus/controllers/hello_controller.ts"

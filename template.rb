@@ -244,19 +244,23 @@ def build_engines_field
   }
 end
 
+def update_package_json(&block)
+  package_json = JSON.load_file("./package.json").tap(&block)
+
+  File.write("./package.json", "#{JSON.pretty_generate(package_json)}\n")
+end
+
 def cleanup_package_json
-  package_json = JSON.parse(File.read("./package.json"))
+  update_package_json do |package_json|
+    # ensure that the package name is set based on the folder
+    package_json["name"] = File.basename(__dir__)
 
-  # ensure that the package name is set based on the folder
-  package_json["name"] = File.basename(__dir__)
+    # set engines constraint in package.json
+    package_json["engines"] = build_engines_field
 
-  # set engines constraint in package.json
-  package_json["engines"] = build_engines_field
-
-  # ensure that all dependency constraints are normalized
-  %w[dependencies devDependencies].each { |k| package_json[k] = normalize_dependency_constraints(package_json[k]) }
-
-  File.write("./package.json", JSON.pretty_generate(package_json))
+    # ensure that all dependency constraints are normalized
+    %w[dependencies devDependencies].each { |k| package_json[k] = normalize_dependency_constraints(package_json[k]) }
+  end
 
   run "npx -y sort-package-json"
 
