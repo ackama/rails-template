@@ -15,16 +15,18 @@ yarn_add_dev_dependencies %w[
 copy_file "variants/frontend-base/.eslintrc.js", ".eslintrc.js"
 template "variants/frontend-base/.prettierignore.tt", ".prettierignore"
 
-update_package_json do |package_json|
-  package_json["prettier"] = "prettier-config-ackama"
-  package_json["browserslist"] = ["defaults"]
-  package_json["scripts"] = {
-    "js-lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
-    "js-lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
-    "format-check" => "prettier --check .",
-    "format-fix" => "prettier --write .",
-    "scss-lint" => "stylelint '**/*.{css,scss}'",
-    "scss-lint-fix" => "stylelint '**/*.{css,scss}' --fix"
+package_json.merge! do |pj|
+  {
+    "prettier" => "prettier-config-ackama",
+    "browserslist" => ["defaults"],
+    "scripts" => pj.fetch("scripts", {}).merge({
+      "js-lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
+      "js-lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
+      "format-check" => "prettier --check .",
+      "format-fix" => "prettier --write .",
+      "scss-lint" => "stylelint '**/*.{css,scss}'",
+      "scss-lint-fix" => "stylelint '**/*.{css,scss}' --fix"
+    })
   }
 end
 
