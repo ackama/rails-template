@@ -271,28 +271,23 @@ def normalize_dependency_constraints(deps)
   end
 end
 
-def build_engines_field
+def build_engines_field(existing)
   node_version = File.read("./.node-version").strip
-  {
-    node: "^#{node_version}",
-    yarn: "^1.0.0"
-  }
-end
 
-def update_package_json(&)
-  package_json.merge!(&)
+  existing.merge({
+    "node" => "^#{node_version}",
+    "yarn" => "^1.0.0"
+  })
 end
 
 def cleanup_package_json
-  update_package_json do |package_json|
-    # ensure that the package name is set based on the folder
-    package_json["name"] = File.basename(__dir__)
-
-    # set engines constraint in package.json
-    package_json["engines"] = build_engines_field
-
-    # ensure that all dependency constraints are normalized
-    %w[dependencies devDependencies].each { |k| package_json[k] = normalize_dependency_constraints(package_json[k]) }
+  package_json.merge! do |pj|
+    {
+      "name" => File.basename(__dir__),
+      "engines" => build_engines_field(pj.fetch("engines", {})),
+      "dependencies" => normalize_dependency_constraints(pj.fetch("dependencies", {})),
+      "devDependencies" => normalize_dependency_constraints(pj.fetch("devDependencies", {}))
+    }
   end
 
   run "npx -y sort-package-json"

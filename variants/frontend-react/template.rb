@@ -73,7 +73,5 @@ append_to_file "app/views/home/index.html.erb" do
   ERB
 end
 
-update_package_json do |package_json|
-  # we've replaced this with a babel.config.js
-  package_json.delete "babel"
-end
+# we've replaced this with a babel.config.js
+package_json.delete!("babel")
