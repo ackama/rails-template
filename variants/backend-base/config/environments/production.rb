@@ -9,7 +9,7 @@ insert_into_file "config/environments/production.rb",
 end
 
 gsub_file! "config/environments/production.rb",
-           "# config.force_ssl = true",
+           "config.force_ssl = true",
            <<~RUBY
              ##
              # `force_ssl` defaults to on. Set `force_ssl` to false if (and only if) RAILS_FORCE_SSL=false, otherwise set it to true.
@@ -43,8 +43,8 @@ insert_into_file "config/environments/production.rb",
 end
 
 gsub_file! "config/environments/production.rb",
-           "config.log_level = :info",
-           'config.log_level = ENV.fetch("LOG_LEVEL", "info").to_sym'
+           'ENV.fetch("RAILS_LOG_LEVEL", "info")',
+           'ENV.fetch("RAILS_LOG_LEVEL", ENV.fetch("LOG_LEVEL", "info"))'
 
 gsub_file! "config/environments/production.rb",
            "ActiveSupport::Logger.new(STDOUT)",

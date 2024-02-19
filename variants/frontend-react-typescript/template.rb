@@ -17,7 +17,7 @@ remove_file "app/frontend/components/HelloWorld.jsx", force: true
 copy_file "app/frontend/components/HelloWorld.tsx", force: true
 gsub_file!(
   "app/views/home/index.html.erb",
-  'react_component("HelloWorld", { greeting: "Hello from react-rails." })',
+  'react_component("HelloWorld", { initialGreeting: "Hello from react-rails." })',
   'react_component("home/index")'
 )
 

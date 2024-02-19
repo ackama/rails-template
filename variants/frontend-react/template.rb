@@ -64,10 +64,6 @@ gsub_file!(
 # var ReactRailsUJS = require('react_ujs');
 # import ReactRailsUJS from 'react_ujs';
 
-gsub_file! "app/views/layouts/application.html.erb",
-           "    <%= javascript_pack_tag \"application\", \"data-turbolinks-track\": \"reload\", defer: true %>\n",
-           "    <%= javascript_pack_tag \"application\" %>\n"
-
 copy_file "jest.config.js"
 
 # example file

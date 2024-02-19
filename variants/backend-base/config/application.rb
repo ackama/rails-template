@@ -1,5 +1,5 @@
 gsub_file! "config/application.rb",
-           "# config.time_zone = 'Central Time (US & Canada)'",
+           /# config.time_zone = ['"]Central Time \(US & Canada\)['"]/,
            "config.time_zone = 'Wellington'"
 
 insert_into_file "config/application.rb", after: /^require_relative ['"]boot['"]/ do

@@ -32,10 +32,9 @@ gsub_file! "app/views/layouts/application.html.erb",
 run "mv app/javascript app/frontend"
 copy_file "config/webpack/webpack.config.js", force: true
 
-gsub_file! "config/shakapacker.yml", "source_entry_path: /", "source_entry_path: packs", force: true
-gsub_file! "config/shakapacker.yml", "cache_path: tmp/shakapacker", "cache_path: tmp/cache/shakapacker", force: true
-gsub_file! "config/shakapacker.yml", "source_path: app/javascript", "source_path: app/frontend", force: true
-gsub_file! "config/shakapacker.yml", "ensure_consistent_versioning: false", "ensure_consistent_versioning: true", force: true
+gsub_file! "config/shakapacker.yml", "cache_path: tmp/shakapacker", "cache_path: tmp/cache/shakapacker"
+gsub_file! "config/shakapacker.yml", "source_path: app/javascript", "source_path: app/frontend"
+gsub_file! "config/shakapacker.yml", "ensure_consistent_versioning: false", "ensure_consistent_versioning: true"
 
 old_shakapacker_test_compile_snippet = <<~EO_OLD
   test:

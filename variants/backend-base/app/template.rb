@@ -18,5 +18,5 @@ empty_directory_with_keep_file "app/services"
 
 # Configure the default mailer to use the our default from address
 gsub_file! "app/mailers/application_mailer.rb",
-           "default from: 'from@example.com'",
+           /default from: ['"]from@example\.com['"]/,
            "default from: Rails.application.config.app.mail_from"

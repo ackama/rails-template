@@ -28,11 +28,8 @@ gsub_file! devise_migration_path,
            "      # t.datetime :locked_at",
            "      t.datetime :locked_at"
 gsub_file! devise_migration_path,
-           "      # add_index :users, :unlock_token",
-           "      add_index :users, :unlock_token"
-gsub_file! devise_migration_path,
-           /  # add_index :users, :unlock_token.+/,
-           "  add_index :users, :unlock_token, unique: true"
+           "    # add_index :users, :unlock_token",
+           "    add_index :users, :unlock_token"
 
 TERMINAL.puts_header "Running db migration"
 run "bundle exec rails db:migrate"
