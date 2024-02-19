@@ -17,7 +17,7 @@ copy_file "variants/backend-base/config/initializers/health_checks.rb", "config/
 copy_file "variants/backend-base/config/initializers/check_env.rb", "config/initializers/check_env.rb"
 copy_file "variants/backend-base/config/initializers/sentry.rb", "config/initializers/sentry.rb"
 
-gsub_file "config/initializers/filter_parameter_logging.rb", /\[:password\]/ do
+gsub_file! "config/initializers/filter_parameter_logging.rb", /\[:password\]/ do
   "%w[password secret session cookie csrf]"
 end
 
@@ -59,7 +59,7 @@ route <<-EO_ROUTES
 EO_ROUTES
 
 if File.exist? "config/storage.yml"
-  gsub_file "config/storage.yml", /#   service: S3/ do
+  gsub_file! "config/storage.yml", /#   service: S3/ do
     <<~YAML
       #   service: S3
       #   upload:

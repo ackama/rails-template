@@ -35,7 +35,7 @@ copy_file "tsconfig.json", force: true
 copy_file ".eslintrc.js", force: true
 copy_file "types.d.ts", force: true
 
-gsub_file(
+gsub_file!(
   "app/frontend/packs/application.ts",
   "process.env.SENTRY_ENV || process.env.RAILS_ENV",
   "process.env.SENTRY_ENV ?? process.env.RAILS_ENV"
@@ -53,7 +53,7 @@ ts_load_images_chunk = <<~EO_TS_ENABLE_IMAGES
     return String(images(name));
   };
 EO_TS_ENABLE_IMAGES
-gsub_file("app/frontend/packs/application.ts", js_load_images_chunk, ts_load_images_chunk, force: true)
+gsub_file!("app/frontend/packs/application.ts", js_load_images_chunk, ts_load_images_chunk, force: true)
 
 update_package_json do |package_json|
   package_json["scripts"]["typecheck"] = "tsc -p . --noEmit"

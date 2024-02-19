@@ -13,4 +13,4 @@ prepend_to_file "app/frontend/stylesheets/application.scss" do
   EO_CONTENT
 end
 
-gsub_file "config/initializers/content_security_policy.rb", "policy.img_src     :self", "  policy.img_src     :data, :self", force: true
+gsub_file! "config/initializers/content_security_policy.rb", "policy.img_src     :self", "  policy.img_src     :data, :self", force: true

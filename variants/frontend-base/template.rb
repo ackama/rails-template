@@ -23,19 +23,19 @@ end
 
 # this is added by shakapacker:install, but we've already got one (with some extra tags)
 # in our template, so remove theirs otherwise the app will error when rendering this
-gsub_file "app/views/layouts/application.html.erb",
-          "    <%= javascript_pack_tag \"application\" %>\n",
-          ""
+gsub_file! "app/views/layouts/application.html.erb",
+           "    <%= javascript_pack_tag \"application\" %>\n",
+           ""
 
 # Configure app/frontend
 
 run "mv app/javascript app/frontend"
 copy_file "config/webpack/webpack.config.js", force: true
 
-gsub_file "config/shakapacker.yml", "source_entry_path: /", "source_entry_path: packs", force: true
-gsub_file "config/shakapacker.yml", "cache_path: tmp/shakapacker", "cache_path: tmp/cache/shakapacker", force: true
-gsub_file "config/shakapacker.yml", "source_path: app/javascript", "source_path: app/frontend", force: true
-gsub_file "config/shakapacker.yml", "ensure_consistent_versioning: false", "ensure_consistent_versioning: true", force: true
+gsub_file! "config/shakapacker.yml", "source_entry_path: /", "source_entry_path: packs", force: true
+gsub_file! "config/shakapacker.yml", "cache_path: tmp/shakapacker", "cache_path: tmp/cache/shakapacker", force: true
+gsub_file! "config/shakapacker.yml", "source_path: app/javascript", "source_path: app/frontend", force: true
+gsub_file! "config/shakapacker.yml", "ensure_consistent_versioning: false", "ensure_consistent_versioning: true", force: true
 
 old_shakapacker_test_compile_snippet = <<~EO_OLD
   test:
@@ -50,7 +50,7 @@ new_shakapacker_test_compile_snippet = <<~EO_NEW
     # Shakapacker to automatically compile in the test env
     compile: false
 EO_NEW
-gsub_file("config/shakapacker.yml", old_shakapacker_test_compile_snippet, new_shakapacker_test_compile_snippet, force: true)
+gsub_file!("config/shakapacker.yml", old_shakapacker_test_compile_snippet, new_shakapacker_test_compile_snippet, force: true)
 
 empty_directory_with_keep_file "app/frontend/images"
 copy_file "app/frontend/stylesheets/_elements.scss"
@@ -74,13 +74,13 @@ images_enabled_chunk = <<~EO_ENABLE_IMAGES
   const imagePath = name => images(name, true);
 EO_ENABLE_IMAGES
 
-gsub_file "app/frontend/packs/application.js", images_disabled_chunk, images_enabled_chunk, force: true
+gsub_file! "app/frontend/packs/application.js", images_disabled_chunk, images_enabled_chunk, force: true
 
 # Configure app/views
-gsub_file "app/views/layouts/application.html.erb",
-          "<%= stylesheet_link_tag(",
-          "<%= stylesheet_pack_tag(",
-          force: true
+gsub_file! "app/views/layouts/application.html.erb",
+           "<%= stylesheet_link_tag(",
+           "<%= stylesheet_pack_tag(",
+           force: true
 
 copy_file "app/frontend/images/example.png"
 body_open_tag_with_img_example = <<~EO_IMG_EXAMPLE
@@ -91,7 +91,7 @@ body_open_tag_with_img_example = <<~EO_IMG_EXAMPLE
       %>
       <%= image_pack_tag "images/example.png", alt: "Example Image" %>
 EO_IMG_EXAMPLE
-gsub_file "app/views/layouts/application.html.erb", "<body>", body_open_tag_with_img_example, force: true
+gsub_file! "app/views/layouts/application.html.erb", "<body>", body_open_tag_with_img_example, force: true
 
 # shakapacker will automatically configure webpack to use these so long as the dependencies are present
 yarn_add_dependencies %w[
