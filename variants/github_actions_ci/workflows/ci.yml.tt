@@ -53,6 +53,7 @@ jobs:
       <%- end -%>
       - run: yarn run js-lint
       - run: yarn run format-check
+      - run: yarn run test --coverage
   ruby_based_checks:
     permissions:
       contents: read
