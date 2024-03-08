@@ -96,7 +96,7 @@ jobs:
           - name: pnpm
             installer: pnpm
           - name: bun
-            installer: bun
+            installer: bun@1.0.22
         variant:
           - name: defaults
             config_path: 'ackama_rails_template.config.yml'

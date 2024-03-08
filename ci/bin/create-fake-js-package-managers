@@ -33,6 +33,9 @@ end
 managers = %w[npm yarn pnpm bun]
 manager_in_use = ARGV[0] || ""
 
+# if a specific version is being used, remove it
+manager_in_use = manager_in_use.split("@")[0]
+
 if manager_in_use.empty?
   manager_in_use = ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", "")
                       .delete_suffix("_berry")
