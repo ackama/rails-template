@@ -1,6 +1,9 @@
 module.exports = {
   plugins: ['stylelint-scss'],
   extends: ['stylelint-config-recommended-scss'],
+  reportNeedlessDisables: true,
+  reportInvalidScopeDisables: true,
+  reportDescriptionlessDisables: true,
   rules: {
     'no-descending-specificity': null,
     'string-no-newline': true,
