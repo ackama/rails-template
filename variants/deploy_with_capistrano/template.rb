@@ -165,7 +165,7 @@ new_ackama_cap_config_snippet = <<~EO_RUBY
 
 EO_RUBY
 
-gsub_file("config/deploy.rb", old_generated_cap_config_snippet, new_ackama_cap_config_snippet)
+gsub_file!("config/deploy.rb", old_generated_cap_config_snippet, new_ackama_cap_config_snippet)
 
 insert_into_file "Capfile", after: /install_plugin Capistrano::SCM::Git/ do
   <<~EO_RUBY

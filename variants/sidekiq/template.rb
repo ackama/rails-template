@@ -62,4 +62,4 @@ new_health_checks_chunk = <<~EO_NEW
   OkComputer::Registry.register "sidekiq_mailers", OkComputer::SidekiqLatencyCheck.new(:mailers)
 EO_NEW
 
-gsub_file("config/initializers/health_checks.rb", original_health_check_chunk, new_health_checks_chunk, force: true)
+gsub_file!("config/initializers/health_checks.rb", original_health_check_chunk, new_health_checks_chunk, force: true)

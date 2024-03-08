@@ -1,7 +1,3 @@
-gsub_file "config/environments/test.rb",
-          "config.eager_load = false",
-          "config.eager_load = defined?(SimpleCov).present?"
-
 insert_into_file \
   "config/environments/test.rb",
   after: /config\.action_mailer\.delivery_method = :test\n/ do
@@ -17,6 +13,6 @@ insert_into_file \
   RUBY
 end
 
-gsub_file "config/environments/test.rb",
-          "config.action_controller.raise_on_missing_callback_actions = true",
-          "# config.action_controller.raise_on_missing_callback_actions = true"
+gsub_file! "config/environments/test.rb",
+           "config.action_controller.raise_on_missing_callback_actions = true",
+           "# config.action_controller.raise_on_missing_callback_actions = true"

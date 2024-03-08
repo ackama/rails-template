@@ -11,9 +11,9 @@ run "rails generate react:install"
 # and so should be favored when importing as it is the more specific package
 run "yarn remove @testing-library/dom"
 
-gsub_file "app/frontend/test/stimulus/controllers/add_class_controller.test.js",
-          "'@testing-library/dom'",
-          "'@testing-library/react'"
+gsub_file! "app/frontend/test/stimulus/controllers/add_class_controller.test.js",
+           "'@testing-library/dom'",
+           "'@testing-library/react'"
 
 yarn_add_dependencies %w[
   @babel/preset-react
@@ -40,13 +40,13 @@ react_rails_replacement = <<~REPLACEMENT
   ReactRailsUJS.useContext(componentRequireContext);
 REPLACEMENT
 
-gsub_file "app/frontend/packs/application.js",
-          "ReactRailsUJS.useContext(componentRequireContext);", react_rails_replacement
+gsub_file! "app/frontend/packs/application.js",
+           "ReactRailsUJS.useContext(componentRequireContext);", react_rails_replacement
 
-gsub_file "app/frontend/packs/server_rendering.js",
-          "ReactRailsUJS.useContext(componentRequireContext);", react_rails_replacement
+gsub_file! "app/frontend/packs/server_rendering.js",
+           "ReactRailsUJS.useContext(componentRequireContext);", react_rails_replacement
 
-gsub_file(
+gsub_file!(
   "app/frontend/packs/application.js",
   'var ReactRailsUJS = require("react_ujs")',
   ""
@@ -55,7 +55,7 @@ gsub_file(
 prepend_to_file "app/frontend/packs/application.js",
                 "import ReactRailsUJS from 'react_ujs';\n"
 
-gsub_file(
+gsub_file!(
   "app/frontend/packs/server_rendering.js",
   'var ReactRailsUJS = require("react_ujs")',
   "import ReactRailsUJS from 'react_ujs';"
@@ -63,10 +63,6 @@ gsub_file(
 
 # var ReactRailsUJS = require('react_ujs');
 # import ReactRailsUJS from 'react_ujs';
-
-gsub_file "app/views/layouts/application.html.erb",
-          "    <%= javascript_pack_tag \"application\", \"data-turbolinks-track\": \"reload\", defer: true %>\n",
-          "    <%= javascript_pack_tag \"application\" %>\n"
 
 copy_file "jest.config.js"
 

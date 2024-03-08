@@ -15,10 +15,6 @@ insert_into_file "config/environments/development.rb", after: mailer_regex do
   RUBY
 end
 
-gsub_file "config/environments/development.rb",
-          "join('tmp', 'caching-dev.txt')",
-          'join("tmp/caching-dev.txt")'
-
-gsub_file "config/environments/development.rb",
-          "config.action_controller.raise_on_missing_callback_actions = true",
-          "# config.action_controller.raise_on_missing_callback_actions = true"
+gsub_file! "config/environments/development.rb",
+           "config.action_controller.raise_on_missing_callback_actions = true",
+           "# config.action_controller.raise_on_missing_callback_actions = true"

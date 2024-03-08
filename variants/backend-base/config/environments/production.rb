@@ -8,14 +8,14 @@ insert_into_file "config/environments/production.rb",
   RUBY
 end
 
-gsub_file "config/environments/production.rb",
-          "# config.force_ssl = true",
-          <<~RUBY
-            ##
-            # `force_ssl` defaults to on. Set `force_ssl` to false if (and only if) RAILS_FORCE_SSL=false, otherwise set it to true.
-            #
-            config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "true").downcase != "false"
-          RUBY
+gsub_file! "config/environments/production.rb",
+           "config.force_ssl = true",
+           <<~RUBY
+             ##
+             # `force_ssl` defaults to on. Set `force_ssl` to false if (and only if) RAILS_FORCE_SSL=false, otherwise set it to true.
+             #
+             config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "true").downcase != "false"
+           RUBY
 
 insert_into_file "config/environments/production.rb",
                  after: /# config\.action_mailer\.raise_deliv.*\n/ do
@@ -42,13 +42,13 @@ insert_into_file "config/environments/production.rb",
   RUBY
 end
 
-gsub_file "config/environments/production.rb",
-          "config.log_level = :info",
-          'config.log_level = ENV.fetch("LOG_LEVEL", "info").to_sym'
+gsub_file! "config/environments/production.rb",
+           'ENV.fetch("RAILS_LOG_LEVEL", "info")',
+           'ENV.fetch("RAILS_LOG_LEVEL", ENV.fetch("LOG_LEVEL", "info"))'
 
-gsub_file "config/environments/production.rb",
-          "ActiveSupport::Logger.new(STDOUT)",
-          "ActiveSupport::Logger.new($stdout)"
+gsub_file! "config/environments/production.rb",
+           "ActiveSupport::Logger.new(STDOUT)",
+           "ActiveSupport::Logger.new($stdout)"
 
 insert_into_file "config/environments/production.rb",
                  after: /.*config\.public_file_server\.enabled.*\n/ do

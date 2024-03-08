@@ -381,4 +381,12 @@ def create_initial_migration
   run_with_clean_bundler_env "bin/rake db:migrate"
 end
 
+def gsub_file!(path, flag, *args, &block)
+  content = File.binread(path)
+
+  gsub_file(path, flag, *args, &block)
+
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
+end
+
 apply_template!
