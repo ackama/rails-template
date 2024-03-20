@@ -13,6 +13,9 @@ env:
   RAILS_ENV: test
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
   RAILS_SECRET_KEY_BASE: any-value-works-here-in-ci-but-prod-should-be-created-with-bundle-exec-rails-secret
+  ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: any-value-works-here-in-ci-but-prod-the-primary-key-should-be-created-with-bundle-exec-rails-db:encryption:init
+  ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: any-value-works-here-in-ci-but-prod-the-deterministic-key-should-be-created-with-bundle-exec-rails-db:encryption:init
+  ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: any-value-works-here-in-ci-but-prod-the-salt-should-be-created-with-bundle-exec-rails-db:encryption:init
   MAIL_FROM: 'changeme@example.com'
   <%- if TEMPLATE_CONFIG.apply_variant_sidekiq? -%>
   SIDEKIQ_WEB_USERNAME: admin
