@@ -6,7 +6,7 @@ def setup!
     run  "gem install bundler --no-document --conservative"
     run  "bundle install"
     run  "yarn install" if File.exist?("yarn.lock")
-    run  "bundle exec overcommit --install"
+    run  "bundle exec overcommit --install" unless ENV["SKIP_OVERCOMMIT"] || ENV["CI"]
     copy "example.env"
     test_local_env_contains_required_keys
     run  "bin/rake tmp:create"
