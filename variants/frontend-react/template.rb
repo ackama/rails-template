@@ -7,9 +7,11 @@ run "bundle install"
 
 run "rails generate react:install"
 
+add_yarn_package_extension_dependency("@testing-library/user-event", "@testing-library/dom")
+
 # @testing-library/react brings in @testing-library/dom as a direct dependency,
 # and so should be favored when importing as it is the more specific package
-run "yarn remove @testing-library/dom"
+package_json.manager.remove!(["@testing-library/dom"])
 
 gsub_file! "app/frontend/test/stimulus/controllers/add_class_controller.test.js",
            "'@testing-library/dom'",
@@ -76,7 +78,5 @@ append_to_file "app/views/home/index.html.erb" do
   ERB
 end
 
-update_package_json do |package_json|
-  # we've replaced this with a babel.config.js
-  package_json.delete "babel"
-end
+# we've replaced this with a babel.config.js
+package_json.delete!("babel")

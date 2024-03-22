@@ -19,6 +19,7 @@ types_packages = %w[
   webpack-env
   eslint
   babel__core
+  node@18
 ].map { |name| "@types/#{name}" }
 
 yarn_add_dependencies types_packages + %w[@babel/preset-typescript typescript]
@@ -27,7 +28,7 @@ yarn_add_dev_dependencies %w[
   @typescript-eslint/eslint-plugin
 ]
 
-run "yarn install"
+package_json.manager.install!
 
 rename_js_file_to_ts "app/frontend/packs/application"
 
@@ -55,8 +56,12 @@ ts_load_images_chunk = <<~EO_TS_ENABLE_IMAGES
 EO_TS_ENABLE_IMAGES
 gsub_file!("app/frontend/packs/application.ts", js_load_images_chunk, ts_load_images_chunk, force: true)
 
-update_package_json do |package_json|
-  package_json["scripts"]["typecheck"] = "tsc -p . --noEmit"
+package_json.merge! do |pj|
+  {
+    "scripts" => pj.fetch("scripts", {}).merge({
+      "typecheck" => "tsc -p . --noEmit"
+    })
+  }
 end
 
 append_to_file "bin/ci-run" do
@@ -65,6 +70,6 @@ append_to_file "bin/ci-run" do
     echo "* ******************************************************"
     echo "* Running Typechecking"
     echo "* ******************************************************"
-    yarn run typecheck
+    #{package_json.manager.native_run_command("typecheck").join(" ")}
   TYPECHECK
 end

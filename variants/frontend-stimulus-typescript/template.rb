@@ -1,11 +1,13 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-installed_jest_major_version = JSON.parse(File.read("node_modules/jest/package.json")).fetch("version").split(".").first
+add_yarn_package_extension_dependency("@testing-library/jest-dom", "@types/aria-query")
+add_yarn_package_extension_dependency("ts-jest", "@jest/transform")
 
+yarn_add_dependencies ["@babel/plugin-transform-typescript"]
 yarn_add_dev_dependencies [
-  "@types/jest@#{installed_jest_major_version}",
-  "@jest/types@#{installed_jest_major_version}",
-  "ts-jest@#{installed_jest_major_version}",
+  "@types/jest@#{JEST_MAJOR_VERSION}",
+  "@jest/types@#{JEST_MAJOR_VERSION}",
+  "ts-jest@#{JEST_MAJOR_VERSION}",
   "ts-node"
 ]
 
@@ -16,10 +18,8 @@ copy_file "jest.config.ts"
 
 copy_file "babel.config.js", force: true
 
-update_package_json do |package_json|
-  # we've replaced this with a babel.config.js
-  package_json.delete "babel"
-end
+# we've replaced this with a babel.config.js
+package_json.delete!("babel")
 
 remove_file "app/frontend/stimulus/controllers/hello_controller.js", force: true
 copy_file "app/frontend/stimulus/controllers/hello_controller.ts"
