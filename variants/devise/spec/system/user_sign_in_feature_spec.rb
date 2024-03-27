@@ -44,6 +44,8 @@ RSpec.describe "User sign-in" do
 
     context "when a user ticks the 'remember me' box on the sign-in page" do
       it "user gets a new cookie which allows their login to persist for two weeks" do
+        freeze_time
+
         # when we fill in the sign-in form **and** check the "Remember me" box
         fill_in "Email", with: email
         fill_in "Password", with: password
@@ -67,16 +69,12 @@ RSpec.describe "User sign-in" do
         # Parsing the signature can fail because it is not base64 encoded so can add extra bytes to the
         # parsed message
         remember_me_cookie_data, _remember_me_cookie_signature = remember_me_cookie.split("--", 2)
-        remember_me_cookie_expiry_date = JSON
-                                         .parse(Base64.decode64(remember_me_cookie_data))
-                                         .dig("_rails", "exp")
-                                         .to_date
+        remember_me_cookie_expiry = Time.zone.parse(
+          JSON.parse(Base64.decode64(remember_me_cookie_data))
+              .dig("_rails", "exp")
+        )
 
-        # The remember_me cookie expiry is in UTC timezone so we need to
-        # compare it with the date as it is right now in UTC (not in NZ)
-        today_in_utc = Time.current.utc.to_date
-
-        expect(Integer(remember_me_cookie_expiry_date - today_in_utc)).to eq(14)
+        expect(remember_me_cookie_expiry).to eq 2.weeks.from_now
 
         # when we click on the sign out link
         click_on "Sign out"
