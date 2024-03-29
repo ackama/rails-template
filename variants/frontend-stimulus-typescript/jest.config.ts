@@ -1,7 +1,7 @@
-import { Config } from '@jest/types';
+import { Config } from 'jest';
 import 'ts-jest';
 
-const config: Config.InitialOptions = {
+const config: Config = {
   testEnvironment: 'jsdom',
   clearMocks: true,
   restoreMocks: true,
