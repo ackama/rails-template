@@ -27,8 +27,6 @@ yarn_add_dev_dependencies %w[
   @typescript-eslint/eslint-plugin
 ]
 
-run "yarn install"
-
 rename_js_file_to_ts "app/frontend/packs/application"
 
 copy_file "tsconfig.json", force: true
