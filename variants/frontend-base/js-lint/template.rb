@@ -2,7 +2,7 @@
 # ######################################
 
 yarn_add_dev_dependencies %w[
-  eslint
+  eslint@8
   eslint-config-ackama
   eslint-plugin-node
   eslint-plugin-import

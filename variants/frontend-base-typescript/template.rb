@@ -17,7 +17,7 @@ types_packages = %w[
   turbolinks
   dotenv-webpack
   webpack-env
-  eslint
+  eslint@8
   babel__core
 ].map { |name| "@types/#{name}" }
 
