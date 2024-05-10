@@ -13,12 +13,10 @@ end
 remove_dir "app/assets/stylesheets"
 remove_dir "app/assets/images"
 
-# shakapacker will create a more complete package.json
-remove_file "package.json"
+# ensure that the package manager has been recorded before installing shakapacker
+package_json.record_package_manager!
 
 run "rails shakapacker:install"
-
-package_json.record_package_manager!
 
 # this is added by shakapacker:install, but we've already got one (with some extra tags)
 # in our template, so remove theirs otherwise the app will error when rendering this
@@ -39,7 +37,6 @@ copy_file "config/webpack/webpack.config.js", force: true
 
 gsub_file! "config/shakapacker.yml", "cache_path: tmp/shakapacker", "cache_path: tmp/cache/shakapacker"
 gsub_file! "config/shakapacker.yml", "source_path: app/javascript", "source_path: app/frontend"
-gsub_file! "config/shakapacker.yml", "ensure_consistent_versioning: false", "ensure_consistent_versioning: true"
 
 old_shakapacker_test_compile_snippet = <<~EO_OLD
   test:
