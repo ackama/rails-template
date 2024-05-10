@@ -9,7 +9,7 @@ gem "pg"
 gem 'dotenv-rails', require: "dotenv/rails-now"
 gem "bootsnap", require: false
 
-gem "shakapacker"
+gem "shakapacker", "8.0.0.rc.3"
 gem "lograge"
 gem "okcomputer"
 gem "sentry-ruby"

@@ -94,7 +94,7 @@ jobs:
           - name: yarn_classic
             installer: yarn
           - name: pnpm
-            installer: pnpm@8 # https://github.com/shakacode/shakapacker/pull/472
+            installer: pnpm
           - name: bun
             installer: bun@1.0.22
         variant:
@@ -211,5 +211,4 @@ jobs:
           PACKAGE_JSON_FALLBACK_MANAGER: ${{ matrix.js_package_manager.name }}
           PACKAGE_JSON_YARN_BERRY_LINKER:
             ${{ matrix.js_package_manager.linker }}
-          SHAKAPACKER_USE_PACKAGE_JSON_GEM: 'true'
         run: ./ci/bin/build-and-test
