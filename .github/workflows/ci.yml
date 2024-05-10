@@ -94,7 +94,7 @@ jobs:
           - name: yarn_classic
             installer: yarn
           - name: pnpm
-            installer: pnpm
+            installer: pnpm@8 # https://github.com/shakacode/shakapacker/pull/472
           - name: bun
             installer: bun@1.0.22
         variant:
