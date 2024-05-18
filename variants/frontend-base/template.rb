@@ -13,13 +13,10 @@ end
 remove_dir "app/assets/stylesheets"
 remove_dir "app/assets/images"
 
-# this will create a package.json for us
-run "rails shakapacker:install"
+# ensure that the package manager has been recorded before installing shakapacker
+package_json.record_package_manager!
 
-# explicitly set our preferred package manager for external tooling
-update_package_json do |package_json|
-  package_json["packageManager"] = "yarn@1.22.21"
-end
+run "rails shakapacker:install"
 
 # this is added by shakapacker:install, but we've already got one (with some extra tags)
 # in our template, so remove theirs otherwise the app will error when rendering this
@@ -30,11 +27,16 @@ gsub_file! "app/views/layouts/application.html.erb",
 # Configure app/frontend
 
 run "mv app/javascript app/frontend"
+
+copy_file "babel.config.js", force: true
+
+# we've replaced this with a babel.config.js
+package_json.delete!("babel")
+
 copy_file "config/webpack/webpack.config.js", force: true
 
 gsub_file! "config/shakapacker.yml", "cache_path: tmp/shakapacker", "cache_path: tmp/cache/shakapacker"
 gsub_file! "config/shakapacker.yml", "source_path: app/javascript", "source_path: app/frontend"
-gsub_file! "config/shakapacker.yml", "ensure_consistent_versioning: false", "ensure_consistent_versioning: true"
 
 old_shakapacker_test_compile_snippet = <<~EO_OLD
   test:

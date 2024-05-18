@@ -46,10 +46,6 @@ append_to_file "app/frontend/packs/application.js" do
   EO_JS_SETUP
 end
 
-# We need the major version of the 'jest', '@jest/types', 'ts-jest' packages to
-# match so we can only upgrade jest when there are compatible versions available
-jest_major_version = "29"
-
 yarn_add_dev_dependencies %W[
   @testing-library/dom
   @testing-library/jest-dom
@@ -59,19 +55,19 @@ yarn_add_dev_dependencies %W[
   eslint-plugin-jest-dom
   eslint-plugin-testing-library
   jest-environment-jsdom
-  jest@#{jest_major_version}
+  jest@#{JEST_MAJOR_VERSION}
 ]
 
 copy_file ".eslintrc.js", force: true
 copy_file "jest.config.js"
 
-update_package_json do |package_json|
-  package_json["scripts"] = package_json["scripts"].merge(
-    {
+package_json.merge! do |pj|
+  {
+    "scripts" => pj.fetch("scripts", {}).merge({
       "test" => "jest",
       "watch-tests" => "jest --watch"
-    }
-  )
+    })
+  }
 end
 
 append_to_file "bin/ci-run" do
@@ -79,6 +75,6 @@ append_to_file "bin/ci-run" do
     echo "* ******************************************************"
     echo "* Running JS tests"
     echo "* ******************************************************"
-    yarn run test --coverage
+    #{package_json.manager.native_run_command("test", ["--coverage"]).join(" ")}
   JEST
 end
