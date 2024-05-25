@@ -1,10 +1,7 @@
 # Be sure to restart your server when you modify this file.
 #
-# Use this file to load non-sensitive app config from ENV. Config values here
-# will be loaded into `Rails.application.config.app`.
-#
-# Sensitive config should be put in `config/secrets.yml` (which will load it
-# into `Rails.application.secrets`)
+# Use this file to load configuration values from the environment, which will
+# be accessible by the app through `Rails.application.config.app`
 
 default: &default
   # Your secret key is used for verifying the integrity of signed cookies.
