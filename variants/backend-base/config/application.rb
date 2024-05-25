@@ -33,8 +33,5 @@ insert_into_file "config/application.rb", before: /^  end/ do
 
     # gzip Rails responses to help browsers on slow network connections.
     config.middleware.use Rack::Deflater
-
-    # this should either begin with GTM- (for a container) or G- (for a tag)
-    config.google_analytics_id = ENV.fetch("GOOGLE_ANALYTICS_ID", nil)
   RUBY
 end
