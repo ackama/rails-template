@@ -12,11 +12,11 @@ Rails.application.config.content_security_policy do |policy|
   policy.default_src :self
   policy.font_src    :self
   policy.img_src     :self, *[
-    ("*.googletagmanager.com" if Rails.application.config.google_analytics_id)
+    ("*.googletagmanager.com" if Rails.application.config.app.google_analytics_id)
   ].compact
   policy.object_src  :none
   policy.script_src  :self, *[
-    ("*.googletagmanager.com" if Rails.application.config.google_analytics_id)
+    ("*.googletagmanager.com" if Rails.application.config.app.google_analytics_id)
   ].compact
   policy.style_src   :self
 
@@ -95,7 +95,7 @@ Rails.application.config.content_security_policy do |policy|
   #   that we can find and fix CSP issues in development but enabling the
   #   webpack-dev-server to communicate over websockets is an exception.
   policy.connect_src :self, *[
-    ("*.googletagmanager.com" if Rails.application.config.google_analytics_id),
+    ("*.googletagmanager.com" if Rails.application.config.app.google_analytics_id),
     ("http://localhost:3035" if Rails.env.development?),
     ("ws://localhost:3035" if Rails.env.development?)
   ].compact
