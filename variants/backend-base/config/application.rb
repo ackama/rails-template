@@ -17,6 +17,9 @@ insert_into_file "config/application.rb", before: /^  end/ do
     # load config/app.yml into Rails.application.config.app.*
     config.app = config_for(:app)
 
+    # pull the secret_key_base from our app config
+    config.secret_key_base = config.app.secret_key_base
+
     config.middleware.insert_before Rack::Sendfile, HttpBasicAuth
     config.action_dispatch.default_headers["Permissions-Policy"] = "interest-cohort=()"
 
