@@ -5,20 +5,25 @@
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
 Rails.application.config.content_security_policy do |policy|
+  google_analytics_enabled = Rails.application.config.app.google_analytics_id.present?
+
   # These directives define a quite strict policy by default. You may have to
   # loosen this policy as you add elements to the app. Some examples of common
   # additions are shown below.
   #
   policy.default_src :self
   policy.font_src    :self
-  policy.img_src     :self, *[
-    ("*.googletagmanager.com" if Rails.application.config.app.google_analytics_id)
+  policy.img_src     :self, :data, *[
+    *(["*.googletagmanager.com", "*.google-analytics.com"] if google_analytics_enabled)
   ].compact
   policy.object_src  :none
   policy.script_src  :self, *[
-    ("*.googletagmanager.com" if Rails.application.config.app.google_analytics_id)
+    *(["*.googletagmanager.com"] if google_analytics_enabled)
   ].compact
   policy.style_src   :self
+  policy.frame_src   :self, *[
+    *(["*.googletagmanager.com"] if google_analytics_enabled)
+  ].compact
 
   # Allow inline-styles
   # ###################
@@ -95,9 +100,9 @@ Rails.application.config.content_security_policy do |policy|
   #   that we can find and fix CSP issues in development but enabling the
   #   webpack-dev-server to communicate over websockets is an exception.
   policy.connect_src :self, *[
-    ("*.googletagmanager.com" if Rails.application.config.app.google_analytics_id),
-    ("http://localhost:3035" if Rails.env.development?),
-    ("ws://localhost:3035" if Rails.env.development?)
+    *(["*.googletagmanager.com", "*.google-analytics.com", "*.analytics.google.com"] if google_analytics_enabled),
+    # required for webpack-dev-server to be used in local development
+    *(["http://localhost:3035", "ws://localhost:3035"] if Rails.env.development?)
   ].compact
 
   # Enable CSP reporting
