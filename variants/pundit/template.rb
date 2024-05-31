@@ -8,6 +8,12 @@ run "bundle install"
 run "rails g pundit:install"
 run "rails g pundit:policy example"
 
+# Pundit uses NoMethodError which is easier to catch as it extends from StandardError,
+# but it's technically not correct as our class does respond to the method in question
+#
+# For now, we're just going to stick with the more traditional error for this situation
+gsub_file! "app/policies/application_policy.rb", "raise NoMethodError", "raise NotImplementedError"
+
 copy_file "spec/policies/example_policy_spec.rb", force: true
 copy_file "spec/policies/application_policy_spec.rb", force: true
 
