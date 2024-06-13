@@ -1,0 +1,10 @@
+<%# analytics configuration that goes in the <body> %>
+
+<% google_analytics_id = Rails.application.config.app.google_analytics_id %>
+
+<% if google_analytics_id&.start_with?("GTM-") %>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<%= google_analytics_id %>"
+                    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+<% end %>
