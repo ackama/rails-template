@@ -7,10 +7,7 @@ run "bundle install"
 
 run "rails generate react:install"
 
-# @testing-library/react brings in @testing-library/dom as a direct dependency,
-# and so should be favored when importing as it is the more specific package
-run "yarn remove @testing-library/dom"
-
+# prefer importing from the more specific package for consistency
 gsub_file! "app/frontend/test/stimulus/controllers/add_class_controller.test.js",
            "'@testing-library/dom'",
            "'@testing-library/react'"
