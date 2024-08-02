@@ -1,0 +1,28 @@
+<%# analytics configuration that goes in the <head> %>
+
+<% google_analytics_id = Rails.application.config.app.google_analytics_id %>
+
+<% if google_analytics_id&.start_with?("GTM-") %>
+  <!-- Google Tag Manager -->
+  <%= javascript_tag nonce: true, defer: true do -%>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;var n=d.querySelector('[nonce]');
+    n&&j.setAttribute('nonce',n.nonce||n.getAttribute('nonce'));f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','<%= google_analytics_id %>');
+  <% end -%>
+  <!-- End Google Tag Manager -->
+<% end %>
+
+<% if google_analytics_id&.start_with?("G-") %>
+  <!-- Google tag (gtag.js) -->
+  <%= javascript_include_tag("https://www.googletagmanager.com/gtag/js?id=#{google_analytics_id}", nonce: true, defer: false) -%>
+  <%= javascript_tag nonce: true, defer: true do -%>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '<%= google_analytics_id %>');
+  <% end -%>
+<% end %>
