@@ -32,7 +32,7 @@ GEM
     rack (3.0.9.1)
     rainbow (3.1.1)
     regexp_parser (2.9.0)
-    rexml (3.3.3)
+    rexml (3.3.6)
       strscan
     rubocop (1.60.2)
       json (~> 2.3)
