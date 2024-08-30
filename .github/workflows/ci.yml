@@ -122,7 +122,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
@@ -174,4 +173,7 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
+          # This version constraint string must match the value of the
+          # RAILS_REQUIREMENT constant in `./template.rb`
+          RAILS_VERSION_CONSTRAINT: '~> 7.1.1'
         run: ./ci/bin/build-and-test

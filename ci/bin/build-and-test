@@ -17,6 +17,8 @@ config_path = if ENV.fetch("CONFIG_PATH", "") == ""
 config_env_var = %Q(CONFIG_PATH="#{config_path}") if config_path
 skip_flags = ENV.fetch("SKIPS", "--skip-javascript --skip-docker")
 
+rails_version_constraint = ENV.fetch("RAILS_VERSION_CONSTRAINT")
+
 puts "=" * 80
 puts <<~EO_CONFIG_SUMMARY
   Config summary:
@@ -33,7 +35,7 @@ puts "=" * 80
 raise "Missing config YML file" if config_path && !(File.exist?(config_path) && File.file?(config_path))
 
 puts "Installing latest rails gem"
-system "gem install rails --no-document"
+system "gem install rails --version '#{rails_version_constraint}' --no-document"
 
 unless Dir.exist?(builds_path)
   puts "Creating #{builds_path}"

@@ -2,6 +2,12 @@ require "fileutils"
 require "shellwords"
 require "pp"
 
+# Express the Rails version as a requirement so that we will automatically
+# support the most recent patch version
+#
+# IMPORTANT: When you change this you must also update the
+# `RAILS_VERSION_CONSTRAINT` environment variable in `.githug/ci.yml` to ensure
+# that the CI runs against the correct version of Rails.
 RAILS_REQUIREMENT = "~> 7.1.1".freeze
 
 ##
