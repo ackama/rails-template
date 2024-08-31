@@ -16,9 +16,24 @@ Rails:
   Enabled: true
 
 AllCops:
-  # Target the oldest version of Ruby that Rails 7 supports
-  TargetRubyVersion: 2.7
-  TargetRailsVersion: 7.1
+  # Target the oldest Ruby that this template's chosen Rails version supports In
+  # a normal Rails app, Rubocop would infer this from the version of Ruby
+  # running. We want the rubocop checks that run on this repo to work for any
+  # version of Ruby that the chosen Rails version supports so we have to be
+  # explicit.
+  TargetRubyVersion:
+    <%=
+    YAML.safe_load(Pathname.new("./target_versions.yml").realpath.read).fetch("minimum_ruby_major_minor")
+    %>
+
+  # In a normal Rails app, Rubocop would pull this from the Gemfile. We want the
+  # rubocop checks that run on this repo to be consistent with the checks that
+  # run on generated apps so we have to be explicit.
+  TargetRailsVersion:
+    <%=
+    YAML.safe_load(Pathname.new("./target_versions.yml").realpath.read).fetch("target_rails_major_minor")
+    %>
+
   NewCops: enable
   DisplayCopNames: true
   DisplayStyleGuide: true
