@@ -122,7 +122,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4

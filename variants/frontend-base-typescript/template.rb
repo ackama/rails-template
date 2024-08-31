@@ -23,8 +23,8 @@ types_packages = %w[
 
 yarn_add_dependencies types_packages + %w[@babel/preset-typescript typescript]
 yarn_add_dev_dependencies %w[
-  @typescript-eslint/parser
-  @typescript-eslint/eslint-plugin
+  @typescript-eslint/eslint-plugin@7
+  @typescript-eslint/parser@7
 ]
 
 rename_js_file_to_ts "app/frontend/packs/application"
