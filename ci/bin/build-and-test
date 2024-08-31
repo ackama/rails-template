@@ -50,7 +50,16 @@ raise "Missing config YML file" if config_path && !(File.exist?(config_path) && 
 
 puts "Installing latest compatible rails gem"
 install_output = `gem install rails --version '#{rails_version_specifier}' --no-document`
-rails_version = install_output.split("\n").first.strip.sub("Successfully installed rails-", "")
+
+puts install_output # for ease of debugging
+
+rails_version = install_output
+                .split("\n")
+                .grep(/Successfully installed rails-/)
+                .first
+                .strip
+                .sub("Successfully installed rails-", "")
+
 puts "Using rails version #{rails_version}"
 
 unless Dir.exist?(builds_path)
