@@ -49,9 +49,9 @@ Rails.application.config.content_security_policy do |policy|
   #   `*_src` method.
   #
   # asset_host = if Rails.env.development? || Rails.env.test?
-  #                "http://#{Rails.application.secrets.asset_host}"
+  #                "http://#{Rails.application.config.app.asset_host}"
   #              else
-  #                "https://#{Rails.application.secrets.asset_host}"
+  #                "https://#{Rails.application.config.app.asset_host}"
   #              end
   # policy.default_src :self, asset_host
 

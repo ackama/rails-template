@@ -2,19 +2,21 @@ require "fileutils"
 require "shellwords"
 require "pp"
 
-RAILS_REQUIREMENT = "~> 7.1.1".freeze
-
 ##
 # This single template file will be downloaded and run by the `rails new`
 # command so all code it needs must be inlined we cannot load other files from
 # this repo.
 #
 class Config
-  DEFAULT_CONFIG_FILE_PATH = "../ackama_rails_template.config.yml".freeze
+  DEFAULT_CONFIG_PATH = "../ackama_rails_template.config.yml".freeze
+  DEFAULT_TARGET_VERSIONS_PATH = "../target_versions.yml".freeze
+
+  attr_reader :acceptable_rails_versions_specifier
 
   def initialize
-    config_file_path = File.absolute_path(ENV.fetch("CONFIG_PATH", DEFAULT_CONFIG_FILE_PATH))
+    config_file_path = File.absolute_path(ENV.fetch("CONFIG_PATH", DEFAULT_CONFIG_PATH))
     @yaml_config = YAML.safe_load(File.read(config_file_path))
+    @acceptable_rails_versions_specifier = load_acceptable_rails_versions_specifier
   end
 
   def staging_hostname
@@ -59,6 +61,22 @@ class Config
 
   def apply_variant_deploy_with_ackama_ec2_capistrano?
     @yaml_config.fetch("apply_variant_deploy_with_ackama_ec2_capistrano")
+  end
+
+  private
+
+  ##
+  # Rails version constraint is stored in a separate file so that it can be used
+  # outside of just the template
+  #
+  def load_acceptable_rails_versions_specifier
+    rel_path = ENV.fetch("TARGET_VERSIONS_PATH", DEFAULT_TARGET_VERSIONS_PATH)
+    abs_path = Pathname.new(rel_path).realpath
+    major_minor = YAML.safe_load(abs_path.read).fetch("target_rails_major_minor")
+
+    # Use the major.minor we got from the YAML file to build a RubyGems
+    # compatible specifier that will match all patch versions
+    "~> #{major_minor}.0"
   end
 end
 
@@ -306,11 +324,11 @@ def add_template_repository_to_source_path
 end
 
 def assert_minimum_rails_version
-  requirement = Gem::Requirement.new(RAILS_REQUIREMENT)
+  requirement = Gem::Requirement.new(TEMPLATE_CONFIG.acceptable_rails_versions_specifier)
   rails_version = Gem::Version.new(Rails::VERSION::STRING)
   return if requirement.satisfied_by?(rails_version)
 
-  puts "ERROR: This template requires Rails #{RAILS_REQUIREMENT}. You are using #{rails_version}"
+  puts "ERROR: This template requires Rails #{TEMPLATE_CONFIG.acceptable_rails_versions_specifier}. You are using #{rails_version}"
   exit 1
 end
 
