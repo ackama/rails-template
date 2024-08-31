@@ -111,6 +111,15 @@ TERMINAL.puts_header "Adding example devise links to the homepage"
 
 append_to_file "app/views/application/_header.html.erb" do
   <<~ERB
+    <%=
+      content_tag(:style, nonce: content_security_policy_nonce) do
+        <<~STYLE
+          /* Temp style to pass Lighthouse audit */
+          a { display: block; padding: 0.5rem; }
+          input { padding: 0.5rem; margin: 0.5rem; }
+        STYLE
+      end
+    %>
     <nav class="navbar navbar-expand-sm navbar-light bg-light">
       <div class="container-fluid">
         <h1>Example devise nav</h1>
