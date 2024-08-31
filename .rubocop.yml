@@ -225,9 +225,6 @@ Rails/Output:
 Style/BarePercentLiterals:
   EnforcedStyle: percent_q
 
-Style/ClassAndModuleChildren:
-  Enabled: false
-
 Style/DoubleNegation:
   Enabled: false
 
