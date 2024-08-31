@@ -20,3 +20,13 @@ empty_directory_with_keep_file "app/services"
 gsub_file! "app/mailers/application_mailer.rb",
            /default from: ['"]from@example\.com['"]/,
            "default from: Rails.application.config.app.mail_from"
+
+gsub_file!(
+  "app/controllers/application_controller.rb",
+  "allow_browser versions: :modern",
+  <<~AFTER
+    # As of Sept 2024, This includes Safari 17.2+, Chrome 120+, Firefox 121+,
+    # Opera 106+ which is too aggressive for us.
+    # allow_browser versions: :modern
+  AFTER
+)

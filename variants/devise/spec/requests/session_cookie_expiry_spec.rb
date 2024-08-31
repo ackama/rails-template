@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Session cookies are expired immediately after logout" do
   let(:password) { SecureRandom.hex(16) }
 
-  let(:user) { FactoryBot.create(:user, password: password) }
+  let(:user) { FactoryBot.create(:user, password:) }
 
   it "session cookies are invalidated by logging out" do
     # Sign in

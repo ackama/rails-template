@@ -17,8 +17,8 @@ copy_file "variants/backend-base/config/initializers/check_env.rb", "config/init
 copy_file "variants/backend-base/config/initializers/sentry.rb", "config/initializers/sentry.rb"
 
 gsub_file! "config/initializers/filter_parameter_logging.rb",
-           / {2}:passw, :secret, /,
-           "  :passw, :secret, :session, :cookie, :csrf, "
+           /:ssn/,
+           ":ssn, :session, :cookie, :csrf"
 
 apply "variants/backend-base/config/environments/development.rb"
 apply "variants/backend-base/config/environments/production.rb"

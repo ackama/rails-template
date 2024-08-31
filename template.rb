@@ -15,7 +15,7 @@ class Config
 
   def initialize
     config_file_path = File.absolute_path(ENV.fetch("CONFIG_PATH", DEFAULT_CONFIG_PATH))
-    @yaml_config = YAML.safe_load(File.read(config_file_path))
+    @yaml_config = YAML.safe_load_file(config_file_path)
     @acceptable_rails_versions_specifier = load_acceptable_rails_versions_specifier
   end
 
@@ -181,7 +181,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     ]
     run_with_clean_bundler_env "bundle binstubs #{binstubs.join(" ")} --force"
 
-    template "variants/backend-base/rubocop.yml.tt", ".rubocop.yml"
+    template "variants/backend-base/rubocop.yml.tt", ".rubocop.yml", force: true
     run_rubocop_autocorrections
 
     cleanup_package_json
@@ -262,8 +262,8 @@ def build_engines_field
   }
 end
 
-def update_package_json(&block)
-  package_json = JSON.load_file("./package.json").tap(&block)
+def update_package_json(&)
+  package_json = JSON.load_file("./package.json").tap(&)
 
   File.write("./package.json", "#{JSON.pretty_generate(package_json)}\n")
 end
@@ -399,10 +399,10 @@ def create_initial_migration
   run_with_clean_bundler_env "bin/rake db:migrate"
 end
 
-def gsub_file!(path, flag, *args, &block)
+def gsub_file!(path, flag, ...)
   content = File.binread(path)
 
-  gsub_file(path, flag, *args, &block)
+  gsub_file(path, flag, ...)
 
   raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
 end
