@@ -1,12 +1,28 @@
 #!/usr/bin/env ruby
 
 require "fileutils"
+require "pathname"
+require "yaml"
+
+def ensure_everything_is_committed
+  out = `git status -s`
+
+  raise StandardError, "there are uncommitted changes or un-staged files: #{out}" unless out.empty?
+end
+
+def build_rails_version_specifier(target_versions_path)
+  major_minor = YAML.safe_load(File.read(target_versions_path)).fetch("target_rails_major_minor")
+
+  "~> #{major_minor}.0"
+end
 
 root_path = File.absolute_path(File.join(__dir__, "../.."))
 template_path = File.join(root_path, "template.rb")
 builds_path = File.join(root_path, "tmp/builds")
 app_name = ENV.fetch("APP_NAME", "app")
 app_path = File.join(builds_path, app_name)
+target_versions_path = File.join(root_path, "target_versions.yml")
+rails_version_specifier = build_rails_version_specifier(target_versions_path)
 
 config_path = if ENV.fetch("CONFIG_PATH", "") == ""
                 File.join(root_path, "ackama_rails_template.config.yml")
@@ -16,8 +32,6 @@ config_path = if ENV.fetch("CONFIG_PATH", "") == ""
 
 config_env_var = %Q(CONFIG_PATH="#{config_path}") if config_path
 skip_flags = ENV.fetch("SKIPS", "--skip-javascript --skip-docker")
-
-rails_version_constraint = ENV.fetch("RAILS_VERSION_CONSTRAINT")
 
 puts "=" * 80
 puts <<~EO_CONFIG_SUMMARY
@@ -34,8 +48,10 @@ puts "=" * 80
 
 raise "Missing config YML file" if config_path && !(File.exist?(config_path) && File.file?(config_path))
 
-puts "Installing latest rails gem"
-system "gem install rails --version '#{rails_version_constraint}' --no-document"
+puts "Installing latest compatible rails gem"
+install_output = `gem install rails --version '#{rails_version_specifier}' --no-document`
+rails_version = install_output.split("\n").first.strip.sub("Successfully installed rails-", "")
+puts "Using rails version #{rails_version}"
 
 unless Dir.exist?(builds_path)
   puts "Creating #{builds_path}"
@@ -49,19 +65,13 @@ end
 
 Dir.chdir(builds_path) do |cwd|
   puts "Working dir is now #{cwd}"
-  cmd = %Q(#{config_env_var} RACK_ENV=development RAILS_ENV=development rails new "#{app_name}" -d postgresql #{skip_flags} -m "#{template_path}")
+  cmd = %Q(#{config_env_var} TARGET_VERSIONS_PATH="#{target_versions_path}" RACK_ENV=development RAILS_ENV=development rails _#{rails_version}_ new "#{app_name}" -d postgresql #{skip_flags} -m "#{template_path}") # rubocop:disable Layout/LineLength
   puts <<~EO_HELP
     Build command:
     #{cmd}
   EO_HELP
 
   system(cmd, exception: true)
-end
-
-def ensure_everything_is_committed
-  out = `git status -s`
-
-  raise StandardError, "there are uncommitted changes or un-staged files: #{out}" unless out.empty?
 end
 
 puts "Running post-generator checks"

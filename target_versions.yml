@@ -1,0 +1,8 @@
+# This template will work with Rails versions that match the given major.minor
+#
+# This is stored in a separate file so we can share it between the template and
+# our CI configuration.
+target_rails_major_minor: '7.1' # specify as major.minor
+
+# Set this to the minimum version of Ruby that the chosen Rails version supports.
+minimum_ruby_major_minor: '2.7'

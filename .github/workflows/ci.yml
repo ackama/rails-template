@@ -173,7 +173,4 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
-          # This version constraint string must match the value of the
-          # RAILS_REQUIREMENT constant in `./template.rb`
-          RAILS_VERSION_CONSTRAINT: '~> 7.1.1'
         run: ./ci/bin/build-and-test
