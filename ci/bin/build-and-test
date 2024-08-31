@@ -55,7 +55,7 @@ puts install_output # for ease of debugging
 
 rails_version = install_output
                 .split("\n")
-                .grep(/Successfully installed rails-/)
+                .grep(/Successfully installed rails-\d/)
                 .first
                 .strip
                 .sub("Successfully installed rails-", "")
