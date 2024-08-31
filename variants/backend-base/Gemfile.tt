@@ -6,7 +6,7 @@ ruby File.read(".ruby-version")
 gem "rails", "<%= Rails.version %>"
 gem "puma"
 gem "pg"
-gem 'dotenv-rails', require: "dotenv/rails-now"
+gem 'dotenv-rails', require: "dotenv/load"
 gem "bootsnap", require: false
 
 gem "shakapacker"

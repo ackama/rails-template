@@ -12,6 +12,7 @@ This is a template you can use to create new Rails applications.
   - [How do I use this?](#how-do-i-use-this)
   - [How do I use this template for every Rails app I create?](#how-do-i-use-this-template-for-every-rails-app-i-create)
   - [Contributing](#contributing)
+    - [Updating this template to a new Rails version](#updating-this-template-to-a-new-rails-version)
   - [Credits](#credits)
 
 ## Background
@@ -286,6 +287,13 @@ locally via the usual method:
 $ bundle install
 $ bundle exec rubocop # optionally adding -A for autofixes
 ```
+
+### Updating this template to a new Rails version
+
+1. Change the Rails and Ruby versions in
+   [./target_versions.yml](./target_versions.yml) as per the instructions in
+   that file.
+2. Update the template as required to support the new Rails version
 
 ## Credits
 
