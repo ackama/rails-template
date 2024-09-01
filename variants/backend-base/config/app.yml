@@ -14,6 +14,9 @@ default: &default
   # The default `From:` address to use for email sent by this application
   mail_from: "<%= ENV['MAIL_FROM'] %>"
 
+  # this should either begin with GTM- (for a container) or G- (for a tag)
+  google_analytics_id: "<%= ENV.fetch('GOOGLE_ANALYTICS_ID', nil) %>"
+
   active_record_encryption_primary_key:
     "<%= ENV.fetch('ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY') %>"
   active_record_encryption_deterministic_key:

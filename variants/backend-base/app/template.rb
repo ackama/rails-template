@@ -4,8 +4,7 @@ copy_file "variants/backend-base/app/controllers/active_storage/base_controller.
 
 # Configure app/views
 template "variants/backend-base/app/views/layouts/application.html.erb", "app/views/layouts/application.html.erb", force: true
-copy_file "variants/backend-base/app/views/application/_flash.html.erb", "app/views/application/_flash.html.erb"
-copy_file "variants/backend-base/app/views/application/_header.html.erb", "app/views/application/_header.html.erb"
+directory "variants/backend-base/app/views/application", "app/views/application"
 copy_file "variants/backend-base/app/views/home/index.html.erb", "app/views/home/index.html.erb"
 
 # Configure app/helpers

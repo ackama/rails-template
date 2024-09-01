@@ -6,6 +6,8 @@
       <%= app_const_base.titleize %>
     </title>
 
+    <%%= render "application/analytics/head" %>
+
     <%%= csrf_meta_tags %>
     <%%= csp_meta_tag %>
 
@@ -30,6 +32,8 @@
   </head>
 
   <body>
+    <%%= render "application/analytics/body" %>
+
     <%%= render("application/header") %>
     <%%= render("application/flash") %>
 
