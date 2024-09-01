@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "User sign-in" do
-  let(:user) { FactoryBot.create(:user, email: email, password: password) }
+  let(:user) { FactoryBot.create(:user, email:, password:) }
   let(:password) { "aaaabbbbccccdddd" }
   let(:email) { "miles.obrien@transporterrm3.enterprise.uss" }
 

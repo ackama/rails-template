@@ -26,8 +26,8 @@ RSpec.describe AuditLog do
     it "logs the expected line to the Rails log" do
       described_class.log_example_event(
         current_user: user,
-        remote_ip: remote_ip,
-        phase_of_moon: phase_of_moon,
+        remote_ip:,
+        phase_of_moon:,
         timestamp: timestamp_in_app_tz
       )
 

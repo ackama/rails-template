@@ -21,8 +21,8 @@ rescue LoadError
   # If highline is missing, we'll gracefully omit ansi color output
 end
 
-def within_project_root(&block)
-  Dir.chdir(File.expand_path("..", __dir__), &block)
+def within_project_root(&)
+  Dir.chdir(File.expand_path("..", __dir__), &)
 end
 
 def test(opts)
@@ -46,10 +46,10 @@ def run(command)
   end
 end
 
-def with_clean_bundler_env(&block)
+def with_clean_bundler_env(&)
   return yield unless defined?(Bundler)
 
-  Bundler.with_original_env(&block)
+  Bundler.with_original_env(&)
 end
 
 def copy(example_path)

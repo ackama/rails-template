@@ -36,11 +36,11 @@ class AuditLog
     new(
       type: EXAMPLE_LABEL,
       context: {
-        remote_ip: remote_ip,
+        remote_ip:,
         user_id: current_user.id,
-        phase_of_moon: phase_of_moon
+        phase_of_moon:
       },
-      timestamp: timestamp
+      timestamp:
     ).send_to_log
   end
 

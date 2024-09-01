@@ -11,7 +11,7 @@ def ensure_everything_is_committed
 end
 
 def build_rails_version_specifier(target_versions_path)
-  major_minor = YAML.safe_load(File.read(target_versions_path)).fetch("target_rails_major_minor")
+  major_minor = YAML.safe_load_file(target_versions_path).fetch("target_rails_major_minor")
 
   "~> #{major_minor}.0"
 end
