@@ -9,6 +9,9 @@
 // `$body-color` or write more CSS that override's Bootstrap's CSS like so:
 // `body { color: red; }`.
 
+// We use @import because Bootstrap will not support @use until v6. See
+// https://github.com/twbs/bootstrap/issues/30025#issuecomment-574825600
+
 @import "bootstrap/scss/functions"; // required
 @import "bootstrap/scss/mixins"; // required
 
