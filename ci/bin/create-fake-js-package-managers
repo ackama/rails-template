@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+
+# creates a set of fake JavaScript package managers in a temporary bin
+# directory for GitHub Actions, _excluding_ the one passed in as an
+# argument in order to assert that only that package manager is used
+
+require "fileutils"
+require "tmpdir"
+
+# setup the bin directory we want to use
+bin_dir = "tmp/fake-bin"
+
+if ENV["GITHUB_ACTIONS"]
+  bin_dir = Dir.mktmpdir("rails-template-")
+
+  puts "adding #{bin_dir} to GITHUB_PATH..."
+
+  File.write(ENV.fetch("GITHUB_PATH"), "#{bin_dir}\n", mode: "a+")
+elsif system("direnv --version > /dev/null 2>&1")
+  envrc_content = "PATH_add #{bin_dir}\n"
+
+  if File.exist?(".envrc") && File.read(".envrc").include?(envrc_content)
+    puts "'#{envrc_content.strip}' already exists in .envrc"
+  else
+    File.write(".envrc", envrc_content, mode: "a")
+    puts "Added '#{envrc_content.strip}' to .envrc"
+  end
+
+  # ensure the .envrc is allowed
+  system("direnv allow")
+end
+
+managers = %w[npm yarn pnpm bun]
+manager_in_use = ARGV[0] || ""
+
+if manager_in_use.empty?
+  manager_in_use = ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", "")
+                      .delete_suffix("_berry")
+                      .delete_suffix("_classic")
+end
+
+Dir.chdir(bin_dir) do
+  managers.each do |manager|
+    if manager == manager_in_use
+      # ensure that the manager is not stubbed in case we've changed managers
+      FileUtils.rm_f(manager)
+
+      next
+    end
+
+    puts "creating #{bin_dir}/#{manager}..."
+    File.write(
+      manager,
+      <<~CONTENTS
+        #!/usr/bin/env node
+
+        throw new Error("(#{manager}) this is not the package manager you're looking for...");
+      CONTENTS
+    )
+    File.chmod(0o755, manager)
+  end
+end

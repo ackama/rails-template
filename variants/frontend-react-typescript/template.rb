@@ -1,6 +1,6 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-run "yarn remove prop-types"
+package_json.manager.remove!(["prop-types"])
 yarn_add_dependencies %w[@types/react @types/react-dom]
 
 rename_js_file_to_ts "app/frontend/packs/server_rendering"

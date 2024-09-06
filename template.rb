@@ -92,6 +92,21 @@ end
 TEMPLATE_CONFIG = Config.new
 TERMINAL = Terminal.new
 
+# We need the major version of 'jest', '@types/jest', and 'ts-jest' to match
+# so we can only upgrade jest when there are compatible versions available
+JEST_MAJOR_VERSION = "29".freeze
+
+def require_package_json_gem
+  require "bundler/inline"
+
+  gemfile(true) do
+    source "https://rubygems.org"
+    gem "package_json"
+  end
+
+  puts "using package_json v#{PackageJson::VERSION}"
+end
+
 def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
   assert_minimum_rails_version
   assert_valid_options
@@ -121,7 +136,6 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   apply "variants/backend-base/bin/template.rb"
   apply "variants/backend-base/config/template.rb"
   apply "variants/backend-base/doc/template.rb"
-  apply "variants/backend-base/lib/template.rb"
   apply "variants/backend-base/public/template.rb"
   apply "variants/backend-base/spec/template.rb"
 
@@ -129,6 +143,12 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   # but also after `shakapacker:install` and after Rails has initialized the git
   # repo
   after_bundle do # rubocop:disable Metrics/BlockLength
+    require_package_json_gem
+
+    apply "variants/backend-base/lib/template.rb"
+
+    template "variants/backend-base/bin/setup.tt", "bin/setup", force: true
+
     # Remove the `test/` directory because we always use RSpec which creates
     # its own `spec/` directory
     remove_dir "test"
@@ -150,11 +170,11 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
       apply "variants/frontend-bootstrap-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_bootstrap?
       apply "variants/frontend-react-typescript/template.rb" if TEMPLATE_CONFIG.apply_variant_react?
 
-      run "yarn run typecheck"
+      package_json.manager.run!("typecheck")
     end
 
     # apply any js linting fixes after all frontend variants have run
-    run "yarn run js-lint-fix"
+    package_json.manager.run!("js-lint-fix")
 
     create_initial_migration
 
@@ -235,9 +255,73 @@ def apply_readme_template
 end
 
 def apply_prettier_all_over
-  run "yarn run format-fix"
+  package_json.manager.run!("format-fix")
 
   git commit: ". -m 'Run prettier one last time'"
+end
+
+# Sets Yarn Berry up in the project directory by initializing it with what is probably Yarn Classic.
+#
+# This is required as the Berry binary is actually downloaded and committed to the codebase, and
+# the global yarn command passes through to it when detected (even if its Yarn Classic).
+#
+# This also requires us to temporarily create a package.json as otherwise Yarn Berry will
+# look up the file tree and initialize itself in every directory that has a yarn.lock
+def setup_yarn_berry
+  # safeguard against parent directories having a yarn.lock
+  File.write("package.json", "{}") unless File.exist?("package.json")
+
+  run "yarn init -2"
+  run "yarn config set enableGlobalCache true"
+  run "yarn config set nodeLinker #{ENV.fetch("PACKAGE_JSON_YARN_BERRY_LINKER", "node-modules")}"
+
+  ignores = <<~YARN
+    .pnp.*
+    .yarn/*
+    !.yarn/patches
+    !.yarn/plugins
+    !.yarn/releases
+    !.yarn/sdks
+    !.yarn/versions
+  YARN
+  File.write(".gitignore", ignores, mode: "a")
+
+  # this will be properly (re)created later
+  File.unlink("package.json")
+end
+
+# Bun uses a binary-based lockfile which cannot be parsed by shakapacker or
+# osv-detector, so we want to configure bun to always write a yarn.lock
+# in addition so that such tools can check it
+def setup_bun
+  File.write("bunfig.toml", <<~TOML)
+    [install.lockfile]
+    print = "yarn"
+  TOML
+end
+
+def add_yarn_package_extension_dependency(name, dependency)
+  return unless File.exist?(".yarnrc.yml")
+
+  require "yaml"
+
+  yarnrc = YAML.load_file(".yarnrc.yml")
+
+  yarnrc["packageExtensions"] ||= {}
+  yarnrc["packageExtensions"]["#{name}@*"] ||= {}
+  yarnrc["packageExtensions"]["#{name}@*"]["dependencies"] ||= {}
+  yarnrc["packageExtensions"]["#{name}@*"]["dependencies"][dependency] = "*"
+
+  File.write(".yarnrc.yml", yarnrc.to_yaml)
+end
+
+def package_json
+  if @package_json.nil?
+    setup_yarn_berry if ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", nil) == "yarn_berry"
+    setup_bun if ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", nil) == "bun"
+  end
+
+  @package_json ||= PackageJson.new
 end
 
 # Normalizes the constraints of the given hash of dependencies so that they
@@ -254,50 +338,48 @@ def normalize_dependency_constraints(deps)
   end
 end
 
-def build_engines_field
+def build_engines_field(existing)
   node_version = File.read("./.node-version").strip
-  {
-    node: "^#{node_version}",
-    yarn: "^1.0.0"
-  }
-end
 
-def update_package_json(&)
-  package_json = JSON.load_file("./package.json").tap(&)
-
-  File.write("./package.json", "#{JSON.pretty_generate(package_json)}\n")
+  existing.merge({
+    "node" => "^#{node_version}",
+    "yarn" => "^1.0.0"
+  })
 end
 
 def cleanup_package_json
-  update_package_json do |package_json|
-    # ensure that the package name is set based on the folder
-    package_json["name"] = File.basename(__dir__)
-
-    # set engines constraint in package.json
-    package_json["engines"] = build_engines_field
-
-    # ensure that all dependency constraints are normalized
-    %w[dependencies devDependencies].each { |k| package_json[k] = normalize_dependency_constraints(package_json[k]) }
+  package_json.merge! do |pj|
+    {
+      "name" => File.basename(__dir__),
+      "engines" => build_engines_field(pj.fetch("engines", {})),
+      "dependencies" => normalize_dependency_constraints(pj.fetch("dependencies", {})),
+      "devDependencies" => normalize_dependency_constraints(pj.fetch("devDependencies", {}))
+    }
   end
 
-  run "npx -y sort-package-json"
+  # TODO: this doesn't work when using pnpm even though it shouldn't matter? anyway, replace with 'exec' support
+  # run "npx -y sort-package-json"
 
-  # ensure the yarn.lock is up to date with any changes we've made to package.json
-  run "yarn install"
+  # ensure the lockfile is up to date with any changes we've made to package.json
+  package_json.manager.install!
 end
 
 # Adds the given <code>packages</code> as dependencies using <code>yarn add</code>
 #
 # @param [Array<String>] packages
 def yarn_add_dependencies(packages)
-  run "yarn add #{packages.join " "}"
+  puts "adding #{packages.join(" ")} as dependencies"
+
+  package_json.manager.add!(packages)
 end
 
 # Adds the given <code>packages</code> as devDependencies using <code>yarn add --dev</code>
 #
 # @param [Array<String>] packages
 def yarn_add_dev_dependencies(packages)
-  run "yarn add --dev #{packages.join " "}"
+  puts "adding #{packages.join(" ")} as dev dependencies"
+
+  package_json.manager.add!(packages, type: :dev)
 end
 
 # Add this template directory to source_paths so that Thor actions like

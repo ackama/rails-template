@@ -18,6 +18,13 @@ concurrency:
 # should be granted per job as needed using a dedicated `permissions` block
 permissions: {}
 
+env:
+  # reduces noise from npm install
+  DISABLE_OPENCOLLECTIVE: true
+  OPEN_SOURCE_CONTRIBUTOR: true
+  NPM_CONFIG_FUND: false
+  NPM_CONFIG_AUDIT: false
+
 jobs:
   audit_dependencies:
     permissions:
@@ -29,6 +36,8 @@ jobs:
           persist-credentials: false
       - name: Audit dependencies for security vulnerabilities
         uses: g-rath/check-with-osv-detector@main
+        with:
+          osv-detector-version: 0.13.0
   test:
     permissions:
       contents: read
@@ -70,6 +79,24 @@ jobs:
       # how many fail)
       fail-fast: false
       matrix:
+        js_package_manager:
+          - name: npm
+            installer: npm
+          - name: yarn_berry
+            installer: yarn
+            linker: pnp
+          - name: yarn_berry
+            installer: yarn
+            linker: node-modules
+          - name: yarn_berry
+            installer: yarn
+            linker: pnpm
+          - name: yarn_classic
+            installer: yarn
+          - name: pnpm
+            installer: pnpm
+          - name: bun
+            installer: bun
         variant:
           - name: defaults
             config_path: 'ackama_rails_template.config.yml'
@@ -131,6 +158,8 @@ jobs:
       # this ensures that osv-detector is available for running bin/ci-run
       - name: Check dependencies for vulnerabilities (and setup osv-detector)
         uses: g-rath/check-with-osv-detector@main
+        with:
+          osv-detector-version: 0.13.0
 
       # this ensures that actionlint is available for running bin/ci-run
       - name: Setup ActionLint
@@ -142,8 +171,10 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v4
         with:
-          cache: 'yarn'
           node-version-file: '.node-version'
+
+      - name: install package manager
+        run: npm i -g ${{ matrix.js_package_manager.installer }}
 
       # We don't cache gems or JS packages because we are actually testing how
       # installation and setup works in this project so, while caching would
@@ -161,6 +192,9 @@ jobs:
           git config --global user.email "you@example.com"
           git config --global user.name "Your Name"
 
+      # prettier-ignore
+      - run: ./ci/bin/create-fake-js-package-managers ${{ matrix.js_package_manager.installer }}
+
       - name: Run CI script
         env:
           # Remember that your app name becomes a top-level constant in the
@@ -173,4 +207,7 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
+          PACKAGE_JSON_FALLBACK_MANAGER: ${{ matrix.js_package_manager.name }}
+          PACKAGE_JSON_YARN_BERRY_LINKER:
+            ${{ matrix.js_package_manager.linker }}
         run: ./ci/bin/build-and-test
