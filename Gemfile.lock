@@ -32,8 +32,7 @@ GEM
     rack (3.0.9.1)
     rainbow (3.1.1)
     regexp_parser (2.9.0)
-    rexml (3.3.6)
-      strscan
+    rexml (3.3.9)
     rubocop (1.60.2)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -65,7 +64,6 @@ GEM
       rubocop-factory_bot (~> 2.22)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    strscan (3.1.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
