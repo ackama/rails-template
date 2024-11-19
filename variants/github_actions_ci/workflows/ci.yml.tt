@@ -101,7 +101,7 @@ jobs:
       - name: Check Run Ruby model annotations
         run: bundle exec annotate --frozen
       - name: Check Ruby controller annotations
-        run: bundle exec chusaku --exit-with-error-on-annotation
+        run: bundle exec chusaku --verbose --exit-with-error-on-annotation
       - run: bundle exec rubocop
       - run: bundle exec erblint .
       - run: bundle exec brakeman --run-all-checks .
