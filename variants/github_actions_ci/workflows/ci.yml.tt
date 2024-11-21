@@ -49,7 +49,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
-          cache: 'yarn'
+          cache: 'npm'
       - run: <%= package_json.manager.native_install_command(frozen: true).join(" ") %>
       <%- if TEMPLATE_CONFIG.use_typescript? -%>
       - run: <%= package_json.manager.native_run_command("typecheck").join(" ") %>
@@ -109,7 +109,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
-          cache: 'yarn'
+          cache: 'npm'
       - run: <%= package_json.manager.native_install_command(frozen: true).join(" ") %>
       - run: bundle exec rspec spec --format progress
       - name: Archive spec outputs
