@@ -33,7 +33,7 @@ Where possible we stick to Rails defaults.
 
 - General
   - [puma](https://github.com/puma/puma) as application server
-  - [Yarn](https://yarnpkg.com/) for managing JS packages
+  - [npm](https://www.npmjs.com/) for managing JS packages
   - PostgreSQL as database. This template only supports PostgreSQL.
   - A much-improved `bin/setup` script
   - Install [dotenv](https://github.com/bkeepers/dotenv)
@@ -155,7 +155,7 @@ our other templates:
 Before running this template, you must have the following installed on your
 machine:
 
-- Yarn v1.21.0 or later
+- NPM v10.0.0 or later
 - Rails 7.1.x
 
 The following are not strictly required to run the template but you will need it
