@@ -230,8 +230,8 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
     # erblint does not like some of Rails auto-generated ERB code e.g.
     # `app/views/layouts/mailer.html.erb` so we auto-correct it.
-    copy_file "variants/backend-base/.erb-lint.yml", ".erb-lint.yml"
-    run_with_clean_bundler_env "bundle exec erblint --autocorrect ."
+    copy_file "variants/backend-base/.erb_lint.yml", ".erb_lint.yml"
+    run_with_clean_bundler_env "bundle exec erb_lint --autocorrect ."
     git add: "-A ."
     git commit: "-n -m 'Set up erblint'"
 
