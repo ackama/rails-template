@@ -20,8 +20,8 @@ run "bundle exec rails generate annotate_rb:install"
 TERMINAL.puts_header "Annotating code"
 
 run "bundle exec chusaku"
-run "bundle exec annotate models"
-run "bundle exec annotate routes"
+run "bundle exec annotaterb models"
+run "bundle exec annotaterb routes"
 
 TERMINAL.puts_header "Running rubocop -A to fix formatting in files related to annotations"
 run "bundle exec rubocop -A -c ./.rubocop.yml"
