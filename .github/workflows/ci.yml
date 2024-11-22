@@ -185,7 +185,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: 3.3.5 # 'ruby'
+          ruby-version: 3.3.4 # 'ruby'
 
       - name: Setup git for committing
         run: |
