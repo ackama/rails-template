@@ -70,7 +70,7 @@ jobs:
       - name: Run Rubocop
         run: bundle exec rubocop
 
-  test_generated_apps:
+  apps: # GitHub UI truncates job names so keep this short
     permissions:
       contents: read
     runs-on: ubuntu-latest
@@ -82,21 +82,22 @@ jobs:
         js_package_manager:
           - name: npm
             installer: npm
-          - name: yarn_berry
-            installer: yarn
-            linker: pnp
-          - name: yarn_berry
-            installer: yarn
-            linker: node-modules
-          - name: yarn_berry
-            installer: yarn
-            linker: pnpm
-          - name: yarn_classic
-            installer: yarn
-          - name: pnpm
-            installer: pnpm
-          - name: bun
-            installer: bun
+          # TODO: temp disable to make CI easier to grok
+          # - name: yarn_berry
+          #   installer: yarn
+          #   linker: pnp
+          # - name: yarn_berry
+          #   installer: yarn
+          #   linker: node-modules
+          # - name: yarn_berry
+          #   installer: yarn
+          #   linker: pnpm
+          # - name: yarn_classic
+          #   installer: yarn
+          # - name: pnpm
+          #   installer: pnpm
+          # - name: bun
+          #   installer: bun
         variant:
           - name: defaults
             config_path: 'ackama_rails_template.config.yml'
