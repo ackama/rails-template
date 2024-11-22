@@ -113,7 +113,7 @@ jobs:
       - run: <%= package_json.manager.native_install_command(frozen: true).join(" ") %>
       - run: bundle exec rspec spec --format progress
       - name: Archive spec outputs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
           name: rspec-output-screenshots
