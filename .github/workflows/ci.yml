@@ -184,7 +184,7 @@ jobs:
       - name: Install Ruby and Bundler
         uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: true
+          bundler-cache: false
           ruby-version: 'ruby'
 
       - name: Setup git for committing
