@@ -33,66 +33,60 @@ gsub_file! "config/environments/production.rb",
            'ENV.fetch("RAILS_LOG_LEVEL", "info")',
            'ENV.fetch("RAILS_LOG_LEVEL", ENV.fetch("LOG_LEVEL", "info"))'
 
-# insert_into_file "config/environments/production.rb",
-#                  after: /.*config\.public_file_server\.enabled.*\n/ do
-#   <<~'RUBY'
+# TODO: https://github.com/ackama/rails-template/issues/569
+insert_into_file "config/environments/production.rb",
+                 after: /.*config\.public_file_server\.enabled.*\n/ do
+  <<~'RUBY'
 
-#     # Ensure that Rails sets appropriate caching headers on static assets if
-#     # Rails is serving static assets in production e.g. on Heroku
-#     #
-#     # Overview of Cache-control values:
-#     #
-#     #     max-age=<seconds>
-#     #         The maximum amount of time a resource is considered fresh.
-#     #
-#     #     s-maxage=<seconds>
-#     #         Overrides max-age or the Expires header, but only for shared
-#     #         caches (e.g., proxies). Ignored by private caches.
-#     #
-#     #     More info: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
-#     #
-#     # Our Cache-Control header:
-#     #
-#     # * It tells all caches (both proxies like Cloudflare and the users web
-#     #   browser) that the asset can be cached.
-#     # * It tells shared caches (e.g. Cloudflare) that they can cache it for 365 days
-#     # * It tells browsers that they should cache for 365 days
-#     #
-#     # Cloudflare will respect s-maxage if it is set so change that value if you
-#     # want Cloudflare to cache differently than then browser.
-#     #
-#     config.public_file_server.headers = {
-#       "Cache-Control" => "public, s-maxage=#{365.days.seconds}, max-age=#{365.days.seconds}"
-#     }
+    # Ensure that Rails sets appropriate caching headers on static assets if
+    # Rails is serving static assets in production e.g. on Heroku
+    #
+    # Overview of Cache-control values:
+    #
+    #     max-age=<seconds>
+    #         The maximum amount of time a resource is considered fresh.
+    #
+    #     s-maxage=<seconds>
+    #         Overrides max-age or the Expires header, but only for shared
+    #         caches (e.g., proxies). Ignored by private caches.
+    #
+    #     More info: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+    #
+    # Our Cache-Control header:
+    #
+    # * It tells all caches (both proxies like Cloudflare and the users web
+    #   browser) that the asset can be cached.
+    # * It tells shared caches (e.g. Cloudflare) that they can cache it for 365 days
+    # * It tells browsers that they should cache for 365 days
+    #
+    # Cloudflare will respect s-maxage if it is set so change that value if you
+    # want Cloudflare to cache differently than then browser.
+    #
+    config.public_file_server.headers = {
+      "Cache-Control" => "public, s-maxage=#{365.days.seconds}, max-age=#{365.days.seconds}"
+    }
+  RUBY
+end
 
-#     #########################
-
-#     # Rails 8 default:
-#     # config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
-
-#   RUBY
-# end
-
-# TODO: this won't match anything because 8 uses solid_cache
-# insert_into_file! "config/environments/production.rb",
- #                  after: /.*config.cache_store = :mem_cache_store\n/ do
-#   <<~RUBY
-#     if ENV.fetch("RAILS_CACHE_REDIS_URL", nil)
-#       config.cache_store = :redis_cache_store, {
-#         url: ENV.fetch("RAILS_CACHE_REDIS_URL"),
-#         ##
-#         # Configuring a connection pool for Redis as Rails cache is documented in:
-#         #
-#         # * https://edgeguides.rubyonrails.org/caching_with_rails.html#connection-pool-options
-#         #
-#         # but some more details are available in:
-#         #
-#         # * https://github.com/rails/rails/blob/a5d1628c79ab89dfae57ec1e1aeca467e29de188/activesupport/lib/active_support/cache.rb#L168-L173
-#         # * https://github.com/rails/rails/blob/9b4aef4be3dc58eb08f694387857b52be8050954/activesupport/lib/active_support/cache/redis_cache_store.rb#L185-L192
-#         #
-#         pool_size: Integer(ENV.fetch("RAILS_MAX_THREADS", 5)), # number of connections **per puma process**
-#         pool_timeout: 5 # num seconds to wait for a connection
-#       }
-#     end
-#   RUBY
-# end
+insert_into_file! "config/environments/production.rb",
+                  after: /.*config.cache_store = :mem_cache_store\n/ do
+  <<~RUBY
+    if ENV.fetch("RAILS_CACHE_REDIS_URL", nil)
+      config.cache_store = :redis_cache_store, {
+        url: ENV.fetch("RAILS_CACHE_REDIS_URL"),
+        ##
+        # Configuring a connection pool for Redis as Rails cache is documented in:
+        #
+        # * https://edgeguides.rubyonrails.org/caching_with_rails.html#connection-pool-options
+        #
+        # but some more details are available in:
+        #
+        # * https://github.com/rails/rails/blob/a5d1628c79ab89dfae57ec1e1aeca467e29de188/activesupport/lib/active_support/cache.rb#L168-L173
+        # * https://github.com/rails/rails/blob/9b4aef4be3dc58eb08f694387857b52be8050954/activesupport/lib/active_support/cache/redis_cache_store.rb#L185-L192
+        #
+        pool_size: Integer(ENV.fetch("RAILS_MAX_THREADS", 5)), # number of connections **per puma process**
+        pool_timeout: 5 # num seconds to wait for a connection
+      }
+    end
+  RUBY
+end
