@@ -1,25 +1,21 @@
-##
-# Invokes the template as a user would, not as CI does via the build-and-test script.
-# Automatically removes old DB before generating the app if required
-#
+require "rubygems"
+
 class Builder
   def initialize(config:)
     @config = config
+    @rails_cmd_version = build_rails_cmd_version(target_rails_major_minor: config.target_rails_major_minor)
   end
 
   def build
-    verify_rails_cmd_is_expected_version!
-
     Dir.chdir(@config.build_path) do
       delete_any_previous_build
       drop_dbs_from_previous_build
 
-      # TODO: how to handle errors? raise? or log and continue? or rename the app dir with a .failed suffix?
-      # TODO: how to handle output? redirect to a file? or sep files for stdout and stderr?
-
       if @config.vanilla?
+        Terminal.puts_header("Building vanilla Rails app")
         system(build_vanilla_cmd_env, build_vanilla_cmd)
       else
+        Terminal.puts_header("Building Rails app")
         system(build_cmd_env, build_cmd)
       end
     end
@@ -29,7 +25,7 @@ class Builder
 
   def base_cmd_parts
     [
-      "rails new #{@config.app_name}",
+      "rails _#{@rails_cmd_version}_ new #{@config.app_name}",
       "-d postgresql",
       "--skip-javascript",
       "--skip-kamal",
@@ -37,12 +33,25 @@ class Builder
     ]
   end
 
-  def verify_rails_cmd_is_expected_version!
-    actual_rails_version = `rails -v`.strip.sub("Rails ", "")
+  def build_rails_cmd_version(target_rails_major_minor:)
+    specs = Gem::Specification.find_all_by_name("rails")
 
-    return if actual_rails_version.start_with?(@config.target_rails_major_minor)
+    raise "No versions of gem '#{gem_name}' are installed" if specs.empty?
 
-    raise "Expected Rails version #{@config.target_rails_major_minor}, but got #{actual_rails_version}"
+    version = specs
+              .map { _1.version.to_s }
+              .sort
+              .reverse
+              .find { |v| v.start_with?(target_rails_major_minor) }
+    test_cmd = "rails _#{version}_ -v"
+    expected_test_output = "Rails #{version}"
+    actual_test_output = `#{test_cmd}`.strip
+
+    raise "Command failed: #{test_cmd}. Actual: #{actual_test_output}" unless expected_test_output == actual_test_output
+
+    Terminal.puts_header("Using Rails version #{version}")
+
+    version
   end
 
   def delete_any_previous_build
@@ -84,17 +93,10 @@ class Builder
     base_cmd_parts.join(" ")
   end
 
-  def print_separator
-    puts ""
-    puts "*" * 80
-    puts ""
-  end
-
   def drop_dbs_from_previous_build
-    print_separator
+    Terminal.puts_header("Dropping databases from previous build")
     system "psql -c 'DROP DATABASE IF EXISTS #{@config.app_name}_test;'"
     system "psql -c 'DROP DATABASE IF EXISTS #{@config.app_name}_development;'"
     system "psql -c 'DROP DATABASE IF EXISTS #{@config.app_name}_test;'"
-    print_separator
   end
 end

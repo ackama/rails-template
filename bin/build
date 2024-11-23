@@ -2,8 +2,9 @@
 
 require "fileutils"
 require "yaml"
-require_relative "./lib/config"
-require_relative "./lib/builder"
+require_relative "lib/build_config"
+require_relative "lib/builder"
+require_relative "lib/terminal"
 
 # Usage:
 #
@@ -19,13 +20,23 @@ require_relative "./lib/builder"
 #   $ ./build default       # build using the default config
 #   $ ./build basic         # build using the basic CI config
 #   $ ./build react         # build using the React CI config
+#
+# You can capture the output to a file using the `tee` command:
+#
+#   $ ./build all_variants | tee build.log
+#
+# If you want to capture the output to a file and keep the color output, you can
+# use the `unbuffer` command:
+#
+#   $ brew install expect # or your linux distro equivalent
+#   $ unbuffer ./build all_variants | tee build.log
 
 class Main
   class << self
     def main
-      configs = Config.resolve_to_configs(ARGV.first)
+      configs = BuildConfig.resolve_to_configs(ARGV.first)
 
-      puts configs_summary(configs)
+      Terminal.puts_header(configs_summary(configs))
 
       configs.each do |config|
         Builder.new(config:).build

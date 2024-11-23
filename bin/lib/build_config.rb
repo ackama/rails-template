@@ -1,4 +1,4 @@
-class Config
+class BuildConfig
   PROJECT_ROOT_PATH = File.absolute_path(File.join(__dir__, "../.."))
   CI_CONFIGS_PATH = File.join(PROJECT_ROOT_PATH, "ci/configs")
   BUILD_PATH = File.join(PROJECT_ROOT_PATH, "tmp/builds")
