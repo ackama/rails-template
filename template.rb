@@ -97,6 +97,8 @@ TERMINAL = Terminal.new
 JEST_MAJOR_VERSION = "29".freeze
 
 def require_package_json_gem
+  old_env = ENV.to_h
+
   require "bundler/inline"
 
   gemfile(true) do
@@ -105,6 +107,8 @@ def require_package_json_gem
   end
 
   puts "using package_json v#{PackageJson::VERSION}"
+
+  ENV.replace(old_env)
 end
 
 def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
