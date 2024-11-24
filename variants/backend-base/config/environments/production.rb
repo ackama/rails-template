@@ -1,13 +1,3 @@
-insert_into_file "config/environments/production.rb",
-                 after: /# config\.assets\.css_compressor = :sass\n/ do
-  <<-RUBY
-
-  # Disable minification since it adds a *huge* amount of time to precompile.
-  # Anyway, gzip alone gets us about 70% of the benefits of minify+gzip.
-  config.assets.css_compressor = false
-  RUBY
-end
-
 gsub_file! "config/environments/production.rb",
            "config.force_ssl = true",
            <<~RUBY
@@ -46,10 +36,7 @@ gsub_file! "config/environments/production.rb",
            'ENV.fetch("RAILS_LOG_LEVEL", "info")',
            'ENV.fetch("RAILS_LOG_LEVEL", ENV.fetch("LOG_LEVEL", "info"))'
 
-gsub_file! "config/environments/production.rb",
-           "ActiveSupport::Logger.new(STDOUT)",
-           "ActiveSupport::Logger.new($stdout)"
-
+# TODO: https://github.com/ackama/rails-template/issues/569
 insert_into_file "config/environments/production.rb",
                  after: /.*config\.public_file_server\.enabled.*\n/ do
   <<~'RUBY'
@@ -81,7 +68,6 @@ insert_into_file "config/environments/production.rb",
     config.public_file_server.headers = {
       "Cache-Control" => "public, s-maxage=#{365.days.seconds}, max-age=#{365.days.seconds}"
     }
-
   RUBY
 end
 
