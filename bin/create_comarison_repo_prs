@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require_relative "lib/comparison_config"
+require_relative "lib/terminal"
+
+class Main
+  class << self
+    def main(dry_run:)
+      Dir.chdir(ComparisonConfig.comparison_repo_root_path) do
+        ComparisonConfig.comparison_builds.each do |build_name|
+          Terminal.puts_header("Creating PR for #{build_name}")
+          cmd = "gh pr create --title 'Compare #{build_name} against vanilla Rails' --body 'Compare #{build_name} against vanilla Rails' --base main --head #{build_name} #{dry_run ? "--dry-run" : ""}"
+          system(cmd)
+        end
+      end
+    end
+  end
+end
+
+Main.main(dry_run: ARGV.include?("--dry-run"))
