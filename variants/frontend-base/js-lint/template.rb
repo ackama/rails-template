@@ -5,7 +5,7 @@ add_yarn_package_extension_dependency("eslint-plugin-prettier", "eslint-config-p
 
 yarn_add_dev_dependencies %w[
   eslint@8
-  eslint-config-ackama
+  eslint-config-ackama@3
   eslint-plugin-node
   eslint-plugin-import
   eslint-plugin-prettier
