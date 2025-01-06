@@ -7,7 +7,7 @@ insert_into_file "Gemfile", after: /group :development do\n/ do
   <<-GEMS
   # code annotation
   gem "chusaku", require: false
-  gem "annotate", require: false
+  gem "annotaterb", require: false
 
   GEMS
 end
@@ -15,12 +15,13 @@ end
 run "bundle install"
 
 # adds a rake task which causes annotate to auto-run on every migration
-run "bundle exec rails generate annotate:install"
+run "bundle exec rails generate annotate_rb:install"
 
 TERMINAL.puts_header "Annotating code"
 
 run "bundle exec chusaku"
-run "bundle exec annotate"
+run "bundle exec annotaterb models"
+run "bundle exec annotaterb routes"
 
 TERMINAL.puts_header "Running rubocop -A to fix formatting in files related to annotations"
 run "bundle exec rubocop -A -c ./.rubocop.yml"
