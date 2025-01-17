@@ -80,20 +80,6 @@ new_ackama_cap_config_snippet = <<~EO_RUBY
   set :rbenv_ruby, File.read(".ruby-version").strip
   set :rbenv_map_bins, %w[rake gem bundle ruby rails]
 
-  namespace :git do
-    desc "Determine the commit time of the revision that will be deployed"
-    task :set_current_revision_time do
-      on release_roles(:all), in: :groups, limit: fetch(:git_max_concurrent_connections), wait: fetch(:git_wait_interval) do
-        within repo_path do
-          with fetch(:git_environmental_variables) do
-            # fetches the revision time of the latest commit for the environment branch as a unix timestamp
-            set :current_revision_time, capture(:git, "log -1 --pretty=format:\\"%ct\\" #\{fetch(:branch)}")
-          end
-        end
-      end
-    end
-  end
-
   namespace :deploy do
     desc "Restart application"
     task :restart do
@@ -125,25 +111,6 @@ new_ackama_cap_config_snippet = <<~EO_RUBY
     end
 
     after :publishing, :restart
-
-    desc "Place a REVISION_TIME file with the current revision commit time in the current release path"
-    task set_current_revision_time: "git:set_current_revision_time" do
-      on release_roles(:all) do
-        within release_path do
-          execute :echo, ""#\{fetch(:current_revision_time)}" > REVISION_TIME"
-        end
-      end
-    end
-
-    task :set_previous_revision_time do
-      on release_roles(:all) do
-        target = release_path.join("REVISION_TIME")
-        set(:previous_revision_time, capture(:cat, target, "2>/dev/null")) if test "[ -f #\{target} ]"
-      end
-    end
-
-    after :set_current_revision, :set_current_revision_time
-    after :set_previous_revision, :set_previous_revision_time
   end
 
   namespace :dotenv do
