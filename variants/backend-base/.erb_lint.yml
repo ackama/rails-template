@@ -19,6 +19,8 @@ linters:
   SelfClosingTag:
     enabled: true
     enforced_style: 'always'
+  StrictLocals:
+    enabled: true
   Rubocop:
     enabled: true
     rubocop_config:
