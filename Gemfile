@@ -5,9 +5,10 @@
 
 source "https://rubygems.org"
 
-gem "rubocop", "~> 1.31"
-gem "rubocop-capybara", "~> 2.18"
-gem "rubocop-factory_bot", "~> 2.23"
-gem "rubocop-performance", "~> 1.14"
-gem "rubocop-rails", "~> 2.15"
-gem "rubocop-rspec", "~> 2.12"
+gem "rubocop", "~> 1.60"
+gem "rubocop-capybara", "~> 2.20"
+gem "rubocop-factory_bot", "~> 2.25"
+gem "rubocop-performance", "~> 1.20"
+gem "rubocop-rails", "~> 2.30"
+gem "rubocop-rspec", "~> 3.5"
+gem "rubocop-rspec_rails", "~> 2.30"
