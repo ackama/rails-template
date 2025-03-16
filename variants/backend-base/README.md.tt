@@ -169,9 +169,9 @@ npm run lighthouse-spec
 ### Source code annotations
 
 The [chusaku](https://github.com/nshki/chusaku) and
-[annotate](https://github.com/ctran/annotate_models) gems are installed in
+[annotaterb](https://github.com/drwl/annotaterb) gems are installed in
 development. Chusaku annotates controller actions with a comment detailing the
-route. Annotate annotates models and fixtures with a comment detailing the DB
+route. AnnotateRb annotates models and fixtures with a comment detailing the DB
 schema. You can run them manually via:
 
 ```bash
@@ -179,10 +179,10 @@ schema. You can run them manually via:
 bundle exec chusaku
 
 # update model, fixture, spec annotation comments (not usually required, auto-runs on migrations)
-bundle exec annotate
+bundle exec annotaterb models
 ```
 
-Annotate runs automatically after migrations. You will have to run Chusaku
+AnnotateRb runs automatically after migrations. You will have to run Chusaku
 manually after you add controller actions. CI verifies that these annotations
 are up to date.
 

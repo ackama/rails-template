@@ -99,7 +99,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Check Run Ruby model annotations
-        run: bundle exec annotate --frozen
+        run: bundle exec annotaterb models --frozen
       - name: Check Ruby controller annotations
         run: bundle exec chusaku --verbose --exit-with-error-on-annotation
       - run: bundle exec rubocop
