@@ -1,8 +1,8 @@
 # Be sure to restart your server when you modify this file.
 
-# Define an application-wide content security policy
-# For further information see the following documentation
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+# Define an application-wide content security policy.
+# See the Securing Rails Applications Guide for more information:
+# https://guides.rubyonrails.org/security.html#content-security-policy-header
 
 Rails.application.config.content_security_policy do |policy|
   google_analytics_enabled = Rails.application.config.app.google_analytics_id.present?
@@ -123,18 +123,18 @@ end
 # Configure nonce
 # ###############
 
-# If you are using UJS then enable automatic nonce generation
+# Generate session nonces for permitted importmap, inline scripts, and inline styles.
 Rails.application.config.content_security_policy_nonce_generator = ->(_request) { SecureRandom.base64(16) }
 
 # Set the nonce only to specific directives
-# Rails.application.config.content_security_policy_nonce_directives = %w(script-src)
+# Rails.application.config.content_security_policy_nonce_directives = %w(script-src style-src)
 
 # ################################
 # Configure reporting vs enforcing
 # ################################
 #
-# Report CSP violations to a specified URI. For further information see the
-# following documentation:
+# Report CSP violations to a specified URI without enforcing the policy.
+# For further information see the following documentation:
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
 #
 # We default to turning on enforcement in all environments so that we can catch
