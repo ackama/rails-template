@@ -34,8 +34,8 @@ gsub_file! "config/environments/production.rb",
            'ENV.fetch("RAILS_LOG_LEVEL", ENV.fetch("LOG_LEVEL", "info"))'
 
 # TODO: https://github.com/ackama/rails-template/issues/569
-insert_into_file "config/environments/production.rb",
-                 after: /.*config\.public_file_server\.enabled.*\n/ do
+insert_into_file! "config/environments/production.rb",
+                  after: /.*config\.public_file_server\.enabled.*\n/ do
   <<~'RUBY'
 
     # Ensure that Rails sets appropriate caching headers on static assets if
