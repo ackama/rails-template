@@ -229,12 +229,12 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     # generate routes and models
     apply "variants/code-annotation/template.rb"
 
-    # erblint does not like some of Rails auto-generated ERB code e.g.
+    # erb_lint does not like some of Rails auto-generated ERB code e.g.
     # `app/views/layouts/mailer.html.erb` so we auto-correct it.
     copy_file "variants/backend-base/.erb_lint.yml", ".erb_lint.yml"
-    run_with_clean_bundler_env "bundle exec erblint --autocorrect ."
+    run_with_clean_bundler_env "bundle exec erb_lint --autocorrect ."
     git add: "-A ."
-    git commit: "-n -m 'Set up erblint'"
+    git commit: "-n -m 'Set up erb_lint'"
 
     # Run strong_migrations generator near the end so that it doesn't block
     # other parts of the template from creating migrations.
