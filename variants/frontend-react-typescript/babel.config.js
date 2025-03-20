@@ -2,17 +2,6 @@
 
 const defaultConfigFunc = require('shakapacker/package/babel/preset.js');
 
-/**
- * Guards that `value` is not `false`
- *
- * @param {T | false} value
- *
- * @return {value is T}
- *
- * @template T
- */
-const notFalseGuard = value => value !== false;
-
 /** @type {import('@babel/core').ConfigFunction} */
 const config = api => {
   const resultConfig = defaultConfigFunc(api);
@@ -20,29 +9,25 @@ const config = api => {
   const isProductionEnv = api.env('production');
   const isTestEnv = api.env('test');
 
-  const changesOnDefault = {
-    presets: [
-      [
-        '@babel/preset-react',
-        {
-          development: isDevelopmentEnv || isTestEnv,
-          useBuiltIns: true
-        }
-      ]
-    ].filter(notFalseGuard),
-    plugins: [
-      ['@babel/plugin-transform-typescript', { allowDeclareFields: true }],
-      isProductionEnv && [
-        'babel-plugin-transform-react-remove-prop-types',
-        {
-          removeImport: true
-        }
-      ]
-    ].filter(notFalseGuard)
-  };
+  resultConfig.presets.push([
+    '@babel/preset-react',
+    {
+      development: isDevelopmentEnv || isTestEnv,
+      useBuiltIns: true
+    }
+  ]);
 
-  resultConfig.presets = [...resultConfig.presets, ...changesOnDefault.presets];
-  resultConfig.plugins = [...resultConfig.plugins, ...changesOnDefault.plugins];
+  resultConfig.plugins.push([
+    '@babel/plugin-transform-typescript',
+    { allowDeclareFields: true }
+  ]);
+
+  if (isProductionEnv) {
+    resultConfig.plugins.push([
+      'babel-plugin-transform-react-remove-prop-types',
+      { removeImport: true }
+    ]);
+  }
 
   return resultConfig;
 };

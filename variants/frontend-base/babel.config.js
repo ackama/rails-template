@@ -6,7 +6,7 @@ const defaultConfigFunc = require('shakapacker/package/babel/preset.js');
 const config = api => {
   const resultConfig = defaultConfigFunc(api);
 
-  resultConfig.plugins = [...resultConfig.plugins];
+  // add any additional plugins or presets here
 
   return resultConfig;
 };

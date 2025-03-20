@@ -6,10 +6,10 @@ const defaultConfigFunc = require('shakapacker/package/babel/preset.js');
 const config = api => {
   const resultConfig = defaultConfigFunc(api);
 
-  resultConfig.plugins = [
-    ...resultConfig.plugins,
-    ['@babel/plugin-transform-typescript', { allowDeclareFields: true }]
-  ];
+  resultConfig.plugins.push([
+    '@babel/plugin-transform-typescript',
+    { allowDeclareFields: true }
+  ]);
 
   return resultConfig;
 };
