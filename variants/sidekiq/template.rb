@@ -37,7 +37,7 @@ insert_into_file "docker-compose.yml", "
       - redis
   redis:
     image: redis
-", after: /^services:$"/
+", after: /^services:\n/
 
 route <<~ROUTE
   ##
