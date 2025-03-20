@@ -7,8 +7,8 @@ gsub_file! "config/environments/production.rb",
              config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "true").downcase != "false"
            RUBY
 
-insert_into_file "config/environments/production.rb",
-                 after: /# config\.action_mailer\.raise_deliv.*\n/ do
+insert_into_file! "config/environments/production.rb",
+                  after: /# config\.action_mailer\.raise_deliv.*\n/ do
   <<-RUBY
 
   # Production email config
@@ -37,8 +37,8 @@ gsub_file! "config/environments/production.rb",
            'ENV.fetch("RAILS_LOG_LEVEL", ENV.fetch("LOG_LEVEL", "info"))'
 
 # TODO: https://github.com/ackama/rails-template/issues/569
-insert_into_file "config/environments/production.rb",
-                 after: /.*config\.public_file_server\.enabled.*\n/ do
+insert_into_file! "config/environments/production.rb",
+                  after: /.*config\.public_file_server\.enabled.*\n/ do
   <<~'RUBY'
 
     # Ensure that Rails sets appropriate caching headers on static assets if
@@ -71,8 +71,8 @@ insert_into_file "config/environments/production.rb",
   RUBY
 end
 
-insert_into_file "config/environments/production.rb",
-                 after: /.*config.cache_store = :mem_cache_store\n/ do
+insert_into_file! "config/environments/production.rb",
+                  after: /.*config.cache_store = :mem_cache_store\n/ do
   <<~RUBY
     if ENV.fetch("RAILS_CACHE_REDIS_URL", nil)
       config.cache_store = :redis_cache_store, {
