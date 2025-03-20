@@ -5,7 +5,7 @@ RSpec.describe AuditLog do
   let(:remote_ip) { "::1" }
   let(:timestamp_in_app_tz) { Time.zone.now }
   let(:expected_timestamp) { timestamp_in_app_tz.utc.iso8601 }
-  let(:rails_log_output) { "" }
+  let(:rails_log_output) { StringIO.new }
   let(:phase_of_moon) do
     <<~EO_DATA
       multiline
@@ -35,7 +35,7 @@ RSpec.describe AuditLog do
       # real newline character is appended to the end of the log line.
       expected_output = "{\"event_type\":\"you_should_delete_this_event_type_when_you_have_real_events\",\"event_context\":{\"remote_ip\":\"::1\",\"user_id\":123,\"phase_of_moon\":\"multiline\\nvalue\\nfirst\\nquarter\\n\"},\"event_created_at\":\"#{expected_timestamp}\"}\n" # rubocop:disable Layout/LineLength
 
-      expect(rails_log_output).to eq(expected_output)
+      expect(rails_log_output.string).to eq(expected_output)
     end
   end
 
@@ -46,7 +46,7 @@ RSpec.describe AuditLog do
   # Use the same custom log formatter we use for the rest of the application
   #
   def build_capturing_logger(str)
-    logger = Logger.new(StringIO.new(str))
+    logger = Logger.new(str)
     logger.formatter = AuditLogLogFormatter.new
     logger
   end
