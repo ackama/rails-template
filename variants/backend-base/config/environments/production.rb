@@ -1,5 +1,5 @@
-insert_into_file "config/environments/production.rb",
-                 after: /# config\.assets\.css_compressor = :sass\n/ do
+insert_into_file! "config/environments/production.rb",
+                  after: /# config\.assets\.css_compressor = :sass\n/ do
   <<-RUBY
 
   # Disable minification since it adds a *huge* amount of time to precompile.
@@ -17,8 +17,8 @@ gsub_file! "config/environments/production.rb",
              config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "true").downcase != "false"
            RUBY
 
-insert_into_file "config/environments/production.rb",
-                 after: /# config\.action_mailer\.raise_deliv.*\n/ do
+insert_into_file! "config/environments/production.rb",
+                  after: /# config\.action_mailer\.raise_deliv.*\n/ do
   <<-RUBY
 
   # Production email config
@@ -50,8 +50,8 @@ gsub_file! "config/environments/production.rb",
            "ActiveSupport::Logger.new(STDOUT)",
            "ActiveSupport::Logger.new($stdout)"
 
-insert_into_file "config/environments/production.rb",
-                 after: /.*config\.public_file_server\.enabled.*\n/ do
+insert_into_file! "config/environments/production.rb",
+                  after: /.*config\.public_file_server\.enabled.*\n/ do
   <<~'RUBY'
 
     # Ensure that Rails sets appropriate caching headers on static assets if
@@ -85,8 +85,8 @@ insert_into_file "config/environments/production.rb",
   RUBY
 end
 
-insert_into_file "config/environments/production.rb",
-                 after: /.*config.cache_store = :mem_cache_store\n/ do
+insert_into_file! "config/environments/production.rb",
+                  after: /.*config.cache_store = :mem_cache_store\n/ do
   <<~RUBY
     if ENV.fetch("RAILS_CACHE_REDIS_URL", nil)
       config.cache_store = :redis_cache_store, {

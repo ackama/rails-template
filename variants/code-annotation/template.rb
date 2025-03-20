@@ -3,7 +3,7 @@ source_paths.unshift(File.dirname(__FILE__))
 
 TERMINAL.puts_header "Installing code annotation gems"
 
-insert_into_file "Gemfile", after: /group :development do\n/ do
+insert_into_file! "Gemfile", after: /group :development do\n/ do
   <<-GEMS
   # code annotation
   gem "annotaterb", require: false
