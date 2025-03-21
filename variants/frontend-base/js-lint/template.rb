@@ -4,18 +4,20 @@
 add_yarn_package_extension_dependency("eslint-plugin-prettier", "eslint-config-prettier")
 
 yarn_add_dev_dependencies %w[
-  eslint@8
-  eslint-config-ackama@3
-  eslint-plugin-node
+  @eslint-community/eslint-plugin-eslint-comments
+  @stylistic/eslint-plugin-js@3
+  eslint
+  eslint-config-ackama
+  eslint-plugin-n
   eslint-plugin-import
   eslint-plugin-prettier
-  eslint-plugin-eslint-comments
+  globals
   prettier
   prettier-config-ackama
   prettier-plugin-packagejson
 ]
 
-copy_file "variants/frontend-base/.eslintrc.js", ".eslintrc.js"
+copy_file "variants/frontend-base/eslint.config.js", "eslint.config.js"
 template "variants/frontend-base/.prettierignore.tt", ".prettierignore"
 
 package_json.merge! do |pj|
@@ -23,8 +25,8 @@ package_json.merge! do |pj|
     "prettier" => "prettier-config-ackama",
     "browserslist" => ["defaults"],
     "scripts" => pj.fetch("scripts", {}).merge({
-      "js-lint" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx",
-      "js-lint-fix" => "eslint . --ignore-pattern '!.eslintrc.js' --ext js,ts,tsx,jsx --fix",
+      "js-lint" => "eslint",
+      "js-lint-fix" => "eslint --fix",
       "format-check" => "prettier --check .",
       "format-fix" => "prettier --write .",
       "scss-lint" => "stylelint '**/*.{css,scss}'",

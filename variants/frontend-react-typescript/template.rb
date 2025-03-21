@@ -6,7 +6,7 @@ yarn_add_dependencies %w[@types/react @types/react-dom]
 rename_js_file_to_ts "app/frontend/packs/server_rendering"
 
 copy_file "tsconfig.json", force: true
-copy_file ".eslintrc.js", force: true
+copy_file "eslint.config.js", force: true
 copy_file "babel.config.js", force: true
 
 remove_file "jest.config.js"
