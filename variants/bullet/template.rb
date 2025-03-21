@@ -1,4 +1,4 @@
-insert_into_file "Gemfile", after: /^group :development, :test do\n/ do
+insert_into_file! "Gemfile", after: /^group :development, :test do\n/ do
   <<~GEMS
     gem "bullet"
   GEMS
@@ -6,7 +6,7 @@ end
 
 run "bundle install"
 
-insert_into_file "config/environments/development.rb", before: /^end/ do
+insert_into_file! "config/environments/development.rb", before: /^end/ do
   <<-RUBY
 
   # Bullet makes inline javascript, so there is warning in console in browse until content security policy change
@@ -29,7 +29,7 @@ insert_into_file "config/environments/development.rb", before: /^end/ do
   RUBY
 end
 
-insert_into_file "config/environments/test.rb", before: /^end/ do
+insert_into_file! "config/environments/test.rb", before: /^end/ do
   <<-RUBY
 
   config.after_initialize do

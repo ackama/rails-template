@@ -10,14 +10,14 @@ yarn_add_dependencies %w[
 directory "app/frontend/stimulus/controllers"
 directory "app/frontend/test"
 
-prepend_to_file "app/frontend/packs/application.js" do
+prepend_to_file! "app/frontend/packs/application.js" do
   <<~EO_JS_IMPORTS
     import { Application } from '@hotwired/stimulus';
     import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
   EO_JS_IMPORTS
 end
 
-append_to_file "app/frontend/packs/application.js" do
+append_to_file! "app/frontend/packs/application.js" do
   <<~EO_JS_SETUP
 
     // Set up stimulus.js https://stimulus.hotwired.dev/
@@ -70,7 +70,7 @@ package_json.merge! do |pj|
   }
 end
 
-append_to_file "bin/ci-run" do
+append_to_file! "bin/ci-run" do
   <<~JEST
     echo "* ******************************************************"
     echo "* Running JS tests"

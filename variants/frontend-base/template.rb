@@ -57,7 +57,7 @@ empty_directory_with_keep_file "app/frontend/images"
 copy_file "app/frontend/stylesheets/_elements.scss"
 copy_file "app/frontend/stylesheets/_reset.scss"
 copy_file "app/frontend/stylesheets/application.scss"
-prepend_to_file "app/frontend/packs/application.js" do
+prepend_to_file! "app/frontend/packs/application.js" do
   <<~EO_CONTENT
 
     import "../stylesheets/application.scss";
@@ -107,7 +107,7 @@ yarn_add_dependencies %w[
 yarn_add_dependencies %w[
   @hotwired/turbo-rails
 ]
-prepend_to_file "app/frontend/packs/application.js" do
+prepend_to_file! "app/frontend/packs/application.js" do
   <<~EO_CONTENT
 
     import "@hotwired/turbo-rails"

@@ -1,4 +1,4 @@
-insert_into_file \
+insert_into_file! \
   "config/environments/test.rb",
   after: /config\.action_mailer\.delivery_method = :test\n/ do
   <<-RUBY

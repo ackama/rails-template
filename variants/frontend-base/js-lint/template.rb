@@ -33,7 +33,7 @@ package_json.merge! do |pj|
   }
 end
 
-append_to_file "bin/ci-run" do
+append_to_file! "bin/ci-run" do
   <<~ESLINT
 
     echo "* ******************************************************"
@@ -43,7 +43,7 @@ append_to_file "bin/ci-run" do
   ESLINT
 end
 
-append_to_file "bin/ci-run" do
+append_to_file! "bin/ci-run" do
   <<~PRETTIER
 
     echo "* ******************************************************"
@@ -63,7 +63,7 @@ yarn_add_dev_dependencies %w[
 copy_file "variants/frontend-base/.stylelintrc.js", ".stylelintrc.js"
 template "variants/frontend-base/.stylelintignore.tt", ".stylelintignore"
 
-append_to_file "bin/ci-run" do
+append_to_file! "bin/ci-run" do
   <<~SASSLINT
 
     echo "* ******************************************************"

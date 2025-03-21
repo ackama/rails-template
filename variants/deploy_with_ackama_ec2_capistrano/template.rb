@@ -2,7 +2,7 @@ TERMINAL.puts_header "Starting variant: deploy_with_ackama_ec2_capistrano"
 
 copy_file "variants/deploy_with_ackama_ec2_capistrano/aws_ec2_environment.yml", "config/aws_ec2_environment.yml"
 
-append_to_file("Gemfile") do
+append_to_file!("Gemfile") do
   <<~EO_RUBY
 
     # Deployment
@@ -146,7 +146,7 @@ EO_RUBY
 
 gsub_file!("config/deploy.rb", old_generated_cap_config_snippet, new_ackama_cap_config_snippet)
 
-insert_into_file "Capfile", after: /install_plugin Capistrano::SCM::Git/ do
+insert_into_file! "Capfile", after: /install_plugin Capistrano::SCM::Git/ do
   <<~EO_RUBY
     # Include tasks from other gems included in your Gemfile
     #
@@ -183,7 +183,7 @@ deploy_envs.each do |env_name, file_path|
                          "TODO_branch_name"
                        end
 
-  prepend_to_file(file_path) do
+  prepend_to_file!(file_path) do
     <<~EO_RUBY
       # These are the most common settings required to deploy to a server
       set :rails_env, "#{env_name}"
@@ -233,4 +233,4 @@ new_readme_content = <<~EO_CONTENT
 
 EO_CONTENT
 
-append_to_file("README.md", new_readme_content)
+append_to_file!("README.md", new_readme_content)
