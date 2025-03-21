@@ -7,14 +7,12 @@ run "bundle install"
 
 run "rails generate react:install"
 
-add_yarn_package_extension_dependency("@testing-library/user-event", "@testing-library/dom")
-
 # prefer importing from the more specific package for consistency
 gsub_file! "app/frontend/test/stimulus/controllers/add_class_controller.test.js",
            "'@testing-library/dom'",
            "'@testing-library/react'"
 
-yarn_add_dependencies %w[
+add_js_dependencies %w[
   @babel/preset-react
   babel-plugin-transform-react-remove-prop-types
   react
@@ -22,7 +20,7 @@ yarn_add_dependencies %w[
   prop-types
 ]
 
-yarn_add_dev_dependencies %w[
+add_js_dev_dependencies %w[
   @testing-library/react
   eslint-plugin-react
   eslint-plugin-react-hooks
