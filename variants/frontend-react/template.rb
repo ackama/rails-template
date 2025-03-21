@@ -51,8 +51,8 @@ gsub_file!(
   ""
 )
 
-prepend_to_file "app/frontend/packs/application.js",
-                "import ReactRailsUJS from 'react_ujs';\n"
+prepend_to_file! "app/frontend/packs/application.js",
+                 "import ReactRailsUJS from 'react_ujs';\n"
 
 gsub_file!(
   "app/frontend/packs/server_rendering.js",
@@ -69,7 +69,7 @@ copy_file "jest.config.js"
 copy_file "app/frontend/components/HelloWorld.jsx", force: true
 copy_file "app/frontend/test/components/HelloWorld.spec.jsx", force: true
 
-append_to_file "app/views/home/index.html.erb" do
+append_to_file! "app/views/home/index.html.erb" do
   <<~ERB
     <%= react_component("HelloWorld", { initialGreeting: "Hello from react-rails." }) %>
   ERB

@@ -147,6 +147,8 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   # but also after `shakapacker:install` and after Rails has initialized the git
   # repo
   after_bundle do # rubocop:disable Metrics/BlockLength
+    TERMINAL.puts_header "START after_bundle block"
+
     require_package_json_gem
 
     apply "variants/backend-base/lib/template.rb"
@@ -157,6 +159,7 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     # its own `spec/` directory
     remove_dir "test"
 
+    TERMINAL.puts_header "START bin/setup"
     run_with_clean_bundler_env "bin/setup"
 
     apply "variants/frontend-base/template.rb"
@@ -249,6 +252,8 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
     # Run prettier one last time to ensure that everything is formatted
     apply_prettier_all_over
+
+    TERMINAL.puts_header "END after_bundle block"
   end
 end
 
@@ -489,6 +494,30 @@ def gsub_file!(path, flag, ...)
   content = File.binread(path)
 
   gsub_file(path, flag, ...)
+
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
+end
+
+def append_to_file!(path, ...)
+  content = File.binread(path)
+
+  append_to_file(path, ...)
+
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
+end
+
+def prepend_to_file!(path, ...)
+  content = File.binread(path)
+
+  prepend_to_file(path, ...)
+
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
+end
+
+def insert_into_file!(path, ...)
+  content = File.binread(path)
+
+  insert_into_file(path, ...)
 
   raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
 end

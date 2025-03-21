@@ -1,4 +1,6 @@
-insert_into_file "Gemfile", after: /gem "selenium-webdriver"\n/ do
+TERMINAL.puts_header "Installing accessibility checking gems"
+
+insert_into_file! "Gemfile", after: /gem "selenium-webdriver"\n/ do
   <<~GEMS
 
     gem "lighthouse-matchers"

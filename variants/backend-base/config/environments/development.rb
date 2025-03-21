@@ -1,7 +1,7 @@
 mailer_regex = /config\.action_mailer\.raise_delivery_errors = false\n/
 
 comment_lines "config/environments/development.rb", mailer_regex
-insert_into_file "config/environments/development.rb", after: mailer_regex do
+insert_into_file! "config/environments/development.rb", after: mailer_regex do
   <<-RUBY
 
   # Ensure mailer works in development.

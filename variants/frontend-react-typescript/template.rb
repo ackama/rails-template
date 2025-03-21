@@ -25,7 +25,7 @@ tsconfig_json = JSON.parse(File.read("./tsconfig.json"))
 tsconfig_json["compilerOptions"]["jsx"] = "react"
 File.write("./tsconfig.json", JSON.generate(tsconfig_json))
 
-append_to_file "types.d.ts" do
+append_to_file! "types.d.ts" do
   <<~TYPES
     declare module 'react_ujs' {
       import RequireContext = __WebpackModuleApi.RequireContext;
