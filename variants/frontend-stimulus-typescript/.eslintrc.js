@@ -19,7 +19,8 @@ const config = {
       rules: {
         '@typescript-eslint/prefer-nullish-coalescing': 'off',
         '@typescript-eslint/no-require-imports': 'off',
-        '@typescript-eslint/no-var-requires': 'off'
+        '@typescript-eslint/no-var-requires': 'off',
+        'strict': 'error'
       }
     },
     {
