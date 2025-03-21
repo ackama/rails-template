@@ -14,7 +14,7 @@ yarn_add_dev_dependencies [
   "ts-node"
 ]
 
-copy_file ".eslintrc.js", force: true
+copy_file "eslint.config.js", force: true
 
 remove_file "jest.config.js", force: true
 copy_file "jest.config.ts"
