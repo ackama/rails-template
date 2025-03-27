@@ -41,6 +41,10 @@ const config = [
       globals: { ...globals.node }
     }
   },
+  {
+    files: ['app/frontend/packs/*.js'],
+    languageOptions: { globals: { require: 'readonly' } }
+  },
   ...[
     pluginJestDOM.configs['flat/recommended'],
     pluginTestingLibrary.configs['flat/dom'],

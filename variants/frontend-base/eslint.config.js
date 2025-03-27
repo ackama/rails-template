@@ -35,6 +35,10 @@ const config = [
       sourceType: 'commonjs',
       globals: { ...globals.node }
     }
+  },
+  {
+    files: ['app/frontend/packs/*.js'],
+    languageOptions: { globals: { require: 'readonly' } }
   }
 ];
 
