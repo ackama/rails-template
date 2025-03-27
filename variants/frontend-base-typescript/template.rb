@@ -29,6 +29,8 @@ yarn_add_dev_dependencies %w[
   @typescript-eslint/parser
 ]
 
+package_json.manager.remove!(["globals"])
+
 rename_js_file_to_ts "app/frontend/packs/application"
 
 copy_file "tsconfig.json", force: true
