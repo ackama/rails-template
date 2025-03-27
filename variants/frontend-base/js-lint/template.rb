@@ -1,9 +1,7 @@
 # Javascript code linting and formatting
 # ######################################
 
-add_yarn_package_extension_dependency("eslint-plugin-prettier", "eslint-config-prettier")
-
-yarn_add_dev_dependencies %w[
+add_js_dev_dependencies %w[
   eslint@8
   eslint-config-ackama@3
   eslint-plugin-node
@@ -54,7 +52,7 @@ append_to_file "bin/ci-run" do
 end
 
 # SCSS Linting
-yarn_add_dev_dependencies %w[
+add_js_dev_dependencies %w[
   postcss
   stylelint
   stylelint-scss
