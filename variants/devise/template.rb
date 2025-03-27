@@ -109,7 +109,7 @@ EO_ROUTES
 #
 TERMINAL.puts_header "Adding example devise links to the homepage"
 
-append_to_file "app/views/application/_header.html.erb" do
+append_to_file! "app/views/application/_header.html.erb" do
   <<~ERB
     <%=
       content_tag(:style, nonce: content_security_policy_nonce) do
@@ -154,7 +154,7 @@ gsub_file! "config/routes.rb",
              }
            EO_DEVISE
 
-insert_into_file "app/models/user.rb", before: /^end/ do
+insert_into_file! "app/models/user.rb", before: /^end/ do
   <<~'RUBY'
 
     ##

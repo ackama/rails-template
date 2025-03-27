@@ -62,7 +62,7 @@ package_json.merge! do |pj|
   }
 end
 
-append_to_file "bin/ci-run" do
+append_to_file! "bin/ci-run" do
   <<~TYPECHECK
 
     echo "* ******************************************************"

@@ -493,4 +493,28 @@ def gsub_file!(path, flag, ...)
   raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
 end
 
+def append_to_file!(path, ...)
+  content = File.binread(path)
+
+  append_to_file(path, ...)
+
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
+end
+
+def prepend_to_file!(path, ...)
+  content = File.binread(path)
+
+  prepend_to_file(path, ...)
+
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
+end
+
+def insert_into_file!(path, ...)
+  content = File.binread(path)
+
+  insert_into_file(path, ...)
+
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
+end
+
 apply_template!

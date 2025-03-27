@@ -4,7 +4,7 @@ copy_file("variants/audit-logging/lib/audit_log_log_formatter.rb", "lib/audit_lo
 copy_file("variants/audit-logging/services/audit_log.rb", "app/services/audit_log.rb")
 copy_file("variants/audit-logging/spec/services/audit_log_spec.rb", "spec/services/audit_log_spec.rb")
 
-insert_into_file "app/controllers/application_controller.rb", after: /^  end/ do
+insert_into_file! "app/controllers/application_controller.rb", after: /^  end/ do
   <<-RUBY
 
 
@@ -17,13 +17,13 @@ insert_into_file "app/controllers/application_controller.rb", after: /^  end/ do
   RUBY
 end
 
-prepend_to_file "config/application.rb" do
+prepend_to_file! "config/application.rb" do
   <<~RUBY
     require_relative "../lib/audit_log_log_formatter"
   RUBY
 end
 
-insert_into_file "config/application.rb", before: /^  end/ do
+insert_into_file! "config/application.rb", before: /^  end/ do
   <<-RUBY
 
     config.audit_logger = if ENV["RAILS_LOG_TO_STDOUT"].present?
