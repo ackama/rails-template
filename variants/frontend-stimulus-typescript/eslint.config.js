@@ -14,7 +14,12 @@ const config = [
   ...configAckamaTypeScript,
   { languageOptions: { parserOptions: { project: true } } },
   {
-    files: ['config/webpack/*', 'babel.config.js', 'eslint.config.js'],
+    files: [
+      'config/webpack/*',
+      'babel.config.js',
+      'eslint.config.js',
+      '.stylelintrc.js'
+    ],
     languageOptions: { sourceType: 'commonjs' },
     rules: {
       '@typescript-eslint/prefer-nullish-coalescing': 'off',

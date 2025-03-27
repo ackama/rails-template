@@ -9,11 +9,21 @@ const config = [
   { ignores: ['tmp/*'] },
   ...configAckamaBase,
   {
-    ignores: ['config/webpack/*', 'babel.config.js', 'eslint.config.js'],
+    ignores: [
+      'config/webpack/*',
+      'babel.config.js',
+      'eslint.config.js',
+      '.stylelintrc.js'
+    ],
     languageOptions: { globals: { ...globals.browser } }
   },
   {
-    files: ['config/webpack/*', 'babel.config.js', 'eslint.config.js'],
+    files: [
+      'config/webpack/*',
+      'babel.config.js',
+      'eslint.config.js',
+      '.stylelintrc.js'
+    ],
     languageOptions: {
       sourceType: 'commonjs',
       globals: { ...globals.node }
