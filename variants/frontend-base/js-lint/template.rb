@@ -6,6 +6,7 @@ add_yarn_package_extension_dependency("eslint-plugin-prettier", "eslint-config-p
 yarn_add_dev_dependencies %w[
   @eslint-community/eslint-plugin-eslint-comments
   @stylistic/eslint-plugin-js@3
+  @eslint/js
   eslint
   eslint-config-ackama
   eslint-plugin-n
