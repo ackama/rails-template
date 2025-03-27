@@ -18,7 +18,12 @@ const config = [
       'eslint.config.js',
       '.stylelintrc.js'
     ],
-    languageOptions: { globals: { ...globals.browser } }
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        process: 'readonly'
+      }
+    }
   },
   {
     files: [
