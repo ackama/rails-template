@@ -223,5 +223,5 @@ run "bundle exec rubocop -A -c ./.rubocop.yml"
 git add: "-A ."
 git commit: "-n -m 'Install and configure devise with default Ackama settings'"
 
-append_to_file "app/views/users/shared/_error_messages.html.erb", "<%# locals: (resource:) %>\n\n"
-append_to_file "app/views/users/shared/_links.html.erb", "<%# locals: () %>\n\n"
+prepend_to_file! "app/views/users/shared/_error_messages.html.erb", "<%# locals: (resource:) %>\n\n"
+prepend_to_file! "app/views/users/shared/_links.html.erb", "<%# locals: () %>\n\n"
