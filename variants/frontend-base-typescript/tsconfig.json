@@ -18,6 +18,5 @@
     "experimentalDecorators": true
   },
   "exclude": ["coverage", "node_modules", "vendor", "public"],
-  "files": [".eslintrc.js"],
   "include": ["**/*.js", "**/*.ts", "**/*.tsx"]
 }
