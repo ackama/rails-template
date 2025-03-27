@@ -18,6 +18,7 @@ const config = [
       'config/webpack/*',
       'babel.config.js',
       'eslint.config.js',
+      'jest.config.js',
       '.stylelintrc.js'
     ],
     languageOptions: {
@@ -32,6 +33,7 @@ const config = [
       'config/webpack/*',
       'babel.config.js',
       'eslint.config.js',
+      'jest.config.js',
       '.stylelintrc.js'
     ],
     languageOptions: {
