@@ -22,7 +22,9 @@ export const HelloWorld: React.FC<Props> = ({ initialGreeting }) => {
         Change the greeting
         <input id="greeting-input" type="text" onChange={updateGreeting} />
       </label>
-      <button onClick={resetGreeting}>Reset</button>
+      <button type="submit" onClick={resetGreeting}>
+        Reset
+      </button>
     </>
   );
 };
