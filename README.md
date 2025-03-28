@@ -193,7 +193,7 @@ $ wget https://raw.githubusercontent.com/ackama/rails-template/main/ackama_rails
 
 # Create a new app using the template. Template options will be taken from
 # ./ackama_rails_template.config.yml
-$ rails new my_app --no-rc --database=postgresql --skip-javascript --skip-docker --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
+$ rails new my_app --no-rc --database=postgresql --skip-javascript --skip-docker --skip-kamal --skip-solid --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 
 # Example 2
 # #########
@@ -201,7 +201,7 @@ $ rails new my_app --no-rc --database=postgresql --skip-javascript --skip-docker
 # Create a custom config YAML file, saving as ./my_custom_config.yml
 
 # Template options will be taken from ../my_custom_config.yml (relative to the new app directory)
-$ CONFIG_PATH=../my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip-javascript --skip-docker --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
+$ CONFIG_PATH=../my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip-javascript --skip-docker --skip-kamal --skip-solid --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
 Here are some additional options you can add to this command. We don't
@@ -230,6 +230,8 @@ To make this the default Rails application template on your system, create a
 -d postgresql
 --skip-javascript
 --skip-docker
+--skip-kamal
+--skip-solid
 -m https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
