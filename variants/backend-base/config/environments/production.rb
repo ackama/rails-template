@@ -43,8 +43,8 @@ gsub_file! "config/environments/production.rb",
            'ENV.fetch("RAILS_LOG_LEVEL", ENV.fetch("LOG_LEVEL", "info"))'
 
 gsub_file! "config/environments/production.rb",
-           "ActiveSupport::Logger.new(STDOUT)",
-           "ActiveSupport::Logger.new($stdout)"
+           "ActiveSupport::TaggedLogging.logger(STDOUT)",
+           "ActiveSupport::TaggedLogging.logger($stdout)"
 
 insert_into_file! "config/environments/production.rb",
                   after: /.*config\.public_file_server\.enabled.*\n/ do
