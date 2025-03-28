@@ -26,6 +26,7 @@ gsub_file! "config/environments/production.rb",
              config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "true").downcase != "false"
            RUBY
 
+# TODO: it looks like these options are now spread across the config
 gsub_file! "config/environments/production.rb",
            "# config.action_mailer.raise_delivery_errors = false",
            <<-RUBY
