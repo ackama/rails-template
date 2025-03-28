@@ -27,6 +27,7 @@ gsub_file! "config/environments/production.rb",
              config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "true").downcase != "false"
            RUBY
 
+# TODO: it looks like these options are now spread across the config
 insert_into_file! "config/environments/production.rb",
                   after: /# config\.action_mailer\.raise_deliv.*\n/ do
   <<-RUBY
