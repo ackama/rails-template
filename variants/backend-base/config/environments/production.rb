@@ -9,6 +9,16 @@
 # RUBY
 
 gsub_file! "config/environments/production.rb",
+           "config.assume_ssl = true",
+           <<~RUBY
+             #
+             # You should never use this because it just blindly sets headers without any actual
+             # checks; instead, whatever is handling the SSL-termination should be setting the
+             # appropriate headers to indicate that the request was actually SSL-terminated.
+             config.assume_ssl = false
+           RUBY
+
+gsub_file! "config/environments/production.rb",
            "config.force_ssl = true",
            <<~RUBY
              #
