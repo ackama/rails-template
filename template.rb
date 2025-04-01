@@ -177,6 +177,8 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
       package_json.manager.run!("typecheck")
     end
 
+    ensure_yarn_files_are_not_linted
+
     # apply any js linting fixes after all frontend variants have run
     package_json.manager.run!("js-lint-fix")
 
@@ -317,6 +319,17 @@ def add_yarn_package_extension_dependency(name, dependency)
   yarnrc["packageExtensions"]["#{name}@*"]["dependencies"][dependency] = "*"
 
   File.write(".yarnrc.yml", yarnrc.to_yaml)
+end
+
+# Ensures that files related to Yarn Berry are ignored by ESLint
+def ensure_yarn_files_are_not_linted
+  return unless Dir.exist?(".yarn") && File.exist?("eslint.config.js")
+
+  gsub_file!(
+    "eslint.config.js",
+    "  { ignores: ['tmp/*'] },",
+    "  { ignores: ['tmp/*', '.yarn/*', '.pnp.cjs', '.pnp.loader.mjs'] },"
+  )
 end
 
 def package_json
