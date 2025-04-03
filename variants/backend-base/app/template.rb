@@ -32,3 +32,5 @@ gsub_file!(
     # allow_browser versions: :modern
   AFTER
 )
+
+remove_dir ".github/"
