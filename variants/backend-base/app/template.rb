@@ -35,3 +35,5 @@ gsub_file!(
 
 remove_dir ".github/"
 remove_dir "app/views/pwa"
+remove_file "bin/dev"
+remove_file "bin/thrust"
