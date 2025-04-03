@@ -1,3 +1,6 @@
+# Configure app/assets
+copy_file "variants/backend-base/app/assets/config/manifest.js", "app/assets/config/manifest.js"
+
 # Configure app/controllers
 copy_file "variants/backend-base/app/controllers/home_controller.rb", "app/controllers/home_controller.rb"
 copy_file "variants/backend-base/app/controllers/active_storage/base_controller.rb", "app/controllers/active_storage/base_controller.rb"
