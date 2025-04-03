@@ -1,6 +1,6 @@
 insert_into_file! "Gemfile", after: /^group :development, :test do\n/ do
   <<~GEMS
-    gem "bullet"
+    gem "bullet", ">= 8.0" # Rails 8+ requires Bullet 8+
   GEMS
 end
 
