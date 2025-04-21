@@ -2,7 +2,7 @@
 #
 # This is stored in a separate file so we can share it between the template and
 # our CI configuration.
-target_rails_major_minor: '7.2' # specify as major.minor
+target_rails_major_minor: '8.0' # specify as major.minor
 
 # Set this to the minimum version of Ruby that the chosen Rails version supports.
-minimum_ruby_major_minor: '3.1'
+minimum_ruby_major_minor: '3.2'
