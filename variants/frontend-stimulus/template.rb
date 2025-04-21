@@ -58,7 +58,7 @@ yarn_add_dev_dependencies %W[
   jest@#{JEST_MAJOR_VERSION}
 ]
 
-copy_file ".eslintrc.js", force: true
+copy_file "eslint.config.js", force: true
 copy_file "jest.config.js"
 
 package_json.merge! do |pj|
