@@ -10,7 +10,7 @@ insert_into_file! \
 end
 
 gsub_file! "config/environments/test.rb",
-           'config.action_mailer.default_url_options = { host: "www.example.com" }',
+           'config.action_mailer.default_url_options = { host: "example.com" }',
            'config.action_mailer.default_url_options = { host: "localhost:3000" }'
 
 gsub_file! "config/environments/test.rb",
