@@ -19,7 +19,7 @@ def check_file_for_repeated_config_properties(file)
     # ignore conditions for now
     next if in_condition
 
-    line.match(/(config\.[a-zA-Z_]+) = /) do |match|
+    line.match(/(config\.\w+) = /) do |match|
       duplicates << match[1] if seen.include?(match[1])
 
       seen << match[1]
