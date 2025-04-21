@@ -17,12 +17,11 @@ gsub_file! "config/environments/production.rb",
              config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "true").downcase != "false"
            RUBY
 
-insert_into_file! "config/environments/production.rb",
-                  after: /# config\.action_mailer\.raise_deliv.*\n/ do
-  <<-RUBY
-
-  # Production email config
+gsub_file! "config/environments/production.rb",
+           "# config.action_mailer.raise_delivery_errors = false",
+           <<-RUBY
   config.action_mailer.raise_delivery_errors = true
+
   config.action_mailer.default_url_options = {
     host: "#{TEMPLATE_CONFIG.production_hostname}",
     protocol: "https"
@@ -38,9 +37,7 @@ insert_into_file! "config/environments/production.rb",
     authentication: "login",
     domain: "#{TEMPLATE_CONFIG.production_hostname}"
   }
-
-  RUBY
-end
+RUBY
 
 gsub_file! "config/environments/production.rb",
            'ENV.fetch("RAILS_LOG_LEVEL", "info")',
