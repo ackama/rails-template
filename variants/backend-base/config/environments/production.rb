@@ -1,12 +1,11 @@
-insert_into_file! "config/environments/production.rb",
-                  after: /# config\.assets\.css_compressor = :sass\n/ do
-  <<-RUBY
-
-  # Disable minification since it adds a *huge* amount of time to precompile.
-  # Anyway, gzip alone gets us about 70% of the benefits of minify+gzip.
+gsub_file! "config/environments/production.rb",
+           "# config.assets.css_compressor = :sass",
+           <<-RUBY
+  #
+  # Currently disabled as minification adds a *huge* amount of time to precompile,
+  # and gzip alone already gets us about 70% of the benefits of minify+gzip
   config.assets.css_compressor = false
-  RUBY
-end
+RUBY
 
 gsub_file! "config/environments/production.rb",
            "config.force_ssl = true",
