@@ -18,6 +18,25 @@ package_json.record_package_manager!
 
 run "rails shakapacker:install"
 
+peers = JSON.load_file("node_modules/shakapacker/package.json").fetch("peerDependencies", {})
+dev_dependency_packages = ["webpack-dev-server"]
+dependencies_to_add = []
+dev_dependencies_to_add = []
+
+peers.each do |(package, version)|
+  major_version = version.split("||").last.match(/(\d+)/)[1]
+  entry = "#{package}@#{major_version}"
+
+  if dev_dependency_packages.include? package
+    dev_dependencies_to_add << entry
+  else
+    dependencies_to_add << entry
+  end
+end
+
+yarn_add_dependencies(dependencies_to_add)
+yarn_add_dev_dependencies(dev_dependencies_to_add)
+
 # this is added by shakapacker:install, but we've already got one (with some extra tags)
 # in our template, so remove theirs otherwise the app will error when rendering this
 gsub_file! "app/views/layouts/application.html.erb",
