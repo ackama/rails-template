@@ -18,6 +18,18 @@ package_json.record_package_manager!
 
 run "rails shakapacker:install"
 
+# ensure the latest major versions of Shakapacker's peer dependencies are installed
+#
+# TODO: remove this once https://github.com/shakacode/shakapacker/pull/576 is landed
+yarn_add_dependencies [
+  "babel-loader@10",
+  "compression-webpack-plugin@11",
+  "webpack-assets-manifest@6",
+  "webpack-cli@6",
+  "webpack-merge@6"
+]
+yarn_add_dev_dependencies ["webpack-dev-server@5"]
+
 # this is added by shakapacker:install, but we've already got one (with some extra tags)
 # in our template, so remove theirs otherwise the app will error when rendering this
 gsub_file! "app/views/layouts/application.html.erb",
