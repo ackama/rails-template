@@ -381,19 +381,21 @@ def cleanup_package_json
   package_json.manager.install!
 end
 
-# Adds the given <code>packages</code> as dependencies using <code>yarn add</code>
+# Adds the given JavaScript <code>packages</code> as dependencies using the
+# appropriate package manager
 #
 # @param [Array<String>] packages
-def yarn_add_dependencies(packages)
+def add_js_dependencies(packages)
   puts "adding #{packages.join(" ")} as dependencies"
 
   package_json.manager.add!(packages)
 end
 
-# Adds the given <code>packages</code> as devDependencies using <code>yarn add --dev</code>
+# Adds the given JavaScript <code>packages</code> as devDependencies using the
+# appropriate package manager
 #
 # @param [Array<String>] packages
-def yarn_add_dev_dependencies(packages)
+def add_js_dev_dependencies(packages)
   puts "adding #{packages.join(" ")} as dev dependencies"
 
   package_json.manager.add!(packages, type: :dev)

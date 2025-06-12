@@ -21,14 +21,14 @@ run "rails shakapacker:install"
 # ensure the latest major versions of Shakapacker's peer dependencies are installed
 #
 # TODO: remove this once https://github.com/shakacode/shakapacker/pull/576 is landed
-yarn_add_dependencies [
+add_js_dependencies [
   "babel-loader@10",
   "compression-webpack-plugin@11",
   "webpack-assets-manifest@6",
   "webpack-cli@6",
   "webpack-merge@6"
 ]
-yarn_add_dev_dependencies ["webpack-dev-server@5"]
+add_js_dev_dependencies ["webpack-dev-server@5"]
 
 # this is added by shakapacker:install, but we've already got one (with some extra tags)
 # in our template, so remove theirs otherwise the app will error when rendering this
@@ -107,7 +107,7 @@ EO_IMG_EXAMPLE
 gsub_file! "app/views/layouts/application.html.erb", "<body>", body_open_tag_with_img_example, force: true
 
 # shakapacker will automatically configure webpack to use these so long as the dependencies are present
-yarn_add_dependencies %w[
+add_js_dependencies %w[
   css-loader
   css-minimizer-webpack-plugin
   mini-css-extract-plugin
@@ -116,7 +116,7 @@ yarn_add_dependencies %w[
 ]
 
 # Setup Turbo
-yarn_add_dependencies %w[
+add_js_dependencies %w[
   @hotwired/turbo-rails
 ]
 prepend_to_file! "app/frontend/packs/application.js" do

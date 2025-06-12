@@ -2,7 +2,7 @@ source_paths.unshift(File.dirname(__FILE__))
 
 TERMINAL.puts_header "Setting up stimulus.js"
 
-yarn_add_dependencies %w[
+add_js_dependencies %w[
   @hotwired/stimulus
   @hotwired/stimulus-webpack-helpers
 ]
@@ -46,7 +46,7 @@ append_to_file! "app/frontend/packs/application.js" do
   EO_JS_SETUP
 end
 
-yarn_add_dev_dependencies %W[
+add_js_dev_dependencies %W[
   @testing-library/dom
   @testing-library/jest-dom
   @testing-library/user-event

@@ -8,8 +8,8 @@ add_yarn_package_extension_dependency("@jest/test-result", "jest-haste-map")
 add_yarn_package_extension_dependency("@jest/test-result", "jest-resolve")
 add_yarn_package_extension_dependency("jest-cli", "@types/yargs")
 
-yarn_add_dependencies ["@babel/plugin-transform-typescript"]
-yarn_add_dev_dependencies [
+add_js_dependencies ["@babel/plugin-transform-typescript"]
+add_js_dev_dependencies [
   "@types/jest@#{JEST_MAJOR_VERSION}",
   "ts-jest@#{JEST_MAJOR_VERSION}",
   "ts-node"
