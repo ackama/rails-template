@@ -28,7 +28,7 @@ add_js_dependencies [
   "webpack-cli@6",
   "webpack-merge@6"
 ]
-add_js_dev_dependencies ["webpack-dev-server@5"]
+add_js_dependencies ["webpack-dev-server@5"], type: :dev
 
 # this is added by shakapacker:install, but we've already got one (with some extra tags)
 # in our template, so remove theirs otherwise the app will error when rendering this

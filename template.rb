@@ -385,20 +385,11 @@ end
 # appropriate package manager
 #
 # @param [Array<String>] packages
-def add_js_dependencies(packages)
-  puts "adding #{packages.join(" ")} as dependencies"
+# @param [:production, :dev] type
+def add_js_dependencies(packages, type: :production)
+  puts "adding #{packages.join(" ")} as #{type} dependencies"
 
-  package_json.manager.add!(packages)
-end
-
-# Adds the given JavaScript <code>packages</code> as devDependencies using the
-# appropriate package manager
-#
-# @param [Array<String>] packages
-def add_js_dev_dependencies(packages)
-  puts "adding #{packages.join(" ")} as dev dependencies"
-
-  package_json.manager.add!(packages, type: :dev)
+  package_json.manager.add!(packages, type:)
 end
 
 # Add this template directory to source_paths so that Thor actions like

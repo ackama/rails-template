@@ -3,7 +3,7 @@
 
 add_yarn_package_extension_dependency("eslint-plugin-prettier", "eslint-config-prettier")
 
-add_js_dev_dependencies %w[
+add_js_dependencies %w[
   @eslint-community/eslint-plugin-eslint-comments
   @stylistic/eslint-plugin-js@3
   @eslint/js
@@ -16,7 +16,7 @@ add_js_dev_dependencies %w[
   prettier
   prettier-config-ackama
   prettier-plugin-packagejson
-]
+], type: :dev
 
 copy_file "variants/frontend-base/eslint.config.js", "eslint.config.js"
 template "variants/frontend-base/.prettierignore.tt", ".prettierignore"
@@ -57,12 +57,12 @@ append_to_file! "bin/ci-run" do
 end
 
 # SCSS Linting
-add_js_dev_dependencies %w[
+add_js_dependencies %w[
   postcss
   stylelint
   stylelint-scss
   stylelint-config-recommended-scss
-]
+], type: :dev
 copy_file "variants/frontend-base/.stylelintrc.js", ".stylelintrc.js"
 template "variants/frontend-base/.stylelintignore.tt", ".stylelintignore"
 

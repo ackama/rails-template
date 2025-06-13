@@ -46,7 +46,7 @@ append_to_file! "app/frontend/packs/application.js" do
   EO_JS_SETUP
 end
 
-add_js_dev_dependencies %W[
+add_js_dependencies %W[
   @testing-library/dom
   @testing-library/jest-dom
   @testing-library/user-event
@@ -56,7 +56,7 @@ add_js_dev_dependencies %W[
   eslint-plugin-testing-library
   jest-environment-jsdom
   jest@#{JEST_MAJOR_VERSION}
-]
+], type: :dev
 
 copy_file "eslint.config.js", force: true
 copy_file "jest.config.js"

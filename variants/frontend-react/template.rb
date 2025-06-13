@@ -22,12 +22,12 @@ add_js_dependencies %w[
   prop-types
 ]
 
-add_js_dev_dependencies %w[
+add_js_dependencies %w[
   @testing-library/react
   eslint-plugin-react
   eslint-plugin-react-hooks
   eslint-plugin-jsx-a11y
-]
+], type: :dev
 copy_file "eslint.config.js", force: true
 copy_file "babel.config.js", force: true
 

@@ -5,4 +5,4 @@ apply "spec/rails_helper.rb"
 apply "spec/system/home_feature_spec.rb"
 copy_file "spec/support/shared_examples/an_accessible_page.rb"
 
-add_js_dev_dependencies %w[lighthouse]
+add_js_dependencies %w[lighthouse], type: :dev
