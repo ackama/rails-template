@@ -177,8 +177,6 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
       package_json.manager.run!("typecheck")
     end
 
-    ensure_yarn_files_are_not_linted
-
     # apply any js linting fixes after all frontend variants have run
     package_json.manager.run!("js-lint-fix")
 
@@ -266,78 +264,7 @@ def apply_prettier_all_over
   git commit: ". -m 'Run prettier one last time'"
 end
 
-# Sets Yarn Berry up in the project directory by initializing it with what is probably Yarn Classic.
-#
-# This is required as the Berry binary is actually downloaded and committed to the codebase, and
-# the global yarn command passes through to it when detected (even if its Yarn Classic).
-#
-# This also requires us to temporarily create a package.json as otherwise Yarn Berry will
-# look up the file tree and initialize itself in every directory that has a yarn.lock
-def setup_yarn_berry
-  # safeguard against parent directories having a yarn.lock
-  File.write("package.json", "{}") unless File.exist?("package.json")
-
-  run "yarn init -2"
-  run "yarn config set enableGlobalCache true"
-  run "yarn config set nodeLinker #{ENV.fetch("PACKAGE_JSON_YARN_BERRY_LINKER", "node-modules")}"
-
-  ignores = <<~YARN
-    .pnp.*
-    .yarn/*
-    !.yarn/patches
-    !.yarn/plugins
-    !.yarn/releases
-    !.yarn/sdks
-    !.yarn/versions
-  YARN
-  File.write(".gitignore", ignores, mode: "a")
-
-  # this will be properly (re)created later
-  File.unlink("package.json")
-end
-
-# Bun uses a binary-based lockfile which cannot be parsed by shakapacker or
-# osv-detector, so we want to configure bun to always write a yarn.lock
-# in addition so that such tools can check it
-def setup_bun
-  File.write("bunfig.toml", <<~TOML)
-    [install.lockfile]
-    print = "yarn"
-  TOML
-end
-
-def add_yarn_package_extension_dependency(name, dependency)
-  return unless File.exist?(".yarnrc.yml")
-
-  require "yaml"
-
-  yarnrc = YAML.load_file(".yarnrc.yml")
-
-  yarnrc["packageExtensions"] ||= {}
-  yarnrc["packageExtensions"]["#{name}@*"] ||= {}
-  yarnrc["packageExtensions"]["#{name}@*"]["dependencies"] ||= {}
-  yarnrc["packageExtensions"]["#{name}@*"]["dependencies"][dependency] = "*"
-
-  File.write(".yarnrc.yml", yarnrc.to_yaml)
-end
-
-# Ensures that files related to Yarn Berry are ignored by ESLint
-def ensure_yarn_files_are_not_linted
-  return unless Dir.exist?(".yarn") && File.exist?("eslint.config.js")
-
-  gsub_file!(
-    "eslint.config.js",
-    "  { ignores: ['tmp/*'] },",
-    "  { ignores: ['tmp/*', '.yarn/*', '.pnp.cjs', '.pnp.loader.mjs'] },"
-  )
-end
-
 def package_json
-  if @package_json.nil?
-    setup_yarn_berry if ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", nil) == "yarn_berry"
-    setup_bun if ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", nil) == "bun"
-  end
-
   @package_json ||= PackageJson.new
 end
 
@@ -359,8 +286,7 @@ def build_engines_field(existing)
   node_version = File.read("./.node-version").strip
 
   existing.merge({
-    "node" => "^#{node_version}",
-    "yarn" => "^1.0.0"
+    "node" => "^#{node_version}"
   })
 end
 
@@ -373,9 +299,6 @@ def cleanup_package_json
       "devDependencies" => normalize_dependency_constraints(pj.fetch("devDependencies", {}))
     }
   end
-
-  # TODO: this doesn't work when using pnpm even though it shouldn't matter? anyway, replace with 'exec' support
-  # run "npx -y sort-package-json"
 
   # ensure the lockfile is up to date with any changes we've made to package.json
   package_json.manager.install!

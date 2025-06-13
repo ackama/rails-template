@@ -1,13 +1,5 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-add_yarn_package_extension_dependency("@testing-library/jest-dom", "@types/aria-query")
-add_yarn_package_extension_dependency("ts-jest", "@jest/transform")
-add_yarn_package_extension_dependency("ts-jest", "@jest/types")
-add_yarn_package_extension_dependency("ts-jest", "jest-util")
-add_yarn_package_extension_dependency("@jest/test-result", "jest-haste-map")
-add_yarn_package_extension_dependency("@jest/test-result", "jest-resolve")
-add_yarn_package_extension_dependency("jest-cli", "@types/yargs")
-
 add_js_dependencies ["@babel/plugin-transform-typescript"]
 add_js_dependencies [
   "@types/jest@#{JEST_MAJOR_VERSION}",
