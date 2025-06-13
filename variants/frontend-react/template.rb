@@ -14,7 +14,7 @@ gsub_file! "app/frontend/test/stimulus/controllers/add_class_controller.test.js"
            "'@testing-library/dom'",
            "'@testing-library/react'"
 
-yarn_add_dependencies %w[
+add_js_dependencies %w[
   @babel/preset-react
   babel-plugin-transform-react-remove-prop-types
   react
@@ -22,12 +22,12 @@ yarn_add_dependencies %w[
   prop-types
 ]
 
-yarn_add_dev_dependencies %w[
+add_js_dependencies %w[
   @testing-library/react
   eslint-plugin-react
   eslint-plugin-react-hooks
   eslint-plugin-jsx-a11y
-]
+], type: :dev
 copy_file "eslint.config.js", force: true
 copy_file "babel.config.js", force: true
 

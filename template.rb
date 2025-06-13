@@ -381,22 +381,15 @@ def cleanup_package_json
   package_json.manager.install!
 end
 
-# Adds the given <code>packages</code> as dependencies using <code>yarn add</code>
+# Adds the given JavaScript <code>packages</code> as dependencies using the
+# appropriate package manager
 #
 # @param [Array<String>] packages
-def yarn_add_dependencies(packages)
-  puts "adding #{packages.join(" ")} as dependencies"
+# @param [:production, :dev] type
+def add_js_dependencies(packages, type: :production)
+  puts "adding #{packages.join(" ")} as #{type} dependencies"
 
-  package_json.manager.add!(packages)
-end
-
-# Adds the given <code>packages</code> as devDependencies using <code>yarn add --dev</code>
-#
-# @param [Array<String>] packages
-def yarn_add_dev_dependencies(packages)
-  puts "adding #{packages.join(" ")} as dev dependencies"
-
-  package_json.manager.add!(packages, type: :dev)
+  package_json.manager.add!(packages, type:)
 end
 
 # Add this template directory to source_paths so that Thor actions like

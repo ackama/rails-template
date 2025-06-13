@@ -22,12 +22,12 @@ types_packages = %w[
   node@18
 ].map { |name| "@types/#{name}" }
 
-yarn_add_dependencies types_packages + %w[@babel/preset-typescript typescript]
-yarn_add_dev_dependencies %w[
+add_js_dependencies types_packages + %w[@babel/preset-typescript typescript]
+add_js_dependencies %w[
   @stylistic/eslint-plugin-ts@3
   @typescript-eslint/eslint-plugin
   @typescript-eslint/parser
-]
+], type: :dev
 
 package_json.manager.remove!(["globals"])
 
