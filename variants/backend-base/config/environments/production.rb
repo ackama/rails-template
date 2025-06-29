@@ -29,15 +29,31 @@ gsub_file! "config/environments/production.rb",
 # TODO: it looks like these options are now spread across the config
 gsub_file! "config/environments/production.rb",
            "# config.action_mailer.raise_delivery_errors = false",
+           "config.action_mailer.raise_delivery_errors = true"
+
+gsub_file! "config/environments/production.rb",
+           'config.action_mailer.default_url_options = { host: "example.com" }',
+           <<~RUBY
+             config.action_mailer.default_url_options = {
+               host: "#{TEMPLATE_CONFIG.production_hostname}",
+               protocol: "https"
+             }
+
+             config.action_mailer.asset_host = "https://#{TEMPLATE_CONFIG.production_hostname}"
+           RUBY
+gsub_file! "config/environments/production.rb",
+           <<-RUBY,
+  # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
+  # config.action_mailer.smtp_settings = {
+  #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
+  #   password: Rails.application.credentials.dig(:smtp, :password),
+  #   address: "smtp.example.com",
+  #   port: 587,
+  #   authentication: :plain
+  # }
+           RUBY
            <<-RUBY
-  config.action_mailer.raise_delivery_errors = true
-
-  config.action_mailer.default_url_options = {
-    host: "#{TEMPLATE_CONFIG.production_hostname}",
-    protocol: "https"
-  }
-  config.action_mailer.asset_host = "https://#{TEMPLATE_CONFIG.production_hostname}"
-
+  # Specify outgoing SMTP server.
   config.action_mailer.smtp_settings = {
     address: ENV.fetch("SMTP_HOSTNAME"),
     port: ENV.fetch("SMTP_PORT", 587),
