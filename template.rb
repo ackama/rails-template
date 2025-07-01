@@ -414,32 +414,36 @@ def create_initial_migration
   run_with_clean_bundler_env "bin/rake db:migrate"
 end
 
-# Ensures that the contents of the file at <code>path</code> is changed after
-# executing the given block, raising an error if it has not changed
-#
-# @param [String] path
-def ensure_file_changes!(path, &)
+def gsub_file!(path, flag, ...)
   content = File.binread(path)
 
-  yield
+  gsub_file(path, flag, ...)
 
   raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
 end
 
-def gsub_file!(path, flag, ...)
-  ensure_file_changes!(path) { gsub_file(path, flag, ...) }
-end
-
 def append_to_file!(path, ...)
-  ensure_file_changes!(path) { append_to_file(path, ...) }
+  content = File.binread(path)
+
+  append_to_file(path, ...)
+
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
 end
 
 def prepend_to_file!(path, ...)
-  ensure_file_changes!(path) { prepend_to_file(path, ...) }
+  content = File.binread(path)
+
+  prepend_to_file(path, ...)
+
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
 end
 
 def insert_into_file!(path, ...)
-  ensure_file_changes!(path) { insert_into_file(path, ...) }
+  content = File.binread(path)
+
+  insert_into_file(path, ...)
+
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
 end
 
 apply_template!
