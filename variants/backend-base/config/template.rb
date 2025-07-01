@@ -25,7 +25,37 @@ apply "variants/backend-base/config/environments/production.rb"
 apply "variants/backend-base/config/environments/test.rb"
 template "variants/backend-base/config/environments/staging.rb.tt", "config/environments/staging.rb"
 
-copy_file "variants/backend-base/config/routes.rb", "config/routes.rb", force: true
+route <<~HEALTH_CHECK_ROUTES
+  mount OkComputer::Engine, at: "/healthchecks"
+HEALTH_CHECK_ROUTES
+
+route <<-EO_ROUTES
+  ##
+  # Workaround a "bug" in lighthouse CLI
+  #
+  # Lighthouse CLI (versions 5.4 - 5.6 tested) issues a `GET /asset-manifest.json`
+  # request during its run - the URL seems to be hard-coded. This file does not
+  # exist so, during tests, your test will fail because rails will die with a 404.
+  #
+  # Lighthouse run from Chrome Dev-tools does not have the same behaviour.
+  #
+  # This hack works around this. This behaviour might be fixed by the time you
+  # read this. You can check by commenting out this block and running the
+  # accessibility and performance tests. You are encouraged to remove this hack
+  # as soon as it is no longer needed.
+  #
+  if defined?(Shakapacker) && Rails.env.test?
+    # manifest paths depend on your shakapacker config so we inspect it
+    manifest_path = Shakapacker::Configuration
+      .new(root_path: Rails.root, config_path: Rails.root.join("config/shakapacker.yml"), env: Rails.env)
+      .public_manifest_path
+      .relative_path_from(Rails.public_path)
+      .to_s
+    get "/asset-manifest.json", to: redirect(manifest_path)
+  end
+
+  root "home#index"
+EO_ROUTES
 
 if File.exist? "config/storage.yml"
   gsub_file! "config/storage.yml", /#   service: S3/ do
