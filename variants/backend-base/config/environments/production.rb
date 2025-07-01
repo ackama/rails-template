@@ -1,13 +1,3 @@
-# TODO: check if this option is still active, and if we want to keep ensuring it is disabled
-# gsub_file! "config/environments/production.rb",
-#            "# config.assets.css_compressor = :sass",
-#            <<-RUBY
-#   #
-#   # Currently disabled as minification adds a *huge* amount of time to precompile,
-#   # and gzip alone already gets us about 70% of the benefits of minify+gzip
-#   config.assets.css_compressor = false
-# RUBY
-
 gsub_file! "config/environments/production.rb",
            "config.assume_ssl = true",
            <<~RUBY
@@ -26,7 +16,6 @@ gsub_file! "config/environments/production.rb",
              config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "true").downcase != "false"
            RUBY
 
-# TODO: it looks like these options are now spread across the config
 gsub_file! "config/environments/production.rb",
            "# config.action_mailer.raise_delivery_errors = false",
            "config.action_mailer.raise_delivery_errors = true"
