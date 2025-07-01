@@ -423,13 +423,7 @@ def ensure_file_changes!(path, &)
 
   yield
 
-  return unless content == File.binread(path)
-
-  puts "--- #{path} ---"
-  puts content
-  puts "--- #{"-" * path.length} ---"
-
-  raise StandardError, "the contents of #{path} did not change!"
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
 end
 
 def gsub_file!(path, flag, ...)
