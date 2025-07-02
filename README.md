@@ -40,7 +40,7 @@ Where possible we stick to Rails defaults.
   - Create a `doc/` directory for docs
   - Add a middleware to implement HTTP Basic Auth by setting environment
     variables. We use this regularly for pre-production envs.
-  - Use [okcomputer](https://github.com/sportngin/okcomputer) for health check
+  - Use [okcomputer](https://github.com/jphenow/okcomputer) for health check
     endpoints. Configured in
     [./variants/backend-base/config/initializers/health_checks.rb](./variants/backend-base/config/initializers/health_checks.rb)
   - Install [lograge](https://github.com/roidrage/lograge) for better logs in
