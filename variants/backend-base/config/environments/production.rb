@@ -62,6 +62,10 @@ gsub_file! "config/environments/production.rb",
            "ActiveSupport::TaggedLogging.logger(STDOUT)",
            "ActiveSupport::TaggedLogging.logger($stdout)"
 
+gsub_file! "config/environments/production.rb",
+           "config.silence_healthcheck_path =",
+           "# config.silence_healthcheck_path ="
+
 insert_into_file! "config/environments/production.rb",
                   after: /.*config.cache_store = :mem_cache_store\n/ do
   <<~RUBY
