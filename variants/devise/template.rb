@@ -127,7 +127,7 @@ append_to_file! "app/views/application/_header.html.erb" do
           <li class="nav-item"><%= link_to "Home", root_path, class: "nav-link" %></li>
           <% if current_user %>
             <li class="navbar-text">You are <strong>Signed in</strong></li>
-            <li class="nav-item"><%= link_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-link" %></li>
+            <li class="nav-item"><%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-link" %></li>
           <% else %>
             <li class="navbar-text">You are <strong>Not signed in</strong></li>
             <li class="nav-item"><%= link_to "Sign in", new_user_session_path, class: "nav-link" %></li>
