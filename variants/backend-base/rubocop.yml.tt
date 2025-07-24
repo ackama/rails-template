@@ -26,7 +26,6 @@ AllCops:
   Exclude:
     - db/schema.rb
     - 'node_modules/**/*'
-    - 'bower_components/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
     - 'bin/**/*'
