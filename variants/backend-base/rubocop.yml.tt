@@ -24,15 +24,11 @@ AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
   Exclude:
-    - 'bin/*'
-    - config/initializers/version.rb
     - db/schema.rb
     - 'node_modules/**/*'
-    - 'bower_components/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
     - 'bin/**/*'
-    - 'doc/**/*'
 
 Layout/LineLength:
   Max: 120
