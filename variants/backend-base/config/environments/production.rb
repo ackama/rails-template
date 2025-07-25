@@ -1,32 +1,48 @@
 gsub_file! "config/environments/production.rb",
-           "# config.assets.css_compressor = :sass",
-           <<-RUBY
-  #
-  # Currently disabled as minification adds a *huge* amount of time to precompile,
-  # and gzip alone already gets us about 70% of the benefits of minify+gzip
-  config.assets.css_compressor = false
-RUBY
+           "config.assume_ssl = true",
+           <<~RUBY
+             #
+             # You should never use this because it just blindly sets headers without any actual
+             # checks; instead, whatever is handling the SSL-termination should be setting the
+             # appropriate headers to indicate that the request was actually SSL-terminated.
+             config.assume_ssl = false
+           RUBY
 
 gsub_file! "config/environments/production.rb",
            "config.force_ssl = true",
            <<~RUBY
-             ##
-             # `force_ssl` defaults to on. Set `force_ssl` to false if (and only if) RAILS_FORCE_SSL=false, otherwise set it to true.
              #
+             # On by default, though can be disabled by setting RAILS_FORCE_SSL=false (and only "false")
              config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "true").downcase != "false"
            RUBY
 
 gsub_file! "config/environments/production.rb",
            "# config.action_mailer.raise_delivery_errors = false",
+           "config.action_mailer.raise_delivery_errors = true"
+
+gsub_file! "config/environments/production.rb",
+           'config.action_mailer.default_url_options = { host: "example.com" }',
+           <<~RUBY
+             config.action_mailer.default_url_options = {
+               host: "#{TEMPLATE_CONFIG.production_hostname}",
+               protocol: "https"
+             }
+
+             config.action_mailer.asset_host = "https://#{TEMPLATE_CONFIG.production_hostname}"
+           RUBY
+gsub_file! "config/environments/production.rb",
+           <<-RUBY,
+  # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
+  # config.action_mailer.smtp_settings = {
+  #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
+  #   password: Rails.application.credentials.dig(:smtp, :password),
+  #   address: "smtp.example.com",
+  #   port: 587,
+  #   authentication: :plain
+  # }
+           RUBY
            <<-RUBY
-  config.action_mailer.raise_delivery_errors = true
-
-  config.action_mailer.default_url_options = {
-    host: "#{TEMPLATE_CONFIG.production_hostname}",
-    protocol: "https"
-  }
-  config.action_mailer.asset_host = "https://#{TEMPLATE_CONFIG.production_hostname}"
-
+  # Specify outgoing SMTP server.
   config.action_mailer.smtp_settings = {
     address: ENV.fetch("SMTP_HOSTNAME"),
     port: ENV.fetch("SMTP_PORT", 587),
@@ -43,43 +59,12 @@ gsub_file! "config/environments/production.rb",
            'ENV.fetch("RAILS_LOG_LEVEL", ENV.fetch("LOG_LEVEL", "info"))'
 
 gsub_file! "config/environments/production.rb",
-           "ActiveSupport::Logger.new(STDOUT)",
-           "ActiveSupport::Logger.new($stdout)"
+           "ActiveSupport::TaggedLogging.logger(STDOUT)",
+           "ActiveSupport::TaggedLogging.logger($stdout)"
 
-insert_into_file! "config/environments/production.rb",
-                  after: /.*config\.public_file_server\.enabled.*\n/ do
-  <<~'RUBY'
-
-    # Ensure that Rails sets appropriate caching headers on static assets if
-    # Rails is serving static assets in production e.g. on Heroku
-    #
-    # Overview of Cache-control values:
-    #
-    #     max-age=<seconds>
-    #         The maximum amount of time a resource is considered fresh.
-    #
-    #     s-maxage=<seconds>
-    #         Overrides max-age or the Expires header, but only for shared
-    #         caches (e.g., proxies). Ignored by private caches.
-    #
-    #     More info: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
-    #
-    # Our Cache-Control header:
-    #
-    # * It tells all caches (both proxies like Cloudflare and the users web
-    #   browser) that the asset can be cached.
-    # * It tells shared caches (e.g. Cloudflare) that they can cache it for 365 days
-    # * It tells browsers that they should cache for 365 days
-    #
-    # Cloudflare will respect s-maxage if it is set so change that value if you
-    # want Cloudflare to cache differently than then browser.
-    #
-    config.public_file_server.headers = {
-      "Cache-Control" => "public, s-maxage=#{365.days.seconds}, max-age=#{365.days.seconds}"
-    }
-
-  RUBY
-end
+gsub_file! "config/environments/production.rb",
+           "config.silence_healthcheck_path =",
+           "# config.silence_healthcheck_path ="
 
 insert_into_file! "config/environments/production.rb",
                   after: /.*config.cache_store = :mem_cache_store\n/ do

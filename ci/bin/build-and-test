@@ -33,7 +33,7 @@ config_path = if ENV.fetch("CONFIG_PATH", "") == ""
               end
 
 config_env_var = %Q(CONFIG_PATH="#{config_path}") if config_path
-skip_flags = ENV.fetch("SKIPS", "--skip-javascript --skip-docker")
+skip_flags = ENV.fetch("SKIPS", "--skip-javascript --skip-docker --skip-kamal --skip-solid")
 
 puts "=" * 80
 puts <<~EO_CONFIG_SUMMARY
