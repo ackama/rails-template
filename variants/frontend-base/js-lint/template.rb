@@ -1,8 +1,6 @@
 # Javascript code linting and formatting
 # ######################################
 
-add_yarn_package_extension_dependency("eslint-plugin-prettier", "eslint-config-prettier")
-
 add_js_dependencies %w[
   @eslint-community/eslint-plugin-eslint-comments
   @stylistic/eslint-plugin-js@3

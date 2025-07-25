@@ -7,8 +7,6 @@ run "bundle install"
 
 run "rails generate react:install"
 
-add_yarn_package_extension_dependency("@testing-library/user-event", "@testing-library/dom")
-
 # prefer importing from the more specific package for consistency
 gsub_file! "app/frontend/test/stimulus/controllers/add_class_controller.test.js",
            "'@testing-library/dom'",
