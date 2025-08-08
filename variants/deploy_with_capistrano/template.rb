@@ -12,7 +12,6 @@ append_to_file!("Gemfile") do
     gem "capistrano-bundler", require: false
     gem "capistrano-rails", require: false
     gem "capistrano-rbenv", require: false
-    gem "capistrano-rake", require: false
     gem "ed25519", require: false
     gem "bcrypt_pbkdf", require: false
 
@@ -143,13 +142,11 @@ insert_into_file! "Capfile", after: /install_plugin Capistrano::SCM::Git/ do
     #   https://github.com/capistrano/rbenv
     #   https://github.com/capistrano/bundler
     #   https://github.com/capistrano/rails
-    #   https://github.com/sheharyarn/capistrano-rake
     #
     require "capistrano/rbenv"
     require "capistrano/bundler"
     require "capistrano/rails/assets"
     require "capistrano/rails/migrations"
-    require "capistrano/rake"
   EO_RUBY
 end
 
