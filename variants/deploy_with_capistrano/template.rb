@@ -133,22 +133,10 @@ EO_RUBY
 
 gsub_file!("config/deploy.rb", old_generated_cap_config_snippet, new_ackama_cap_config_snippet)
 
-insert_into_file! "Capfile", after: /install_plugin Capistrano::SCM::Git/ do
-  <<~EO_RUBY
-    # Include tasks from other gems included in your Gemfile
-    #
-    # For documentation on these, see for example:
-    #
-    #   https://github.com/capistrano/rbenv
-    #   https://github.com/capistrano/bundler
-    #   https://github.com/capistrano/rails
-    #
-    require "capistrano/rbenv"
-    require "capistrano/bundler"
-    require "capistrano/rails/assets"
-    require "capistrano/rails/migrations"
-  EO_RUBY
-end
+gsub_file!("Capfile", '# require "capistrano/rbenv"', 'require "capistrano/rbenv"')
+gsub_file!("Capfile", '# require "capistrano/bundler"', 'require "capistrano/bundler"')
+gsub_file!("Capfile", '# require "capistrano/rails/assets"', 'require "capistrano/rails/assets"')
+gsub_file!("Capfile", '# require "capistrano/rails/migrations"', 'require "capistrano/rails/migrations"')
 
 # Example:
 # deploy_envs = {"production"=>"config/deploy/production.rb", "staging"=>"config/deploy/staging.rb"}
