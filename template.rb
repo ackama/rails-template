@@ -143,7 +143,10 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
   apply "variants/backend-base/public/template.rb"
   apply "variants/backend-base/spec/template.rb"
 
-  system("tree -ugp /opt/hostedtoolcache/Ruby/3.4.5/x64/lib/ruby/gems/3.4.0/gems")
+  # system("tree -ugp /opt/hostedtoolcache/Ruby/3.4.5/x64/lib/ruby/gems/3.4.0/gems")
+  system("stat /opt/hostedtoolcache/Ruby/3.4.5/x64/lib/ruby/gems/3.4.0/gems")
+  system("stat /opt/hostedtoolcache/Ruby/3.4.5/x64/lib/ruby/gems/3.4.0/gems/package_json-0.1.0")
+
 
   # The block passed to "after_bundle" seems to run after `bundle install`
   # but also after `shakapacker:install` and after Rails has initialized the git
