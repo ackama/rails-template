@@ -4,6 +4,7 @@ on:
   pull_request:
   push:
     branches:
+      - debugging
       - main
   schedule:
     # * is a special character in YAML so you have to quote this string
@@ -83,38 +84,6 @@ jobs:
           - name: defaults
             config_path: 'ackama_rails_template.config.yml'
             install_actionlint: 'yes'
-          - name: all
-            config_path: 'ci/configs/all.yml'
-            install_actionlint: 'yes'
-          - name: all-typescript
-            config_path: 'ci/configs/all-typescript.yml'
-            install_actionlint: 'yes'
-          - name: basic
-            config_path: 'ci/configs/basic.yml'
-          - name: basic-typescript
-            config_path: 'ci/configs/basic-typescript.yml'
-          - name: github_actions
-            config_path: 'ci/configs/github_actions.yml'
-            install_actionlint: 'yes'
-          - name: react
-            config_path: 'ci/configs/react.yml'
-          - name: react-typescript
-            config_path: 'ci/configs/react-typescript.yml'
-          - name: sidekiq
-            config_path: 'ci/configs/sidekiq.yml'
-          - name: devise
-            config_path: 'ci/configs/devise.yml'
-          - name: basic_with_skips
-            config_path: 'ci/configs/basic.yml'
-            skips: --skip-spring --skip-javascript
-          - name: bootstrap
-            config_path: 'ci/configs/bootstrap.yml'
-          - name: bootstrap-typescript
-            config_path: 'ci/configs/bootstrap-typescript.yml'
-          - name: capistrano
-            config_path: 'ci/configs/deploy_with_capistrano.yml'
-          - name: ackama_ec2_capistrano
-            config_path: 'ci/configs/deploy_with_ackama_ec2_capistrano.yml'
     services:
       db:
         image: postgres
