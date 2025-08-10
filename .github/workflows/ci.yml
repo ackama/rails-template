@@ -136,6 +136,8 @@ jobs:
         with:
           bundler-cache: true
           ruby-version: 'ruby'
+      - run: bundle install
+      - run: bundle show rubocop
 
       - name: Setup git for committing
         run: |
