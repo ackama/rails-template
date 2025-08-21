@@ -116,8 +116,11 @@ jobs:
         uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
-          name: rspec-output-screenshots
-          path: tmp/screenshots
+          name: rspec-output-results
+          path: |
+            tmp/capybara
+            tmp/screenshots
+            tmp/lighthouse
           retention-days: 5
 
   # ACTION REQUIRED:
