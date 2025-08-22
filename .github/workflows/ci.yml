@@ -196,3 +196,11 @@ jobs:
           PGPASSWORD: postgres
           PGHOST: localhost
         run: ./ci/bin/build-and-test
+      - uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: ${{ matrix.variant.name }}-demo-rspec-output-results
+          path: |
+            tmp/builds/${{ matrix.variant.name }}-demo/tmp/capybara
+            tmp/builds/${{ matrix.variant.name }}-demo/tmp/screenshots
+            tmp/builds/${{ matrix.variant.name }}-demo/tmp/lighthouse
