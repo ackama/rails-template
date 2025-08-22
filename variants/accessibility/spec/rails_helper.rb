@@ -10,5 +10,6 @@ insert_into_file! "spec/rails_helper.rb", after: /# Add other Chrome arguments h
     # Lighthouse Matcher options
     options.add_argument("--remote-debugging-port=9222")
     Lighthouse::Matchers.chrome_flags = %w[headless=new no-sandbox]
+    Lighthouse::Matchers.results_directory = Rails.root.join("tmp/lighthouse")
   OPTIONS
 end
