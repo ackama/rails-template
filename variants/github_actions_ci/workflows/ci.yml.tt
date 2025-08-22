@@ -55,6 +55,7 @@ jobs:
       - run: <%= package_json.manager.native_run_command("typecheck").join(" ") %>
       <%- end -%>
       - run: <%= package_json.manager.native_run_command("js-lint").join(" ") %>
+      - run: <%= package_json.manager.native_run_command("scss-lint").join(" ") %>
       - run: <%= package_json.manager.native_run_command("format-check").join(" ") %>
       - run: <%= package_json.manager.native_run_command("test", ["--coverage"]).join(" ") %>
   ruby_based_checks:
