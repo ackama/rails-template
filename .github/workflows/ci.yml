@@ -168,6 +168,12 @@ jobs:
           bundler-cache: true
           ruby-version: 'ruby'
 
+      # ensure the global Ruby gem directory is secure, as versions of Ruby that ship "cached"
+      # with the GHA runner seem to have the permissions set incorrectly, unlike when they're
+      # installed via ruby/setup-ruby (which isn't something we can force)
+      # see https://github.com/rubygems/rubygems/issues/7983
+      - run: chmod -R o-w /opt/hostedtoolcache/Ruby
+
       - name: Setup git for committing
         run: |
           # We do some git commits during our testing so these need to be set
