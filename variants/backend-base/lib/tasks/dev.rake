@@ -1,8 +1,8 @@
 ##
 # The dev namespace is for tasks which are intended for local development only.
 #
-# If your task could be run in local development or a deployed environment you
-# should choose the `app` namespace (see `app.rake`)
+# If your tasks are safe and could be useful to run in a deployed environment,
+# you should use the `app` namespace (in `app.rake`) instead
 
 ##
 # WARNING: Wrap `require` for development only gems in an environment check
