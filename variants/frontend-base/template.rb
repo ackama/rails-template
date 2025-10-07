@@ -18,17 +18,24 @@ package_json.record_package_manager!
 
 run "rails shakapacker:install"
 
-# ensure the latest major versions of Shakapacker's peer dependencies are installed
-#
-# TODO: remove this once https://github.com/shakacode/shakapacker/pull/576 is landed
+# install dependencies for babel and webpack
 add_js_dependencies [
-  "babel-loader@10",
-  "compression-webpack-plugin@11",
-  "webpack-assets-manifest@6",
-  "webpack-cli@6",
-  "webpack-merge@6"
+  "@babel/core",
+  "@babel/plugin-transform-runtime",
+  "@babel/preset-env",
+  "@babel/runtime",
+  "babel-loader",
+  "compression-webpack-plugin",
+  "css-loader",
+  "mini-css-extract-plugin",
+  "sass-loader",
+  "style-loader",
+  "terser-webpack-plugin",
+  "webpack-assets-manifest",
+  "webpack-cli",
+  "webpack-merge"
 ]
-add_js_dependencies ["webpack-dev-server@5"], type: :dev
+add_js_dependencies ["webpack-dev-server"], type: :dev
 
 # this is added by shakapacker:install, but we've already got one (with some extra tags)
 # in our template, so remove theirs otherwise the app will error when rendering this
@@ -48,6 +55,7 @@ package_json.delete!("babel")
 copy_file "config/webpack/webpack.config.js", force: true
 
 gsub_file! "config/shakapacker.yml", "cache_path: tmp/shakapacker", "cache_path: tmp/cache/shakapacker"
+gsub_file! "config/shakapacker.yml", "javascript_transpiler: 'swc'", "javascript_transpiler: 'babel'"
 gsub_file! "config/shakapacker.yml", "source_path: app/javascript", "source_path: app/frontend"
 
 old_shakapacker_test_compile_snippet = <<~EO_OLD
