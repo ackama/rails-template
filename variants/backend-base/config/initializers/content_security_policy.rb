@@ -124,7 +124,7 @@ Rails.application.configure do
     # ###############
 
     # If you are using UJS then enable automatic nonce generation
-    config.content_security_policy_nonce_generator = ->(_request) { SecureRandom.base64(16) }
+    config.content_security_policy_nonce_generator = ->(request) { request.session.id.to_s }
 
     # Set the nonce only to specific directives
     # config.content_security_policy_nonce_directives = %w(script-src)
