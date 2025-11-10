@@ -55,7 +55,7 @@ package_json.delete!("babel")
 copy_file "config/webpack/webpack.config.js", force: true
 
 gsub_file! "config/shakapacker.yml", "cache_path: tmp/shakapacker", "cache_path: tmp/cache/shakapacker"
-gsub_file! "config/shakapacker.yml", "javascript_transpiler: 'swc'", "javascript_transpiler: 'babel'"
+gsub_file! "config/shakapacker.yml", 'javascript_transpiler: "swc"', "javascript_transpiler: 'babel'"
 gsub_file! "config/shakapacker.yml", "source_path: app/javascript", "source_path: app/frontend"
 
 old_shakapacker_test_compile_snippet = <<~EO_OLD
