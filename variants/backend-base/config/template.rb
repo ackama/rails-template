@@ -6,6 +6,9 @@ copy_file "variants/backend-base/config/app.yml", "config/app.yml"
 remove_file "config/master.key"
 remove_file "config/credentials.yml.enc"
 
+remove_file "config/ci"
+remove_file "config/bundler-audit.yml"
+
 copy_file "variants/backend-base/config/puma.rb", "config/puma.rb", force: true
 
 copy_file "variants/backend-base/config/initializers/generators.rb", "config/initializers/generators.rb"
