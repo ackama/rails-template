@@ -4,3 +4,5 @@
 end
 
 remove_file "bin/ci"
+remove_file "bin/dev"
+remove_file "bin/thrust"
