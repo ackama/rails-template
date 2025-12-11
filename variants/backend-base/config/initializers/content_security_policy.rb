@@ -1,8 +1,8 @@
 # Be sure to restart your server when you modify this file.
 
-# Define an application-wide content security policy
-# For further information see the following documentation
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+# Define an application-wide content security policy.
+# See the Securing Rails Applications Guide for more information:
+# https://guides.rubyonrails.org/security.html#content-security-policy-header
 
 Rails.application.configure do
   config.content_security_policy do |policy|
@@ -94,12 +94,6 @@ Rails.application.configure do
     # https://api.rubyonrails.org/classes/ActionView/Helpers/JavaScriptHelper.html#method-i-javascript_tag
     # for details.
 
-    # Allow webpack-dev-server to use websockets in development
-    # #########################################################
-    #
-    # * We want to minimize differences in the CSP header between environments so
-    #   that we can find and fix CSP issues in development but enabling the
-    #   webpack-dev-server to communicate over websockets is an exception.
     policy.connect_src :self, *[
       *(["*.googletagmanager.com", "*.google-analytics.com", "*.analytics.google.com"] if google_analytics_enabled),
       # required for webpack-dev-server to be used in local development
@@ -112,7 +106,7 @@ Rails.application.configure do
     # You should enable a reporting URL so you can find and fix any issues your
     # users encounter caused by CSP in production.
     #
-    # If you app is using https://sentry.io then you can use the URL they provide
+    # If your app is using https://sentry.io then you can use the URL they provide
     # for your app to report CSP issues - see
     # https://docs.sentry.io/error-reporting/security-policy-reporting/ for
     # details
@@ -123,18 +117,20 @@ Rails.application.configure do
     # Configure nonce
     # ###############
 
-    # If you are using UJS then enable automatic nonce generation
+    # Generate session nonces for permitted importmap, inline scripts, and inline styles.
     config.content_security_policy_nonce_generator = ->(_request) { SecureRandom.base64(16) }
+    # config.content_security_policy_nonce_directives = %w(script-src style-src)
 
-    # Set the nonce only to specific directives
-    # config.content_security_policy_nonce_directives = %w(script-src)
+    # Automatically add `nonce` to `javascript_tag`, `javascript_include_tag`, and `stylesheet_link_tag`
+    # if the corresponding directives are specified in `content_security_policy_nonce_directives`.
+    # config.content_security_policy_nonce_auto = true
 
     # ################################
     # Configure reporting vs enforcing
     # ################################
     #
-    # Report CSP violations to a specified URI. For further information see the
-    # following documentation:
+    # Report violations without enforcing the policy.
+    # For further information see the following documentation:
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
     #
     # We default to turning on enforcement in all environments so that we can catch
