@@ -6,6 +6,9 @@ copy_file "variants/backend-base/config/app.yml", "config/app.yml"
 remove_file "config/master.key"
 remove_file "config/credentials.yml.enc"
 
+remove_file "config/ci"
+remove_file "config/bundler-audit.yml"
+
 copy_file "variants/backend-base/config/puma.rb", "config/puma.rb", force: true
 
 copy_file "variants/backend-base/config/initializers/generators.rb", "config/initializers/generators.rb"
@@ -57,23 +60,21 @@ route <<-EO_ROUTES
   root "home#index"
 EO_ROUTES
 
-if File.exist? "config/storage.yml"
-  gsub_file! "config/storage.yml", /#   service: S3/ do
-    <<~YAML
-      #   service: S3
-      #   upload:
-      #     # TEAM DECISION REQUIRED: The correct caching duration for files
-      #     # stored by Active Storage is project dependent so you should discuss
-      #     # this with you team if you don't feel able to make the decision solo.
-      #     #
-      #     # These options are are not well documented in ActiveStorage. They
-      #     # are passed directly to the S3 SDK. Details:
-      #     # https://github.com/rails/rails/blob/master/activestorage/lib/active_storage/service/s3_service.rb
-      #     #
-      #     # * private: the browser should cache but intermediate proxies (e.g. CDNs) should not
-      #     # * max-age: the number of seconds to cache the file for
-      #     #
-      #     cache_control: 'private, max-age=<%= 365.days.seconds %>'
-    YAML
-  end
+gsub_file! "config/storage.yml", /#   service: S3/ do
+  <<~YAML
+    #   service: S3
+    #   upload:
+    #     # TEAM DECISION REQUIRED: The correct caching duration for files
+    #     # stored by Active Storage is project dependent so you should discuss
+    #     # this with you team if you don't feel able to make the decision solo.
+    #     #
+    #     # These options are are not well documented in ActiveStorage. They
+    #     # are passed directly to the S3 SDK. Details:
+    #     # https://github.com/rails/rails/blob/master/activestorage/lib/active_storage/service/s3_service.rb
+    #     #
+    #     # * private: the browser should cache but intermediate proxies (e.g. CDNs) should not
+    #     # * max-age: the number of seconds to cache the file for
+    #     #
+    #     cache_control: 'private, max-age=<%= 365.days.seconds %>'
+  YAML
 end
