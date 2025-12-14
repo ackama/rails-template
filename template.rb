@@ -302,6 +302,9 @@ def cleanup_package_json
 
   # ensure the lockfile is up to date with any changes we've made to package.json
   package_json.manager.install!
+
+  # ensure the package.json is sorted
+  run "npx -y sort-package-json"
 end
 
 # Adds the given JavaScript <code>packages</code> as dependencies using the
