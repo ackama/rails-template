@@ -75,7 +75,7 @@ insert_into_file! "config/locales/en.yml", after: /^en:\n/ do
   YAML
 end
 
-insert_into_file! "spec/rails_helper.rb", after: %r{require "axe/rspec"\n} do
+insert_into_file! "spec/rails_helper.rb", after: /require "axe-rspec"\n/ do
   <<~REQUIRE
     require "pundit/rspec"
   REQUIRE
