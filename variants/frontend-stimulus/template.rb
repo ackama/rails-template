@@ -51,7 +51,6 @@ add_js_dependencies %W[
   @testing-library/jest-dom
   @testing-library/user-event
   eslint-plugin-jest
-  eslint-plugin-jest-formatting
   eslint-plugin-jest-dom
   eslint-plugin-testing-library
   jest-environment-jsdom
