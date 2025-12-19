@@ -3,7 +3,6 @@ source_paths.unshift(File.dirname(__FILE__))
 add_js_dependencies ["@babel/plugin-transform-typescript"]
 add_js_dependencies [
   "@types/jest@#{JEST_MAJOR_VERSION}",
-  "ts-jest@#{JEST_MAJOR_VERSION}",
   "ts-node"
 ], type: :dev
 
