@@ -13,7 +13,6 @@ add_js_dependencies %w[
   globals
   prettier
   prettier-config-ackama
-  prettier-plugin-packagejson
 ], type: :dev
 
 copy_file "variants/frontend-base/eslint.config.js", "eslint.config.js"
