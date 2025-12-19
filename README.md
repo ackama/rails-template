@@ -64,7 +64,7 @@ Where possible we stick to Rails defaults.
   - Setup Sentry for error reporting
 - Code style
   - Add [EditorConfig](https://editorconfig.org/) config file
-    ([.editorconfig](./editorconfig))
+    ([.editorconfig](./.editorconfig))
   - JS/HTML/CSS: [Prettier](https://prettier.io/), Set up with an
     [Ackama prettier config](https://github.com/ackama/prettier-config-ackama)
     and a variety of other prettier plugins, see the full list in
