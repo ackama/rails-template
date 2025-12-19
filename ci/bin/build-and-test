@@ -4,6 +4,8 @@ require "fileutils"
 require "pathname"
 require "yaml"
 
+require_relative "lint-configs"
+
 def ensure_everything_is_committed
   out = `git status -s`
 
@@ -31,7 +33,7 @@ config_path = if ENV.fetch("CONFIG_PATH", "") == ""
               end
 
 config_env_var = %Q(CONFIG_PATH="#{config_path}") if config_path
-skip_flags = ENV.fetch("SKIPS", "--skip-javascript --skip-docker")
+skip_flags = ENV.fetch("SKIPS", "--skip-javascript --skip-docker --skip-kamal --skip-solid")
 
 puts "=" * 80
 puts <<~EO_CONFIG_SUMMARY
@@ -89,6 +91,9 @@ Dir.chdir(app_path) do |cwd|
 
   puts "Checking everything is committed and there are no un-staged files"
   ensure_everything_is_committed
+
+  puts "Checking that no config properties have been duplicated in environment files"
+  ensure_no_duplicate_config_lines_in_environment_files
 
   puts "Running test suite"
   system("./bin/ci-run", exception: true)

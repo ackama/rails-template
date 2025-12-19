@@ -2,12 +2,13 @@
 # [rubocop.yml.tt](./rubocop.yml.tt) if you want to change the Rubocop
 # configuration which is copied into generated applications.
 ---
-require:
+plugins:
   - rubocop-capybara
   - rubocop-factory_bot
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-rspec_rails
 
 # Built-in config:
 # https://github.com/bbatsov/rubocop/blob/master/config/default.yml
@@ -188,6 +189,9 @@ Style/FormatStringToken:
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'spec/**/*'
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: always
 
 # https://rubocop.readthedocs.io/en/latest/cops_style/
 Style/HashTransformKeys:

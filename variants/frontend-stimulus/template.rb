@@ -2,7 +2,7 @@ source_paths.unshift(File.dirname(__FILE__))
 
 TERMINAL.puts_header "Setting up stimulus.js"
 
-yarn_add_dependencies %w[
+add_js_dependencies %w[
   @hotwired/stimulus
   @hotwired/stimulus-webpack-helpers
 ]
@@ -10,14 +10,14 @@ yarn_add_dependencies %w[
 directory "app/frontend/stimulus/controllers"
 directory "app/frontend/test"
 
-prepend_to_file "app/frontend/packs/application.js" do
+prepend_to_file! "app/frontend/packs/application.js" do
   <<~EO_JS_IMPORTS
     import { Application } from '@hotwired/stimulus';
     import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
   EO_JS_IMPORTS
 end
 
-append_to_file "app/frontend/packs/application.js" do
+append_to_file! "app/frontend/packs/application.js" do
   <<~EO_JS_SETUP
 
     // Set up stimulus.js https://stimulus.hotwired.dev/
@@ -46,19 +46,18 @@ append_to_file "app/frontend/packs/application.js" do
   EO_JS_SETUP
 end
 
-yarn_add_dev_dependencies %W[
+add_js_dependencies %W[
   @testing-library/dom
   @testing-library/jest-dom
   @testing-library/user-event
   eslint-plugin-jest
-  eslint-plugin-jest-formatting
   eslint-plugin-jest-dom
   eslint-plugin-testing-library
   jest-environment-jsdom
   jest@#{JEST_MAJOR_VERSION}
-]
+], type: :dev
 
-copy_file ".eslintrc.js", force: true
+copy_file "eslint.config.js", force: true
 copy_file "jest.config.js"
 
 package_json.merge! do |pj|
@@ -70,7 +69,7 @@ package_json.merge! do |pj|
   }
 end
 
-append_to_file "bin/ci-run" do
+append_to_file! "bin/ci-run" do
   <<~JEST
     echo "* ******************************************************"
     echo "* Running JS tests"

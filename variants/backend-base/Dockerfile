@@ -39,9 +39,6 @@ RUN apt-get update -qq &&\
            /usr/share/locales \
            /var/cache/apt/archives
 
-# Use NPM to install Yarn.
-RUN npm install -g yarn
-
 # Install gem and NPM dependencies. These are baked into the image so the image can run
 # standalone provided valid configuration. When running in docker-compose, these
 # dependencies are stored in a volume so the image does not need rebuilding when the
@@ -56,10 +53,10 @@ USER deploy
 
 # Add just the dependency manifests before installing.
 # This reduces the chance that bundler or NPM will get a cold cache because some kind of application file changed.
-ADD Gemfile* package.json yarn.lock /usr/src/app/
+ADD Gemfile* package.json package-lock.json /usr/src/app/
 WORKDIR /usr/src/app
 RUN bundle check || bundle install &&\
-    yarn install --frozen-lockfile
+    npm ci
 
 # Add all application code to /usr/src/app and set this as the working directory
 # of the container

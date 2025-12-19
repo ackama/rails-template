@@ -2,7 +2,7 @@ gsub_file! "config/application.rb",
            /# config.time_zone = ['"]Central Time \(US & Canada\)['"]/,
            "config.time_zone = 'Wellington'"
 
-insert_into_file "config/application.rb", after: /^require_relative ['"]boot['"]/ do
+insert_into_file! "config/application.rb", after: /^require_relative ['"]boot['"]/ do
   # the empty line at the beginning of this string is required
   <<~RUBY
 
@@ -10,7 +10,7 @@ insert_into_file "config/application.rb", after: /^require_relative ['"]boot['"]
   RUBY
 end
 
-insert_into_file "config/application.rb", before: /^  end/ do
+insert_into_file! "config/application.rb", before: /^  end/ do
   # the empty line at the beginning of this string is required
   <<-RUBY
 

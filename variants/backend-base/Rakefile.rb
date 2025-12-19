@@ -1,4 +1,4 @@
-append_to_file "Rakefile" do
+append_to_file! "Rakefile" do
   <<~RUBY
 
     begin

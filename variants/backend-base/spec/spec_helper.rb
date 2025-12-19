@@ -22,7 +22,7 @@ if RSpec.configuration.files_to_run.length > 1
     minimum_coverage line: 90, branch: 80
 
     add_filter "/bin/"
-    add_filter "/lib/tasks/auto_annotate_models.rake"
+    add_filter "/lib/tasks/annotate_rb.rake"
     add_filter "/lib/tasks/coverage.rake"
     add_filter "/spec/support/"
     add_filter "/spec/factories/"

@@ -18,6 +18,25 @@ package_json.record_package_manager!
 
 run "rails shakapacker:install"
 
+# install dependencies for babel and webpack
+add_js_dependencies [
+  "@babel/core",
+  "@babel/plugin-transform-runtime",
+  "@babel/preset-env",
+  "@babel/runtime",
+  "babel-loader",
+  "compression-webpack-plugin",
+  "css-loader",
+  "mini-css-extract-plugin",
+  "sass-loader",
+  "style-loader",
+  "terser-webpack-plugin",
+  "webpack-assets-manifest",
+  "webpack-cli",
+  "webpack-merge"
+]
+add_js_dependencies ["webpack-dev-server"], type: :dev
+
 # this is added by shakapacker:install, but we've already got one (with some extra tags)
 # in our template, so remove theirs otherwise the app will error when rendering this
 gsub_file! "app/views/layouts/application.html.erb",
@@ -36,6 +55,7 @@ package_json.delete!("babel")
 copy_file "config/webpack/webpack.config.js", force: true
 
 gsub_file! "config/shakapacker.yml", "cache_path: tmp/shakapacker", "cache_path: tmp/cache/shakapacker"
+gsub_file! "config/shakapacker.yml", 'javascript_transpiler: "swc"', "javascript_transpiler: 'babel'"
 gsub_file! "config/shakapacker.yml", "source_path: app/javascript", "source_path: app/frontend"
 
 old_shakapacker_test_compile_snippet = <<~EO_OLD
@@ -57,7 +77,7 @@ empty_directory_with_keep_file "app/frontend/images"
 copy_file "app/frontend/stylesheets/_elements.scss"
 copy_file "app/frontend/stylesheets/_reset.scss"
 copy_file "app/frontend/stylesheets/application.scss"
-prepend_to_file "app/frontend/packs/application.js" do
+prepend_to_file! "app/frontend/packs/application.js" do
   <<~EO_CONTENT
 
     import "../stylesheets/application.scss";
@@ -95,7 +115,7 @@ EO_IMG_EXAMPLE
 gsub_file! "app/views/layouts/application.html.erb", "<body>", body_open_tag_with_img_example, force: true
 
 # shakapacker will automatically configure webpack to use these so long as the dependencies are present
-yarn_add_dependencies %w[
+add_js_dependencies %w[
   css-loader
   css-minimizer-webpack-plugin
   mini-css-extract-plugin
@@ -104,10 +124,10 @@ yarn_add_dependencies %w[
 ]
 
 # Setup Turbo
-yarn_add_dependencies %w[
+add_js_dependencies %w[
   @hotwired/turbo-rails
 ]
-prepend_to_file "app/frontend/packs/application.js" do
+prepend_to_file! "app/frontend/packs/application.js" do
   <<~EO_CONTENT
 
     import "@hotwired/turbo-rails"

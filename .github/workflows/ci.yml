@@ -49,9 +49,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
-          cache: 'yarn'
-      - run: yarn install
-      - run: yarn run format-check
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run format-check
 
   rubocop:
     permissions:
@@ -79,24 +79,6 @@ jobs:
       # how many fail)
       fail-fast: false
       matrix:
-        js_package_manager:
-          - name: npm
-            installer: npm
-          - name: yarn_berry
-            installer: yarn
-            linker: pnp
-          - name: yarn_berry
-            installer: yarn
-            linker: node-modules
-          - name: yarn_berry
-            installer: yarn
-            linker: pnpm
-          - name: yarn_classic
-            installer: yarn
-          - name: pnpm
-            installer: pnpm
-          - name: bun
-            installer: bun
         variant:
           - name: defaults
             config_path: 'ackama_rails_template.config.yml'
@@ -173,8 +155,8 @@ jobs:
         with:
           node-version-file: '.node-version'
 
-      - name: install package manager
-        run: npm i -g ${{ matrix.js_package_manager.installer }}
+      - name: Install latest version of npm
+        run: npm i -g npm
 
       # We don't cache gems or JS packages because we are actually testing how
       # installation and setup works in this project so, while caching would
@@ -186,14 +168,19 @@ jobs:
           bundler-cache: true
           ruby-version: 'ruby'
 
+      # ensure the global Ruby gem directory is secure, as versions of Ruby that ship "cached"
+      # with the GHA runner seem to have the permissions set incorrectly, unlike when they're
+      # installed via ruby/setup-ruby (which isn't something we can force)
+      # see https://github.com/rubygems/rubygems/issues/7983
+      - run: chmod -R o-w /opt/hostedtoolcache/Ruby
+
       - name: Setup git for committing
         run: |
           # We do some git commits during our testing so these need to be set
           git config --global user.email "you@example.com"
           git config --global user.name "Your Name"
 
-      # prettier-ignore
-      - run: ./ci/bin/create-fake-js-package-managers ${{ matrix.js_package_manager.installer }}
+      - run: ./ci/bin/create-fake-js-package-managers npm
 
       - name: Run CI script
         env:
@@ -203,11 +190,17 @@ jobs:
           # "react", "sidekiq" etc.
           APP_NAME: ${{ matrix.variant.name }}-demo
           CONFIG_PATH: ${{ matrix.variant.config_path }}
-          SKIPS: '--skip-javascript --skip-docker ${{ matrix.variant.skips }}'
+          # prettier-ignore
+          SKIPS: '--skip-javascript --skip-docker --skip-kamal --skip-solid ${{ matrix.variant.skips }}'
           PGUSER: postgres
           PGPASSWORD: postgres
           PGHOST: localhost
-          PACKAGE_JSON_FALLBACK_MANAGER: ${{ matrix.js_package_manager.name }}
-          PACKAGE_JSON_YARN_BERRY_LINKER:
-            ${{ matrix.js_package_manager.linker }}
         run: ./ci/bin/build-and-test
+      - uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: ${{ matrix.variant.name }}-demo-rspec-output-results
+          path: |
+            tmp/builds/${{ matrix.variant.name }}-demo/tmp/capybara
+            tmp/builds/${{ matrix.variant.name }}-demo/tmp/screenshots
+            tmp/builds/${{ matrix.variant.name }}-demo/tmp/lighthouse

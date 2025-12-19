@@ -49,12 +49,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
-          cache: 'yarn'
+          cache: 'npm'
       - run: <%= package_json.manager.native_install_command(frozen: true).join(" ") %>
       <%- if TEMPLATE_CONFIG.use_typescript? -%>
       - run: <%= package_json.manager.native_run_command("typecheck").join(" ") %>
       <%- end -%>
       - run: <%= package_json.manager.native_run_command("js-lint").join(" ") %>
+      - run: <%= package_json.manager.native_run_command("scss-lint").join(" ") %>
       - run: <%= package_json.manager.native_run_command("format-check").join(" ") %>
       - run: <%= package_json.manager.native_run_command("test", ["--coverage"]).join(" ") %>
   ruby_based_checks:
@@ -99,25 +100,28 @@ jobs:
         with:
           bundler-cache: true
       - name: Check Run Ruby model annotations
-        run: bundle exec annotate --frozen
+        run: bundle exec annotaterb models --frozen
       - name: Check Ruby controller annotations
         run: bundle exec chusaku --verbose --exit-with-error-on-annotation
       - run: bundle exec rubocop
-      - run: bundle exec erblint .
+      - run: bundle exec erb_lint .
       - run: bundle exec brakeman --run-all-checks .
       - run: bundle exec rails db:setup
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
-          cache: 'yarn'
+          cache: 'npm'
       - run: <%= package_json.manager.native_install_command(frozen: true).join(" ") %>
       - run: bundle exec rspec spec --format progress
       - name: Archive spec outputs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
-          name: rspec-output-screenshots
-          path: tmp/screenshots
+          name: rspec-output-results
+          path: |
+            tmp/capybara
+            tmp/screenshots
+            tmp/lighthouse
           retention-days: 5
 
   # ACTION REQUIRED:

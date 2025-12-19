@@ -17,21 +17,23 @@ types_packages = %w[
   turbolinks
   dotenv-webpack
   webpack-env
-  eslint@8
   babel__core
-  node@18
+  node@24
 ].map { |name| "@types/#{name}" }
 
-yarn_add_dependencies types_packages + %w[@babel/preset-typescript typescript]
-yarn_add_dev_dependencies %w[
-  @typescript-eslint/eslint-plugin@7
-  @typescript-eslint/parser@7
-]
+add_js_dependencies types_packages + %w[@babel/preset-typescript typescript]
+add_js_dependencies %w[
+  @stylistic/eslint-plugin-ts@3
+  @typescript-eslint/eslint-plugin
+  @typescript-eslint/parser
+], type: :dev
+
+package_json.manager.remove!(["globals"])
 
 rename_js_file_to_ts "app/frontend/packs/application"
 
 copy_file "tsconfig.json", force: true
-copy_file ".eslintrc.js", force: true
+copy_file "eslint.config.js", force: true
 copy_file "types.d.ts", force: true
 
 gsub_file!(
@@ -62,7 +64,7 @@ package_json.merge! do |pj|
   }
 end
 
-append_to_file "bin/ci-run" do
+append_to_file! "bin/ci-run" do
   <<~TYPECHECK
 
     echo "* ******************************************************"

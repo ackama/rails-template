@@ -33,14 +33,14 @@ Where possible we stick to Rails defaults.
 
 - General
   - [puma](https://github.com/puma/puma) as application server
-  - [Yarn](https://yarnpkg.com/) for managing JS packages
+  - [npm](https://www.npmjs.com/) for managing JS packages
   - PostgreSQL as database. This template only supports PostgreSQL.
   - A much-improved `bin/setup` script
   - Install [dotenv](https://github.com/bkeepers/dotenv)
   - Create a `doc/` directory for docs
   - Add a middleware to implement HTTP Basic Auth by setting environment
     variables. We use this regularly for pre-production envs.
-  - Use [okcomputer](https://github.com/sportngin/okcomputer) for health check
+  - Use [okcomputer](https://github.com/jphenow/okcomputer) for health check
     endpoints. Configured in
     [./variants/backend-base/config/initializers/health_checks.rb](./variants/backend-base/config/initializers/health_checks.rb)
   - Install [lograge](https://github.com/roidrage/lograge) for better logs in
@@ -155,7 +155,7 @@ our other templates:
 Before running this template, you must have the following installed on your
 machine:
 
-- Yarn v1.21.0 or later
+- NPM v10.0.0 or later
 - Rails 7.1.x
 
 The following are not strictly required to run the template but you will need it
@@ -193,7 +193,7 @@ $ wget https://raw.githubusercontent.com/ackama/rails-template/main/ackama_rails
 
 # Create a new app using the template. Template options will be taken from
 # ./ackama_rails_template.config.yml
-$ rails new my_app --no-rc --database=postgresql --skip-javascript --skip-docker --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
+$ rails new my_app --no-rc --database=postgresql --skip-javascript --skip-docker --skip-kamal --skip-solid --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 
 # Example 2
 # #########
@@ -201,7 +201,7 @@ $ rails new my_app --no-rc --database=postgresql --skip-javascript --skip-docker
 # Create a custom config YAML file, saving as ./my_custom_config.yml
 
 # Template options will be taken from ../my_custom_config.yml (relative to the new app directory)
-$ CONFIG_PATH=../my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip-javascript --skip-docker --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
+$ CONFIG_PATH=../my_custom_config.yml rails new my_app --no-rc --database=postgresql --skip-javascript --skip-docker --skip-kamal --skip-solid --template=https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 
 Here are some additional options you can add to this command. We don't
@@ -230,6 +230,8 @@ To make this the default Rails application template on your system, create a
 -d postgresql
 --skip-javascript
 --skip-docker
+--skip-kamal
+--skip-solid
 -m https://raw.githubusercontent.com/ackama/rails-template/main/template.rb
 ```
 

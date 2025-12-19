@@ -2,8 +2,8 @@
 # The app namespace is for tasks which may be useful both in local development
 # and on deployed environments.
 #
-# If your task will be run in local development only you should choose the `dev`
-# namespace (see `dev.rake``)
+# if your tasks are intended to only be run in local development, you should
+# use the `dev` namespace (in `dev.rake`) instead
 #
 namespace :app do
   desc "Print (to STDOUT) count of records in DB for each ActiveRecord model"

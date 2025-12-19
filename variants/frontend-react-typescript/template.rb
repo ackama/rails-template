@@ -1,12 +1,12 @@
 source_paths.unshift(File.dirname(__FILE__))
 
 package_json.manager.remove!(["prop-types"])
-yarn_add_dependencies %w[@types/react @types/react-dom]
+add_js_dependencies %w[@types/react @types/react-dom]
 
 rename_js_file_to_ts "app/frontend/packs/server_rendering"
 
 copy_file "tsconfig.json", force: true
-copy_file ".eslintrc.js", force: true
+copy_file "eslint.config.js", force: true
 copy_file "babel.config.js", force: true
 
 remove_file "jest.config.js"
@@ -25,7 +25,7 @@ tsconfig_json = JSON.parse(File.read("./tsconfig.json"))
 tsconfig_json["compilerOptions"]["jsx"] = "react"
 File.write("./tsconfig.json", JSON.generate(tsconfig_json))
 
-append_to_file "types.d.ts" do
+append_to_file! "types.d.ts" do
   <<~TYPES
     declare module 'react_ujs' {
       import RequireContext = __WebpackModuleApi.RequireContext;

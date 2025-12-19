@@ -1,10 +1,11 @@
 ---
-require:
+plugins:
   - rubocop-capybara
   - rubocop-factory_bot
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-rspec_rails
 
 # Built-in config:
 # https://github.com/bbatsov/rubocop/blob/master/config/default.yml
@@ -23,15 +24,11 @@ AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
   Exclude:
-    - 'bin/*'
-    - config/initializers/version.rb
     - db/schema.rb
     - 'node_modules/**/*'
-    - 'bower_components/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
     - 'bin/**/*'
-    - 'doc/**/*'
 
 Layout/LineLength:
   Max: 120
@@ -212,6 +209,9 @@ Style/FormatStringToken:
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'spec/**/*'
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: always
 
 # https://rubocop.readthedocs.io/en/latest/cops_style/
 Style/HashTransformKeys:

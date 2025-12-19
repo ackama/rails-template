@@ -1,12 +1,12 @@
 source_paths.unshift(File.dirname(__FILE__))
 
-yarn_add_dependencies(["bootstrap", "@popperjs/core"])
+add_js_dependencies(["bootstrap", "@popperjs/core"])
 
 copy_file "app/frontend/js/bootstrap.js", force: true
-insert_into_file "app/frontend/packs/application.js", "import '../js/bootstrap';", before: 'import "../stylesheets/application.scss";'
+insert_into_file! "app/frontend/packs/application.js", "import '../js/bootstrap';", before: 'import "../stylesheets/application.scss";'
 
 copy_file "app/frontend/stylesheets/customized_bootstrap.scss", force: true
-append_to_file "app/frontend/stylesheets/application.scss" do
+append_to_file! "app/frontend/stylesheets/application.scss" do
   <<~EO_CONTENT
 
     // We use @import because Bootstrap will not support @use until v6. See

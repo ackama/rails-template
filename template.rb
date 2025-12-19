@@ -92,11 +92,13 @@ end
 TEMPLATE_CONFIG = Config.new
 TERMINAL = Terminal.new
 
-# We need the major version of 'jest', '@types/jest', and 'ts-jest' to match
-# so we can only upgrade jest when there are compatible versions available
+# We need the major version of 'jest' and '@types/jest' to match so we
+# can only upgrade jest when there are compatible versions available
 JEST_MAJOR_VERSION = "29".freeze
 
 def require_package_json_gem
+  old_env = ENV.to_h
+
   require "bundler/inline"
 
   gemfile(true) do
@@ -105,6 +107,8 @@ def require_package_json_gem
   end
 
   puts "using package_json v#{PackageJson::VERSION}"
+
+  ENV.replace(old_env)
 end
 
 def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
@@ -225,12 +229,12 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
     # generate routes and models
     apply "variants/code-annotation/template.rb"
 
-    # erblint does not like some of Rails auto-generated ERB code e.g.
+    # erb_lint does not like some of Rails auto-generated ERB code e.g.
     # `app/views/layouts/mailer.html.erb` so we auto-correct it.
-    copy_file "variants/backend-base/.erb-lint.yml", ".erb-lint.yml"
-    run_with_clean_bundler_env "bundle exec erblint --autocorrect ."
+    copy_file "variants/backend-base/.erb_lint.yml", ".erb_lint.yml"
+    run_with_clean_bundler_env "bundle exec erb_lint --autocorrect ."
     git add: "-A ."
-    git commit: "-n -m 'Set up erblint'"
+    git commit: "-n -m 'Set up erb_lint'"
 
     # Run strong_migrations generator near the end so that it doesn't block
     # other parts of the template from creating migrations.
@@ -260,67 +264,7 @@ def apply_prettier_all_over
   git commit: ". -m 'Run prettier one last time'"
 end
 
-# Sets Yarn Berry up in the project directory by initializing it with what is probably Yarn Classic.
-#
-# This is required as the Berry binary is actually downloaded and committed to the codebase, and
-# the global yarn command passes through to it when detected (even if its Yarn Classic).
-#
-# This also requires us to temporarily create a package.json as otherwise Yarn Berry will
-# look up the file tree and initialize itself in every directory that has a yarn.lock
-def setup_yarn_berry
-  # safeguard against parent directories having a yarn.lock
-  File.write("package.json", "{}") unless File.exist?("package.json")
-
-  run "yarn init -2"
-  run "yarn config set enableGlobalCache true"
-  run "yarn config set nodeLinker #{ENV.fetch("PACKAGE_JSON_YARN_BERRY_LINKER", "node-modules")}"
-
-  ignores = <<~YARN
-    .pnp.*
-    .yarn/*
-    !.yarn/patches
-    !.yarn/plugins
-    !.yarn/releases
-    !.yarn/sdks
-    !.yarn/versions
-  YARN
-  File.write(".gitignore", ignores, mode: "a")
-
-  # this will be properly (re)created later
-  File.unlink("package.json")
-end
-
-# Bun uses a binary-based lockfile which cannot be parsed by shakapacker or
-# osv-detector, so we want to configure bun to always write a yarn.lock
-# in addition so that such tools can check it
-def setup_bun
-  File.write("bunfig.toml", <<~TOML)
-    [install.lockfile]
-    print = "yarn"
-  TOML
-end
-
-def add_yarn_package_extension_dependency(name, dependency)
-  return unless File.exist?(".yarnrc.yml")
-
-  require "yaml"
-
-  yarnrc = YAML.load_file(".yarnrc.yml")
-
-  yarnrc["packageExtensions"] ||= {}
-  yarnrc["packageExtensions"]["#{name}@*"] ||= {}
-  yarnrc["packageExtensions"]["#{name}@*"]["dependencies"] ||= {}
-  yarnrc["packageExtensions"]["#{name}@*"]["dependencies"][dependency] = "*"
-
-  File.write(".yarnrc.yml", yarnrc.to_yaml)
-end
-
 def package_json
-  if @package_json.nil?
-    setup_yarn_berry if ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", nil) == "yarn_berry"
-    setup_bun if ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", nil) == "bun"
-  end
-
   @package_json ||= PackageJson.new
 end
 
@@ -342,8 +286,7 @@ def build_engines_field(existing)
   node_version = File.read("./.node-version").strip
 
   existing.merge({
-    "node" => "^#{node_version}",
-    "yarn" => "^1.0.0"
+    "node" => "^#{node_version}"
   })
 end
 
@@ -357,29 +300,22 @@ def cleanup_package_json
     }
   end
 
-  # TODO: this doesn't work when using pnpm even though it shouldn't matter? anyway, replace with 'exec' support
-  # run "npx -y sort-package-json"
-
   # ensure the lockfile is up to date with any changes we've made to package.json
   package_json.manager.install!
+
+  # ensure the package.json is sorted
+  run "npx -y sort-package-json"
 end
 
-# Adds the given <code>packages</code> as dependencies using <code>yarn add</code>
+# Adds the given JavaScript <code>packages</code> as dependencies using the
+# appropriate package manager
 #
 # @param [Array<String>] packages
-def yarn_add_dependencies(packages)
-  puts "adding #{packages.join(" ")} as dependencies"
+# @param [:production, :dev] type
+def add_js_dependencies(packages, type: :production)
+  puts "adding #{packages.join(" ")} as #{type} dependencies"
 
-  package_json.manager.add!(packages)
-end
-
-# Adds the given <code>packages</code> as devDependencies using <code>yarn add --dev</code>
-#
-# @param [Array<String>] packages
-def yarn_add_dev_dependencies(packages)
-  puts "adding #{packages.join(" ")} as dev dependencies"
-
-  package_json.manager.add!(packages, type: :dev)
+  package_json.manager.add!(packages, type:)
 end
 
 # Add this template directory to source_paths so that Thor actions like
@@ -485,6 +421,30 @@ def gsub_file!(path, flag, ...)
   content = File.binread(path)
 
   gsub_file(path, flag, ...)
+
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
+end
+
+def append_to_file!(path, ...)
+  content = File.binread(path)
+
+  append_to_file(path, ...)
+
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
+end
+
+def prepend_to_file!(path, ...)
+  content = File.binread(path)
+
+  prepend_to_file(path, ...)
+
+  raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
+end
+
+def insert_into_file!(path, ...)
+  content = File.binread(path)
+
+  insert_into_file(path, ...)
 
   raise StandardError, "the contents of #{path} did not change!" if content == File.binread(path)
 end

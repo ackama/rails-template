@@ -109,7 +109,7 @@ EO_ROUTES
 #
 TERMINAL.puts_header "Adding example devise links to the homepage"
 
-append_to_file "app/views/application/_header.html.erb" do
+append_to_file! "app/views/application/_header.html.erb" do
   <<~ERB
     <%=
       content_tag(:style, nonce: content_security_policy_nonce) do
@@ -127,7 +127,7 @@ append_to_file "app/views/application/_header.html.erb" do
           <li class="nav-item"><%= link_to "Home", root_path, class: "nav-link" %></li>
           <% if current_user %>
             <li class="navbar-text">You are <strong>Signed in</strong></li>
-            <li class="nav-item"><%= link_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-link" %></li>
+            <li class="nav-item"><%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-link" %></li>
           <% else %>
             <li class="navbar-text">You are <strong>Not signed in</strong></li>
             <li class="nav-item"><%= link_to "Sign in", new_user_session_path, class: "nav-link" %></li>
@@ -154,7 +154,7 @@ gsub_file! "config/routes.rb",
              }
            EO_DEVISE
 
-insert_into_file "app/models/user.rb", before: /^end/ do
+insert_into_file! "app/models/user.rb", before: /^end/ do
   <<~'RUBY'
 
     ##
@@ -222,3 +222,6 @@ run "bundle exec rubocop -A -c ./.rubocop.yml"
 
 git add: "-A ."
 git commit: "-n -m 'Install and configure devise with default Ackama settings'"
+
+prepend_to_file! "app/views/users/shared/_error_messages.html.erb", "<%# locals: (resource:) %>\n\n"
+prepend_to_file! "app/views/users/shared/_links.html.erb", "<%# locals: () %>\n\n"
