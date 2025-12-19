@@ -156,7 +156,8 @@ Before running this template, you must have the following installed on your
 machine:
 
 - NPM v10.0.0 or later
-- Rails 7.1.x
+- Rails (see [target_versions.yml file](target_versions.yml) for supported
+  major.minor version)
 
 The following are not strictly required to run the template but you will need it
 to start the Rails app that this template creates:
