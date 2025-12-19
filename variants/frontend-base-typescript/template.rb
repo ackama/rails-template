@@ -18,7 +18,7 @@ types_packages = %w[
   dotenv-webpack
   webpack-env
   babel__core
-  node@18
+  node@24
 ].map { |name| "@types/#{name}" }
 
 add_js_dependencies types_packages + %w[@babel/preset-typescript typescript]
