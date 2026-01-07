@@ -65,7 +65,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: 'ruby'
+          ruby-version: '3.4'
 
       - name: Run Rubocop
         run: bundle exec rubocop
@@ -166,7 +166,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: 'ruby'
+          ruby-version: '3.4'
 
       # ensure the global Ruby gem directory is secure, as versions of Ruby that ship "cached"
       # with the GHA runner seem to have the permissions set incorrectly, unlike when they're
