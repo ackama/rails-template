@@ -93,8 +93,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Install Required OS Packages
-        run: sudo apt-get -yqq install libpq-dev
       - name: Set up Ruby (version given by .ruby-version)
         uses: ruby/setup-ruby@v1
         with:
