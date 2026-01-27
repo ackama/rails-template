@@ -63,31 +63,6 @@ jobs:
       contents: read
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    services:
-      db:
-        image: postgres:latest
-        ports: ['5432:5432']
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        options: >-
-          --health-cmd pg_isready --health-interval 10s --health-timeout 5s
-          --health-retries 5
-      # Uncomment these if you need them for your test suite
-      # redis:
-      #   image: redis:latest
-      #   ports:
-      #     - 6379:6379
-      # elasticsearch:
-      #   image: elasticsearch:latest
-      #   env:
-      #     cluster.name: whats-on-test-cluster
-      #     discovery.type: single-node
-      #     ES_JAVA_OPTS: '-Xms1g -Xmx1g'
-      #   ports:
-      #     - 9200:9200
-      #     - 9300:9300
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
