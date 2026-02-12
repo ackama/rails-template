@@ -2,7 +2,7 @@
 source_paths.unshift(File.dirname(__FILE__))
 
 TERMINAL.puts_header "Adding devise to Gemfile"
-run "bundle add devise"
+run "bundle add devise -v '~> 4.0'"
 
 TERMINAL.puts_header "Running devise generator"
 run "bundle exec rails generate devise:install"
