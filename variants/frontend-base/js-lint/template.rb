@@ -4,8 +4,8 @@
 add_js_dependencies %w[
   @eslint-community/eslint-plugin-eslint-comments
   @stylistic/eslint-plugin-js@3
-  @eslint/js
-  eslint
+  @eslint/js@9
+  eslint@9
   eslint-config-ackama
   eslint-plugin-n
   eslint-plugin-import
