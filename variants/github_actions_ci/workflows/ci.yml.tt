@@ -63,6 +63,24 @@ jobs:
       contents: read
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Ruby (version given by .ruby-version)
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - run: bundle exec chusaku --verbose --exit-with-error-on-annotation
+      - run: bundle exec rubocop
+      - run: bundle exec erb_lint .
+      - run: bundle exec brakeman --run-all-checks .
+  ruby_based_tests:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     services:
       db:
         image: postgres:latest
@@ -99,14 +117,8 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - name: Check Run Ruby model annotations
-        run: bundle exec annotaterb models --frozen
-      - name: Check Ruby controller annotations
-        run: bundle exec chusaku --verbose --exit-with-error-on-annotation
-      - run: bundle exec rubocop
-      - run: bundle exec erb_lint .
-      - run: bundle exec brakeman --run-all-checks .
       - run: bundle exec rails db:setup
+      - run: bundle exec annotaterb models --frozen
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
@@ -141,6 +153,7 @@ jobs:
   #   needs:
   #     - audit_dependencies
   #     - ruby_based_checks
+  #     - ruby_based_tests
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_ec2.yml
   #   with:
@@ -159,6 +172,7 @@ jobs:
   #   needs:
   #     - audit_dependencies
   #     - ruby_based_checks
+  #     - ruby_based_tests
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_ec2.yml
   #   with:
@@ -181,6 +195,7 @@ jobs:
   #   needs:
   #     - audit_dependencies
   #     - ruby_based_checks
+  #     - ruby_based_tests
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_heroku.yml
   #   with:
@@ -198,6 +213,7 @@ jobs:
   #   needs:
   #     - audit_dependencies
   #     - ruby_based_checks
+  #     - ruby_based_tests
   #     - js_based_checks
   #   uses: ./.github/workflows/deploy_to_heroku.yml
   #   with:
