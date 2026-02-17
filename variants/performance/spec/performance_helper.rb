@@ -19,15 +19,17 @@ RSpec.configure do |config|
   # and the performance specs show vastly different results to a live
   # environment.
   config.before(:suite) do
+    # rubocop:disable RSpec/Output
     puts "*" * 80
     puts "NOTICE: This Rspec run includes performance tests from spec/performance/"
     puts "NOTICE: We are pre-compiling assets to get realistic results from the performance tests"
     puts "NOTICE: Pre-compilation can take a while ..."
+    # rubocop:enable RSpec/Output
 
     # Use FileUtils rather than shelling out so that this works on Windows & Unix environments
     FileUtils.rm_rf(Rails.public_path.join("packs-test"))
     system "bundle exec rake assets:precompile"
 
-    puts "*" * 80
+    puts "*" * 80 # rubocop:disable RSpec/Output
   end
 end

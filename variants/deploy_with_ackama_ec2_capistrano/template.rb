@@ -84,28 +84,28 @@ new_ackama_cap_config_snippet = <<~EO_RUBY
     task :restart do
       on roles(:app), in: :sequence, wait: 5 do
         execute :sudo, "systemctl restart puma"
-        #{TEMPLATE_CONFIG.apply_variant_sidekiq? ? 'execute :sudo, "systemctl restart sidekiq"' : ""}
+        #{'execute :sudo, "systemctl restart sidekiq"' if TEMPLATE_CONFIG.apply_variant_sidekiq?}
       end
     end
 
     task :start do
       on roles(:app) do
         execute :sudo, "systemctl start puma"
-        #{TEMPLATE_CONFIG.apply_variant_sidekiq? ? 'execute :sudo, "systemctl start sidekiq"' : ""}
+        #{'execute :sudo, "systemctl start sidekiq"' if TEMPLATE_CONFIG.apply_variant_sidekiq?}
       end
     end
 
     task :stop do
       on roles(:app) do
         execute :sudo, "systemctl stop puma"
-        #{TEMPLATE_CONFIG.apply_variant_sidekiq? ? 'execute :sudo, "systemctl stop sidekiq"' : ""}
+        #{'execute :sudo, "systemctl stop sidekiq"' if TEMPLATE_CONFIG.apply_variant_sidekiq?}
       end
     end
 
     task :status do
       on roles(:app) do
         execute :sudo, "systemctl status puma"
-        #{TEMPLATE_CONFIG.apply_variant_sidekiq? ? 'execute :sudo, "systemctl status sidekiq"' : ""}
+        #{'execute :sudo, "systemctl status sidekiq"' if TEMPLATE_CONFIG.apply_variant_sidekiq?}
       end
     end
 
@@ -154,8 +154,8 @@ gsub_file!("Capfile", '# require "capistrano/rails/migrations"', 'require "capis
 # deploy_envs = {"production"=>"config/deploy/production.rb", "staging"=>"config/deploy/staging.rb"}
 deploy_envs = Dir.children("config/deploy")
                  .each_with_object({}) do |file_name, acc|
-  key = File.basename(file_name, ".rb")
-  acc[key] = "config/deploy/#{file_name}"
+                   key = File.basename(file_name, ".rb")
+                   acc[key] = "config/deploy/#{file_name}"
 end
 
 deploy_envs.each do |env_name, file_path|
