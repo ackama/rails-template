@@ -99,7 +99,7 @@ RSpec.describe "User sign-in" do
         # we expect to still be on the sign-in page with a helpful flash message
         # telling us something went wrong
         expect(page).to have_current_path(new_user_session_path, ignore_query: true)
-        expect(page).to have_text("Invalid Email or password")
+        expect(page).to have_text("Invalid email or password")
       end
     end
   end
