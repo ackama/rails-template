@@ -95,6 +95,9 @@ Dir.chdir(app_path) do |cwd|
   puts "Checking that no config properties have been duplicated in environment files"
   ensure_no_duplicate_config_lines_in_environment_files
 
+  system("cat package.json")
+  system("npm ls serialize-javascript")
+
   puts "Running test suite"
   system("./bin/ci-run", exception: true)
 end
