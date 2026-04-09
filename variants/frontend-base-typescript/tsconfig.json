@@ -15,7 +15,9 @@
     "sourceMap": true,
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+
+    "types": ["@types/bootstrap", "@types/webpack-env"]
   },
   "exclude": ["coverage", "node_modules", "vendor", "public"],
   "files": [".stylelintrc.js"],
