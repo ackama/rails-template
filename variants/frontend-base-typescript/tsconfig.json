@@ -17,7 +17,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
 
-    "types": ["@types/bootstrap", "@types/webpack-env"]
+    "types": ["@types/webpack-env"]
   },
   "exclude": ["coverage", "node_modules", "vendor", "public"],
   "files": [".stylelintrc.js"],
