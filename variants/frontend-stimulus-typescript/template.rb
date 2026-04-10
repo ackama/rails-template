@@ -7,10 +7,6 @@ add_js_dependencies [
 ], type: :dev
 
 copy_file "eslint.config.js", force: true
-
-remove_file "jest.config.js", force: true
-copy_file "jest.config.ts"
-
 copy_file "babel.config.js", force: true
 
 # we've replaced this with a babel.config.js
@@ -25,3 +21,11 @@ copy_file "app/frontend/stimulus/controllers/add_class_controller.ts"
 rename_js_file_to_ts "app/frontend/test/setupJestDomMatchers"
 rename_js_file_to_ts "app/frontend/test/setupExpectEachTestHasAssertions"
 rename_js_file_to_ts "app/frontend/test/stimulus/controllers/add_class_controller.test"
+
+gsub_file! "jest.config.js",
+           "app/frontend/test/setupJestDomMatchers.js",
+           "app/frontend/test/setupJestDomMatchers.ts"
+
+gsub_file! "jest.config.js",
+           "app/frontend/test/setupExpectEachTestHasAssertions.js",
+           "app/frontend/test/setupExpectEachTestHasAssertions.ts"
