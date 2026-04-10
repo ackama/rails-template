@@ -1,5 +1,6 @@
 'use strict';
 
+/** @type {import('jest').Config} */
 const config = {
   clearMocks: true,
   restoreMocks: true,
