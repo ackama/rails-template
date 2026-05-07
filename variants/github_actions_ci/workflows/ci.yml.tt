@@ -107,6 +107,7 @@ jobs:
       - run: bundle exec erb_lint .
       - run: bundle exec brakeman --run-all-checks .
       - run: bundle exec rails db:setup
+      - run: bundle exec rails routes --unused
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
