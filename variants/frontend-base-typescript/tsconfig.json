@@ -21,5 +21,14 @@
   },
   "exclude": ["coverage", "node_modules", "vendor", "public"],
   "files": [".stylelintrc.js"],
-  "include": ["**/*.js", "**/*.ts", "**/*.tsx"]
+  "include": [
+    "**/*.mjs",
+    "**/*.cjs",
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.mts",
+    "**/*.cts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }
