@@ -8,7 +8,7 @@ Sentry.init do |config|
   config.dsn = ENV.fetch("SENTRY_DSN", nil)
 
   # Set Sentry environment to be current environment if SENTRY_ENV is not set
-  config.environment = ENV.fetch("SENTRY_ENV", Rails.env)
+  config.environment = ENV["SENTRY_ENV"].presence || Rails.env
 
   config.breadcrumbs_logger = %i[active_support_logger http_logger]
 
