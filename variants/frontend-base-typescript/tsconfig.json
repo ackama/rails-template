@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "Node16",
-    "moduleResolution": "Node16",
+    "moduleResolution": "bundler",
     "lib": ["ES6", "ES2020", "DOM"],
     "noEmit": true,
     "noEmitOnError": true,
