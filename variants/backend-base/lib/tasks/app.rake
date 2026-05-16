@@ -17,7 +17,7 @@ namespace :app do
       .map(&:to_s)
       .sort
       .each do |model_name|
-      puts "#{model_name}: #{model_name.constantize.count} records"
+        puts "#{model_name}: #{model_name.constantize.count} records"
     end
   end
 end

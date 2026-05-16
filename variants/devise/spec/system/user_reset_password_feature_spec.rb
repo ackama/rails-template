@@ -22,7 +22,7 @@ RSpec.describe "Users can reset passwords" do
       it "existing users can reset their passwords from the sign-in page" do
         click_on "Forgot your password?"
         fill_in "Email", with: email_of_existing_user
-        click_on "Send me reset password instructions"
+        click_on "Send me password reset instructions"
 
         # we expect to be redirected to the sign-in page ...
         expect(page).to have_current_path(new_user_session_path, ignore_query: true)
@@ -42,7 +42,7 @@ RSpec.describe "Users can reset passwords" do
       it "unknown users get an error when they try to reset a password" do
         click_on "Forgot your password?"
         fill_in "Email", with: email_of_unknown_user
-        click_on "Send me reset password instructions"
+        click_on "Send me password reset instructions"
 
         # we expect to be redirected to the user sign-in page ...
         expect(page).to have_current_path(new_user_session_path, ignore_query: true)

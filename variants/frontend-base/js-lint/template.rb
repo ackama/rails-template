@@ -7,7 +7,7 @@ add_js_dependencies %w[
   @eslint/js@9
   eslint@9
   eslint-config-ackama
-  eslint-plugin-n
+  eslint-plugin-n@17
   eslint-plugin-import
   eslint-plugin-prettier
   globals

@@ -9,8 +9,8 @@ import { Controller } from '@hotwired/stimulus';
  * See the tests for usage examples.
  */
 export default class AddClassController extends Controller<HTMLElement> {
-  private declare readonly classNameValue: string;
-  private declare readonly classRecipientTargets: HTMLElement[];
+  declare private readonly classNameValue: string;
+  declare private readonly classRecipientTargets: HTMLElement[];
 
   public static values = { className: String };
   public static targets = ['classRecipient'];
