@@ -1,10 +1,7 @@
 source_paths.unshift(File.dirname(__FILE__))
 
 add_js_dependencies ["@babel/plugin-transform-typescript"]
-add_js_dependencies [
-  "@types/jest@#{JEST_MAJOR_VERSION}",
-  "ts-node"
-], type: :dev
+add_js_dependencies ["@types/jest@#{JEST_MAJOR_VERSION}"], type: :dev
 
 copy_file "eslint.config.js", force: true
 
