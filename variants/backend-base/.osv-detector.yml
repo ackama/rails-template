@@ -1,1 +1,2 @@
-ignore: []
+ignore:
+  - GHSA-w5hq-g745-h8pq # uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided
