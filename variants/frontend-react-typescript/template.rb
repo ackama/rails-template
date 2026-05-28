@@ -5,12 +5,8 @@ add_js_dependencies %w[@types/react @types/react-dom]
 
 rename_js_file_to_ts "app/frontend/packs/server_rendering"
 
-copy_file "tsconfig.json", force: true
 copy_file "eslint.config.js", force: true
 copy_file "babel.config.js", force: true
-
-remove_file "jest.config.js"
-copy_file "jest.config.ts"
 
 # example files
 remove_file "app/frontend/components/HelloWorld.jsx", force: true
