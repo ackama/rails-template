@@ -32,6 +32,9 @@ AllCops:
 
 Layout/LineLength:
   Max: 120
+  AllowedPatterns:
+    - '# @route \w+ /.+' # allow controller route annotations to be any length
+    - '#  index_\w+ +\(.+\) [A-Z ]+ \([\w ]+\)' # allow model index annotations to be any length
   Exclude:
     - 'config/**/*'
     - 'db/**/*'
