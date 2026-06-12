@@ -13,5 +13,5 @@ Sentry.init do |config|
   config.breadcrumbs_logger = %i[active_support_logger http_logger]
 
   # To activate performance monitoring, use the environment variable
-  config.traces_sample_rate = ENV.fetch("SENTRY_TRACES_SAMPLE_RATE", 0)
+  config.traces_sample_rate = ENV.fetch("SENTRY_TRACES_SAMPLE_RATE", 0).to_f
 end
