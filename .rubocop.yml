@@ -10,12 +10,6 @@ plugins:
   - rubocop-rspec
   - rubocop-rspec_rails
 
-# Built-in config:
-# https://github.com/bbatsov/rubocop/blob/master/config/default.yml
-
-Rails:
-  Enabled: true
-
 AllCops:
   # Target the oldest Ruby that this template's chosen Rails version supports In
   # a normal Rails app, Rubocop would infer this from the version of Ruby
@@ -26,7 +20,6 @@ AllCops:
     <%=
     YAML.safe_load(Pathname.new("./target_versions.yml").realpath.read).fetch("minimum_ruby_major_minor")
     %>
-
   # In a normal Rails app, Rubocop would pull this from the Gemfile. We want the
   # rubocop checks that run on this repo to be consistent with the checks that
   # run on generated apps so we have to be explicit.
@@ -34,7 +27,6 @@ AllCops:
     <%=
     YAML.safe_load(Pathname.new("./target_versions.yml").realpath.read).fetch("target_rails_major_minor")
     %>
-
   NewCops: enable
   DisplayCopNames: true
   DisplayStyleGuide: true
@@ -43,31 +35,13 @@ AllCops:
     - 'vendor/**/*'
     - 'node_modules/**/*'
 
-Style/Documentation:
+FactoryBot/SyntaxMethods:
   Enabled: false
 
-Layout/LineLength:
-  Max: 200
-
-Metrics/BlockLength:
-  Max: 50
-
-Metrics/CyclomaticComplexity:
-  Max: 10
-
-Metrics/MethodLength:
-  Max: 50
-
-# This cop complains when you have variables named things like:
-#     address_line_1
-#     address_line_2
-# etc.
-Naming/VariableNumber:
-  Enabled: false
-
-# Just always use `raise` and stop thinking about it.
-Style/SignalException:
-  EnforcedStyle: only_raise
+# We want you to put a blank line between method definitions, the only exception being
+# if you're defining a bunch of single-line methods as above.
+Layout/EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
 
 # We think that:
 #   array = [
@@ -103,6 +77,9 @@ Layout/FirstArrayElementIndentation:
 Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
 
+Layout/LineLength:
+  Max: 200
+
 # We think that:
 #     {
 #       foo: :bar
@@ -125,38 +102,127 @@ Layout/MultilineHashBraceLayout:
 Layout/MultilineMethodCallBraceLayout:
   Enabled: false
 
-# Just always use double quotes and stop thinking about it.
-Style/StringLiterals:
-  EnforcedStyle: double_quotes
+# This syntax is a deliberate idiom in rspec
+# bbatsov endorses disabling it for rspec
+# https://github.com/bbatsov/rubocop/issues/4222#issuecomment-290722962
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*'
 
-Style/StringLiteralsInInterpolation:
-  EnforcedStyle: double_quotes
+Metrics/AbcSize:
+  Max: 18
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/BlockLength:
+  Max: 50
+
+Metrics/ClassLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/MethodLength:
+  Max: 50
+
+Naming/FileName:
+  Exclude:
+    - '**/Gemfile.rb'
+    - '**/Rakefile.rb'
+
+Naming/MemoizedInstanceVariableName:
+  EnforcedStyleForLeadingUnderscores: optional
+
+# This cop complains when you have variables named things like:
+#     address_line_1
+#     address_line_2
+# etc.
+Naming/VariableNumber:
+  Enabled: false
+
+Performance/Casecmp:
+  Enabled: false
+
+RSpec:
+  Language:
+    Expectations:
+      - assert_match
+
+RSpec/ExampleLength:
+  Max: 30
+
+RSpec/MultipleExpectations:
+  Max: 10
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
+
+RSpec/RepeatedExample:
+  Exclude:
+    - 'variants/pundit/spec/policies/**'
+
+Rails:
+  Enabled: true
+
+Rails/ApplicationRecord:
+  Exclude:
+    - 'db/migrate/**'
+
+Rails/LexicallyScopedActionFilter:
+  Exclude:
+    - 'app/controllers/application_controller.rb'
+
+# we don't require using Rails.logger in lib, as it often doesn't go where
+# we'd want for the code that lives there, or otherwise isn't even available
+Rails/Output:
+  Exclude:
+    - 'lib/**/*'
+
+Rails/SquishedSQLHeredocs:
+  Enabled: false
+
+Style/BarePercentLiterals:
+  EnforcedStyle: percent_q
+
+Style/Documentation:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/EmptyMethod:
+  Enabled: false
+
+# Ruby supports two styles of string template formatting.
+# "annotated" - format("%<greeting>s", greeting: "Hello")
+# "template"  - format("%{greeting}", greeting: "Hello")
+#
+# While the annotated format is more descriptive, it also comes in a style that is
+# significantly harder for a developer to parse. The template style is easy to read, understand,
+# and is consistent with formatting with (for example), interpolation (#{}).
+Style/FormatStringToken:
+  EnforcedStyle: template
 
 # Ruby 2.4+ has a magic comment that makes all strings frozen and Rubocop wants to put it
 # at the top of every. single. file. We decided we didn't want that - for now.
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-# Single line method definitions are totally fine, and often more readable, consider:
-#    class WidgetsPolicy
-#      def create?; false; end
-#      def index?;  true;  end
-#      def show?;   true;  end
-#      def update?; false; end
-#      def delete?; false; end
-#    end
-Style/SingleLineMethods:
+Style/HashSyntax:
+  EnforcedShorthandSyntax: always
+
+# https://rubocop.readthedocs.io/en/latest/cops_style/
+Style/HashTransformKeys:
   Enabled: false
 
-# We want you to put a blank line between method definitions, the only exception being
-# if you're defining a bunch of single-line methods as above.
-Layout/EmptyLineBetweenDefs:
-  AllowAdjacentOneLineDefs: true
+# https://rubocop.readthedocs.io/en/latest/cops_style/
+Style/HashTransformValues:
+  Enabled: false
 
-Naming/FileName:
-  Exclude:
-    - '**/Gemfile.rb'
-    - '**/Rakefile.rb'
+Style/NumericPredicate:
+  Enabled: false
 
 # Disable preference for Ruby's new safe navigation operator `&.` because it
 # usually comes at the cost of expressiveness in the simple case:
@@ -173,98 +239,27 @@ Naming/FileName:
 Style/SafeNavigation:
   Enabled: false
 
-# Ruby supports two styles of string template formatting.
-# "annotated" - format("%<greeting>s", greeting: "Hello")
-# "template"  - format("%{greeting}", greeting: "Hello")
-#
-# While the annotated format is more descriptive, it also comes in a style that is
-# significantly harder for a developer to parse. The template style is easy to read, understand,
-# and is consistent with formatting with (for example), interpolation (#{}).
-Style/FormatStringToken:
-  EnforcedStyle: template
+# Just always use `raise` and stop thinking about it.
+Style/SignalException:
+  EnforcedStyle: only_raise
 
-# This syntax is a deliberate idiom in rspec
-# bbatsov endorses disabling it for rspec
-# https://github.com/bbatsov/rubocop/issues/4222#issuecomment-290722962
-Lint/AmbiguousBlockAssociation:
-  Exclude:
-    - 'spec/**/*'
-
-Style/HashSyntax:
-  EnforcedShorthandSyntax: always
-
-# https://rubocop.readthedocs.io/en/latest/cops_style/
-Style/HashTransformKeys:
+# Single line method definitions are totally fine, and often more readable, consider:
+#    class WidgetsPolicy
+#      def create?; false; end
+#      def index?;  true;  end
+#      def show?;   true;  end
+#      def update?; false; end
+#      def delete?; false; end
+#    end
+Style/SingleLineMethods:
   Enabled: false
 
-# https://rubocop.readthedocs.io/en/latest/cops_style/
-Style/HashTransformValues:
-  Enabled: false
+# Just always use double quotes and stop thinking about it.
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
 
-Metrics/AbcSize:
-  Max: 18
-  Exclude:
-    - 'spec/**/*'
-
-Metrics/ClassLength:
-  Exclude:
-    - 'spec/**/*'
-
-Naming/MemoizedInstanceVariableName:
-  EnforcedStyleForLeadingUnderscores: optional
-
-Performance/Casecmp:
-  Enabled: false
-
-Rails/ApplicationRecord:
-  Exclude:
-    - 'db/migrate/**'
-
-# we don't require using Rails.logger in lib, as it often doesn't go where
-# we'd want for the code that lives there, or otherwise isn't even available
-Rails/Output:
-  Exclude:
-    - 'lib/**/*'
-
-Style/BarePercentLiterals:
-  EnforcedStyle: percent_q
-
-Style/DoubleNegation:
-  Enabled: false
-
-Style/EmptyMethod:
-  Enabled: false
-
-Style/NumericPredicate:
-  Enabled: false
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
 
 Style/TrivialAccessors:
   AllowPredicates: true
-
-RSpec:
-  Language:
-    Expectations:
-      - assert_match
-
-RSpec/MultipleExpectations:
-  Max: 10
-
-RSpec/ExampleLength:
-  Max: 30
-
-Rails/LexicallyScopedActionFilter:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-
-RSpec/RepeatedExample:
-  Exclude:
-    - 'variants/pundit/spec/policies/**'
-
-RSpec/MultipleMemoizedHelpers:
-  Max: 10
-
-FactoryBot/SyntaxMethods:
-  Enabled: false
-
-Rails/SquishedSQLHeredocs:
-  Enabled: false
