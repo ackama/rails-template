@@ -1,2 +1,4 @@
 ignore:
+  - GHSA-8988-4f7v-96qf # OpenTelemetry Core: Unbounded memory allocation in W3C Baggage propagation
+  - GHSA-h67p-54hq-rp68 # JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases
   - GHSA-w5hq-g745-h8pq # uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided
