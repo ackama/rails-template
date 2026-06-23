@@ -10,18 +10,18 @@ end
 
 remove_file "app/frontend/packs/hello_typescript.ts"
 
-types_packages = %w[
+types_packages = %W[
   rails__actioncable
   rails__activestorage
   rails__ujs
   turbolinks
   dotenv-webpack
   webpack-env
-  babel__core
+  babel__core@#{BABEL_MAJOR_VERSION}
   node@24
 ].map { |name| "@types/#{name}" }
 
-add_js_dependencies types_packages + %w[@babel/preset-typescript typescript@5]
+add_js_dependencies types_packages + %W[@babel/preset-typescript@#{BABEL_MAJOR_VERSION} typescript@5]
 add_js_dependencies %w[
   @stylistic/eslint-plugin-ts@3
   @typescript-eslint/eslint-plugin

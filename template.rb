@@ -92,6 +92,8 @@ end
 TEMPLATE_CONFIG = Config.new
 TERMINAL = Terminal.new
 
+BABEL_MAJOR_VERSION = "7".freeze
+
 # We need the major version of 'jest' and '@types/jest' to match so we
 # can only upgrade jest when there are compatible versions available
 JEST_MAJOR_VERSION = "30".freeze

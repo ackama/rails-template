@@ -13,8 +13,8 @@ gsub_file! "app/frontend/test/stimulus/controllers/add_class_controller.test.js"
            "'@testing-library/dom'",
            "'@testing-library/react'"
 
-add_js_dependencies %w[
-  @babel/preset-react
+add_js_dependencies %W[
+  @babel/preset-react@#{BABEL_MAJOR_VERSION}
   babel-plugin-transform-react-remove-prop-types
   react
   react-dom

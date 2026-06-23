@@ -20,10 +20,10 @@ run "rails shakapacker:install"
 
 # install dependencies for babel and webpack
 add_js_dependencies [
-  "@babel/core",
-  "@babel/plugin-transform-runtime",
-  "@babel/preset-env",
-  "@babel/runtime",
+  "@babel/core@#{BABEL_MAJOR_VERSION}",
+  "@babel/plugin-transform-runtime@#{BABEL_MAJOR_VERSION}",
+  "@babel/preset-env@#{BABEL_MAJOR_VERSION}",
+  "@babel/runtime@#{BABEL_MAJOR_VERSION}",
   "babel-loader",
   "compression-webpack-plugin",
   "css-loader",
