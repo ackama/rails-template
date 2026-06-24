@@ -13,6 +13,11 @@ declare module '*.jpg' {
   export default content;
 }
 
+declare module '*.scss' {
+  const content: string;
+  export default content;
+}
+
 // todo: even though shakapacker ships with its own types, it currently types
 //  itself as "any" which will hopefully change in a future version
 declare module 'shakapacker' {

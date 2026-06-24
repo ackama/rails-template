@@ -21,7 +21,7 @@ types_packages = %W[
   node@24
 ].map { |name| "@types/#{name}" }
 
-add_js_dependencies types_packages + %W[@babel/preset-typescript@#{BABEL_MAJOR_VERSION} typescript@5]
+add_js_dependencies types_packages + %W[@babel/preset-typescript@#{BABEL_MAJOR_VERSION} typescript]
 add_js_dependencies %w[
   @stylistic/eslint-plugin-ts@3
   @typescript-eslint/eslint-plugin
