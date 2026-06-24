@@ -58,7 +58,7 @@ add_js_dependencies %w[
   postcss
   stylelint
   stylelint-scss
-  stylelint-config-recommended-scss
+  stylelint-config-standard-scss
 ], type: :dev
 copy_file "variants/frontend-base/.stylelintrc.js", ".stylelintrc.js"
 template "variants/frontend-base/.stylelintignore.tt", ".stylelintignore"
