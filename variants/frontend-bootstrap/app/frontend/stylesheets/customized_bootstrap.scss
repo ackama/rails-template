@@ -23,7 +23,7 @@ $warning: #fce16e;
 $alert: #ff7070;
 
 @import 'bootstrap/scss/variables'; // required, must happen after setting variables
-@import 'bootstrap/scss/variables-dark'; //required, must happen after setting variable
+@import 'bootstrap/scss/variables-dark'; // required, must happen after setting variables
 @import 'bootstrap/scss/maps'; // required, must happen after any map variable overrides
 
 // Bring in Bootstrap
@@ -59,6 +59,7 @@ $alert: #ff7070;
 @import 'bootstrap/scss/modal'; // requires transitions
 @import 'bootstrap/scss/tooltip';
 @import 'bootstrap/scss/popover';
+
 // @import "bootstrap/scss/carousel";
 // @import "bootstrap/scss/spinners";
 // @import "bootstrap/scss/offcanvas";

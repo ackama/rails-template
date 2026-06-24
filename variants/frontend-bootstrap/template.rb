@@ -11,10 +11,8 @@ append_to_file! "app/frontend/stylesheets/application.scss" do
 
     // We use @import because Bootstrap will not support @use until v6. See
     // https://github.com/twbs/bootstrap/issues/30025#issuecomment-574825600 Our own
-    // SCSS files should use @use. Webpack requires that all `@use` be first in a
-    // file which conflicts with the stylelint no-invalid-position-at-import-rule`
-    // rule so we disable it for this line.
-    @import "../stylesheets/customized_bootstrap"; // stylelint-disable-line no-invalid-position-at-import-rule -- See above
+    // SCSS files should use @use.
+    @import "../stylesheets/customized_bootstrap";
   EO_CONTENT
 end
 
