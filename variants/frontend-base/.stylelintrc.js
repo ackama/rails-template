@@ -2,20 +2,31 @@
 
 module.exports = {
   plugins: ['stylelint-scss'],
-  extends: ['stylelint-config-recommended-scss'],
+  extends: ['stylelint-config-standard-scss'],
   reportNeedlessDisables: true,
   reportInvalidScopeDisables: true,
   reportDescriptionlessDisables: true,
   rules: {
     'no-descending-specificity': null,
     'string-no-newline': true,
-    'color-no-invalid-hex': true,
-    'comment-whitespace-inside': 'always',
     'declaration-block-no-duplicate-custom-properties': true,
     'declaration-block-no-duplicate-properties': true,
-    'no-invalid-double-slash-comments': true,
-    'no-duplicate-at-import-rules': true,
-    'no-invalid-position-at-import-rule': true,
-    'length-zero-no-unit': true
+
+    // standard-scss expects kebab-case, but we use BEM
+    'selector-class-pattern': null,
+    'custom-property-pattern': null,
+
+    // standard-scss does not allow empty lines before custom properties
+    'custom-property-empty-line-before': [
+      'always',
+      {
+        except: ['first-nested'],
+        ignore: [
+          'after-custom-property',
+          'after-comment',
+          'inside-single-line-block'
+        ]
+      }
+    ]
   }
 };
