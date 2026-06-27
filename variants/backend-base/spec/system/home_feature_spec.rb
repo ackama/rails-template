@@ -6,6 +6,6 @@ RSpec.describe "Homepage" do
   it "rendered page contains both base and application layouts" do
     assert_selector("html>head+body")
     assert_selector("body p")
-    expect(page.title).to match(/Home/)
+    expect(page.title).to include("Home")
   end
 end

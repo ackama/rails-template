@@ -34,7 +34,7 @@ RSpec.describe "Users can reset passwords" do
         # we expect the user who triggered the reset to be sent an email ...
         expect(email.recipients.first).to eq(email_of_existing_user)
         # ... which contains details about the password reset
-        expect(email.body.to_s).to match(/Someone has requested a link to change your password/)
+        expect(email.body.to_s).to include("Someone has requested a link to change your password")
       end
     end
 

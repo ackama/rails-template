@@ -80,7 +80,7 @@ class Config
   end
 end
 
-class Terminal
+class Terminal # rubocop:disable Style/OneClassPerFile
   def puts_header(msg)
     puts "=" * 80
     puts msg

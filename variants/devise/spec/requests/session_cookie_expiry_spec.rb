@@ -14,7 +14,7 @@ RSpec.describe "Session cookies are expired immediately after logout" do
 
     # ... then it works.
     expect(response).to have_http_status(:ok)
-    expect(response.body).to match(/Edit User/)
+    expect(response.body).to include("Edit User")
 
     # Save the signed-in user's session cookie
     session_cookie = response.headers["Set-Cookie"]
