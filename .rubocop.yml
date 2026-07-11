@@ -38,11 +38,6 @@ AllCops:
 FactoryBot/SyntaxMethods:
   Enabled: false
 
-# We want you to put a blank line between method definitions, the only exception being
-# if you're defining a bunch of single-line methods as above.
-Layout/EmptyLineBetweenDefs:
-  AllowAdjacentOneLineDefs: true
-
 # We think that:
 #   array = [
 #     :value
@@ -166,10 +161,6 @@ RSpec/RepeatedExample:
 Rails:
   Enabled: true
 
-Rails/ApplicationRecord:
-  Exclude:
-    - 'db/migrate/**'
-
 Rails/LexicallyScopedActionFilter:
   Exclude:
     - 'app/controllers/application_controller.rb'
@@ -239,10 +230,6 @@ Style/NumericPredicate:
 Style/SafeNavigation:
   Enabled: false
 
-# Just always use `raise` and stop thinking about it.
-Style/SignalException:
-  EnforcedStyle: only_raise
-
 # Single line method definitions are totally fine, and often more readable, consider:
 #    class WidgetsPolicy
 #      def create?; false; end
@@ -260,6 +247,3 @@ Style/StringLiterals:
 
 Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
-
-Style/TrivialAccessors:
-  AllowPredicates: true

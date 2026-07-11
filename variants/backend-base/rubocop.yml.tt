@@ -21,11 +21,6 @@ AllCops:
 FactoryBot/SyntaxMethods:
   Enabled: false
 
-# We want you to put a blank line between method definitions, the only exception being
-# if you're defining a bunch of single-line methods as above.
-Layout/EmptyLineBetweenDefs:
-  AllowAdjacentOneLineDefs: true
-
 # We think that:
 #   array = [
 #     :value
@@ -130,12 +125,6 @@ Naming/AccessorMethodName:
   Exclude:
     - 'app/policies/**/*_policy.rb'
 
-Naming/FileName:
-  Exclude:
-    - '**/Gemfile'
-    - '**/Rakefile'
-    - '**/Berksfile'
-
 Naming/MemoizedInstanceVariableName:
   EnforcedStyleForLeadingUnderscores: optional
 
@@ -171,10 +160,6 @@ RSpec/RepeatedExample:
 # https://github.com/bbatsov/rubocop#rails
 Rails:
   Enabled: true
-
-Rails/ApplicationRecord:
-  Exclude:
-    - 'db/migrate/**'
 
 # Rubocop doesn't like using `post("/", {}, {})` and instead wants to use the keyword variant of these
 # methods, but often brevity is more important than readability in specs.
@@ -264,10 +249,6 @@ Style/Semicolon:
   Exclude:
     - 'spec/**/*.rb'
 
-# Just always use `raise` and stop thinking about it.
-Style/SignalException:
-  EnforcedStyle: only_raise
-
 # Single line method definitions are totally fine, and often more readable, consider:
 #    class WidgetsPolicy
 #      def create?; false; end
@@ -285,6 +266,3 @@ Style/StringLiterals:
 
 Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
-
-Style/TrivialAccessors:
-  AllowPredicates: true
