@@ -16,7 +16,7 @@ remove_dir "app/assets/images"
 # ensure our preferred js package manager is specified before running external tooling
 package_json.record_package_manager!
 
-run "rails shakapacker:install"
+run "rails shakapacker:install[webpack]"
 
 # install dependencies for babel and webpack
 add_js_dependencies [
