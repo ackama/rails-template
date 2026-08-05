@@ -15,22 +15,22 @@ if RSpec.configuration.files_to_run.length > 1
   SimpleCov.start("rails") do
     enable_coverage :branch
 
-    use_merging false
+    merging false
     # minimum_coverage_by_file 80
     # maximum_coverage_drop 5
     # refuse_coverage_drop
     minimum_coverage line: 90, branch: 80
 
-    add_filter "/bin/"
-    add_filter "/lib/tasks/annotate_rb.rake"
-    add_filter "/lib/tasks/coverage.rake"
-    add_filter "/spec/support/"
-    add_filter "/spec/factories/"
-    add_filter "/spec/rails_helper.rb"
-    add_filter "/spec/spec_helper.rb"
+    skip "/bin/"
+    skip "/lib/tasks/annotate_rb.rake"
+    skip "/lib/tasks/coverage.rake"
+    skip "/spec/support/"
+    skip "/spec/factories/"
+    skip "/spec/rails_helper.rb"
+    skip "/spec/spec_helper.rb"
 
     # ignore files with fewer than 5 lines
-    add_filter do |source_file|
+    skip do |source_file|
       source_file.lines.count < 5
     end
   end
