@@ -3,7 +3,7 @@
 # The base class for all Active Storage controllers.
 # Copied from
 # https://github.com/rails/rails/blob/main/activestorage/app/controllers/active_storage/base_controller.rb
-# :nocov:
+# simplecov:disable
 module ActiveStorage
   class BaseController < ActionController::Base # rubocop:disable Rails/ApplicationController
     include ActiveStorage::SetCurrent
@@ -25,4 +25,3 @@ module ActiveStorage
     end
   end
 end
-# :nocov:
