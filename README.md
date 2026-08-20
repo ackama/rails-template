@@ -112,10 +112,6 @@ Where possible we stick to Rails defaults.
     > the most flexibility.
   - Initializes Ackama's linting and code formatting settings, see
     [Code linting and formatting](#code-linting-and-formatting)
-- Performance testing
-  - Add configuration and specs to use to perform a
-    [lighthouse performance](https://web.dev/performance-scoring/) audit,
-    requiring a score of at least 95.
 - N+1 queries
   - Install & configure [bullet](https://github.com/flyerhzm/bullet) to help
     prevent N+1 queries

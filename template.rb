@@ -186,9 +186,6 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
     # Apply variants after setup and initial install, but before commit
     apply "variants/accessibility/template.rb"
-    # The accessibility template brings in the lighthouse and
-    # lighthouse matcher parts we need to run performance specs
-    apply "variants/performance/template.rb"
     apply "variants/bullet/template.rb"
     apply "variants/pundit/template.rb"
     apply "variants/audit-logging/template.rb"
