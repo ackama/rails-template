@@ -24,11 +24,11 @@ gsub_file! "config/environments/production.rb",
            'config.action_mailer.default_url_options = { host: "example.com" }',
            <<~RUBY
              config.action_mailer.default_url_options = {
-               host: "#{TEMPLATE_CONFIG.production_hostname}",
+               host: ENV.fetch("CANONICAL_HOSTNAME"),
                protocol: "https"
              }
 
-             config.action_mailer.asset_host = "https://#{TEMPLATE_CONFIG.production_hostname}"
+             config.action_mailer.asset_host = ENV.fetch("CANONICAL_HOSTNAME")
            RUBY
 gsub_file! "config/environments/production.rb",
            <<-RUBY,
@@ -50,7 +50,7 @@ gsub_file! "config/environments/production.rb",
     user_name: ENV.fetch("SMTP_USERNAME"),
     password: ENV.fetch("SMTP_PASSWORD"),
     authentication: "login",
-    domain: "#{TEMPLATE_CONFIG.production_hostname}"
+    domain: ENV.fetch("CANONICAL_HOSTNAME")
   }
 RUBY
 
