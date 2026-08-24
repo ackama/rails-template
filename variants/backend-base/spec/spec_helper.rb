@@ -19,7 +19,7 @@ if RSpec.configuration.files_to_run.length > 1
     # minimum_coverage_by_file 80
     # maximum_coverage_drop 5
     # refuse_coverage_drop
-    minimum_coverage line: 90, branch: 80
+    minimum_coverage line: 100, branch: 100
 
     skip "/bin/"
     skip "/lib/tasks/annotate_rb.rake"
