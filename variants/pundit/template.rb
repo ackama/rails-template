@@ -14,6 +14,20 @@ run "rails g pundit:policy example"
 # For now, we're just going to stick with the more traditional error for this situation
 gsub_file! "app/policies/application_policy.rb", "raise NoMethodError", "raise NotImplementedError"
 
+insert_into_file! "app/policies/application_policy.rb", after: /^  def initialize\(user, record\)\n/ do
+  <<-RUBY
+    raise Pundit::NotAuthorizedError, "must be logged in" if user.nil?
+
+  RUBY
+end
+
+insert_into_file! "app/policies/application_policy.rb", after: /^    def initialize\(user, scope\)\n/ do
+  <<-RUBY
+      raise Pundit::NotAuthorizedError, "must be logged in" if user.nil?
+
+  RUBY
+end
+
 copy_file "spec/policies/example_policy_spec.rb", force: true
 copy_file "spec/policies/application_policy_spec.rb", force: true
 

@@ -9,7 +9,17 @@ RSpec.describe ApplicationPolicy, type: :policy do
     "REPLACE_ME_WITH_REAL_USER"
   end
 
+  it "rejects a missing policy user" do
+    expect { policy.new(nil, :record) }.to raise_error(Pundit::NotAuthorizedError, "must be logged in")
+  end
+
   permissions ".scope" do
+    it "rejects a missing scope user" do
+      expect do
+        ApplicationPolicy::Scope.new(nil, scope)
+      end.to raise_error(Pundit::NotAuthorizedError, "must be logged in")
+    end
+
     it { expect { ApplicationPolicy::Scope.new(user, scope).resolve }.to raise_error(NotImplementedError) }
   end
 
