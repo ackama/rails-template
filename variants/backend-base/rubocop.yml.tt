@@ -30,25 +30,15 @@ Style/GuardClause:
 Style/Next:
   Enabled: true
 
+# Expected to be disabled by default in the next major release.
+# Fights Rails autoloading conventions, and the autocorrect is unsafe.
 Style/ClassAndModuleChildren:
-  Enabled: true
-
-Style/DoubleNegation:
-  Enabled: true
-
-Style/NumericPredicate:
   Enabled: true
 
 Style/SpecialGlobalVars:
   Enabled: true
 
 Style/PerlBackrefs:
-  Enabled: true
-
-Style/FrozenStringLiteralComment:
-  Enabled: true
-
-Style/FormatStringToken:
   Enabled: true
 
 Style/FormatString:
@@ -79,9 +69,6 @@ Style/NumericLiterals:
   Enabled: true
 
 Style/NegatedIf:
-  Enabled: true
-
-Naming/VariableNumber:
   Enabled: true
 
 Naming/HeredocDelimiterNaming:
@@ -205,6 +192,7 @@ Naming/MemoizedInstanceVariableName:
 #     address_line_1
 #     address_line_2
 # etc.
+# TODO: will be disabled by default in Rubocop 2.0
 Naming/VariableNumber:
   Enabled: false
 
@@ -266,6 +254,7 @@ Style/BarePercentLiterals:
 Style/Documentation:
   Enabled: false
 
+# TODO: will be disabled by default in Rubocop 2.0
 Style/DoubleNegation:
   Enabled: false
 
@@ -284,6 +273,8 @@ Style/FormatStringToken:
 
 # Ruby 2.4+ has a magic comment that makes all strings frozen and Rubocop wants to put it
 # at the top of every. single. file. We decided we didn't want that - for now.
+# TODO: will be disabled by default in Rubocop 2.0, though it's also expected to
+#  be enabled in a new major of ruby, so maybe we want it on for a bit?
 Style/FrozenStringLiteralComment:
   Enabled: false
 
@@ -298,6 +289,7 @@ Style/HashTransformKeys:
 Style/HashTransformValues:
   Enabled: false
 
+# TODO: will be disabled by default in Rubocop 2.0
 Style/NumericPredicate:
   Enabled: false
 
