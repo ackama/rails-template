@@ -21,6 +21,79 @@ AllCops:
 FactoryBot/SyntaxMethods:
   Enabled: false
 
+Style/IfUnlessModifier:
+  Enabled: true
+
+Style/GuardClause:
+  Enabled: true
+
+Style/Next:
+  Enabled: true
+
+Style/ClassAndModuleChildren:
+  Enabled: true
+
+Style/DoubleNegation:
+  Enabled: true
+
+Style/NumericPredicate:
+  Enabled: true
+
+Style/SpecialGlobalVars:
+  Enabled: true
+
+Style/PerlBackrefs:
+  Enabled: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+
+Style/FormatStringToken:
+  Enabled: true
+
+Style/FormatString:
+  Enabled: true
+
+Style/RegexpLiteral:
+  Enabled: true
+
+Style/SignalException:
+  Enabled: true
+
+Style/Lambda:
+  Enabled: true
+
+Style/ParallelAssignment:
+  Enabled: true
+
+Style/RaiseArgs:
+  Enabled: true
+
+Style/ModuleFunction:
+  Enabled: true
+
+Style/BlockDelimiters:
+  Enabled: true
+
+Style/NumericLiterals:
+  Enabled: true
+
+Style/NegatedIf:
+  Enabled: true
+
+Naming/VariableNumber:
+  Enabled: true
+
+Naming/HeredocDelimiterNaming:
+  Enabled: true
+
+Layout/EmptyLineAfterGuardClaus:
+  Enabled: true
+
+Bundler/OrderedGem:
+  Enabled: true
+
+
 # We think that:
 #   array = [
 #     :value
