@@ -42,16 +42,16 @@ FactoryBot/SyntaxMethods:
   Enabled: false
 
 Layout/ArgumentAlignment:
-  EnforcedStyle: with_first_argument # TODO: will be changed in v2 to 'with_fixed_indentation'
+  EnforcedStyle: with_fixed_indentation # TODO: was changed in v2 from 'with_first_argument'
 
 Layout/CaseIndentation:
-  EnforcedStyle: case # TODO: will be changed in v2 to 'end'
+  EnforcedStyle: end # TODO: was changed in v2 from 'case'
 
 Layout/EmptyLineAfterGuardClause:
   Enabled: true # TODO: will be changed in v2 to 'false'
 
 Layout/EndAlignment:
-  EnforcedStyleAlignWith: keyword # TODO: will be changed in v2 to 'variable'
+  EnforcedStyleAlignWith: variable # TODO: was changed in v2 from 'keyword'
 
 # We think that:
 #   array = [
@@ -68,7 +68,7 @@ Layout/EndAlignment:
 #                          :its_like_this
 #                         ])
 Layout/FirstArrayElementIndentation:
-  EnforcedStyle: consistent # TODO: will be changed in v2 to 'consistent'
+  EnforcedStyle: consistent # TODO: was changed in v2 from 'consistent'
 
 # We think that:
 #   hash = {
@@ -85,7 +85,7 @@ Layout/FirstArrayElementIndentation:
 #                          its_like: :this
 #                         })
 Layout/FirstHashElementIndentation:
-  EnforcedStyle: consistent # TODO: will be changed in v2 to 'consistent'
+  EnforcedStyle: consistent # TODO: was changed in v2 from 'consistent'
 
 Layout/LineLength:
   Max: 200
@@ -113,13 +113,13 @@ Layout/MultilineMethodCallBraceLayout:
   Enabled: false
 
 Layout/MultilineMethodCallIndentation:
-  EnforcedStyle: aligned # TODO: will be changed in v2 to 'indented'
+  EnforcedStyle: indented # TODO: was changed in v2 from 'aligned'
 
 Layout/MultilineOperationIndentation:
-  EnforcedStyle: aligned # TODO: will be changed in v2 to 'indented'
+  EnforcedStyle: indented # TODO: was changed in v2 from 'aligned'
 
 Layout/ParameterAlignment:
-  EnforcedStyle: with_first_parameter # TODO: will be changed in v2 to 'with_fixed_indentation'
+  EnforcedStyle: with_fixed_indentation # TODO: was changed in v2 from 'with_first_parameter'
 
 # This syntax is a deliberate idiom in rspec
 # bbatsov endorses disabling it for rspec
@@ -179,7 +179,7 @@ Naming/MemoizedInstanceVariableName:
 #     address_line_2
 # etc.
 Naming/VariableNumber:
-  Enabled: false # TODO: will be changed in v2 to 'false'
+  Enabled: false # TODO: was changed in v2 from 'false'
 
 Performance/Casecmp:
   Enabled: false
@@ -219,7 +219,7 @@ Rails/SquishedSQLHeredocs:
   Enabled: false
 
 Style/Alias:
-  EnforcedStyle: prefer_alias # TODO: will be changed in v2 to 'prefer_alias_method'
+  EnforcedStyle: prefer_alias_method # TODO: was changed in v2 from 'prefer_alias'
 
 Style/BarePercentLiterals:
   EnforcedStyle: percent_q
@@ -231,14 +231,14 @@ Style/ClassAndModuleChildren:
   Enabled: true # TODO: will be changed in v2 to 'false'
 
 Style/Documentation:
-  Enabled: false # TODO: will be changed in v2 to 'false'
+  Enabled: false # TODO: was changed in v2 from 'false'
 
 Style/DoubleNegation:
-  Enabled: false # TODO: will be changed in v2 to 'false'
+  Enabled: false # TODO: was changed in v2 from 'false'
 
 Style/EmptyMethod:
   Enabled: false
-  EnforcedStyle: compact # TODO: will be changed in v2 to 'expanded'
+  EnforcedStyle: expanded # TODO: was changed in v2 from 'compact'
 
 Style/FormatString:
   Enabled: true # TODO: will be changed in v2 to 'false'
@@ -257,7 +257,7 @@ Style/FormatStringToken:
 # Ruby 2.4+ has a magic comment that makes all strings frozen and Rubocop wants to put it
 # at the top of every. single. file. We decided we didn't want that - for now.
 Style/FrozenStringLiteralComment:
-  Enabled: false # TODO: will be changed in v2 to 'false'
+  Enabled: false # TODO: was changed in v2 from 'false'
 
 Style/GuardClause:
   Enabled: true # TODO: will be changed in v2 to 'false'
@@ -292,7 +292,7 @@ Style/NumericLiterals:
   Enabled: true # TODO: will be changed in v2 to 'false'
 
 Style/NumericPredicate:
-  Enabled: false # TODO: will be changed in v2 to 'false'
+  Enabled: false # TODO: was changed in v2 from 'false'
 
 Style/ParallelAssignment:
   Enabled: true # TODO: will be changed in v2 to 'false'
@@ -307,7 +307,7 @@ Style/RegexpLiteral:
   Enabled: true # TODO: will be changed in v2 to 'false'
 
 Style/RescueStandardError:
-  EnforcedStyle: explicit # TODO: will be changed in v2 to 'implicit'
+  EnforcedStyle: implicit # TODO: was changed in v2 from 'explicit'
 
 # Disable preference for Ruby's new safe navigation operator `&.` because it
 # usually comes at the cost of expressiveness in the simple case:
@@ -343,16 +343,16 @@ Style/SpecialGlobalVars:
 
 # Just always use double quotes and stop thinking about it.
 Style/StringLiterals:
-  EnforcedStyle: double_quotes # TODO: will be changed in v2 to 'double_quotes'
+  EnforcedStyle: double_quotes # TODO: was changed in v2 from 'double_quotes'
 
 Style/StringLiteralsInInterpolation:
-  EnforcedStyle: double_quotes # TODO: will be changed in v2 to 'double_quotes'
+  EnforcedStyle: double_quotes # TODO: was changed in v2 from 'double_quotes'
 
 Style/SymbolArray:
-  EnforcedStyle: percent # TODO: will be changed in v2 to 'brackets'
+  EnforcedStyle: brackets # TODO: was changed in v2 from 'percent'
 
 Style/TernaryParentheses:
-  EnforcedStyle: require_no_parentheses # TODO: will be changed in v2 to 'require_parentheses_when_complex'
+  EnforcedStyle: require_parentheses_when_complex # TODO: was changed in v2 from 'require_no_parentheses'
 
 Style/WordArray:
-  EnforcedStyle: percent # TODO: will be changed in v2 to 'brackets'
+  EnforcedStyle: brackets # TODO: was changed in v2 from 'percent'

@@ -1,7 +1,7 @@
 source_paths.unshift(File.dirname(__FILE__))
 
 package_json.manager.remove!(["prop-types"])
-add_js_dependencies %w[@types/react @types/react-dom]
+add_js_dependencies ["@types/react", "@types/react-dom"]
 
 rename_js_file_to_ts "app/frontend/packs/server_rendering"
 

@@ -21,11 +21,11 @@ class SortRubocopConfig
     sorted_sections = @sections.sort_by do |k, _|
       [
         # document start marker
-        k == "---\n" ? -1 : 0,
+        (k == "---\n") ? -1 : 0,
         # plugins list
-        k == "plugins:\n" ? -1 : 0,
+        (k == "plugins:\n") ? -1 : 0,
         # base config properties (i.e "inherit_gem")
-        k[0].downcase == k[0] ? -1 : 0,
+        (k[0].downcase == k[0]) ? -1 : 0,
         # everything else without colons or newlines so that plugin config will be
         # put before cop config, since colons are alphabetically smaller than slashes
         k.sub(/:\s*\z/, "")

@@ -30,13 +30,13 @@ elsif system("direnv --version > /dev/null 2>&1")
   system("direnv allow")
 end
 
-managers = %w[npm yarn pnpm bun]
+managers = ["npm", "yarn", "pnpm", "bun"]
 manager_in_use = ARGV[0] || ""
 
 if manager_in_use.empty?
   manager_in_use = ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", "")
-                      .delete_suffix("_berry")
-                      .delete_suffix("_classic")
+    .delete_suffix("_berry")
+    .delete_suffix("_classic")
 end
 
 Dir.chdir(bin_dir) do

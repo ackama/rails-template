@@ -1,7 +1,7 @@
 # Setup Sentry
 # ############
 
-add_js_dependencies %w[@sentry/browser dotenv-webpack]
+add_js_dependencies ["@sentry/browser", "dotenv-webpack"]
 
 prepend_to_file! "app/frontend/packs/application.js", "import * as Sentry from '@sentry/browser';"
 

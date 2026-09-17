@@ -1,37 +1,37 @@
 gsub_file! "config/environments/production.rb",
-           "config.assume_ssl = true",
-           <<~RUBY
-             #
-             # You should never use this because it just blindly sets headers without any actual
-             # checks; instead, whatever is handling the SSL-termination should be setting the
-             # appropriate headers to indicate that the request was actually SSL-terminated.
-             config.assume_ssl = false
-           RUBY
+  "config.assume_ssl = true",
+  <<~RUBY
+    #
+    # You should never use this because it just blindly sets headers without any actual
+    # checks; instead, whatever is handling the SSL-termination should be setting the
+    # appropriate headers to indicate that the request was actually SSL-terminated.
+    config.assume_ssl = false
+  RUBY
 
 gsub_file! "config/environments/production.rb",
-           "config.force_ssl = true",
-           <<~RUBY
-             #
-             # On by default, though can be disabled by setting RAILS_FORCE_SSL=false (and only "false")
-             config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "true").downcase != "false"
-           RUBY
+  "config.force_ssl = true",
+  <<~RUBY
+    #
+    # On by default, though can be disabled by setting RAILS_FORCE_SSL=false (and only "false")
+    config.force_ssl = ENV.fetch("RAILS_FORCE_SSL", "true").downcase != "false"
+  RUBY
 
 gsub_file! "config/environments/production.rb",
-           "# config.action_mailer.raise_delivery_errors = false",
-           "config.action_mailer.raise_delivery_errors = true"
+  "# config.action_mailer.raise_delivery_errors = false",
+  "config.action_mailer.raise_delivery_errors = true"
 
 gsub_file! "config/environments/production.rb",
-           'config.action_mailer.default_url_options = { host: "example.com" }',
-           <<~RUBY
-             config.action_mailer.default_url_options = {
-               host: ENV.fetch("CANONICAL_HOSTNAME"),
-               protocol: "https"
-             }
+  'config.action_mailer.default_url_options = { host: "example.com" }',
+  <<~RUBY
+    config.action_mailer.default_url_options = {
+      host: ENV.fetch("CANONICAL_HOSTNAME"),
+      protocol: "https"
+    }
 
-             config.action_mailer.asset_host = ENV.fetch("CANONICAL_HOSTNAME")
-           RUBY
+    config.action_mailer.asset_host = ENV.fetch("CANONICAL_HOSTNAME")
+  RUBY
 gsub_file! "config/environments/production.rb",
-           <<-RUBY,
+  <<-RUBY,
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
   # config.action_mailer.smtp_settings = {
   #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
@@ -40,8 +40,8 @@ gsub_file! "config/environments/production.rb",
   #   port: 587,
   #   authentication: :plain
   # }
-           RUBY
-           <<-RUBY
+  RUBY
+  <<-RUBY
   # Specify outgoing SMTP server.
   config.action_mailer.smtp_settings = {
     address: ENV.fetch("SMTP_HOSTNAME"),
@@ -55,19 +55,19 @@ gsub_file! "config/environments/production.rb",
 RUBY
 
 gsub_file! "config/environments/production.rb",
-           'ENV.fetch("RAILS_LOG_LEVEL", "info")',
-           'ENV.fetch("RAILS_LOG_LEVEL", ENV.fetch("LOG_LEVEL", "info"))'
+  'ENV.fetch("RAILS_LOG_LEVEL", "info")',
+  'ENV.fetch("RAILS_LOG_LEVEL", ENV.fetch("LOG_LEVEL", "info"))'
 
 gsub_file! "config/environments/production.rb",
-           "ActiveSupport::TaggedLogging.logger(STDOUT)",
-           "ActiveSupport::TaggedLogging.logger($stdout)"
+  "ActiveSupport::TaggedLogging.logger(STDOUT)",
+  "ActiveSupport::TaggedLogging.logger($stdout)"
 
 gsub_file! "config/environments/production.rb",
-           "config.silence_healthcheck_path =",
-           "# config.silence_healthcheck_path ="
+  "config.silence_healthcheck_path =",
+  "# config.silence_healthcheck_path ="
 
 insert_into_file! "config/environments/production.rb",
-                  after: /.*config.cache_store = :mem_cache_store\n/ do
+  after: /.*config.cache_store = :mem_cache_store\n/ do
   <<~RUBY
     if ENV.fetch("RAILS_CACHE_REDIS_URL", nil)
       config.cache_store = :redis_cache_store, {

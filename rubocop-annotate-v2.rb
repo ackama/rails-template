@@ -22,18 +22,18 @@ class SortRubocopConfig
 
     add_unconfigured_cops_changing_in_v2
 
-    # apply_v2_changes_except_disables
+    apply_v2_changes_except_disables
   end
 
   def sort!
     sorted_sections = @sections.sort_by do |k, _|
       [
         # document start marker
-        k == "---\n" ? -1 : 0,
+        (k == "---\n") ? -1 : 0,
         # plugins list
-        k == "plugins:\n" ? -1 : 0,
+        (k == "plugins:\n") ? -1 : 0,
         # base config properties (i.e "inherit_gem")
-        k[0].downcase == k[0] ? -1 : 0,
+        (k[0].downcase == k[0]) ? -1 : 0,
         # everything else without colons or newlines so that plugin config will be
         # put before cop config, since colons are alphabetically smaller than slashes
         k.sub(/:\s*\z/, "")
@@ -119,9 +119,7 @@ class SortRubocopConfig
     lines = lines.flat_map do |line|
       if line.strip.start_with?("#{option}: ")
         # add the annotation if it's not already present
-        unless line.end_with?("#{annotation}\n") || line.include?("# TODO: was changed in v2 from '")
-          line = "#{line.rstrip} #{annotation}\n"
-        end
+        line = "#{line.rstrip} #{annotation}\n" unless line.end_with?("#{annotation}\n") || line.include?("# TODO: was changed in v2 from '")
         found = true
       end
 

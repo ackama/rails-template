@@ -8,7 +8,7 @@ run "bundle binstubs sidekiq --force"
 
 append_to_file! "Procfile", "worker:  bundle exec sidekiq -C config/sidekiq.yml"
 
-%w[example.env .env].each do |env_file|
+["example.env", ".env"].each do |env_file|
   append_to_file! env_file do
     <<~CONTENT
       REDIS_URL=redis://localhost:6379/#{rand(16)}

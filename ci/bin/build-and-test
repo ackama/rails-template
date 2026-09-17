@@ -27,10 +27,10 @@ target_versions_path = File.join(root_path, "target_versions.yml")
 rails_version_specifier = build_rails_version_specifier(target_versions_path)
 
 config_path = if ENV.fetch("CONFIG_PATH", "") == ""
-                File.join(root_path, "ackama_rails_template.config.yml")
-              else
-                File.join(root_path, ENV.fetch("CONFIG_PATH"))
-              end
+  File.join(root_path, "ackama_rails_template.config.yml")
+else
+  File.join(root_path, ENV.fetch("CONFIG_PATH"))
+end
 
 config_env_var = %Q(CONFIG_PATH="#{config_path}") if config_path
 skip_flags = ENV.fetch("SKIPS", "--skip-javascript --skip-docker --skip-kamal --skip-solid")
@@ -56,11 +56,11 @@ install_output = `gem install rails --version '#{rails_version_specifier}' --no-
 puts install_output # for ease of debugging
 
 rails_version = install_output
-                .split("\n")
-                .grep(/Successfully installed rails-\d/)
-                .first
-                .strip
-                .sub("Successfully installed rails-", "")
+  .split("\n")
+  .grep(/Successfully installed rails-\d/)
+  .first
+  .strip
+  .sub("Successfully installed rails-", "")
 
 puts "Using rails version #{rails_version}"
 

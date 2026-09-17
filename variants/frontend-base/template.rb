@@ -40,8 +40,8 @@ add_js_dependencies ["webpack-dev-server"], type: :dev
 # this is added by shakapacker:install, but we've already got one (with some extra tags)
 # in our template, so remove theirs otherwise the app will error when rendering this
 gsub_file! "app/views/layouts/application.html.erb",
-           "    <%= javascript_pack_tag \"application\" %>\n",
-           ""
+  "    <%= javascript_pack_tag \"application\" %>\n",
+  ""
 
 # Configure app/frontend
 
@@ -84,9 +84,9 @@ gsub_file! "app/frontend/packs/application.js", images_disabled_chunk, images_en
 
 # Configure app/views
 gsub_file! "app/views/layouts/application.html.erb",
-           "<%= stylesheet_link_tag(",
-           "<%= stylesheet_pack_tag(",
-           force: true
+  "<%= stylesheet_link_tag(",
+  "<%= stylesheet_pack_tag(",
+  force: true
 
 copy_file "app/frontend/images/example.png"
 body_open_tag_with_img_example = <<~EO_IMG_EXAMPLE
@@ -100,17 +100,17 @@ EO_IMG_EXAMPLE
 gsub_file! "app/views/layouts/application.html.erb", "<body>", body_open_tag_with_img_example, force: true
 
 # shakapacker will automatically configure webpack to use these so long as the dependencies are present
-add_js_dependencies %w[
-  css-loader
-  css-minimizer-webpack-plugin
-  mini-css-extract-plugin
-  sass
-  sass-loader
+add_js_dependencies [
+  "css-loader",
+  "css-minimizer-webpack-plugin",
+  "mini-css-extract-plugin",
+  "sass",
+  "sass-loader"
 ]
 
 # Setup Turbo
-add_js_dependencies %w[
-  @hotwired/turbo-rails
+add_js_dependencies [
+  "@hotwired/turbo-rails"
 ]
 prepend_to_file! "app/frontend/packs/application.js" do
   <<~EO_CONTENT

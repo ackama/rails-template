@@ -10,13 +10,13 @@ insert_into_file! \
 end
 
 gsub_file! "config/environments/test.rb",
-           'config.action_mailer.default_url_options = { host: "example.com" }',
-           'config.action_mailer.default_url_options = { host: "localhost:3000" }'
+  'config.action_mailer.default_url_options = { host: "example.com" }',
+  'config.action_mailer.default_url_options = { host: "localhost:3000" }'
 
 gsub_file! "config/environments/test.rb",
-           "# config.i18n.raise_on_missing_translations = true",
-           "config.i18n.raise_on_missing_translations = true"
+  "# config.i18n.raise_on_missing_translations = true",
+  "config.i18n.raise_on_missing_translations = true"
 
 gsub_file! "config/environments/test.rb",
-           "config.action_controller.raise_on_missing_callback_actions = true",
-           "# config.action_controller.raise_on_missing_callback_actions = true"
+  "config.action_controller.raise_on_missing_callback_actions = true",
+  "# config.action_controller.raise_on_missing_callback_actions = true"

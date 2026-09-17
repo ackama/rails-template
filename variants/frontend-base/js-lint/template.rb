@@ -1,18 +1,18 @@
 # Javascript code linting and formatting
 # ######################################
 
-add_js_dependencies %w[
-  @eslint-community/eslint-plugin-eslint-comments
-  @stylistic/eslint-plugin-js@3
-  @eslint/js@9
-  eslint@9
-  eslint-config-ackama
-  eslint-plugin-n@17
-  eslint-plugin-import
-  eslint-plugin-prettier
-  globals
-  prettier
-  prettier-config-ackama
+add_js_dependencies [
+  "@eslint-community/eslint-plugin-eslint-comments",
+  "@stylistic/eslint-plugin-js@3",
+  "@eslint/js@9",
+  "eslint@9",
+  "eslint-config-ackama",
+  "eslint-plugin-n@17",
+  "eslint-plugin-import",
+  "eslint-plugin-prettier",
+  "globals",
+  "prettier",
+  "prettier-config-ackama"
 ], type: :dev
 
 copy_file "variants/frontend-base/eslint.config.js", "eslint.config.js"
@@ -54,11 +54,11 @@ append_to_file! "bin/ci-run" do
 end
 
 # SCSS Linting
-add_js_dependencies %w[
-  postcss
-  stylelint
-  stylelint-scss
-  stylelint-config-standard-scss
+add_js_dependencies [
+  "postcss",
+  "stylelint",
+  "stylelint-scss",
+  "stylelint-config-standard-scss"
 ], type: :dev
 copy_file "variants/frontend-base/.stylelintrc.js", ".stylelintrc.js"
 template "variants/frontend-base/.stylelintignore.tt", ".stylelintignore"
