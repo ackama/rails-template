@@ -35,8 +35,8 @@ manager_in_use = ARGV[0] || ""
 
 if manager_in_use.empty?
   manager_in_use = ENV.fetch("PACKAGE_JSON_FALLBACK_MANAGER", "")
-                      .delete_suffix("_berry")
-                      .delete_suffix("_classic")
+    .delete_suffix("_berry")
+    .delete_suffix("_classic")
 end
 
 Dir.chdir(bin_dir) do

@@ -10,8 +10,8 @@ run "rails generate react:install"
 
 # prefer importing from the more specific package for consistency
 gsub_file! "app/frontend/test/stimulus/controllers/add_class_controller.test.js",
-           "'@testing-library/dom'",
-           "'@testing-library/react'"
+  "'@testing-library/dom'",
+  "'@testing-library/react'"
 
 add_js_dependencies %W[
   @babel/preset-react@#{BABEL_MAJOR_VERSION}
@@ -39,10 +39,10 @@ react_rails_replacement = <<~REPLACEMENT
 REPLACEMENT
 
 gsub_file! "app/frontend/packs/application.js",
-           "ReactRailsUJS.useContext(componentRequireContext);", react_rails_replacement
+  "ReactRailsUJS.useContext(componentRequireContext);", react_rails_replacement
 
 gsub_file! "app/frontend/packs/server_rendering.js",
-           "ReactRailsUJS.useContext(componentRequireContext);", react_rails_replacement
+  "ReactRailsUJS.useContext(componentRequireContext);", react_rails_replacement
 
 gsub_file!(
   "app/frontend/packs/application.js",
@@ -51,7 +51,7 @@ gsub_file!(
 )
 
 prepend_to_file! "app/frontend/packs/application.js",
-                 "import ReactRailsUJS from 'react_ujs';\n"
+  "import ReactRailsUJS from 'react_ujs';\n"
 
 gsub_file!(
   "app/frontend/packs/server_rendering.js",

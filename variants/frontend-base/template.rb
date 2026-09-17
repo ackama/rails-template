@@ -40,8 +40,8 @@ add_js_dependencies ["webpack-dev-server"], type: :dev
 # this is added by shakapacker:install, but we've already got one (with some extra tags)
 # in our template, so remove theirs otherwise the app will error when rendering this
 gsub_file! "app/views/layouts/application.html.erb",
-           "    <%= javascript_pack_tag \"application\" %>\n",
-           ""
+  "    <%= javascript_pack_tag \"application\" %>\n",
+  ""
 
 # Configure app/frontend
 
@@ -84,9 +84,9 @@ gsub_file! "app/frontend/packs/application.js", images_disabled_chunk, images_en
 
 # Configure app/views
 gsub_file! "app/views/layouts/application.html.erb",
-           "<%= stylesheet_link_tag(",
-           "<%= stylesheet_pack_tag(",
-           force: true
+  "<%= stylesheet_link_tag(",
+  "<%= stylesheet_pack_tag(",
+  force: true
 
 copy_file "app/frontend/images/example.png"
 body_open_tag_with_img_example = <<~EO_IMG_EXAMPLE
