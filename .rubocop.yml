@@ -349,10 +349,10 @@ Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes # TODO: was changed in v2 from 'double_quotes'
 
 Style/SymbolArray:
-  EnforcedStyle: brackets # TODO: was changed in v2 from 'percent'
+  EnforcedStyle: percent # TODO: will be changed in v2 to 'brackets'
 
 Style/TernaryParentheses:
   EnforcedStyle: require_parentheses_when_complex # TODO: was changed in v2 from 'require_no_parentheses'
 
 Style/WordArray:
-  EnforcedStyle: brackets # TODO: was changed in v2 from 'percent'
+  EnforcedStyle: percent # TODO: will be changed in v2 to 'brackets'

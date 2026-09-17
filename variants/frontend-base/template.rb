@@ -100,17 +100,17 @@ EO_IMG_EXAMPLE
 gsub_file! "app/views/layouts/application.html.erb", "<body>", body_open_tag_with_img_example, force: true
 
 # shakapacker will automatically configure webpack to use these so long as the dependencies are present
-add_js_dependencies [
-  "css-loader",
-  "css-minimizer-webpack-plugin",
-  "mini-css-extract-plugin",
-  "sass",
-  "sass-loader"
+add_js_dependencies %w[
+  css-loader
+  css-minimizer-webpack-plugin
+  mini-css-extract-plugin
+  sass
+  sass-loader
 ]
 
 # Setup Turbo
-add_js_dependencies [
-  "@hotwired/turbo-rails"
+add_js_dependencies %w[
+  @hotwired/turbo-rails
 ]
 prepend_to_file! "app/frontend/packs/application.js" do
   <<~EO_CONTENT

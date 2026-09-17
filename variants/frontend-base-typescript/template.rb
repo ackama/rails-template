@@ -10,22 +10,22 @@ end
 
 remove_file "app/frontend/packs/hello_typescript.ts"
 
-types_packages = [
-  "rails__actioncable",
-  "rails__activestorage",
-  "rails__ujs",
-  "turbolinks",
-  "dotenv-webpack",
-  "webpack-env",
-  "babel__core@#{BABEL_MAJOR_VERSION}",
-  "node@24"
+types_packages = %W[
+  rails__actioncable
+  rails__activestorage
+  rails__ujs
+  turbolinks
+  dotenv-webpack
+  webpack-env
+  babel__core@#{BABEL_MAJOR_VERSION}
+  node@24
 ].map { |name| "@types/#{name}" }
 
-add_js_dependencies types_packages + ["@babel/preset-typescript@#{BABEL_MAJOR_VERSION}", "typescript"]
-add_js_dependencies [
-  "@stylistic/eslint-plugin-ts@3",
-  "@typescript-eslint/eslint-plugin",
-  "@typescript-eslint/parser"
+add_js_dependencies types_packages + %W[@babel/preset-typescript@#{BABEL_MAJOR_VERSION} typescript]
+add_js_dependencies %w[
+  @stylistic/eslint-plugin-ts@3
+  @typescript-eslint/eslint-plugin
+  @typescript-eslint/parser
 ], type: :dev
 
 package_json.manager.remove!(["globals"])

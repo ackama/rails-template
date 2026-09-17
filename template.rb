@@ -199,8 +199,8 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
       apply "variants/deploy_with_capistrano/template.rb"
     end
 
-    binstubs = [
-      "brakeman", "bundler", "rubocop"
+    binstubs = %w[
+      brakeman bundler rubocop
     ]
     run_with_clean_bundler_env "bundle binstubs #{binstubs.join(" ")} --force"
 
