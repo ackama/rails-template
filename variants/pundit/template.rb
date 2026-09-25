@@ -58,7 +58,9 @@ insert_into_file! "app/controllers/application_controller.rb", before: /^end/ do
 
     # The more secure but less user-friendly option (our default):
     # ############################################################
+    # simplecov:disable TODO - should be covered once different user permissions are implemented
     raise ActiveRecord::RecordNotFound
+    # simplecov:enable
 
     # The user-friendly but less secure option:
     # #########################################
