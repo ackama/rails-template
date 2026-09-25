@@ -70,6 +70,8 @@ RSpec.configure do |config|
   # System tests indicating that they use Javascript should be run with headless Chrome
   config.before(:each, :uses_javascript, type: :system) do
     driven_by :chrome
+
+    raise "incorrect screen size" if page.current_window.size != [1920, 1080]
   end
 
   # RSpec Rails can automatically mix in different behaviours to your tests
