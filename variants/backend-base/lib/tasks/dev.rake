@@ -20,7 +20,13 @@
 #   require 'aws-sdk-ec2' if Rails.env.development?
 
 namespace :dev do
-  # desc "Increase developer happiness"
-  # task example: :environment do
-  # end
+  task annotate: %i[environment] do
+    require "annotate_rb"
+    require "chusaku"
+
+    Chusaku.load_tasks
+
+    Rake::Task["chusaku"].invoke
+    AnnotateRb::Runner.run(["models"])
+  end
 end
