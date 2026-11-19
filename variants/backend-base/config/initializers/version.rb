@@ -1,7 +1,7 @@
 Rails.application.config.version = begin
   # checks ENV["SHA"] and the "./REVISION" file
   OkComputer::AppVersionCheck.new.version
-rescue StandardError
+rescue
   "N/A"
 end
 
@@ -20,6 +20,6 @@ Rails.application.config.version_time = begin
   else
     Time.zone.at(value).utc
   end
-rescue StandardError
+rescue
   nil
 end

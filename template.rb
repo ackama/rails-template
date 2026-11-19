@@ -373,8 +373,8 @@ def assert_postgresql
   return if /^\s*gem ['"]pg['"]/.match?(File.read("Gemfile"))
 
   raise Rails::Generators::Error,
-        "This template requires PostgreSQL, " \
-        "but the pg gem isn't present in your Gemfile."
+    "This template requires PostgreSQL, " \
+    "but the pg gem isn't present in your Gemfile."
 end
 
 def any_local_git_commits?
@@ -394,10 +394,10 @@ end
 
 def run_with_clean_bundler_env(cmd)
   success = if defined?(Bundler)
-              Bundler.with_unbundled_env { run(cmd) }
-            else
-              run(cmd)
-            end
+    Bundler.with_unbundled_env { run(cmd) }
+  else
+    run(cmd)
+  end
 
   return if success
 

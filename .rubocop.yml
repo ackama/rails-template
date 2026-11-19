@@ -35,8 +35,23 @@ AllCops:
     - 'vendor/**/*'
     - 'node_modules/**/*'
 
+Bundler/OrderedGems:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
 FactoryBot/SyntaxMethods:
   Enabled: false
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation # TODO: was changed in v2 from 'with_first_argument'
+
+Layout/CaseIndentation:
+  EnforcedStyle: end # TODO: was changed in v2 from 'case'
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable # TODO: was changed in v2 from 'keyword'
 
 # We think that:
 #   array = [
@@ -53,7 +68,7 @@ FactoryBot/SyntaxMethods:
 #                          :its_like_this
 #                         ])
 Layout/FirstArrayElementIndentation:
-  EnforcedStyle: consistent
+  EnforcedStyle: consistent # TODO: was changed in v2 from 'consistent'
 
 # We think that:
 #   hash = {
@@ -70,7 +85,7 @@ Layout/FirstArrayElementIndentation:
 #                          its_like: :this
 #                         })
 Layout/FirstHashElementIndentation:
-  EnforcedStyle: consistent
+  EnforcedStyle: consistent # TODO: was changed in v2 from 'consistent'
 
 Layout/LineLength:
   Max: 200
@@ -97,6 +112,15 @@ Layout/MultilineHashBraceLayout:
 Layout/MultilineMethodCallBraceLayout:
   Enabled: false
 
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented # TODO: was changed in v2 from 'aligned'
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented # TODO: was changed in v2 from 'aligned'
+
+Layout/ParameterAlignment:
+  EnforcedStyle: with_fixed_indentation # TODO: was changed in v2 from 'with_first_parameter'
+
 # This syntax is a deliberate idiom in rspec
 # bbatsov endorses disabling it for rspec
 # https://github.com/bbatsov/rubocop/issues/4222#issuecomment-290722962
@@ -108,24 +132,44 @@ Metrics/AbcSize:
   Max: 18
   Exclude:
     - 'spec/**/*'
+  Enabled: true # TODO: will be changed in v2 to 'false'
 
 Metrics/BlockLength:
   Max: 50
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Metrics/BlockNesting:
+  Enabled: true # TODO: will be changed in v2 to 'false'
 
 Metrics/ClassLength:
   Exclude:
     - 'spec/**/*'
+  Enabled: true # TODO: will be changed in v2 to 'false'
 
 Metrics/CyclomaticComplexity:
   Max: 10
+  Enabled: true # TODO: will be changed in v2 to 'false'
 
 Metrics/MethodLength:
   Max: 50
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Metrics/ModuleLength:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Metrics/ParameterLists:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Metrics/PerceivedComplexity:
+  Enabled: true # TODO: will be changed in v2 to 'false'
 
 Naming/FileName:
   Exclude:
     - '**/Gemfile.rb'
     - '**/Rakefile.rb'
+
+Naming/HeredocDelimiterNaming:
+  Enabled: true # TODO: will be changed in v2 to 'false'
 
 Naming/MemoizedInstanceVariableName:
   EnforcedStyleForLeadingUnderscores: optional
@@ -135,7 +179,7 @@ Naming/MemoizedInstanceVariableName:
 #     address_line_2
 # etc.
 Naming/VariableNumber:
-  Enabled: false
+  Enabled: false # TODO: was changed in v2 from 'false'
 
 Performance/Casecmp:
   Enabled: false
@@ -174,17 +218,30 @@ Rails/Output:
 Rails/SquishedSQLHeredocs:
   Enabled: false
 
+Style/Alias:
+  EnforcedStyle: prefer_alias_method # TODO: was changed in v2 from 'prefer_alias'
+
 Style/BarePercentLiterals:
   EnforcedStyle: percent_q
 
+Style/BlockDelimiters:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Style/ClassAndModuleChildren:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
 Style/Documentation:
-  Enabled: false
+  Enabled: false # TODO: was changed in v2 from 'false'
 
 Style/DoubleNegation:
-  Enabled: false
+  Enabled: false # TODO: was changed in v2 from 'false'
 
 Style/EmptyMethod:
   Enabled: false
+  EnforcedStyle: expanded # TODO: was changed in v2 from 'compact'
+
+Style/FormatString:
+  Enabled: true # TODO: will be changed in v2 to 'false'
 
 # Ruby supports two styles of string template formatting.
 # "annotated" - format("%<greeting>s", greeting: "Hello")
@@ -195,11 +252,15 @@ Style/EmptyMethod:
 # and is consistent with formatting with (for example), interpolation (#{}).
 Style/FormatStringToken:
   EnforcedStyle: template
+  Enabled: true # TODO: will be changed in v2 to 'false'
 
 # Ruby 2.4+ has a magic comment that makes all strings frozen and Rubocop wants to put it
 # at the top of every. single. file. We decided we didn't want that - for now.
 Style/FrozenStringLiteralComment:
-  Enabled: false
+  Enabled: false # TODO: was changed in v2 from 'false'
+
+Style/GuardClause:
+  Enabled: true # TODO: will be changed in v2 to 'false'
 
 Style/HashSyntax:
   EnforcedShorthandSyntax: always
@@ -212,8 +273,41 @@ Style/HashTransformKeys:
 Style/HashTransformValues:
   Enabled: false
 
+Style/IfUnlessModifier:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Style/Lambda:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Style/ModuleFunction:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Style/NegatedIf:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Style/Next:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Style/NumericLiterals:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
 Style/NumericPredicate:
-  Enabled: false
+  Enabled: false # TODO: was changed in v2 from 'false'
+
+Style/ParallelAssignment:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Style/PerlBackrefs:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Style/RaiseArgs:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Style/RegexpLiteral:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
+Style/RescueStandardError:
+  EnforcedStyle: implicit # TODO: was changed in v2 from 'explicit'
 
 # Disable preference for Ruby's new safe navigation operator `&.` because it
 # usually comes at the cost of expressiveness in the simple case:
@@ -230,6 +324,9 @@ Style/NumericPredicate:
 Style/SafeNavigation:
   Enabled: false
 
+Style/SignalException:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
 # Single line method definitions are totally fine, and often more readable, consider:
 #    class WidgetsPolicy
 #      def create?; false; end
@@ -241,9 +338,21 @@ Style/SafeNavigation:
 Style/SingleLineMethods:
   Enabled: false
 
+Style/SpecialGlobalVars:
+  Enabled: true # TODO: will be changed in v2 to 'false'
+
 # Just always use double quotes and stop thinking about it.
 Style/StringLiterals:
-  EnforcedStyle: double_quotes
+  EnforcedStyle: double_quotes # TODO: was changed in v2 from 'double_quotes'
 
 Style/StringLiteralsInInterpolation:
-  EnforcedStyle: double_quotes
+  EnforcedStyle: double_quotes # TODO: was changed in v2 from 'double_quotes'
+
+Style/SymbolArray:
+  EnforcedStyle: percent # TODO: will be changed in v2 to 'brackets'
+
+Style/TernaryParentheses:
+  EnforcedStyle: require_parentheses_when_complex # TODO: was changed in v2 from 'require_no_parentheses'
+
+Style/WordArray:
+  EnforcedStyle: percent # TODO: will be changed in v2 to 'brackets'

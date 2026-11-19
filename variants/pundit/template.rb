@@ -19,7 +19,7 @@ copy_file "spec/policies/application_policy_spec.rb", force: true
 
 # Configure app/controllers/application_controller.rb
 insert_into_file! "app/controllers/application_controller.rb",
-                  after: /^class ApplicationController < ActionController::Base\n/ do
+  after: /^class ApplicationController < ActionController::Base\n/ do
   <<-RUBY
   include Pundit::Authorization
 

@@ -141,20 +141,20 @@ gsub_file!("Capfile", '# require "capistrano/rails/migrations"', 'require "capis
 # Example:
 # deploy_envs = {"production"=>"config/deploy/production.rb", "staging"=>"config/deploy/staging.rb"}
 deploy_envs = Dir.children("config/deploy")
-                 .each_with_object({}) do |file_name, acc|
+  .each_with_object({}) do |file_name, acc|
   key = File.basename(file_name, ".rb")
   acc[key] = "config/deploy/#{file_name}"
 end
 
 deploy_envs.each do |env_name, file_path|
   likely_branch_name = case env_name
-                       when "staging"
-                         "main"
-                       when "production"
-                         "production"
-                       else
-                         "TODO_branch_name"
-                       end
+  when "staging"
+    "main"
+  when "production"
+    "production"
+  else
+    "TODO_branch_name"
+  end
 
   prepend_to_file!(file_path) do
     <<~EO_RUBY
