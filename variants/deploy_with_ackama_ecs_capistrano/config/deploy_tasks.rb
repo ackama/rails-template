@@ -56,7 +56,8 @@ namespace :ecs do
       Dir.mktmpdir do |dir|
         iidfile_file = File.join(dir, "iidfile")
 
-        run_please("docker", "build", "--iidfile=#{iidfile_file}", ".")
+        # Fargate tasks default to X86_64, so build for that regardless of the host's architecture
+        run_please("docker", "build", "--platform", "linux/amd64", "--iidfile=#{iidfile_file}", ".")
 
         image_ref = File.read(iidfile_file)
       end
