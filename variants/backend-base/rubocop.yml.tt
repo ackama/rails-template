@@ -176,9 +176,9 @@ Rails/LexicallyScopedActionFilter:
 Rails/Output:
   Exclude:
     - 'lib/**/*'
-<% if TEMPLATE_CONFIG.apply_variant_deploy_with_ackama_ecs_capistrano? -%>
+    <%- if TEMPLATE_CONFIG.apply_variant_deploy_with_ackama_ecs_capistrano? -%>
     - 'config/deploy_tasks.rb'
-<% end -%>
+    <%- end -%>
 
 # Rubocop doesn't want us to use any methods which bypass validation in ActiveRecord, but it's quite
 # reasonable to want to do this in a migration.
