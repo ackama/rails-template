@@ -1,7 +1,7 @@
 set :aws_account_id, lambda {
   require "aws-sdk-sts"
 
-  c = Aws::STS::Client.new
+  c = Aws::STS::Client.new(region: fetch(:aws_region))
   c.get_caller_identity.account
 }
 

@@ -111,7 +111,7 @@ set :ecs_tasks, lambda {
 set :ecs_web_target_group_arn, lambda {
   require "aws-sdk-elasticloadbalancingv2"
 
-  c = Aws::ElasticLoadBalancingV2::Client.new
+  c = Aws::ElasticLoadBalancingV2::Client.new(region: fetch(:aws_region))
   c.describe_target_groups(names: [fetch(:ecs_web_target_group_name)]).target_groups.first.target_group_arn
 }
 
