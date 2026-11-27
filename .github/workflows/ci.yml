@@ -119,6 +119,8 @@ jobs:
             config_path: 'ci/configs/deploy_with_capistrano.yml'
           - name: ackama_ec2_capistrano
             config_path: 'ci/configs/deploy_with_ackama_ec2_capistrano.yml'
+          - name: ackama_ecs_capistrano
+            config_path: 'ci/configs/deploy_with_ackama_ecs_capistrano.yml'
     services:
       db:
         image: postgres

@@ -30,3 +30,7 @@ apply_variant_deploy_with_capistrano: false
 # Generates Capistrano code specific to how Ackama likes to deploy
 # and manage EC2 instances.
 apply_variant_deploy_with_ackama_ec2_capistrano: false
+
+# Generates Capistrano code specific to how Ackama likes to deploy
+# and manage ECS Fargate
+apply_variant_deploy_with_ackama_ecs_capistrano: false

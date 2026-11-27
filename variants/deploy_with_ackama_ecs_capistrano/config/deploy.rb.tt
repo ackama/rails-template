@@ -1,0 +1,160 @@
+# config valid for current version and patch releases of Capistrano
+lock "~> 3.20"
+
+set :app_name_kebab_case, "<%= app_name.dasherize %>"
+set :app_name_pascal_case, "<%= app_const_base %>"
+set :env_name_kebab_case, fetch(:stage)
+set :env_name_pascal_case, fetch(:stage).capitalize
+
+set :name_prefix_kebab_case, "#{fetch(:app_name_kebab_case)}-#{fetch(:env_name_kebab_case)}"
+set :name_prefix_pascal_case, "#{fetch(:app_name_pascal_case)}#{fetch(:env_name_pascal_case)}"
+set :name_prefix_secret_case, "#{fetch(:app_name_kebab_case)}/#{fetch(:env_name_kebab_case)}"
+
+set :aws_region, "ap-southeast-2"
+
+set :ecs_region, [fetch(:aws_region)]
+# set :ecs_deploy_wait_timeout, 600 # default: 300
+# set :ecs_wait_until_services_stable_max_attempts, 40 # optional
+# set :ecs_wait_until_services_stable_delay, 15 # optional
+# set :ecs_client_params, { retry_mode: "standard", max_attempts: 10 } # default: {}
+
+set :ecs_default_cluster, fetch(:name_prefix_pascal_case)
+
+set :ecs_web_target_group_name, "#{fetch(:name_prefix_pascal_case)}TargetGroup"
+
+set(:tags, {
+  "Application" => fetch(:app_name_pascal_case),
+  "Client" => "Ackama",
+  "Environment" => fetch(:env_name_pascal_case),
+  "ProvisioningTool" => "Capistrano"
+}.map { |key, value| { key:, value: } })
+
+set :app_shared_container_secrets, lambda {
+  require "dotenv"
+
+  map_secrets(
+    "app/.env.json-#{fetch(:app_env_json_secret_suffix)}",
+    Dotenv.parse("example.env").keys + %w[DATABASE_URL] - %w[PORT]
+  )
+}
+
+set :ecs_tasks, lambda {
+  [
+    {
+      requires_compatibilities: ["FARGATE"],
+      name: "#{fetch(:name_prefix_kebab_case)}-web",
+      execution_role_arn: ecs_role_arn("TaskExecutionRole"),
+      task_role_arn: ecs_role_arn("AppTaskRole"),
+      network_mode: "awsvpc",
+      operating_system_family: "LINUX",
+      cpu: 512,
+      memory: 1024,
+      container_definitions: [
+        {
+          name: "rails",
+          image: fetch(:image_ref_with_registry),
+          command: %w[bundle exec rails server --binding=0.0.0.0],
+          port_mappings: [
+            { container_port: 3000, protocol: "tcp" }
+          ],
+          essential: true,
+          environment: [
+            { name: "RAILS_ENV", value: fetch(:stage) }
+          ],
+          secrets: fetch(:app_shared_container_secrets),
+          log_configuration: {
+            log_driver: "awslogs",
+            options: {
+              "awslogs-group": "/#{fetch(:name_prefix_secret_case)}/ecs/#{fetch(:name_prefix_kebab_case)}-web",
+              "awslogs-region": fetch(:aws_region),
+              "awslogs-stream-prefix": "-"
+            }
+          }
+        }
+      ],
+      tags: fetch(:tags)
+<% if TEMPLATE_CONFIG.apply_variant_sidekiq? -%>
+    },
+    {
+      requires_compatibilities: ["FARGATE"],
+      name: "#{fetch(:name_prefix_kebab_case)}-worker",
+      execution_role_arn: ecs_role_arn("TaskExecutionRole"),
+      task_role_arn: ecs_role_arn("AppTaskRole"),
+      network_mode: "awsvpc",
+      operating_system_family: "LINUX",
+      cpu: 512,
+      memory: 1024,
+      container_definitions: [
+        {
+          name: "rails",
+          image: fetch(:image_ref_with_registry),
+          command: %w[bundle exec sidekiq -C config/sidekiq.yml],
+          essential: true,
+          environment: [
+            { name: "RAILS_ENV", value: fetch(:stage) }
+          ],
+          secrets: fetch(:app_shared_container_secrets),
+          log_configuration: {
+            log_driver: "awslogs",
+            options: {
+              "awslogs-group": "/#{fetch(:name_prefix_secret_case)}/ecs/#{fetch(:name_prefix_kebab_case)}-worker",
+              "awslogs-region": fetch(:aws_region),
+              "awslogs-stream-prefix": "-"
+            }
+          }
+        }
+      ],
+      tags: fetch(:tags)
+<% end -%>
+    }
+  ]
+}
+
+set :ecs_web_target_group_arn, lambda {
+  require "aws-sdk-elasticloadbalancingv2"
+
+  c = Aws::ElasticLoadBalancingV2::Client.new
+  c.describe_target_groups(names: [fetch(:ecs_web_target_group_name)]).target_groups.first.target_group_arn
+}
+
+set :ecs_services, lambda {
+  [
+    {
+      name: "#{fetch(:name_prefix_kebab_case)}-web",
+      launch_type: "FARGATE",
+      load_balancers: [
+        {
+          target_group_arn: fetch(:ecs_web_target_group_arn),
+          container_port: 3000,
+          container_name: "rails"
+        }
+      ],
+      network_configuration: {
+        awsvpc_configuration: {
+          subnets: fetch(:ecs_subnets),
+          security_groups: fetch(:ecs_security_groups)
+        }
+      },
+      enable_execute_command: true,
+      desired_count: fetch(:ecs_web_service_desired_count),
+      deployment_configuration: { maximum_percent: 200, minimum_healthy_percent: 50 },
+      tags: fetch(:tags)
+<% if TEMPLATE_CONFIG.apply_variant_sidekiq? -%>
+    },
+    {
+      name: "#{fetch(:name_prefix_kebab_case)}-worker",
+      launch_type: "FARGATE",
+      network_configuration: {
+        awsvpc_configuration: {
+          subnets: fetch(:ecs_subnets),
+          security_groups: fetch(:ecs_security_groups)
+        }
+      },
+      enable_execute_command: true,
+      desired_count: fetch(:ecs_worker_service_desired_count),
+      deployment_configuration: { maximum_percent: 200, minimum_healthy_percent: 50 },
+      tags: fetch(:tags)
+<% end -%>
+    }
+  ]
+}

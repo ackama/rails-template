@@ -63,6 +63,10 @@ class Config
     @yaml_config.fetch("apply_variant_deploy_with_ackama_ec2_capistrano")
   end
 
+  def apply_variant_deploy_with_ackama_ecs_capistrano?
+    @yaml_config.fetch("apply_variant_deploy_with_ackama_ecs_capistrano")
+  end
+
   private
 
   ##
@@ -195,6 +199,8 @@ def apply_template! # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Met
 
     if TEMPLATE_CONFIG.apply_variant_deploy_with_ackama_ec2_capistrano?
       apply "variants/deploy_with_ackama_ec2_capistrano/template.rb"
+    elsif TEMPLATE_CONFIG.apply_variant_deploy_with_ackama_ecs_capistrano?
+      apply "variants/deploy_with_ackama_ecs_capistrano/template.rb"
     elsif TEMPLATE_CONFIG.apply_variant_deploy_with_capistrano?
       apply "variants/deploy_with_capistrano/template.rb"
     end

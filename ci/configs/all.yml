@@ -10,3 +10,4 @@ apply_variant_sidekiq: true
 apply_variant_bootstrap: true
 apply_variant_deploy_with_capistrano: true
 apply_variant_deploy_with_ackama_ec2_capistrano: true
+apply_variant_deploy_with_ackama_ecs_capistrano: false
