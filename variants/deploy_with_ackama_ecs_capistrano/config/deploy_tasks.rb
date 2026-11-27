@@ -12,12 +12,12 @@ def ecs_role_arn(suffix)
   "arn:aws:iam::#{fetch(:aws_account_id)}:role/#{fetch(:name_prefix_pascal_case)}#{suffix}"
 end
 
-def run_please(cmd, match: nil, stdin_data: nil)
+def run_please(*cmd, match: nil, stdin_data: nil)
   require "open3"
 
   matched_value = ""
 
-  Open3.popen2e(cmd) do |stdin, stdout_and_stderr, wait_thr|
+  Open3.popen2e(*cmd) do |stdin, stdout_and_stderr, wait_thr|
     stdin.write(stdin_data) unless stdin_data.nil?
     stdin.close
 
@@ -28,7 +28,7 @@ def run_please(cmd, match: nil, stdin_data: nil)
     end
 
     exit_status = wait_thr.value.exitstatus
-    raise StandardError, "\"#{cmd}\" exited with non-zero code #{exit_status}" if exit_status != 0
+    raise StandardError, "\"#{cmd.join(" ")}\" exited with non-zero code #{exit_status}" if exit_status != 0
   end
 
   matched_value
@@ -52,7 +52,7 @@ namespace :ecs do
       Dir.mktmpdir do |dir|
         iidfile_file = File.join(dir, "iidfile")
 
-        run_please("docker build --iidfile=#{iidfile_file} .")
+        run_please("docker", "build", "--iidfile=#{iidfile_file}", ".")
 
         image_ref = File.read(iidfile_file)
       end
@@ -71,18 +71,18 @@ namespace :ecs do
     require "aws-sdk-ecr"
 
     token = Aws::ECR::Client.new(region: fetch(:aws_region)).get_authorization_token.authorization_data.first.authorization_token
-    run_please("docker login --username AWS --password-stdin #{fetch(:ecr_url)}", stdin_data: token.unpack1("m").delete_prefix("AWS:"))
+    run_please("docker", "login", "--username", "AWS", "--password-stdin", fetch(:ecr_url), stdin_data: token.unpack1("m").delete_prefix("AWS:"))
 
     puts "successfully logged docker in to ecr"
 
     image_ref = fetch(:image_ref)
     image_registry = fetch(:ecr_repository_url)
 
-    run_please("docker tag #{image_ref} #{image_registry}")
+    run_please("docker", "tag", image_ref, image_registry)
 
     puts "successfully tagged docker image #{image_ref} as #{image_registry}"
 
-    image_digest = run_please("docker push #{image_registry}", match: /digest: (sha256:[0-9a-f]+) size:/)
+    image_digest = run_please("docker", "push", image_registry, match: /digest: (sha256:[0-9a-f]+) size:/)
 
     raise "could not determine digest of pushed image" if image_digest.empty?
 
