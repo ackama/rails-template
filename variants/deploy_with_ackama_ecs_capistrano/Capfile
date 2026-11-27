@@ -1,0 +1,9 @@
+# Load DSL and set up stages
+require "capistrano/setup"
+
+# we deploy with ecs_deploy, not Capistrano's SSH/SCM workflow
+set :scm, nil
+
+require "ecs_deploy/capistrano"
+
+require_relative "config/deploy_tasks"

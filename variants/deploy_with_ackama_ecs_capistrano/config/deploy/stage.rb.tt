@@ -1,0 +1,11 @@
+# TODO: set these from the outputs of the Terraform environment
+set :ecs_subnets, %w[TODO_subnet_id]
+set :ecs_security_groups, %w[TODO_security_group_id]
+
+set :ecs_web_service_desired_count, 1
+<% if TEMPLATE_CONFIG.apply_variant_sidekiq? -%>
+set :ecs_worker_service_desired_count, 1
+<% end -%>
+
+# TODO: set this to the random suffix AWS appended to the ARN of the "app/.env.json" secret
+set :app_env_json_secret_suffix, "TODO"

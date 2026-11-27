@@ -1,0 +1,14 @@
+version: '2'
+services:
+  db:
+    image: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql
+<% if TEMPLATE_CONFIG.apply_variant_sidekiq? -%>
+  redis:
+    image: redis
+<% end -%>
+volumes:
+  pgdata:
