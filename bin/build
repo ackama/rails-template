@@ -1,0 +1,58 @@
+#!/usr/bin/env ruby
+
+require "fileutils"
+require "yaml"
+require_relative "lib/build_config"
+require_relative "lib/builder"
+require_relative "lib/terminal"
+
+# Usage:
+#
+#   $ ./build "all_variants" | "vanilla" | "default" | <ci_config_name>
+#
+# where <ci_config_name> is the name of a file in the `ci/configs` directory
+# (minus the .yml extension)
+#
+# Examples:
+#
+#   $ ./build all_variants  # build every known variant
+#   $ ./build vanilla       # build a vanilla Rails app (which doesn't use our template)
+#   $ ./build default       # build using the default config
+#   $ ./build basic         # build using the basic CI config
+#   $ ./build react         # build using the React CI config
+#
+# You can capture the output to a file using the `tee` command:
+#
+#   $ ./build all_variants | tee build.log
+#
+# If you want to capture the output to a file and keep the color output, you can
+# use the `unbuffer` command:
+#
+#   $ brew install expect # or your linux distro equivalent
+#   $ unbuffer ./build all_variants | tee build.log
+
+class Main
+  class << self
+    def main
+      configs = BuildConfig.resolve_to_configs(ARGV.first)
+
+      Terminal.puts_header(configs_summary(configs))
+
+      configs.each do |config|
+        Builder.new(config:).build
+      end
+    end
+
+    private
+
+    def configs_summary(configs)
+      <<~EO_HEAD
+        Building apps for #{configs.length} configs:
+          - #{configs.map(&:name).join("\n  - ")}
+
+      EO_HEAD
+    end
+  end
+end
+
+Main.main

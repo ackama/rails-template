@@ -1,0 +1,87 @@
+#!/usr/bin/env ruby
+
+require "fileutils"
+require_relative "lib/comparison_config"
+require_relative "lib/terminal"
+
+class Main
+  class << self
+    def main
+      reset_comparison_repo
+      use_vanilla_rails_as_main_branch
+
+      ComparisonConfig.comparison_builds.each do |build_name|
+        populate_new_branch_for_build(build_name:)
+        checkout_main
+      end
+    end
+
+    private
+
+    def reset_comparison_repo
+      repo_path = ComparisonConfig.comparison_repo_root_path
+
+      FileUtils.rm_rf(repo_path)
+      FileUtils.mkdir_p(repo_path)
+
+      Dir.chdir(repo_path) do
+        system("git init")
+        system("git remote add origin git@github.com:ackama/rails-template-variants-comparison.git")
+      end
+    end
+
+    def use_vanilla_rails_as_main_branch
+      Terminal.puts_header("Adding vanilla Rails build to main branch")
+      copy_build(build_path: ComparisonConfig.vanilla_build_path)
+      commit_changes(commit_message: "Add #{ComparisonConfig.vanilla_build_name}")
+    end
+
+    def populate_new_branch_for_build(build_name:)
+      Terminal.puts_header("Creating branch for #{build_name}")
+
+      rm_rf_except_git_dir
+      create_new_branch(branch_name: build_name)
+
+      build_path = File.join(ComparisonConfig.build_path, build_name)
+      copy_build(build_path:)
+
+      commit_changes(commit_message: "Add #{build_name}")
+    end
+
+    def checkout_main
+      Dir.chdir(ComparisonConfig.comparison_repo_root_path) do
+        system("git checkout main")
+      end
+    end
+
+    # clean out all the files from the previous build (except .git)
+    def rm_rf_except_git_dir
+      Dir.chdir(ComparisonConfig.comparison_repo_root_path) do
+        keepers = [".git", "."]
+        deletable_files = Dir.glob("{*,.*}").reject { |f| keepers.include?(f) }
+
+        FileUtils.rm_rf(deletable_files)
+      end
+    end
+
+    def create_new_branch(branch_name:)
+      Dir.chdir(ComparisonConfig.comparison_repo_root_path) do
+        system("git checkout -b #{branch_name}")
+      end
+    end
+
+    def commit_changes(commit_message:)
+      Dir.chdir(ComparisonConfig.comparison_repo_root_path) do
+        system("git add .")
+        # skip pre-commit hooks because they're not relevant here
+        system("git commit --quiet --no-verify -m '#{commit_message}'")
+      end
+    end
+
+    def copy_build(build_path:)
+      system("rsync -qav --exclude='.git' --exclude='node_modules' --exclude='tmp' #{build_path}/ #{ComparisonConfig.comparison_repo_root_path}/")
+    end
+  end
+end
+
+Main.main
