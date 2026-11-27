@@ -46,7 +46,6 @@ set :ecs_tasks, lambda {
       execution_role_arn: ecs_role_arn("TaskExecutionRole"),
       task_role_arn: ecs_role_arn("AppTaskRole"),
       network_mode: "awsvpc",
-      operating_system_family: "LINUX",
       cpu: 512,
       memory: 1024,
       container_definitions: [
@@ -81,7 +80,6 @@ set :ecs_tasks, lambda {
       execution_role_arn: ecs_role_arn("TaskExecutionRole"),
       task_role_arn: ecs_role_arn("AppTaskRole"),
       network_mode: "awsvpc",
-      operating_system_family: "LINUX",
       cpu: 512,
       memory: 1024,
       container_definitions: [
