@@ -170,6 +170,7 @@ Rails/LexicallyScopedActionFilter:
 Rails/Output:
   Exclude:
     - 'lib/**/*'
+    - 'variants/deploy_with_ackama_ecs_capistrano/config/deploy_tasks.rb'
 
 Rails/SquishedSQLHeredocs:
   Enabled: false
