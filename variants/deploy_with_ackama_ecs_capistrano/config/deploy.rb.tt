@@ -53,7 +53,7 @@ set :ecs_tasks, lambda {
         {
           name: "rails",
           image: fetch(:image_ref_with_registry),
-          command: %w[bundle exec rails server --binding=0.0.0.0],
+          command: %w[./bin/rails server],
           port_mappings: [
             { container_port: 3000, protocol: "tcp" }
           ],

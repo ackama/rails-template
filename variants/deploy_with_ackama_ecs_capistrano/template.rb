@@ -19,6 +19,14 @@ end
 
 run "bundle install"
 
+# replace the development-focused docker setup from backend-base with a
+# production image for ECS, and a docker-compose.yml just for local services
+template "variants/deploy_with_ackama_ecs_capistrano/Dockerfile.tt", "Dockerfile", force: true
+copy_file "variants/deploy_with_ackama_ecs_capistrano/dockerignore", ".dockerignore", force: true
+template "variants/deploy_with_ackama_ecs_capistrano/docker-compose.yml.tt", "docker-compose.yml", force: true
+copy_file "variants/deploy_with_ackama_ecs_capistrano/bin/docker-entrypoint", "bin/docker-entrypoint", force: true
+chmod "bin/docker-entrypoint", "+x"
+
 copy_file "variants/deploy_with_ackama_ecs_capistrano/Capfile", "Capfile"
 template "variants/deploy_with_ackama_ecs_capistrano/config/deploy.rb.tt", "config/deploy.rb"
 copy_file "variants/deploy_with_ackama_ecs_capistrano/config/deploy_tasks.rb", "config/deploy_tasks.rb"

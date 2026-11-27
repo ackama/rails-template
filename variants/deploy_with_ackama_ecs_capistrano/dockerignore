@@ -1,0 +1,85 @@
+# See https://docs.docker.com/engine/reference/builder/#dockerignore-file for more about ignoring files.
+
+# Ignore git directory.
+/.git/
+
+# Ignore bundler config.
+/.bundle
+
+# Ignore all default key files.
+/config/master.key
+/config/credentials/*.key
+
+# Ignore all environment files.
+/.env*
+
+# Ignore all logfiles and tempfiles.
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore pidfiles, but keep the directory.
+/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
+
+# Ignore storage (uploaded files in development and any SQLite databases).
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/
+!/tmp/storage/.keep
+
+vendor/bundle
+
+# Ignore assets.
+/node_modules/
+/app/assets/builds/*
+!/app/assets/builds/.keep
+/public/assets
+/public/packs
+/public/*-test
+
+coverage/
+
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# these are not required inside the container itself
+Capfile
+config/deploy.rb
+config/deploy_tasks.rb
+config/deploy/
+config/environments/test.rb
+config/brakeman.ignore
+lib/tasks/coverage.rake
+lib/tasks/dev.rake
+.idea/
+.vscode/
+.github/
+
+.erb_lint.yml
+.node-version
+.osv-detector.yml
+.overcommit.yml
+.prettierignore
+.rspec
+.rubocop.yml
+.stylelintignore
+.stylelintrc.js
+*.config.js
+!babel.config.js
+README.md
+tsconfig.json
+types.d.ts
+
+bin/brakeman
+bin/ci-run
+bin/rubocop
+bin/setup
+
+doc/
+spec/
+test/
