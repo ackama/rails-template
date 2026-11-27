@@ -1,3 +1,7 @@
+# flush output immediately, as Ruby otherwise buffers it when not attached to
+# a terminal (e.g. in CI), which delays logs from long-running commands
+$stdout.sync = true
+
 set :aws_account_id, lambda {
   require "aws-sdk-sts"
 
