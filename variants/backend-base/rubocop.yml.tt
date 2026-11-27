@@ -21,6 +21,66 @@ AllCops:
 FactoryBot/SyntaxMethods:
   Enabled: false
 
+Style/IfUnlessModifier:
+  Enabled: true
+
+Style/GuardClause:
+  Enabled: true
+
+Style/Next:
+  Enabled: true
+
+# Expected to be disabled by default in the next major release.
+# Fights Rails autoloading conventions, and the autocorrect is unsafe.
+Style/ClassAndModuleChildren:
+  Enabled: true
+
+Style/SpecialGlobalVars:
+  Enabled: true
+
+Style/PerlBackrefs:
+  Enabled: true
+
+Style/FormatString:
+  Enabled: true
+
+Style/RegexpLiteral:
+  Enabled: true
+
+Style/SignalException:
+  Enabled: true
+
+Style/Lambda:
+  Enabled: true
+
+Style/ParallelAssignment:
+  Enabled: true
+
+Style/RaiseArgs:
+  Enabled: true
+
+Style/ModuleFunction:
+  Enabled: true
+
+Style/BlockDelimiters:
+  Enabled: true
+
+Style/NumericLiterals:
+  Enabled: true
+
+Style/NegatedIf:
+  Enabled: true
+
+Naming/HeredocDelimiterNaming:
+  Enabled: true
+
+Layout/EmptyLineAfterGuardClaus:
+  Enabled: true
+
+Bundler/OrderedGem:
+  Enabled: true
+
+
 # We think that:
 #   array = [
 #     :value
@@ -132,6 +192,7 @@ Naming/MemoizedInstanceVariableName:
 #     address_line_1
 #     address_line_2
 # etc.
+# TODO: will be disabled by default in Rubocop 2.0
 Naming/VariableNumber:
   Enabled: false
 
@@ -193,6 +254,7 @@ Style/BarePercentLiterals:
 Style/Documentation:
   Enabled: false
 
+# TODO: will be disabled by default in Rubocop 2.0
 Style/DoubleNegation:
   Enabled: false
 
@@ -211,6 +273,8 @@ Style/FormatStringToken:
 
 # Ruby 2.4+ has a magic comment that makes all strings frozen and Rubocop wants to put it
 # at the top of every. single. file. We decided we didn't want that - for now.
+# TODO: will be disabled by default in Rubocop 2.0, though it's also expected to
+#  be enabled in a new major of ruby, so maybe we want it on for a bit?
 Style/FrozenStringLiteralComment:
   Enabled: false
 
@@ -225,6 +289,7 @@ Style/HashTransformKeys:
 Style/HashTransformValues:
   Enabled: false
 
+# TODO: will be disabled by default in Rubocop 2.0
 Style/NumericPredicate:
   Enabled: false
 
